@@ -98,5 +98,6 @@
     "webpack": "^5.1.0"
   },
   "overrides": {},
-  "resolutions": {}
+  "resolutions": {},
+  "version": "0.0.0"
 }
