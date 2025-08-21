@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { environment } from '@environments/environment';
+import { ThemeService } from '@services/theme.service';
 
 @Component({
     selector: 'ia-footer',
@@ -10,7 +11,9 @@ import { environment } from '@environments/environment';
 })
 export class FooterComponent {
     environment = environment as any;
+    theme$ = this.themeService.theme$;
 
-    constructor() { }
-
+    constructor(
+        private themeService: ThemeService
+    ) { }
 }
