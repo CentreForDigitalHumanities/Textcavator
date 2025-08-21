@@ -6,6 +6,7 @@ import { environment } from '@environments/environment';
 import { AuthService } from '@services/auth.service';
 import { filter, map } from 'rxjs/operators';
 import { navIcons, userIcons } from '@shared/icons';
+import { ThemeService } from '@services/theme.service';
 
 @Component({
     selector: 'ia-menu',
@@ -34,7 +35,8 @@ export class MenuComponent implements OnDestroy, OnInit {
     constructor(
         private authService: AuthService,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private themeService: ThemeService,
     ) {}
 
     ngOnDestroy() {
