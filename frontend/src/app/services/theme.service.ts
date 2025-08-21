@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, fromEvent, map, Observable, startWith } from 'rxjs';
 
-enum Theme {
+export enum Theme {
     DARK = 'dark',
     LIGHT = 'light',
 }
