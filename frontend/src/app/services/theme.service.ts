@@ -14,7 +14,9 @@ export class ThemeService {
     systemTheme$: Observable<Theme>;
     theme$: Observable<Theme>;
 
-    constructor() {
+    constructor(
+
+    ) {
         const query = window.matchMedia('(prefers-color-scheme: dark)');
         this.systemTheme$ = fromEvent<MediaQueryListEvent>(query, 'change').pipe(
             startWith(query),
@@ -23,5 +25,11 @@ export class ThemeService {
         this.theme$ = combineLatest([this.selection, this.systemTheme$]).pipe(
             map(([selection, system]) => selection || system)
         );
+        this.theme$.subscribe((theme) => this.setTheme(theme));
+    }
+
+    setTheme(theme: Theme) {
+        const root = (document.getRootNode() as Document).documentElement;
+        root.setAttribute('data-theme', theme);
     }
 }
