@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { Corpus, FreqTableHeaders } from '@models';
 import { WordmodelsService } from '@services';
+import { Theme, ThemeService } from '@services/theme.service';
 import { BehaviorSubject } from 'rxjs';
 import embed from 'vega-embed';
 
@@ -10,12 +11,13 @@ import embed from 'vega-embed';
     styleUrl: './neighbor-network.component.scss',
     standalone: false,
 })
-export class NeighborNetworkComponent implements OnChanges {
+export class NeighborNetworkComponent implements OnChanges, AfterViewInit {
     @Input({required: true}) corpus!: Corpus;
     @Input({required: true}) queryText!: string;
     @Input() asTable: boolean;
 
     @ViewChild('chart') chart!: ElementRef;
+    @ViewChild('theme') themeInput!: ElementRef;
 
     data: any;
 
@@ -36,11 +38,18 @@ export class NeighborNetworkComponent implements OnChanges {
             key: 'similarity',
             label: 'Similarity'
         }
-    ]
+    ];
 
     constructor(
         private wordModelsService: WordmodelsService,
+        private themeService: ThemeService,
     ) { }
+
+    ngAfterViewInit() {
+        this.themeService.theme$.subscribe(
+            theme => this.updateTheme(theme)
+        );
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         this.getData()
@@ -72,5 +81,11 @@ export class NeighborNetworkComponent implements OnChanges {
         }).catch(error => {
             console.error(error);
         });
+    }
+
+    updateTheme(theme: Theme) {
+        const el = this.themeInput.nativeElement as HTMLInputElement;
+        el.value = theme;
+        el.dispatchEvent(new Event('input'));
     }
 }
