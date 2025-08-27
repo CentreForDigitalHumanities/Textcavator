@@ -30,7 +30,6 @@ import { takeUntil } from 'rxjs/operators';
 import { DateHistogramResult, TermsResult } from '@models/aggregation';
 import { ComparedQueries } from '@models/compared-queries';
 import { RouterStoreService } from '@app/store/router-store.service';
-import { setThemefaults } from '../chartjs-utils';
 
 const hintSeenSessionStorageKey = 'hasSeenTimelineZoomingHint';
 const hintHidingMinDelay = 500;       // milliseconds
@@ -171,7 +170,6 @@ export abstract class BarchartDirective<
         chartDefault.elements.bar.hoverBackgroundColor = selectColor();
         chartDefault.plugins.tooltip.displayColors = false;
         chartDefault.plugins.tooltip.intersect = false;
-        setThemefaults(chartDefault);
         this.comparedQueries = new ComparedQueries(this.routerStoreService);
         this.comparedQueries.allQueries$.subscribe(this.updateQueries.bind(this));
     }

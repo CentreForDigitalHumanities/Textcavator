@@ -3,7 +3,6 @@ import { Chart, ChartData, ChartOptions } from 'chart.js';
 import * as _ from 'lodash';
 import { NgramResults } from '@models';
 import { selectColor } from '@utils/select-color';
-import { setThemefaults } from 'app/visualization/chartjs-utils';
 
 @Component({
     selector: 'ia-joyplot',
@@ -29,9 +28,7 @@ export class JoyplotComponent implements OnChanges {
     chartOptions: ChartOptions;
     chart: Chart;
 
-    constructor() {
-        setThemefaults(Chart.defaults);
-    }
+    constructor() {}
 
     get multipleTimeIntervals(): boolean {
         return this.timeLabels && this.timeLabels.length > 1;
