@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, fromEvent, map, Observable, startWith } from 'rxjs';
+import { setThemefaults } from 'app/visualization/chartjs-utils';
+import { Chart } from 'chart.js';
 
 export enum Theme {
     DARK = 'dark',
@@ -31,5 +33,6 @@ export class ThemeService {
     setTheme(theme: Theme) {
         const root = (document.getRootNode() as Document).documentElement;
         root.setAttribute('data-theme', theme);
+        setThemefaults(Chart.defaults);
     }
 }

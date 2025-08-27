@@ -2,9 +2,11 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { Chart, ChartData, ChartOptions, ChartType, Filler, TooltipItem } from 'chart.js';
 import Zoom from 'chartjs-plugin-zoom';
 import * as _ from 'lodash';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, withLatestFrom } from 'rxjs';
 import { selectColor } from '@utils/select-color';
 import { FreqTableHeaders, WordSimilarity } from '@models';
+import { ThemeService } from '@services/theme.service';
+import { setThemefaults } from 'app/visualization/chartjs-utils';
 
 /**
  * Child component of the related words and compare similarity graphs.
@@ -39,10 +41,18 @@ export class SimilarityChartComponent implements OnInit, OnChanges, OnDestroy {
 
     currentTimeIndex = undefined;
 
-    constructor() {}
+    constructor(
+        private themeService: ThemeService,
+    ) {}
 
     ngOnInit(): void {
         this.graphStyle.subscribe(this.updateChart.bind(this));
+        this.themeService.theme$.pipe(
+            withLatestFrom(this.graphStyle),
+        ).subscribe(([theme, style]) => {
+            setThemefaults(Chart.defaults);
+            this.updateChart(style);
+        });
     }
 
     ngOnDestroy(): void {
@@ -202,7 +212,7 @@ export class SimilarityChartComponent implements OnInit, OnChanges, OnDestroy {
         const options: ChartOptions = {
             elements: {
                 line: {
-                    tension: 0, // disables bezier curves
+                    tension: 0, // dthis.chart.update();isables bezier curves
                 },
                 point: {
                     radius: 0, // hide points
