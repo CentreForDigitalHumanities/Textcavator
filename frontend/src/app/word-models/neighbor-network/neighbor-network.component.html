@@ -1,7 +1,7 @@
 <div class="block">
     <div #chart id="chart" [class.is-hidden]="asTable" [attr.aria-hidden]="asTable"></div>
 
-    <input #theme id="current-theme" hidden >
+    <input iaThemeIndicator >
 
     <ia-freqtable [headers]="tableHeaders" [data]="data?.table"
         [class.is-hidden]="!asTable" [attr.aria-hidden]="!asTable" />

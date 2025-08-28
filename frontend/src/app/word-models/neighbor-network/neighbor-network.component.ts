@@ -11,13 +11,12 @@ import embed from 'vega-embed';
     styleUrl: './neighbor-network.component.scss',
     standalone: false,
 })
-export class NeighborNetworkComponent implements OnChanges, AfterViewInit {
+export class NeighborNetworkComponent implements OnChanges {
     @Input({required: true}) corpus!: Corpus;
     @Input({required: true}) queryText!: string;
     @Input() asTable: boolean;
 
     @ViewChild('chart') chart!: ElementRef;
-    @ViewChild('theme') themeInput!: ElementRef;
 
     data: any;
 
@@ -42,14 +41,7 @@ export class NeighborNetworkComponent implements OnChanges, AfterViewInit {
 
     constructor(
         private wordModelsService: WordmodelsService,
-        private themeService: ThemeService,
     ) { }
-
-    ngAfterViewInit() {
-        this.themeService.theme$.subscribe(
-            theme => this.updateTheme(theme)
-        );
-    }
 
     ngOnChanges(changes: SimpleChanges): void {
         this.getData()
@@ -81,11 +73,5 @@ export class NeighborNetworkComponent implements OnChanges, AfterViewInit {
         }).catch(error => {
             console.error(error);
         });
-    }
-
-    updateTheme(theme: Theme) {
-        const el = this.themeInput.nativeElement as HTMLInputElement;
-        el.value = theme;
-        el.dispatchEvent(new Event('input'));
     }
 }
