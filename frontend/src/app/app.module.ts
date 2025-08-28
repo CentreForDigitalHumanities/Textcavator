@@ -51,6 +51,7 @@ import { MatomoConfig, matomoImports } from './routing/matomo';
 import { stylePreset } from './primeng-theme';
 import { CoreModule } from './core/core.module';
 
+
 export const appRoutes: Routes = [
     {
         path: 'search/:corpus',

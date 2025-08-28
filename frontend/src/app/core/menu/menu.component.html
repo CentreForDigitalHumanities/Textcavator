@@ -58,12 +58,7 @@
                 </a>
             </div>
             <div class="navbar-end">
-                <button class="navbar-item" (click)="cycleTheme()"
-                    [attr.aria-label]="currentThemeOption.label">
-                    <span class="icon" aria-hidden="true">
-                        <fa-icon [icon]="currentThemeOption.icon" />
-                    </span>
-                </button>
+                <button ia-theme-button class="navbar-item"></button>
                 <ia-menu-dropdown *ngIf="user$ | async as user; else notLoggedIn">
                     <div iaMenuDropdownLabel>
                         <span class="icon" aria-hidden="true">
