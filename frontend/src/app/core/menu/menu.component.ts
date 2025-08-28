@@ -5,8 +5,10 @@ import { User } from '@models/index';
 import { environment } from '@environments/environment';
 import { AuthService } from '@services/auth.service';
 import { filter, map } from 'rxjs/operators';
-import { navIcons, userIcons } from '@shared/icons';
-import { ThemeService } from '@services/theme.service';
+import { navIcons, themeIcons, userIcons } from '@shared/icons';
+import * as _ from 'lodash';
+import { Theme, ThemeService } from '@services/theme.service';
+import { modulo } from '@utils/utils';
 
 @Component({
     selector: 'ia-menu',
@@ -27,8 +29,15 @@ export class MenuComponent implements OnDestroy, OnInit {
         queryParams: Params;
     }>;
 
+    themeOptions = [
+        { label: 'system theme', icon: themeIcons.system, value: undefined },
+        { label: 'light theme', icon: themeIcons.light, value: Theme.LIGHT },
+        { label: 'dark theme', icon: themeIcons.dark, value: Theme.DARK },
+    ];
+
     navIcons = navIcons;
     userIcons = userIcons;
+
 
     private destroy$ = new Subject<void>();
 
@@ -38,6 +47,17 @@ export class MenuComponent implements OnDestroy, OnInit {
         private route: ActivatedRoute,
         private themeService: ThemeService,
     ) {}
+
+    get currentThemeOption() {
+        return this.themeOptions[this.currentThemeOptionIndex];
+    }
+
+    private get currentThemeOptionIndex(): number {
+        return this.themeOptions.findIndex(
+            option => option.value == this.themeService.selection.value
+        );
+    }
+
 
     ngOnDestroy() {
         this.destroy$.next(undefined);
@@ -50,6 +70,12 @@ export class MenuComponent implements OnDestroy, OnInit {
 
     toggleMenu() {
         this.menuOpen$.next(!this.menuOpen$.value);
+    }
+
+    cycleTheme() {
+        const currentIndex = this.currentThemeOptionIndex;
+        const nextIndex = modulo(currentIndex + 1, this.themeOptions.length);
+        this.themeService.selection.next(this.themeOptions[nextIndex].value);
     }
 
     public async logout() {
