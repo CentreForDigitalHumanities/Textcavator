@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import { Component, ElementRef, EventEmitter, Input, Output, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import embed, { VisualizationSpec } from 'vega-embed';
@@ -28,6 +29,17 @@ export class MapComponent implements OnChanges {
     results: GeoDocument[];
 
     isLoading$ = new BehaviorSubject<boolean>(false);
+
+    mapColors = {
+        landStroke: {
+            light: '#BDAE8A',
+            dark: '#6c5a46',
+        },
+        landFill: {
+            light: '#E5D3B3',
+            dark: '#4d3e2e',
+        },
+    };
 
     private mapDataResults: MapDataResults;
 
@@ -151,7 +163,14 @@ export class MapComponent implements OnChanges {
                         "events": { "signal": "delta" },
                         "update": "clamp(angles[1] + delta[1], -60, 60)"
                     }]
-                }
+                },
+                {
+                    'name': 'theme',
+                    'description': 'Current site theme (light/dark)',
+                    'bind': {
+                        'element': '#current-theme',
+                    }
+                },
             ],
 
             "projections": [
@@ -189,8 +208,10 @@ export class MapComponent implements OnChanges {
                     "encode": {
                         "enter": {
                             "strokeWidth": { "value": 0.75 },
-                            "fill": { "value": "#E5D3B3" },
-                            "stroke": { "value": "#BDAE8A" },
+                        },
+                        "update": {
+                            "fill": {'signal': `theme === "dark" ? "${this.mapColors.landFill.dark}" : "${this.mapColors.landFill.light}"`},
+                            "stroke": {'signal': `theme === "dark" ? "${this.mapColors.landStroke.dark}" : "${this.mapColors.landStroke.light}"`},
                         }
                     },
                     "transform": [
@@ -220,6 +241,7 @@ export class MapComponent implements OnChanges {
             ]
         };
     }
+
 
 
     async renderChart(): Promise<void> {
