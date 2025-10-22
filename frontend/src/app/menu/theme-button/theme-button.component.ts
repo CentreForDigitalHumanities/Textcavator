@@ -23,7 +23,7 @@ export class ThemeButtonComponent {
 
     @HostBinding('attr.aria-label')
     get ariaLabel() {
-        return this.currentOption.label;
+        return this.currentOption?.label;
     }
 
     get currentOption() {

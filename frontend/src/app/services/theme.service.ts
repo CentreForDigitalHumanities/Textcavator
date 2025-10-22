@@ -19,6 +19,7 @@ export class ThemeService {
     constructor(
 
     ) {
+        this.selection.next(this.readStoredTheme());
         const query = window.matchMedia('(prefers-color-scheme: dark)');
         this.systemTheme$ = fromEvent<MediaQueryListEvent>(query, 'change').pipe(
             startWith(query),
@@ -27,6 +28,7 @@ export class ThemeService {
         this.theme$ = combineLatest([this.selection, this.systemTheme$]).pipe(
             map(([selection, system]) => selection || system)
         );
+        this.selection.subscribe((theme) => this.writeStoredTheme(theme));
         this.theme$.subscribe((theme) => this.setTheme(theme));
     }
 
@@ -45,6 +47,17 @@ export class ThemeService {
         for (let chart of active) {
             chart.update();
         }
+    }
 
+    private readStoredTheme(): Theme | null {
+        return (localStorage.getItem('theme') as Theme) || null;
+    }
+
+    private writeStoredTheme(theme: Theme | null): void {
+        if (theme) {
+            localStorage.setItem('theme', theme);
+        } else {
+            localStorage.removeItem('theme');
+        }
     }
 }
