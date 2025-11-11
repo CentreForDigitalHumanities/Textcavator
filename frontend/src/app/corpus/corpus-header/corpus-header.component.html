@@ -1,6 +1,16 @@
 <section class="section has-background-light pb-0 mb-6">
     <div class="container is-readable">
         @if (corpus) {
+            <div class="is-pulled-right" *ngIf="corpus.editable">
+                <a class="button is-link is-outlined"
+                    [routerLink]="['/custom-corpora/edit', corpus.name]">
+                    <span class="icon" aria-hidden="true">
+                        <fa-icon [icon]="corpusIcons.edit"/>
+                    </span>
+                    <span>Edit</span>
+                </a>
+            </div>
+
             <h1 class="title">{{corpus.title}}</h1>
 
             <nav class="tabs" aria-label="secondary navigation">
@@ -30,14 +40,6 @@
                                 <fa-icon [icon]="corpusIcons.info" />
                             </span>
                             <span>About</span>
-                        </a>
-                    </li>
-                    <li *ngIf="corpus.editable">
-                        <a [routerLink]="['/custom-corpora/edit', corpus.name]">
-                            <span class="icon" aria-hidden="true">
-                                <fa-icon [icon]="corpusIcons.edit"/>
-                            </span>
-                            <span>Edit</span>
                         </a>
                     </li>
                 </ul>
