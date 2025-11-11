@@ -1,6 +1,6 @@
-<section class="section has-background-light pb-0 mb-6">
-    <div class="container is-readable">
-        @if (corpus) {
+<section class="hero is-light mb-6">
+    @if (corpus) {
+        <div class="hero-body container is-readable px-0">
             <div class="is-pulled-right" *ngIf="corpus.editable">
                 <a class="button is-link is-outlined"
                     [routerLink]="['/custom-corpora/edit', corpus.name]">
@@ -12,9 +12,11 @@
             </div>
 
             <h1 class="title">{{corpus.title}}</h1>
+        </div>
 
+        <div class="hero-foot">
             <nav class="tabs" aria-label="secondary navigation">
-                <ul>
+                <ul class="container is-readable">
                     <li [class.is-active]="currentPage === 'search'">
                         <a [routerLink]="['/search', corpus.name]"
                         routerLinkActive ariaCurrentWhenActive="page">
@@ -24,7 +26,8 @@
                             <span>Search</span>
                         </a>
                     </li>
-                    <li [class.is-active]="currentPage === 'word-models'">
+                    <li *ngIf="wordModelsPresent"
+                        [class.is-active]="currentPage === 'word-models'">
                         <a [routerLink]="['/word-models', corpus.name]"
                             routerLinkActive ariaCurrentWhenActive="page">
                             <span class="icon">
@@ -44,6 +47,6 @@
                     </li>
                 </ul>
             </nav>
-        }
-    </div>
+        </div>
+    }
 </section>
