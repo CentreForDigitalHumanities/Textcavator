@@ -31,8 +31,7 @@
 
     // less padding because the results navigation field needs a separate section to be allowed to be sticky
     // (or at least meaningfully sticky)
-    padding-top: utilities.$size-6;
-    margin-bottom: utilities.$size-6;
+    padding: utilities.$size-6;
 
     &.is-scrolled-down {
         box-shadow: var(--bulma-shadow);
