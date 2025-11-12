@@ -2,9 +2,6 @@
     <div class="columns">
         <div class="column">
             <p aria-live="polite" [attr.aria-busy]="pageResults.loading$ | async">
-                <span  aria-atomic="true">
-                        {page.total, plural, =1 {1 result} other {{{page.total | number}} results}}.
-                </span>
                 <span aria-atomic="true">
                     <span *ngIf="page.total > resultsPerPage">
                         Showing results

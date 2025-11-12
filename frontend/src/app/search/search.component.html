@@ -41,6 +41,8 @@
             </div>
             <!-- search results, on right -->
             <div class="column is-9" *ngIf="queryModel">
+                <p ia-results-count [queryModel]="queryModel" class="block has-text-right"></p>
+
                 <ia-tabs [activeTab]="tabs.state$.value.tab" (tabChange)="onTabChange($event)">
                     <ng-template iaTabPanel id="search-results" title="Search results" [icon]="searchIcons.documents">
                         <ia-search-results [queryModel]="queryModel" [user]="user">

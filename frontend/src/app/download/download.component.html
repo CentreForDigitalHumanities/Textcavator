@@ -1,6 +1,4 @@
 <ng-container *ngIf="totalResults.result$ | async as total">
-    <p class="block" aria-live="polite" aria-atomic="true">{{total}} results.</p>
-
     <p class="block">
         You can download your search results as a CSV file. View the
         <a [routerLink]="['/manual', 'download']">manual</a>
@@ -86,7 +84,7 @@
             <div class="block">
                 <button class="button is-primary" [ngClass]="{'is-loading':isDownloading}"
                     type="submit"
-                    (click)="confirmDirectDownload()" [disabled]="total == 0">
+                    (click)="confirmDirectDownload()" [disabled]="total === 0">
                     <span class="icon">
                         <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
                     </span>
