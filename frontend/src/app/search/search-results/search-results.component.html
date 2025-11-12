@@ -1,36 +1,37 @@
 <ng-container *ngIf="pageResults?.result$ | async as page; else noResult">
-    <div class="columns">
-        <div class="column">
-            <p aria-live="polite" [attr.aria-busy]="pageResults.loading$ | async">
-                <span aria-atomic="true">
-                    <span *ngIf="page.total > resultsPerPage">
-                        Showing results
-                        {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
-                    </span>
-                </span>
-            </p>
-        </div>
-        <div class="column" *ngIf="!pageResults.highlightDisabled">
-            <ia-highlight-selector  [pageResults]="pageResults" />
-        </div>
-    </div>
 
     <section class="section results-navigation" #resultsNavigation [class.is-scrolled-down]="isScrolledDown">
-        <div class="level mt-4">
-            <div class="level-left has-text-centered">
+        <div class="columns">
+            <div class="column is-narrow has-text-centered">
                 <div>
                     <label class="heading" id="sort-by-label">Sort By</label>
                     <ia-search-sorting [pageResults]="pageResults" labelledBy="sort-by-label" />
                 </div>
             </div>
-            <div class="level-right has-text-centered" *ngIf="page.total > resultsPerPage" >
+            <div class="column"></div> <!-- empty column for spacing/alignment -->
+            <div class="column is-narrow has-text-centered" *ngIf="page.total > resultsPerPage" >
                 <div>
                     <p class="heading">Pages</p>
                     <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
+                    <p aria-live="polite" [attr.aria-busy]="pageResults.loading$ | async"
+                        aria-atomic="true" class="pt-3 heading">
+                        <span *ngIf="page.total > resultsPerPage">
+                            Showing results
+                            {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
+                        </span>
+                    </p>
+
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="columns">
+        <div class="column" *ngIf="!pageResults.highlightDisabled">
+            <ia-highlight-selector  [pageResults]="pageResults" />
+        </div>
+    </div>
+
 
     <section *ngIf="page.documents.length; else noHits" aria-label="search results">
         <div class="hits" [ngClass]="{'is-loading': pageResults.loading$ | async }">
