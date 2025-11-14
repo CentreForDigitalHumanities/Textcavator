@@ -12,9 +12,16 @@ export enum Theme {
     providedIn: 'root'
 })
 export class ThemeService {
+    /** Theme selection from the user.
+     * `null` means no explicit preference, i.e. use  the system theme.
+     */
     selection = new BehaviorSubject<Theme | null>(null);
-    systemTheme$: Observable<Theme>;
+
+    /** Theme used by the site */
     theme$: Observable<Theme>;
+
+    /** Default dark/light preference from the browser/OS */
+    private systemTheme$: Observable<Theme>;
 
     constructor(
 
