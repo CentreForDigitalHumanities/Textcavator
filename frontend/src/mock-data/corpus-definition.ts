@@ -1,4 +1,4 @@
-import { APICorpusDefinition } from '../app/models/corpus-definition';
+import { APICorpusDefinition, CorpusDataFile} from '../app/models/corpus-definition';
 
 export const corpusDefinitionFactory = (): APICorpusDefinition => ({
     name: 'test',
@@ -51,4 +51,23 @@ export const corpusDefinitionFactory = (): APICorpusDefinition => ({
             }
         }
     ]
+});
+
+export const dataFileFactory = (): CorpusDataFile => ({
+    id: 0,
+    corpusID: 0,
+    file: '',
+    is_sample: true,
+    confirmed: false,
+    csv_info: {
+        n_rows: 3,
+        fields: [
+            { name: 'date', type: 'date' },
+            { name: 'genre', type: 'text_metadata' },
+            { name: 'title', type: 'text_metadata' },
+            { name: 'content', type: 'text_content' },
+            { name: 'url', type: 'url' },
+        ],
+        delimiter: ',',
+    },
 });

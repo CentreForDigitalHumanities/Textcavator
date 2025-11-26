@@ -1,5 +1,7 @@
 .corpus-container {
     padding: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
 
     > .column {
         padding: 1rem; // slightly more generous padding

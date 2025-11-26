@@ -2,7 +2,7 @@ You can download and upload a file that describes the configuration for your cor
 
 This file contains everything you have entered in the corpus form, such as the title, documentation, and fields. However, it does not contain the corpus image (if you have uploaded one), or your data. So if you want to make a full back-up of your corpus, make sure that you also store a copy of the image and the data.
 
-The corpus definition is a JSON file. JSON is a file format that can hold any kind of data, but I-analyzer will only accept files that describe corpora.
+The corpus definition is a JSON file. JSON is a file format that can hold any kind of data, but Textcavator will only accept files that describe corpora.
 
 ## Downloading a backup
 

@@ -14,13 +14,15 @@
       "module": "esnext",
       "baseUrl": "src",
       "paths": {
+          "@app/*": ["app/*"],
           "@shared/*": ["app/shared/*"],
           "@models": ["app/models"],
           "@models/*": ["app/models/*"],
           "@services": ["app/services"],
           "@services/*": ["app/services/*"],
           "@utils/*": ["app/utils/*"],
-          "@environments/*": ["environments/*"]
+          "@environments/*": ["environments/*"],
+          "@mock-data/*": ["mock-data/*"]
       },
       "useDefineForClassFields": false,
       "resolveJsonModule": true

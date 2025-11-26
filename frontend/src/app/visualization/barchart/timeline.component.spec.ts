@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { commonTestBed } from '../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 import { TimelineComponent } from './timeline.component';
 import { QueryModel } from '@models';

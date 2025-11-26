@@ -2,7 +2,7 @@
 
 This module contains code pertaining to word models.
 
-I-analyzer does not train models; the code used for training is found in the [WordModels repository](https://github.com/UUDigitalHumanitieslab/WordModels) (private).
+Textcavator does not train models; the code used for training is found in the [WordModels repository](https://github.com/UUDigitalHumanitieslab/WordModels) (private).
 
 The code here is used to retrieve word models belonging to a corpus and perform analysis for visualisations.
 

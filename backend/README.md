@@ -1,4 +1,4 @@
-# I-analyzer backend
+# Textcavator backend
 
 The text mining tool that obviates all others
 

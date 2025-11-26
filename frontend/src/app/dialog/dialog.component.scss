@@ -1,9 +1,0 @@
-@use "../../_utilities";
-
-.content {
-    ::ng-deep a {
-        color: utilities.$primary;
-    }
-
-    max-height: 80vh;
-}

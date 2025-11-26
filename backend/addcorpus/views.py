@@ -1,29 +1,27 @@
 import os
-from django.db.models import Q
 
+from addcorpus.json_corpora.validate import corpus_schema
 from addcorpus.models import (Corpus, CorpusConfiguration, CorpusDataFile,
                               CorpusDocumentationPage)
-from addcorpus.permissions import (CanSearchCorpus, CanEditCorpus, CanEditOrSearchCorpus,
-    corpus_name_from_request,
-    searchable_condition, searchable_corpora,
-    editable_condition, editable_corpora)
-from addcorpus.python_corpora.load_corpus import (corpus_dir)
+from addcorpus.permissions import (CanEditCorpus, CanEditOrSearchCorpus,
+                                   CanSearchCorpus, corpus_name_from_request,
+                                   editable_corpora, searchable_condition,
+                                   searchable_corpora)
+from addcorpus.python_corpora.load_corpus import corpus_dir
 from addcorpus.serializers import (CorpusDataFileSerializer,
                                    CorpusDocumentationPageSerializer,
                                    CorpusJSONDefinitionSerializer,
                                    CorpusSerializer)
 from addcorpus.utils import clear_corpus_image
-from addcorpus.json_corpora.csv_field_info import get_csv_info
 from django.conf import settings
+from django.db.models import Q
 from django.http.response import FileResponse
 from rest_framework import viewsets
-from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
-from rest_framework.permissions import (IsAuthenticated)
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
-from addcorpus.json_corpora.validate import corpus_schema
 
 
 class CorpusView(viewsets.ReadOnlyModelViewSet):
@@ -169,16 +167,6 @@ class CorpusDataFileViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(is_sample=True)
 
         return queryset.order_by('created')
-
-    @action(detail=True, methods=['get'])
-    def info(self, request, pk):
-        obj = self.get_object()
-        delimiter = obj.corpus.configuration_obj.source_data_delimiter
-
-        info = get_csv_info(obj.file.path, sep=delimiter if delimiter else ',')
-
-        return Response(info, HTTP_200_OK)
-
 
 class CorpusDefinitionSchemaView(APIView):
     '''

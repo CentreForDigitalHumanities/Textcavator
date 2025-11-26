@@ -394,11 +394,11 @@ class DBNL(XMLCorpusDefinition):
     has_content = FieldDefinition(
         name='has_content',
         display_name='Content available',
-        description='Whether the contents of this book are available on I-analyzer',
+        description=f'Whether the contents of this book are available on {settings.SITE_NAME}',
         extractor=Metadata('has_xml'),
         es_mapping=bool_mapping(),
         search_filter=BooleanFilter(
-            description='Select books with text available on I-analyzer, or metadata-only books',
+            description='Select books with text available, or metadata-only books',
             true='Content available',
             false='Metadata only'
         ),

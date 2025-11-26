@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { userIcons } from '@shared/icons';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
+import { environment } from '@environments/environment';
 
 interface RegisterErrors {
     non_field_errors?: string[];
@@ -40,9 +41,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     public errors: RegisterErrors;
 
+    appName = environment.appName;
     userIcons = userIcons;
 
     private destroy$ = new Subject<boolean>();
+
 
     constructor(private authService: AuthService, private title: Title) {}
 

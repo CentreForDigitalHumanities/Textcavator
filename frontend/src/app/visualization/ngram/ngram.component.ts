@@ -17,7 +17,7 @@ import {
     VisualizationService,
 } from '@services';
 
-import { RouterStoreService } from '../../store/router-store.service';
+import { RouterStoreService } from '@app/store/router-store.service';
 import { NgramParameters, NgramSettings } from '@models/ngram';
 
 
@@ -258,7 +258,7 @@ export class NgramComponent implements OnChanges {
     }
 
     concatenateDateField(key: string): string {
-        // add the date field to the resultsCache key: it is currently not handled by ngramParameters 
+        // add the date field to the resultsCache key: it is currently not handled by ngramParameters
         // TO DO: this is a workaround, remove if ngramParameters are implemented to handle date field
         if (this.allDateFields.length) {
             key.concat(`f:${this.dateField.name}`)

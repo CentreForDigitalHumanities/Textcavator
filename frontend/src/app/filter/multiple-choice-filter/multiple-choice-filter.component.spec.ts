@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { corpusFactory, } from '../../../mock-data/corpus';
+import { corpusFactory, } from '@mock-data/corpus';
 
-import { commonTestBed } from '../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 import { MultipleChoiceFilter, QueryModel } from '@models';
 
 import { MultipleChoiceFilterComponent } from './multiple-choice-filter.component';

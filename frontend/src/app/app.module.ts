@@ -1,4 +1,4 @@
-import { APP_BASE_HREF, TitleCasePipe } from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 
@@ -9,45 +9,36 @@ import { MenuModule } from 'primeng/menu';
 import { environment } from '@environments/environment';
 
 
-import {
-    ApiRetryService,
-    ApiService,
-    ElasticSearchService,
-    HighlightService,
-} from './services/index';
+import { ApiRetryService } from './services/index';
 
-import { AboutComponent } from './about/about.component';
+import { AboutComponent } from './about/about/about.component';
 import { AppComponent } from './app.component';
 import { CorpusDefinitionsModule } from './corpus-definitions/corpus-definitions.module';
 import { CreateDefinitionComponent } from './corpus-definitions/create-definition/create-definition.component';
 import { DefinitionsOverviewComponent } from './corpus-definitions/definitions-overview/definitions-overview.component';
 import { DefinitionInOutComponent } from './corpus-definitions/definition-in-out/definition-in-out.component';
 import { CorpusFormComponent } from './corpus-definitions/form/corpus-form/corpus-form.component';
-import { CorpusModule } from './corpus-header/corpus.module';
-import { CorpusInfoComponent } from './corpus-info/corpus-info.component';
+import { CorpusModule } from './corpus/corpus.module';
+import { CorpusInfoComponent } from './corpus/corpus-info/corpus-info.component';
 import { CorpusSelectionModule } from './corpus-selection/corpus-selection.module';
-import { CorpusGuard } from './corpus.guard';
-import { DialogComponent } from './dialog/dialog.component';
+import { CorpusGuard } from './routing/corpus.guard';
 import { DocumentPageComponent } from './document/document-page/document-page.component';
 import { DocumentModule } from './document/document.module';
-import { FooterComponent } from './footer/footer.component';
-import { forwardLegacyParamsGuard } from './forward-legacy-params.guard';
+import { forwardLegacyParamsGuard } from './routing/forward-legacy-params.guard';
 import { DownloadHistoryComponent } from './history/download-history/download-history.component';
 import { HistoryModule } from './history/history.module';
 import { SearchHistoryComponent } from './history/search-history/index';
-import { HomeComponent } from './home/home.component';
-import { LoggedOnGuard } from './logged-on.guard';
+import { HomeComponent } from './core/home/home.component';
+import { LoggedOnGuard } from './routing/logged-on.guard';
 import { LoginComponent } from './login/login.component';
 import { LoginModule } from './login/login.module';
 import { RegistrationComponent } from './login/registration/registration.component';
 import { RequestResetComponent } from './login/reset-password/request-reset.component';
 import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 import { VerifyEmailComponent } from './login/verify-email/verify-email.component';
-import { ManualComponent } from './manual/manual.component';
-import { ManualModule } from './manual/manual.module';
-import { MenuComponent } from './menu/menu.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { PrivacyComponent } from './privacy/privacy.component';
+import { ManualComponent } from './about/manual/manual.component';
+import { AboutModule } from './about/about.module';
+import { PrivacyComponent } from './about/privacy/privacy.component';
 import { SearchComponent } from './search/index';
 import { SearchModule } from './search/search.module';
 import { SettingsComponent } from './settings/settings.component';
@@ -58,6 +49,7 @@ import { WordModelsComponent } from './word-models/word-models.component';
 import { WordModelsModule } from './word-models/word-models.module';
 import { MatomoConfig, matomoImports } from './routing/matomo';
 import { stylePreset } from './primeng-theme';
+import { CoreModule } from './core/core.module';
 
 export const appRoutes: Routes = [
     {
@@ -141,7 +133,7 @@ export const appRoutes: Routes = [
         canActivate: [LoggedOnGuard],
     },
     {
-        path: 'corpus-definitions',
+        path: 'custom-corpora',
         canActivate: [LoggedOnGuard],
         children: [
             {
@@ -174,26 +166,17 @@ const routerOptions: ExtraOptions = {
     anchorScrolling: 'enabled',
 };
 
-export const declarations: any[] = [
-    AppComponent,
-    DialogComponent,
-    FooterComponent,
-    HomeComponent,
-    MenuComponent,
-    NotificationsComponent,
-];
-
 export const imports: any[] = [
     SharedModule,
     // Feature Modules
+    CoreModule,
     CorpusModule,
     CorpusDefinitionsModule,
-    CorpusSelectionModule,
     DialogModule,
     DocumentModule,
     HistoryModule,
     LoginModule,
-    ManualModule,
+    AboutModule,
     MenuModule,
     SearchModule,
     SettingsModule,
@@ -206,10 +189,7 @@ if ('matomo' in environment) {
 }
 
 export const providers: any[] = [
-    ApiService,
     ApiRetryService,
-    ElasticSearchService,
-    HighlightService,
     CorpusGuard,
     LoggedOnGuard,
     providePrimeNG({
@@ -220,13 +200,12 @@ export const providers: any[] = [
             },
         }
     }),
-    TitleCasePipe,
     CookieService,
     { provide: APP_BASE_HREF, useValue: '/' },
 ];
 
 @NgModule({
-    declarations,
+    declarations: [AppComponent],
     imports,
     providers,
     bootstrap: [AppComponent],

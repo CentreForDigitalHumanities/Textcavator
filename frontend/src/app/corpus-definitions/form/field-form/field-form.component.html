@@ -159,6 +159,6 @@
         </div>
     </div>
 
-    <ia-form-feedback [showSuccess]="showSuccesMessage$ | async"
-        [showError]="showErrorMessage$ | async" />
+    <ia-form-feedback [showSuccess]="!!(showSuccesMessage$ | async)"
+        [showError]="!!(showErrorMessage$ | async)" />
 </form>

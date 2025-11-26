@@ -1,0 +1,31 @@
+<!-- inform the user about a failed search -->
+<p-dialog [(visible)]="showError" width="600" *ngIf="showError">
+    <ng-template #header>Unfortunately, we couldn&rsquo;t complete your request</ng-template>
+    <div class="content">
+        <p>Please try again later, or seek support if the problem persists. In order to help us help you, please provide the
+            following information when seeking support:</p>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Date</th>
+                    <td>
+                        <code>{{showError.date}}</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th>URL</th>
+                    <td>
+                        <code>{{showError.href}}</code>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Error</th>
+                    <td>
+                        <code>{{showError.message}}</code>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</p-dialog>
+

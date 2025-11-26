@@ -1,12 +1,12 @@
 # Elasticsearch index settings
 
-This document details how elasticsearch indices for I-analyzer corpora are configured.
+This document details how elasticsearch indices for Textcavator corpora are configured.
 
 ## Field mappings
 
 Each corpus field passes a _mapping_ to elasticsearch that determines how the field is indexed - which affects what kind of queries it supports. See the [elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html) to read more about mappings in general.
 
-I-analyzer supports a limited number of mapping types, namely:
+Textcavator supports a limited number of mapping types, namely:
 
 - text
 - keyword

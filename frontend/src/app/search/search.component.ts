@@ -11,6 +11,8 @@ import { actionIcons, navIcons, searchIcons } from '@shared/icons';
 import { RouterStoreService } from '../store/router-store.service';
 import { Title } from '@angular/platform-browser';
 import { SearchTab, SearchTabs } from './search-tabs';
+import { environment } from '@environments/environment';
+import { pageTitle } from '@utils/app';
 
 @Component({
     selector: 'ia-search',
@@ -106,7 +108,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private setCorpus(corpus: Corpus) {
         this.corpus = corpus;
         this.setQueryModel();
-        this.title.setTitle(`Search ${corpus.title} - I-analyzer`);
+        this.title.setTitle(pageTitle(`Search ${corpus.title}`));
     }
 
     private setQueryModel() {
