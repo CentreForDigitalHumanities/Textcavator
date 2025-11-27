@@ -79,7 +79,7 @@ export class MapComponent implements OnChanges {
         // Returns a Vega map specification
         // Uses pan/zoom signals from https://vega.github.io/vega/examples/zoomable-world-map/
         return {
-            "$schema": "https://vega.github.io/schema/vega/v5.json",
+            "$schema": "https://vega.github.io/schema/vega/v6.json",
             "description": "An interactive map supporting pan and zoom.",
             "width": { "signal": "width" },
             "height": { "signal": "height" },
