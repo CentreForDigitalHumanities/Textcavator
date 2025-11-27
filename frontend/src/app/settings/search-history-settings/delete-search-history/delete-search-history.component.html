@@ -9,7 +9,7 @@
 
 <ia-confirm-modal #confirmDelete actionText="Delete search history"
     actionButtonClass="is-danger" [icon]="actionIcons.delete"
-    (result)="deleteHistory()"
+    (accept)="deleteHistory()"
 >
     <p>This action will delete all of your search history. This cannot be reversed.</p>
 </ia-confirm-modal>

@@ -117,3 +117,9 @@ def test_save_corpus_purity(db, basic_mock_corpus):
     _save_or_skip_corpus(basic_mock_corpus, corpus_def)
     corpus.refresh_from_db()
     assert not corpus.configuration.es_alias
+
+
+def test_has_named_entities(db, annotated_mock_corpus, index_annotated_mock_corpus):
+    load_and_save_all_corpora() # corpora must be refreshed after indexing to detect annotations
+    conf = CorpusConfiguration.objects.get(corpus__name=annotated_mock_corpus)
+    assert conf.has_named_entities

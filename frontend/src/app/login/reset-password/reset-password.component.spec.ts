@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ResetPasswordComponent } from './reset-password.component';
-import { commonTestBed } from '../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 describe('ResetPasswordComponent', () => {
   let component: ResetPasswordComponent;

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ApiService } from '@services/api.service';
-import { ApiServiceMock } from '../../../mock-data/api';
+import { ApiServiceMock } from '@mock-data/api';
 import { SessionService } from '@services/session.service';
 
 import { VerifyEmailComponent } from './verify-email.component';

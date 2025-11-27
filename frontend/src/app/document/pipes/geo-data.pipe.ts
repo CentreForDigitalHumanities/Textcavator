@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { CorpusField, FoundDocument } from '../../models';
+import { CorpusField, FoundDocument } from '@models';
 @Pipe({
     name: 'geoData',
     standalone: false

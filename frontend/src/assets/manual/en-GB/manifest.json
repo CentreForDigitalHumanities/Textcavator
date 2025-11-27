@@ -1,10 +1,10 @@
 [
     {
-        "title": "Using I-analyzer",
+        "title": "Using Textcavator",
         "pages": [
             {
                 "id": "main",
-                "title": "I-Analyzer user manual"
+                "title": "Textcavator user manual"
             },
             {   "id": "privacy",
                 "title": "Terms of use and privacy"
@@ -36,7 +36,7 @@
             },
             {
                 "id": "citation",
-                "title": "Citing I-analyzer"
+                "title": "Citing Textcavator"
             }
 
         ]

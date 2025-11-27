@@ -11,6 +11,17 @@
                     {{corpus.title}}
                 </a>
             </h2>
+            <div class="column is-narrow"
+                *ngIf="corpus.editable">
+                <a class="has-text-primary-invert is-size-5"
+                iaBalloon="Edit corpus" iaBalloonPosition="down-left"
+                [routerLink]="['/custom-corpora/edit', corpus.id]"
+                aria-label="edit corpus">
+                <span class="icon">
+                    <fa-icon [icon]="corpusIcons.edit" aria-hidden="true"></fa-icon>
+                </span>
+                </a>
+            </div>
             <div class="column is-narrow">
                 <a class="has-text-primary-invert is-size-5"
                 iaBalloon="More information" iaBalloonPosition="down-left"
@@ -20,7 +31,6 @@
                     <fa-icon [icon]="corpusIcons.infoAlt" aria-hidden="true"></fa-icon>
                 </span>
                 </a>
-
             </div>
         </div>
 

@@ -1,4 +1,4 @@
-import { corpusFactory } from '../../mock-data/corpus';
+import { corpusFactory } from '@mock-data/corpus';
 import { Corpus, } from './corpus';
 import { QueryModel } from './query';
 import { SearchFilter } from './field-filter';

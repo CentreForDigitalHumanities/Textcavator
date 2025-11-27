@@ -29,7 +29,7 @@ def test_legacy_data_import():
         'id': '1',
         'username': 'admin',
         'password': 'password',
-        'email': 'admin@ianalyzer.nl',
+        'email': 'admin@textcavator.nl',
         'active': '1',
         'authenticated': '1',
         'download_limit': '10000',
@@ -76,7 +76,7 @@ def test_save_legacy_user(db):
     assert len(users) == 4
     admin = CustomUser.objects.get(username='admin')
     assert admin.username == 'admin'
-    assert admin.email == 'admin@ianalyzer.nl'
+    assert admin.email == 'admin@textcavator.nl'
     assert admin.is_superuser
     assert admin.is_staff
     assert not admin.saml

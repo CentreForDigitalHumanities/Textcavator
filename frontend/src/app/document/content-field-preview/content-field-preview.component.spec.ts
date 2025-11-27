@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentFieldPreviewComponent } from './content-field-preview.component';
-import { commonTestBed } from 'app/common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 describe('ContentFieldPreviewComponent', () => {
     let component: ContentFieldPreviewComponent;

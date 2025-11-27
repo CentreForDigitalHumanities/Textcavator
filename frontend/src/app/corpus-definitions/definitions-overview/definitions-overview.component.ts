@@ -25,7 +25,7 @@ export class DefinitionsOverviewComponent {
         private title: Title
     ) {
         this.corpora$ = this.apiService.corpusDefinitions();
-        this.title.setTitle(pageTitle('Corpus definitions'));
+        this.title.setTitle(pageTitle('Custom corpora'));
     }
 
     onDeleteComplete() {

@@ -1,0 +1,6 @@
+<quill-editor
+    [(ngModel)]="content"
+    (onBlur)="onBlur()"
+    (onContentChanged)="onChange($event)"
+    [modules]="modules"
+ />

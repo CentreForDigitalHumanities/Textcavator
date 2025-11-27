@@ -22,7 +22,7 @@ def metadata_lookup(values):
 class AIDashboardCourseDescriptions(XLSXCorpusDefinition):
     title = 'AI Dashboard Course Descriptions'
     description = 'All courses taught at Utrecht University in 2020-2024'
-    category = 'informative'
+    category = 'other'
     min_date = datetime(2024, 9, 1)
     max_date = datetime(2025, 8, 31)
     image = 'Academiegebouw_Utrecht_University.JPG'
@@ -35,11 +35,11 @@ class AIDashboardCourseDescriptions(XLSXCorpusDefinition):
     def sources(self, *args, **kwargs):
         for year in ['2020']: #, '2021', '2022', '2023', '2024']:
             path = os.path.join(self.data_directory, "{} overzicht met blok.xlsx".format(year))
-            
+
             # NB: the file structure is two xlsx files, both containing half of the relevant data
-            # the file with the main content is read as the 'main file', the other is the 
+            # the file with the main content is read as the 'main file', the other is the
             # 'metadata file'
-            # with two separate files that both contain half of the metadata, reading the 
+            # with two separate files that both contain half of the metadata, reading the
             # metadata will take a while.
             meta_path = os.path.join(self.data_directory, "{} overzicht zonder blok.xlsx".format(year))
             metadict = {}
@@ -47,14 +47,14 @@ class AIDashboardCourseDescriptions(XLSXCorpusDefinition):
             ws = wb.active
             header_values = next(ws.values)
             for header in header_values:
-                metadict[header] = {} 
+                metadict[header] = {}
             for row in ws.values:
                 id = row[0]
                 for index, value in enumerate(row):
                     metadict[header_values[index]][id] = value
-            
+
             yield path, metadict
-    
+
     fields = [
         FieldDefinition(
             name='id',
@@ -91,8 +91,8 @@ class AIDashboardCourseDescriptions(XLSXCorpusDefinition):
             name='faculty',
             display_name='Faculty',
             extractor=Combined(
-                CSV('Cursus'), 
-                Metadata('Faculteit'), 
+                CSV('Cursus'),
+                Metadata('Faculteit'),
                 transform=metadata_lookup),
             es_mapping=keyword_mapping(),
             search_filter=MultipleChoiceFilter(),
@@ -119,8 +119,8 @@ class AIDashboardCourseDescriptions(XLSXCorpusDefinition):
             name='type',
             display_name='Course type',
             extractor=Combined(
-                CSV('Cursus'), 
-                Metadata('Cursustype'), 
+                CSV('Cursus'),
+                Metadata('Cursustype'),
                 transform=metadata_lookup),
             es_mapping=keyword_mapping(),
             search_filter=MultipleChoiceFilter(option_count=100),
@@ -131,8 +131,8 @@ class AIDashboardCourseDescriptions(XLSXCorpusDefinition):
             display_name='Department',
             description='Coordinating department for the course',
             extractor=Combined(
-                CSV('Cursus'), 
-                Metadata('Omschrijving coördinerend onderdeel'), 
+                CSV('Cursus'),
+                Metadata('Omschrijving coördinerend onderdeel'),
                 transform=metadata_lookup),
             es_mapping=keyword_mapping(enable_full_text_search=True),
             results_overview=True,
@@ -144,8 +144,8 @@ class AIDashboardCourseDescriptions(XLSXCorpusDefinition):
             display_name='Department (abbreviation)',
             description='Abbreviated name of the coordinating department',
             extractor=Combined(
-                CSV('Cursus'), 
-                Metadata('Omschrijving coördinerend onderdeel'), 
+                CSV('Cursus'),
+                Metadata('Omschrijving coördinerend onderdeel'),
                 transform=metadata_lookup),
             es_mapping=keyword_mapping(),
         ),
@@ -164,8 +164,8 @@ class AIDashboardCourseDescriptions(XLSXCorpusDefinition):
             display_name='Contact',
             description='Name of the contact person for the course',
             extractor=Combined(
-                CSV('Cursus'), 
-                Metadata('Contactpersoon'), 
+                CSV('Cursus'),
+                Metadata('Contactpersoon'),
                 transform=metadata_lookup),
             es_mapping=keyword_mapping(enable_full_text_search=True),
             downloadable=False,

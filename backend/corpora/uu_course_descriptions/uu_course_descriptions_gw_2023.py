@@ -110,7 +110,7 @@ class CourseStaffMetadata(XLSXCorpusDefinition):
 class HumCourseDescriptions(XLSXCorpusDefinition):
     title = 'Humanities Course Descriptions'
     description = 'Courses taught in the UU Humanities faculty in 2023'
-    category = 'informative'
+    category = 'other'
     min_date = datetime(2022, 9, 1)
     max_date = datetime(2023, 8, 31)
     image = 'uu_gw.jpg'

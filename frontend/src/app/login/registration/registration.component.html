@@ -4,7 +4,7 @@
         <div *ngIf="!registrationSucceeded && !serverErrorCode">
             <form (ngSubmit)="register(signupForm)" class="container is-readable" #signupForm="ngForm">
                 <div class="container is-login">
-                    <h1 class="title">I-Analyzer sign-up</h1>
+                    <h1 class="title">{{appName}} sign-up</h1>
                     <div class="field">
                         <label class="label" for="username">Username</label>
                         <p class="control has-icons-left has-icons-right">

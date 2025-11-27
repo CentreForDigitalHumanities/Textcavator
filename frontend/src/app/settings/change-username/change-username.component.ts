@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
+import { environment } from '@environments/environment';
 import { AuthService } from '@services';
 import { formIcons } from '@shared/icons';
 import { map } from 'rxjs';
@@ -21,6 +22,7 @@ export class ChangeUsernameComponent {
     });
 
     formIcons = formIcons;
+    appName = environment.appName;
 
     invalidFeedback: string;
     successFeedback: string;

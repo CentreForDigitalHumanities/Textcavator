@@ -87,12 +87,6 @@ QUERY_ANALYSIS_CASES = [
     }
 ]
 
-def test_query_components():
-    for case in QUERY_ANALYSIS_CASES:
-        components = termvectors.get_query_components(case['query_text'])
-        assert sorted(components) == sorted(case['components']) # ignore order
-
-
 def test_query_analysis(es_client, small_mock_corpus, index_small_mock_corpus):
     corpus_conf = CorpusConfiguration.objects.get(corpus__name=small_mock_corpus)
     es_index = corpus_conf.es_index

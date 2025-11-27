@@ -1,4 +1,4 @@
-import { corpusFactory } from '../../mock-data/corpus';
+import { corpusFactory } from '@mock-data/corpus';
 import { SimpleStore } from '../store/simple-store';
 import { ComparedQueries } from './compared-queries';
 import { QueryModel } from './query';

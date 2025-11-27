@@ -1,6 +1,6 @@
 # Frontend: deep routing and state management
 
-State management in the frontend can get messy very quickly. I-analyzer captures information about the state of the frontend in the query parameters in the URL. This allows users to bookmark queries, visualisations, etc., but can make state management more complicated. This document gives a broad introduction to how we approach state management and synchronising query parameter in the frontend.
+State management in the frontend can get messy very quickly. Textcavator captures information about the state of the frontend in the query parameters in the URL. This allows users to bookmark queries, visualisations, etc., but can make state management more complicated. This document gives a broad introduction to how we approach state management and synchronising query parameter in the frontend.
 
 ## Using models
 

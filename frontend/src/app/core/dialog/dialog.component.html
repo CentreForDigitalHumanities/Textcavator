@@ -1,0 +1,12 @@
+<p-dialog [(visible)]="showDialog" *ngIf="showDialog" positionTop="50" width="800"
+    [header]="title">
+  <div class="content" style="max-width: 90vw;" [ngClass]="{'is-loading':isLoading}" [innerHTML]="innerHtml"></div>
+  <ng-template #footer *ngIf="!isLoading && footerButtonLabel">
+      <a [routerLink]="footerRouterLink" autofocus tabindex="0">
+          <span class="icon" aria-hidden="true">
+              <fa-icon [icon]="navIcons.manual"></fa-icon>
+          </span>
+          <span>{{footerButtonLabel}}</span>
+      </a>
+    </ng-template>
+</p-dialog>

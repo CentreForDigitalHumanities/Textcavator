@@ -12,10 +12,10 @@ In this step, you upload a CSV file containing the data for your corpus. See [up
 
 ## 3. Define fields
 
-Based on the data file you provided in step 2, I-analyzer will generate a list of fields for the corpus. In this step, you will go through the list of fields. You can adjust the way fields are configured and add descriptions. See [types of fields](/manual/types_of_fields) for more information on different types of fields and the options they contain.
+Based on the data file you provided in step 2, Textcavator will generate a list of fields for the corpus. In this step, you will go through the list of fields. You can adjust the way fields are configured and add descriptions. See [types of fields](/manual/types_of_fields) for more information on different types of fields and the options they contain.
 
 ## 5. Index data
 
-Now that your corpus is configured, I-analyzer needs to process your data files in order to make them searchable. This means that the documents will be imported and indexed in the database.
+Now that your corpus is configured, Textcavator needs to process your data files in order to make them searchable. This means that the documents will be imported and indexed in the database.
 
 When this is done, you can start searching your corpus and make sure everything works as expected.

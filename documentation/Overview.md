@@ -53,9 +53,9 @@ The SQL database is used to handle user-related data and corpus metadata. It doe
 
 ### Elasticsearch
 
-I-analyzer uses [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html) to manage and search the data in corpora.
+Textcavator uses [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html) to manage and search the data in corpora.
 
-Typically, you will use I-analyzer to create, manage, and search an index for a corpus in Elasticsearch. (You could also use I-analyzer to search an existing index, but the application is not designed for this.) Where possible, we try to rely on the search and analysis functions built into Elasticsearch, rather than build our own.
+Typically, you will use Textcavator to create, manage, and search an index for a corpus in Elasticsearch. (You could also use Textcavator to search an existing index, but the application is not designed for this.) Where possible, we try to rely on the search and analysis functions built into Elasticsearch, rather than build our own.
 
 # Frontend
 

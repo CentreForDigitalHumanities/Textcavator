@@ -1,0 +1,24 @@
+.wrapper {
+    display: grid;
+    grid-gap: 1.5rem;
+}
+
+.caption {
+    grid-row: 1;
+}
+
+.table {
+    grid-row: 2;
+}
+
+.button {
+    grid-row: 3;
+}
+
+.current {
+    grid-column: 1
+}
+
+.new {
+    grid-column: 2
+}

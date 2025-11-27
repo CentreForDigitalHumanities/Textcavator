@@ -1,10 +1,10 @@
-When you add fields to your corpus, you have to specify the type of data they contain. When you upload your sample data, I-analyzer try to figure out the type from your data file. You should check that the pre-selected type is what you expect.
+When you add fields to your corpus, you have to specify the type of data they contain. When you upload your sample data, Textcavator try to figure out the type from your data file. You should check that the pre-selected type is what you expect.
 
 Below is a list of all possible data types for a corpus.
 
 ## Text (content)
 
-A text content field contains a longer piece of text, such as the content of a newspaper article, the text of an online review, etc. Because I-analyzer is first and foremost a text searching tool, every corpus must have at least one text content field.
+A text content field contains a longer piece of text, such as the content of a newspaper article, the text of an online review, etc. Because Textcavator is first and foremost a text searching tool, every corpus must have at least one text content field.
 
 Users will be able to search  through the field, but the field will not have a filter option.
 
@@ -49,7 +49,7 @@ You can enable sorting on a date field. Values will be sorted in (forward or rev
 
 ### BCE dates
 
-I-analyzer does not support negative years in date fields. If you want to add information about BCE dates, we recommend that you create a "year" field that lists the year as a (possibly negative) number, which will enable users to filter on year ranges. You can add an additional text field to show the full date.
+Textcavator does not support negative years in date fields. If you want to add information about BCE dates, we recommend that you create a "year" field that lists the year as a (possibly negative) number, which will enable users to filter on year ranges. You can add an additional text field to show the full date.
 
 ## Boolean
 
