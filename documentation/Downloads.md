@@ -1,6 +1,6 @@
 # Downloads
 
-I-analyzer offers several types of downloads to users. This document gives a high-level overview of the types of downloads that exist and where they are implemented.
+Textcavator offers several types of downloads to users. This document gives a high-level overview of the types of downloads that exist and where they are implemented.
 
 ## Downloading search results
 
@@ -8,7 +8,7 @@ We distinguish between two types of downloads: *direct* download and *scheduled*
 
 For the user, a direct download means their browser will start downloading the file then and there. With a scheduled download, the user will receive an [email](./Email.md) when their download is complete. Scheduled downloads are only available if the user is signed in.
 
-I-analyzer will automatically choose which type of download to use, based on the number of documents. The cutoff point is configured in the [frontend environment](./Frontend-environment-settings.md#directdownloadlimit).
+Textcavator will automatically choose which type of download to use, based on the number of documents. The cutoff point is configured in the [frontend environment](./Frontend-environment-settings.md#directdownloadlimit).
 
 ### Direct downloads
 

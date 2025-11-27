@@ -21,7 +21,7 @@ import { WordCloudChart } from 'chartjs-chart-wordcloud';
 import * as _ from 'lodash';
 import { selectColor } from '@utils/select-color';
 import { FrequentWordsResults } from '@models/frequent-words';
-import { RouterStoreService } from '../../store/router-store.service';
+import { RouterStoreService } from '@app/store/router-store.service';
 
 // maximum font size in px
 const MIN_FONT_SIZE = 10;

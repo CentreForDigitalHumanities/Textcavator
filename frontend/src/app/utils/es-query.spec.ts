@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as _ from 'lodash';
-import { contentFieldFactory, corpusFactory, dateFieldFactory, keywordFieldFactory } from '../../mock-data/corpus';
+import { contentFieldFactory, corpusFactory, dateFieldFactory, keywordFieldFactory } from '@mock-data/corpus';
 import {
     makeEsSearchClause, makeHighlightSpecification, makeSimpleQueryString, makeSortSpecification,
     resultsParamsToAPIQuery

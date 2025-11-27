@@ -12,7 +12,7 @@ Celery is used for
 
 ## Running celery
 
-See [first-time setup](./First-time-setup.md) for installation instructions. For development, it is possible to run I-analyzer without celery if you are not intending to use any of the functions listed above.
+See [first-time setup](./First-time-setup.md) for installation instructions. For development, it is possible to run Textcavator without celery if you are not intending to use any of the functions listed above.
 
 ### Redis
 

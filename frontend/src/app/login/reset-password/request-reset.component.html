@@ -13,7 +13,7 @@
                                     <fa-icon [icon]="userIcons.email" aria-hidden="true"></fa-icon>
                                 </span>
                             </div>
-                            <p class="help">Enter the e-mail address with which you registered for I-Analyzer.</p>
+                            <p class="help">Enter the e-mail address with which you registered for {{appName}}.</p>
                             <div class="notification is-warning" *ngIf="email.errors?.required && (email.dirty || email.touched)">
                                 Email is required.
                             </div>

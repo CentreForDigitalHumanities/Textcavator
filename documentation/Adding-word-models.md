@@ -2,7 +2,7 @@
 
 Corpora have the option to include word vectors. (This option is only supported for Python corpora.)
 
-I-analyzer visualisations are built for _diachronic_ word models, showing how word meaning changes over time. As such, I-analyzer expects that you trained models for different time intervals.
+Textcavator visualisations are built for _diachronic_ word models, showing how word meaning changes over time. As such, Textcavator expects that you trained models for different time intervals.
 
 ## Expected file format
 Word embeddings are expected to come with the following files:

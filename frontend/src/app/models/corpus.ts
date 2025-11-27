@@ -8,6 +8,7 @@ import { SimpleStore } from '../store/simple-store';
 // corresponds to the corpus definition on the backend.
 export class Corpus {
     constructor(
+        public id: number,
         /**
          * Internal name for referring to this corpus e.g. in URLs.
          */
@@ -33,6 +34,7 @@ export class Corpus {
         public documentContext?: DocumentContext,
         public defaultSort?: SortState,
         public languageField?: CorpusField,
+        public editable?: boolean,
     ) { }
 
     get displayLanguages(): string {
@@ -52,6 +54,40 @@ export interface DocumentContext {
 export type FieldDisplayType =
     'text_content' | 'keyword' | 'integer' | 'text' | 'date' | 'date_range' | 'boolean'
     | 'url' | 'geo_point';
+
+
+export interface APICorpus {
+    id: number;
+    name: string;
+    editable: boolean;
+    allow_image_download: boolean;
+    category: string;
+    description: string;
+    document_context:APIDocumentContext;
+    es_alias: string;
+    es_index: string;
+    languages: string[];
+    min_year: number;
+    max_year: number;
+    scan_image_type: string;
+    title: string;
+    word_models_present: boolean;
+    default_sort: {
+        field: string;
+        ascending: boolean;
+    };
+    language_field: string;
+    fields: ApiCorpusField[];
+    has_named_entities: boolean;
+}
+
+export interface APIDocumentContext {
+    context_fields: string[] | null;
+    sort_field: string | null;
+    context_display_name: string | null;
+    sort_direction: 'string' | null;
+}
+
 
 /** Corpus field info as sent by the backend api */
 export interface ApiCorpusField {

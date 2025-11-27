@@ -1,4 +1,4 @@
-import { FieldEntities } from '../../models';
+import { FieldEntities } from '@models';
 import { EntityPipe } from './entity.pipe';
 
 describe('EntityPipe', () => {

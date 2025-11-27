@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, fakeAsync, flushMicrotasks, waitForAsync } from '@angular/core/testing';
 
-import { commonTestBed } from '../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 import { SearchService } from '@services';
 import * as _ from 'lodash';
-import { corpusFactory, intFieldFactory } from '../../../mock-data/corpus';
+import { corpusFactory, intFieldFactory } from '@mock-data/corpus';
 import { CorpusField, QueryModel, RangeFilter } from '@models';
-import { SimpleStore } from '../../store/simple-store';
+import { SimpleStore } from '@app/store/simple-store';
 import { RangeFilterComponent } from './range-filter.component';
 
 describe('RangeFilterComponent', () => {

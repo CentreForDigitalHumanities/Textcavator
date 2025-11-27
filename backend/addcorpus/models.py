@@ -1,39 +1,30 @@
 import os
 import warnings
-from datetime import datetime
 
+from addcorpus.constants import CATEGORIES, MappingType, VisualizationType
+from addcorpus.validation.creation import (
+    validate_es_mapping, validate_field_language,
+    validate_field_name_permissible_characters, validate_implication,
+    validate_language_code, validate_mimetype,
+    validate_name_is_not_a_route_parameter, validate_ner_slug,
+    validate_search_filter, validate_search_filter_with_mapping,
+    validate_searchable_field_has_full_text_search,
+    validate_sort_configuration, validate_source_data_directory,
+    validate_visualizations_with_mapping)
+from addcorpus.validation.indexing import (validate_essential_fields,
+                                           validate_has_configuration,
+                                           validate_has_data_directory,
+                                           validate_language_field)
+from addcorpus.validation.publishing import (validate_complete_metadata,
+                                             validate_default_sort,
+                                             validate_ngram_has_date_field)
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.constraints import UniqueConstraint
-from django.conf import settings
-
-from addcorpus.constants import CATEGORIES, MappingType, VisualizationType
-from addcorpus.validation.creation import (
-    validate_es_mapping,
-    validate_field_language,
-    validate_implication,
-    validate_language_code,
-    validate_mimetype,
-    validate_field_name_permissible_characters,
-    validate_name_is_not_a_route_parameter,
-    validate_ner_slug,
-    validate_search_filter,
-    validate_search_filter_with_mapping,
-    validate_searchable_field_has_full_text_search,
-    validate_sort_configuration,
-    validate_visualizations_with_mapping,
-    validate_source_data_directory,
-)
-from addcorpus.validation.indexing import (validate_essential_fields,
-    validate_has_configuration, validate_language_field, validate_has_data_directory)
-from addcorpus.validation.publishing import (
-    validate_default_sort,
-    validate_ngram_has_date_field,
-    validate_complete_metadata
-)
 from es.client import elasticsearch
 
 MAX_LENGTH_NAME = 126
@@ -545,9 +536,26 @@ class CorpusDataFile(models.Model):
     corpus = models.ForeignKey(to=Corpus, on_delete=models.CASCADE)
     file = models.FileField(upload_to=upload_path,
                             help_text='file containing corpus data')
+    original_filename = models.CharField(
+        help_text='original name of the uploaded file (for user form)',
+        blank=True,
+    )
     is_sample = models.BooleanField(
         default=False, help_text='This file is used in creating the corpus definition, it may additonaly reflect (part of) the actual data.')
     created = models.DateTimeField(auto_now_add=True)
+    confirmed = models.BooleanField(
+        default=False,
+        help_text='whether the file has been confirmed by the user as correct',
+    )
+
+    csv_info = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text='contains information on the content of the file, e.g. columns and number of rows'
+    )
 
     def __str__(self):
         return f'{self.file.name}'
+
+    class Meta:
+        unique_together = ('corpus', 'confirmed')

@@ -18,7 +18,7 @@ def send_csv_email(user_email, username, download_id):
     Send an email to the user that their CSV is ready
     '''
 
-    subject = 'I-Analyzer CSV download'
+    subject = f'{settings.SITE_NAME} CSV download'
     from_email = settings.DEFAULT_FROM_EMAIL
     download = Download.objects.get(id=download_id)
     filename = download.descriptive_filename()
@@ -32,6 +32,7 @@ def send_csv_email(user_email, username, download_id):
         'link_text': 'Download .csv file',
         'logo_link': settings.LOGO_LINK,
         'url_i_analyzer': settings.BASE_URL,
+        'site_name': settings.SITE_NAME,
         'organization': 'the Research Software Lab at the Centre for Digital Humanities (Utrecht University)'
     }
 

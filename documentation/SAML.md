@@ -1,6 +1,6 @@
 # SAML
 
-In order to login with Solis ID, I-analyzer has SAML integration with ITS. For this, it uses the [djangosaml2 library](https://djangosaml2.readthedocs.io/). More information on working with SAML, setting up a local environment to test the SAML integration, etc. can be found [here](https://github.com/UUDigitalHumanitieslab/dh-info/blob/master/SAML.md)
+In order to login with Solis ID, Textcavator has SAML integration with ITS. For this, it uses the [djangosaml2 library](https://djangosaml2.readthedocs.io/). More information on working with SAML, setting up a local environment to test the SAML integration, etc. can be found [here](https://github.com/UUDigitalHumanitieslab/dh-info/blob/master/SAML.md)
 
 The urls exposed by DjangoSaml2 are included as part of our `users` application, e.g., `<hostname>/users/saml2/login`. DjangoSaml2 takes care of consuming the response from the Identity Provider and logging in the user. The `SAML_ATTRIBUTE_MAPPING` variable contains a dictionary of the data coming in from the identity provider, e.g., `uushortid`, and translating that to the corresponding column in the user table, e.g., `username`. Moreover, the setting `SAML_CREATE_UNKNOWN_USER = True` makes sure that we create a user in our database if it's not present yet.
 

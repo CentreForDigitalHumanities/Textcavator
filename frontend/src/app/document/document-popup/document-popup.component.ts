@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { FoundDocument, QueryModel } from '@models';
 import { Subject } from 'rxjs';
-import { actionIcons, documentIcons } from '../../shared/icons';
+import { actionIcons, documentIcons } from '@shared/icons';
 
 @Component({
     selector: 'ia-document-popup',

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { commonTestBed } from 'app/common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 import { FieldFormComponent } from './field-form.component';
-import { CorpusDefinitionService } from 'app/corpus-definitions/corpus-definition.service';
+import { CorpusDefinitionService } from '@app/corpus-definitions/corpus-definition.service';
 import { SharedModule } from '@shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormFeedbackComponent } from '../form-feedback/form-feedback.component';

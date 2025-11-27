@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
-import { ApiService } from '@services';
+import { ApiService, CorpusService } from '@services';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, share } from 'rxjs/operators';
+import { filter, share, switchMap, tap } from 'rxjs/operators';
+import { findByName } from '@app/utils/utils';
 
 export type Delimiter = ',' | ';' | '\t';
 
@@ -9,12 +10,17 @@ export interface CorpusDataFile {
     id?: number;
     corpusID: number;
     file: File | string;
+    original_filename?: string;
     is_sample: boolean;
     created?: Date;
+    confirmed: boolean;
+    csv_info: DataFileInfo;
 }
 
 export interface DataFileInfo {
-    [columnName: string]: APICorpusDefinitionField['type'];
+    n_rows: number;
+    fields: Pick<APICorpusDefinitionField, 'name' | 'type'>[];
+    delimiter: Delimiter;
 }
 
 export interface APICorpusDefinitionField {
@@ -90,22 +96,26 @@ export interface APIEditableCorpus {
     active: boolean;
     definition: APICorpusDefinition;
     has_image?: boolean;
+    has_complete_data?: boolean;
 }
 
 export class CorpusDefinition {
     active = false;
     hasImage = false;
+    hasCompleteData: boolean;
     loading$ = new BehaviorSubject<boolean>(true);
 
     definition: APICorpusDefinition;
 
     definitionUpdated$ = this.loading$.pipe(filter((val) => !val));
 
-    constructor(private apiService: ApiService, public id?: number) {
+    constructor(
+        private apiService: ApiService,
+        private corpusService: CorpusService,
+        public id?: number,
+    ) {
         if (this.id) {
-            this.apiService
-                .corpusDefinition(this.id)
-                .subscribe((result) => this.setFromAPIData(result));
+            this.refresh();
         } else {
             this.loading$.next(false);
         }
@@ -126,6 +136,14 @@ export class CorpusDefinition {
         return !_.isUndefined(this.definition);
     }
 
+    /** refresh the corpus from the database **/
+    refresh(): void {
+        this.loading$.next(true);
+        this.apiService
+            .corpusDefinition(this.id)
+            .subscribe((result) => this.setFromAPIData(result));
+    }
+
     /** save the corpus state in the database */
     save(): Observable<APIEditableCorpus> {
         this.loading$.next(true);
@@ -134,7 +152,14 @@ export class CorpusDefinition {
             ? this.apiService.updateCorpus(this.id, data)
             : this.apiService.createCorpus(data);
         const result$ = request$.pipe(share());
+
         result$.subscribe((result) => this.setFromAPIData(result));
+        // refresh corpus data if applicable
+        result$.pipe(
+            switchMap(() => this.requireCorpusRefresh()),
+            filter(_.identity)
+        ).subscribe(() => this.corpusService.get(true));
+
         return result$;
     }
 
@@ -150,8 +175,28 @@ export class CorpusDefinition {
         this.id = result.id;
         this.active = result.active;
         this.setFromDefinition(result.definition);
-        this.loading$.next(false);
         this.hasImage = result.has_image;
+        this.hasCompleteData = result.has_complete_data;
+
+        // do not edit properties AFTER this !!!
+        this.loading$.next(false);
+    }
+
+    /** whether the list of searchable corpora must be refreshed after
+     * changes to this corpus
+     */
+    private requireCorpusRefresh(): Promise<boolean> {
+        // if this corpus is active...
+        if (this.active) {
+            return Promise.resolve(true);
+        }
+        // .. or if it's not active but was already fetched as active
+        if (this.corpusService.corporaPromise) {
+            return this.corpusService.corporaPromise.then(corpora =>
+                !!findByName(corpora, this.definition.name)
+            );
+        }
+        return Promise.resolve(false);
     }
 };
 

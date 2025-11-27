@@ -1,4 +1,4 @@
-import { booleanFieldFactory, dateFieldFactory, keywordFieldFactory } from '../../mock-data/corpus';
+import { booleanFieldFactory, dateFieldFactory, keywordFieldFactory } from '@mock-data/corpus';
 import { BooleanFilter, DateFilter, DateFilterData, MultipleChoiceFilter } from './field-filter';
 import { SimpleStore } from '../store/simple-store';
 import { Store } from '../store/types';

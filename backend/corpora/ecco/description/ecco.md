@@ -39,4 +39,4 @@ Additional information can be found in the links below.
 
 *ECCO* is published by [Gale](https://en.wikipedia.org/wiki/Gale_(publisher)) and is only available to members of Utrecht University.
 
-*Note:* Only the *ECCO Part I* is available on I-analyzer.
+*Note:* Only the *ECCO Part I* is available on {{ site_name }}.

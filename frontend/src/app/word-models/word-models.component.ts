@@ -11,6 +11,7 @@ import {
 import { visualizationIcons } from '@shared/icons';
 import { Corpus, QueryFeedback, WordInModelResult } from '@models';
 import { ParamDirective } from '../param/param-directive';
+import { pageTitle } from '@utils/app';
 
 @Component({
     selector: 'ia-word-models',
@@ -118,7 +119,7 @@ export class WordModelsComponent extends ParamDirective {
     setCorpus(corpus: Corpus): void {
         if (corpus && (!this.corpus || this.corpus.name !== corpus.name)) {
             this.corpus = corpus;
-            this.title.setTitle(`Word models of ${corpus.title} - I-analyzer`);
+            this.title.setTitle(pageTitle(`Word models of ${corpus.title}`));
         }
     }
 

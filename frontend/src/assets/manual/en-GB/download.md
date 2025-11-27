@@ -4,13 +4,13 @@ When you search a corpus, you can use the "download" tab to download a table of 
 
 Large downloads may take longer to create; you will be able to request the download and receive an email when the file is ready. This option is only available if you are signed in.
 
-You can select which fields should be included in the CSV download. In addition, you can include your tags, and a link to the original document in I-analyzer. Your search query will also be included as an extra column.
+You can select which fields should be included in the CSV download. In addition, you can include your tags, and a link to the original document in Textcavator. Your search query will also be included as an extra column.
 
-You can also choose the file encoding. We recommend the "utf-16" encoding if you are using Microsoft Excel, and "utf-8" for all other applications. If an application is not displaying special characters correctly (while they appear normal on I-analyzer itself), it may help to use a different file encoding.
+You can also choose the file encoding. We recommend the "utf-16" encoding if you are using Microsoft Excel, and "utf-8" for all other applications. If an application is not displaying special characters correctly (while they appear normal on Textcavator itself), it may help to use a different file encoding.
 
 ### Download visualization data
 
-All visualisations on I-analyzer also have a "table view" to see the data used in the visualisation. You can download this data using the "download table data" button.
+All visualisations on Textcavator also have a "table view" to see the data used in the visualisation. You can download this data using the "download table data" button.
 
 #### Full data
 

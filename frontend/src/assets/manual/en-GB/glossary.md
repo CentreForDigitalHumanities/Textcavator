@@ -1,20 +1,20 @@
-This page describes some terms that you may find on I-analyzer. If you are not sure what a term means, this is the place to look!
+This page describes some terms that you may find on Textcavator. If you are not sure what a term means, this is the place to look!
 
 ## Corpus / corpora
 
 A corpus is a collection of texts. The plural of corpus is corpora.
 
-The data on I-analyzer is divided in corpora. A corpus usually has a clear focus: a location, time period, publication, etc.
+The data on Textcavator is divided in corpora. A corpus usually has a clear focus: a location, time period, publication, etc.
 
 ## CSV
 
-CSV stands for *comma-separated values*. This is a data format for files. When you download data from I-analyzer, you will receive a CSV file.
+CSV stands for *comma-separated values*. This is a data format for files. When you download data from Textcavator, you will receive a CSV file.
 
 You can open CSV files in spreadsheet editors like Microsoft Excel, Google Sheets or LibreOffice Calc. They are also well-suited for scripting languages like Python or R. See [downloading data](/manual/download#using-csv-files) for more information.
 
 ## Document
 
-On I-analyzer, each corpus is a collection of *documents*. A document is essentially the "unit" of the data. What makes a document, depends on the kind of data. In a newspaper archive, each document might be a single article, while in a corpus of parliamentary debates, each document could be a single speech.
+On Textcavator, each corpus is a collection of *documents*. A document is essentially the "unit" of the data. What makes a document, depends on the kind of data. In a newspaper archive, each document might be a single article, while in a corpus of parliamentary debates, each document could be a single speech.
 
 ## Named entity
 
@@ -24,7 +24,7 @@ A text can contain named entities: people, locations, organisations, etc. that t
 
 We call software open source when the source code is freely available. That means anyone can view it, share it with others, or edit it to make their own version. There may still be conditions for re-using the software, such as including an attribution to the original author.
 
-I-analyzer is open source.
+Textcavator is open source.
 
 ## Public domain
 
@@ -42,7 +42,7 @@ A kind of text processing where the words in a text are stripped of all inflecti
 
 ## Tag
 
-On I-analyzer, tags are labels that you can assign to documents. See [tags](/manual/tagging-documents) for more information.
+On Textcavator, tags are labels that you can assign to documents. See [tags](/manual/tagging-documents) for more information.
 
 ## Word embeddings
 

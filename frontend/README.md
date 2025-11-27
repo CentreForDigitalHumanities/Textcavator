@@ -8,7 +8,7 @@ This version of Angular uses Node 12.22.10.
 Run `yarn` to install the dependencies. In `src/environments`, create a file `environment.private.ts` with the following settings:
 ```
 privateEnvironment = {
-    appName: I-Analyzer,
+    appName: Textcavator,
     aboutPage: ianalyzer
 }
 ```

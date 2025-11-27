@@ -4,7 +4,7 @@ export const environment = {
     production: true,
     appName: 'Something completely different',
     navbarBrand: {
-        title: 'I-analyzer',
+        title: 'Textcavator',
         subtitle: undefined,
         logo: '/assets/logo.png',
         logoAlt: undefined,
