@@ -10,7 +10,7 @@ The dataset contains digitised texts, which have been manually corrected, with m
 
 ### Availability
 
-The I-analyzer corpus contains the publicly available portion of the [DBNL-dataset](https://www.kb.nl/onderzoeken-vinden/datasets/dbnl-dataset). These texts are in the public domain. (You can also download the full dataset through this link.)
+The {{ site_name }} corpus contains the publicly available portion of the [DBNL-dataset](https://www.kb.nl/onderzoeken-vinden/datasets/dbnl-dataset). These texts are in the public domain. (You can also download the full dataset through this link.)
 
 For some books, the public dataset provides metadata but not the full text. In documents with metadata only, the full text is usually available on the DBNL interface.
 

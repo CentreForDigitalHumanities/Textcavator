@@ -14,7 +14,7 @@ import { BarchartOptionsComponent } from './barchart/barchart-options.component'
 import { HistogramComponent } from './barchart/histogram.component';
 import { TermComparisonEditorComponent } from './barchart/term-comparison-editor/term-comparison-editor.component';
 import { TimelineComponent } from './barchart/timeline.component';
-import { FreqtableComponent } from './freqtable.component';
+import { FreqtableComponent } from './freqtable/freqtable.component';
 import { FullDataButtonComponent } from './full-data-button/full-data-button.component';
 import { JoyplotComponent } from './ngram/joyplot/joyplot.component';
 import { NgramComponent } from './ngram/ngram.component';

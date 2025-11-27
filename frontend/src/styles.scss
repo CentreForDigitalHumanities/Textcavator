@@ -1,6 +1,82 @@
 @use "balloon-css/src/balloon";
+@use "quill/dist/quill.snow";
 @use "utilities";
 @use "bulma/bulma";
+
+
+@font-face {
+    font-family: "Open Sans";
+    src: url('/assets/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf');
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url('/assets/fonts/Open_Sans/OpenSans-Italic-VariableFont_wdth,wght.ttf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Regular.ttf') format('opentype');
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Italic.ttf') format('opentype');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Bold.ttf') format('opentype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-BoldItalic.ttf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Light.ttf') format('opentype');
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-LightItalic.ttf') format('opentype');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Medium.ttf') format('opentype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-MediumItalic.ttf') format('opentype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-SemiBold.ttf') format('opentype');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-SemiBoldItalic.ttf') format('opentype');
+    font-weight: 600;
+    font-style: italic;
+}
 
 
 [data-balloon]:after {
@@ -114,7 +190,7 @@ a.dropdown-item[disabled] {
 }
 
 .content {
-    a {
+    a:not(.button) {
         text-decoration: underline;
     }
 }
@@ -136,6 +212,25 @@ table.spreadsheet {
     tr:hover {
         background-color: inherit;
     }
+}
+
+.breadcrumb {
+    li:not(.is-active) > a {
+        text-decoration: underline;
+    }
+
+    li.is-active > a {
+        color: var(--bulma-text);
+    }
+}
+
+// do not use extra-bold weight for titles
+
+.title {
+    --bulma-title-weight: var(--bulma-weight-bold);
+}
+.content {
+    --bulma-content-heading-weight: var(--bulma-weight-bold);
 }
 
 // restore some rules from older bulma versions for compatibility
@@ -162,6 +257,10 @@ table.spreadsheet {
         0 0 0 1px hsla(var(--bulma-shadow-h), var(--bulma-shadow-s), var(--bulma-shadow-l), 0.1);
 }
 
+.modal-card .modal-card-body:last-child {
+    border-end-start-radius: var(--bulma-modal-card-foot-radius);
+    border-end-end-radius: var(--bulma-modal-card-foot-radius);
+}
 // reset focus styling for accessibility
 // bulma's customisation makes focus rings invisible on blue background
 
@@ -200,6 +299,21 @@ button {
 
         select {
             @extend .select;
+        }
+    }
+}
+
+// quill
+
+.ql-container {
+    font-family: inherit;
+    font-size: inherit;
+
+    .ql-editor {
+        @extend .content;
+
+        ol, ul {
+            padding-left: 0em; // so spacing is not added in both margin AND padding
         }
     }
 }

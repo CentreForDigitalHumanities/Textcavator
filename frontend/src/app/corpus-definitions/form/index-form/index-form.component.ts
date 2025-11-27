@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { CorpusDefinition } from '@models/corpus-definition';
 import { APIIndexHealth, isComplete, JobStatus } from '@models/indexing';
-import { ApiService } from '@services';
+import { ApiService, CorpusService } from '@services';
 import { actionIcons } from '@shared/icons';
 import * as _ from 'lodash';
 import { map, Subject, switchMap, merge, filter } from 'rxjs';

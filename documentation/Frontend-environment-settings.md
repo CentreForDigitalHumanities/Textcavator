@@ -22,7 +22,7 @@ Type: `{ title: string, subtitle?: string, logo?: string, logoAlt?: string }`
 
 Specifies the look of the brand in the top navigation menu.
 
-You can specify a `title` and a `subtitle`, which will be shown as such. For example, `{ main: 'I-analyzer', secondary: 'Special Edition' }` will look something like "I-analyzer - *Special Edition*".
+You can specify a `title` and a `subtitle`, which will be shown as such. For example, `{ main: 'Textcavator', secondary: 'Special Edition' }` will look something like "Textcavator - *Special Edition*".
 
 The logo should be the url of the logo you want to show. This can just be an absolute path like `'/assets/logo.png'`, but you can use a full URL for external images.
 
@@ -76,7 +76,7 @@ Sets the cutoff point between [direct downloads and scheduled downloads](./Downl
 
 Type: string
 
-Sets the semantic version of I-analyzer that is displayed in the footer.
+Sets the semantic version of Textcavator that is displayed in the footer.
 
 You could set this manually, but in most cases, you will import it from `version.ts`. That file is updated when you build the frontend, based on the version number in [`package.json`](../package.json). See [Making a release](./Making-a-release.md).
 
@@ -86,7 +86,7 @@ Type: string
 
 The URL to the source repository, which is linked in the footer.
 
-Change this if you create a fork of I-analyzer.
+Change this if you create a fork of Textcavator.
 
 ### `logos`
 
@@ -114,6 +114,6 @@ By default, the corpus selection menu will allow users to filter corpora based o
 
 Type: [`MatomoConfig`](../frontend/src/app/routing/matomo.ts)
 
-Optional. To track usage data using matomo, use this setting to provide the URL of the matomo server, and the ID of this I-analyzer site on your matomo server.
+Optional. To track usage data using matomo, use this setting to provide the URL of the matomo server, and the ID of this Textcavator site on your matomo server.
 
 Note: the [`matomo.ts` module](../frontend/src/app/routing/matomo.ts) handles the client-side configuration for matomo.

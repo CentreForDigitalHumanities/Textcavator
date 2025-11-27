@@ -3,9 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { TagService } from './tag.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ApiService } from './api.service';
-import { ApiServiceMock } from '../../mock-data/api';
+import { ApiServiceMock } from '@mock-data/api';
 import { AuthService } from './auth.service';
-import { AuthServiceMock } from '../../mock-data/auth';
+import { AuthServiceMock } from '@mock-data/auth';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('TagService', () => {

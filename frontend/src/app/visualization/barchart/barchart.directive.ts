@@ -29,7 +29,7 @@ import { showLoading } from '@utils/utils';
 import { takeUntil } from 'rxjs/operators';
 import { DateHistogramResult, TermsResult } from '@models/aggregation';
 import { ComparedQueries } from '@models/compared-queries';
-import { RouterStoreService } from '../../store/router-store.service';
+import { RouterStoreService } from '@app/store/router-store.service';
 
 const hintSeenSessionStorageKey = 'hasSeenTimelineZoomingHint';
 const hintHidingMinDelay = 500;       // milliseconds

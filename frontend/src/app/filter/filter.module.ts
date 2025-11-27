@@ -13,7 +13,7 @@ import {
 } from '.';
 import { SearchService } from '@services';
 import { SharedModule } from '@shared/shared.module';
-import { FilterManagerComponent } from './filter-manager.component';
+import { FilterManagerComponent } from './filter-manager/filter-manager.component';
 
 
 

@@ -146,6 +146,7 @@ export const booleanFieldFactory = () =>
 
 export const corpusFactory = () =>
     new Corpus(
+        1,
         'test',
         'Test corpus',
         'A basic corpus for testing',
@@ -169,9 +170,10 @@ export const corpusFactory = () =>
 
 
 export class CorpusServiceMock {
+    public corporaPromise = Promise.resolve([corpusFactory()]);
     public currentCorpus = of(corpusFactory());
 
     public get(): Promise<Corpus[]> {
-        return Promise.resolve([corpusFactory()]);
+        return this.corporaPromise;
     }
 }

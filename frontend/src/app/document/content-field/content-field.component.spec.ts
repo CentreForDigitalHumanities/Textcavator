@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentFieldComponent } from './content-field.component';
-import { commonTestBed } from 'app/common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 import { makeDocument } from 'mock-data/constructor-helpers';
 import { contentFieldFactory } from 'mock-data/corpus';
 

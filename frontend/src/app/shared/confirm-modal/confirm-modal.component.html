@@ -4,7 +4,7 @@
         <header class="modal-card-head">
             <p class="modal-card-title" #modalTitle tabindex="-1">{{actionText}}?
             </p>
-            <button class="delete" aria-label="close"
+            <button *ngIf="!disableCloseButton" class="delete" aria-label="close"
                 (click)="cancel()"></button>
         </header>
         <section class="modal-card-body">

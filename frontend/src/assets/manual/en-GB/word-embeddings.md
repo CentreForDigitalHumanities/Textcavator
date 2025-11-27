@@ -1,6 +1,6 @@
 [Word embeddings](https://en.wikipedia.org/wiki/Word_embedding) are an abstract way of representing words as a sequence of numbers. You can think of this like drafting a map and giving each word in a corpus a set of coordinates, so that similar words are placed close to one another, and very dissimilar words are spaced far apart.
 
-This page provides a general explanation of what word embeddings are and how they can be used in research. The pages [related words](/manual/relatedwords), [compare similarity](/manual/comparesimilarity), and [network of nearest neighbours](/manual/neighbour-network) describe how these models are used in I-analyzer.
+This page provides a general explanation of what word embeddings are and how they can be used in research. The pages [related words](/manual/relatedwords), [compare similarity](/manual/comparesimilarity), and [network of nearest neighbours](/manual/neighbour-network) describe how these models are used in Textcavator.
 
 ## What is similarity?
 
@@ -16,7 +16,7 @@ This model counts which words tend to occur together in the corpus. (For example
 
 You can think of this process like trying to draw up a seating arrangement for a large family at a wedding. You want to make sure that everyone sits next to people they get along with. In this way, your seating arrangement becomes a model of the family relationships. An observant guest could then use the seating arrangement to learn something about those relationships: people who sit next to each other, apparently get along.
 
-There are different algorithms to train word embeddings. What algorithm works, and how exactly this should be configured, can depend on the corpus. (For example, this can depend on the amount of text, or the lexical variety in the text.) If a corpus on I-analyzer has word embeddings available, the information page will describe what algorithm was used.
+There are different algorithms to train word embeddings. What algorithm works, and how exactly this should be configured, can depend on the corpus. (For example, this can depend on the amount of text, or the lexical variety in the text.) If a corpus on Textcavator has word embeddings available, the information page will describe what algorithm was used.
 
 The result of this algorithm is a set of coordinates for each word. This is different from a geographical map, which is two-dimensional and thus represents each point with two numbers. With word embeddings, words are represented by much longer sequences of numbers, for example 100. This allows them to capture much more complex information than if you tried to arrange all words on a 2D map.
 
@@ -46,7 +46,7 @@ It's good to be aware of phrases or other meanings that might interfere with you
 
 ### Showing changes over time
 
-Word embeddings on I-analyzer are always *diachronic*: rather than creating a single model of the whole corpus, we train separate models for different time intervals. So when you look at the similarity scores between words, you can compare how that similarity changes over time.
+Word embeddings on Textcavator are always *diachronic*: rather than creating a single model of the whole corpus, we train separate models for different time intervals. So when you look at the similarity scores between words, you can compare how that similarity changes over time.
 
 Changes in similarity can reflect changes in how words are used over time. Words can be used in new contexts and take on new meanings. (Or conversely, some usage may fall out of use.) Because such changes tend to cover long time periods, it can be difficult to reliably detect such changes if you are only relying on close reading. After all, you can only read a limited amount of text.
 

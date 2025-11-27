@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { showLoading } from '@utils/utils';
 import { Corpus, WordSimilarity } from '@models';
 import { ParamService, WordmodelsService } from '@services/index';
-import { ParamDirective } from '../../param/param-directive';
+import { ParamDirective } from '@app/param/param-directive';
 import { formIcons } from '@shared/icons';
 
 

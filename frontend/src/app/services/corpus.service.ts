@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
 
 import {
+    APICorpus,
+    APIDocumentContext,
     Corpus,
     CorpusField,
     DocumentContext,
@@ -78,9 +80,10 @@ export class CorpusService {
         return data.map(this.parseCorpusItem);
     }
 
-    private parseCorpusItem = (data: any): Corpus => {
+    private parseCorpusItem = (data: APICorpus): Corpus => {
         const allFields: CorpusField[] = data.fields.map(this.parseField);
         return new Corpus(
+            data.id,
             data.name,
             data.title,
             data.description,
@@ -97,18 +100,14 @@ export class CorpusService {
             this.parseDocumentContext(data.document_context, allFields),
             this.parseDefaultSort(data.default_sort, allFields),
             findByName(allFields, data.language_field),
+            data.editable,
         );
     };
 
     private parseField = (data: any): CorpusField => new CorpusField(data);
 
     private parseDocumentContext(
-        data: {
-            context_fields: string[] | null;
-            sort_field: string | null;
-            context_display_name: string | null;
-            sort_direction: 'string' | null;
-        },
+        data: APIDocumentContext,
         allFields: CorpusField[]
     ): DocumentContext {
         if (_.isEmpty(data) || !data.context_fields) {

@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { ApiService } from './api.service';
 import { HttpClient, HttpErrorResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { fakeNgramResult } from '../../mock-data/api';
+import { fakeNgramResult } from '@mock-data/api';
 import { Subject, from, throwError } from 'rxjs';
 import { TaskResult, TasksOutcome } from '@models';
 

@@ -3,18 +3,18 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { ApiService } from './api.service';
-import { ApiServiceMock } from '../../mock-data/api';
+import { ApiServiceMock } from '@mock-data/api';
 import { ApiRetryService } from './api-retry.service';
 import { ElasticSearchService } from './elastic-search.service';
-import { ElasticSearchServiceMock } from '../../mock-data/elastic-search';
+import { ElasticSearchServiceMock } from '@mock-data/elastic-search';
 import { QueryService } from './query.service';
 import { SearchService } from './search.service';
 import { SessionService } from './session.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { QueryModel } from '@models';
-import { corpusFactory } from '../../mock-data/corpus';
+import { corpusFactory } from '@mock-data/corpus';
 import { AuthService } from './auth.service';
-import { AuthServiceMock } from '../../mock-data/auth';
+import { AuthServiceMock } from '@mock-data/auth';
 import { appRoutes } from 'app/app.module';
 
 
