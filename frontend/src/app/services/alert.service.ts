@@ -4,7 +4,13 @@ import { ReplaySubject } from 'rxjs';
 
 export interface AlertConfig {
     message: string;
+    onDismiss?: () => any;
 };
+
+const nameChangeAlert = {
+    message: '"I-Analyzer" has been renamed, and is now called "Textcavator". Read more about this change on the about page.',
+    onDismiss: () => localStorage.setItem('closedNameChangeAlert', 'true'),
+}
 
 
 @Injectable({
@@ -14,15 +20,12 @@ export class AlertService {
     alert$ = new ReplaySubject<AlertConfig>(1);
 
     constructor() {
-        if (environment.showNamechangeAlert) {
-            this.showNamechangeAlert();
-        }
+        this.showNamechangeAlert();
     }
 
     private showNamechangeAlert(): void {
-        this.alert$.next({
-            message:
-                '"I-Analyzer" has been renamed, and is now called "Textcavator". Read more about this change on the about page.',
-        });
+        if (environment.showNamechangeAlert && !localStorage.getItem('closedNameChangeAlert')) {
+            this.alert$.next(nameChangeAlert);
+        }
     }
 }

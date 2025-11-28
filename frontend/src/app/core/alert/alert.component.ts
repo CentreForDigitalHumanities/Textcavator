@@ -2,7 +2,7 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AlertConfig, AlertService } from '@services/alert.service';
 import _ from 'lodash';
-import { BehaviorSubject, filter, Subject, tap } from 'rxjs';
+import { BehaviorSubject, filter } from 'rxjs';
 
 @Component({
     selector: 'ia-alert',
@@ -12,7 +12,7 @@ import { BehaviorSubject, filter, Subject, tap } from 'rxjs';
 })
 export class AlertComponent {
     visible$ = new BehaviorSubject<boolean>(false);
-    alertMessage$ = new BehaviorSubject<string | undefined>(undefined);
+    alertMessage$ = new BehaviorSubject<AlertConfig>(undefined);
 
     constructor(
         private alertService: AlertService,
@@ -24,16 +24,17 @@ export class AlertComponent {
                 filter(_.negate(_.isUndefined))
             )
             .subscribe({
-                next: (config: AlertConfig) => this.showAlert(config.message),
+                next: (config: AlertConfig) => this.showAlert(config),
             });
     }
 
-    showAlert(message: string): void {
+    showAlert(message: AlertConfig): void {
         this.alertMessage$.next(message);
         this.visible$.next(true);
     }
 
     hideAlert(): void {
+        this.alertMessage$.value.onDismiss?.();
         this.visible$.next(false);
         this.alertMessage$.next(undefined);
     }
