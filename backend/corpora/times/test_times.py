@@ -9,5 +9,5 @@ def test_times(settings, db, admin_client):
     }
     settings.TIMES_DATA = ''
 
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'times')
     assert corpus['title'] == 'Times'
