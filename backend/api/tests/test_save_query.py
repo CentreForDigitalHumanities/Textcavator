@@ -9,8 +9,8 @@ from api.save_query import recent_queries, same_query
 
 
 @pytest.fixture()
-def saved_query(auth_user, db):
-    corpus = Corpus.objects.get(name='small-mock-corpus')
+def saved_query(auth_user, db, small_mock_corpus):
+    corpus = Corpus.objects.get(name=small_mock_corpus)
     return Query.objects.create(
         query_json={'es_query': MATCH_ALL},
         user=auth_user,

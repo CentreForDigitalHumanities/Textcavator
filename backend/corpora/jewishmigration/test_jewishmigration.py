@@ -134,7 +134,7 @@ def jm_corpus_settings(settings):
 
 
 @pytest.fixture
-def jm_corpus(jm_corpus_settings):
+def jm_corpus(jm_corpus_settings, db):
     load_and_save_all_corpora()
     corpus = Corpus.objects.get(name='jewishmigration')
     return corpus

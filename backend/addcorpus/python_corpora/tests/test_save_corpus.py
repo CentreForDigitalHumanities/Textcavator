@@ -12,7 +12,7 @@ pytestmark = [
     pytest.mark.filterwarnings('ignore:.* text search for keyword fields without text analysis')
 ]
 
-def test_saved_corpora(db):
+def test_saved_corpora(db, save_mock_corpora):
     '''
     Assert that all the mock corpora are saved to the database
     during test setup

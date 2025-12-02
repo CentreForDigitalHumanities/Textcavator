@@ -129,34 +129,34 @@ def es_server(db, settings) -> Server:
 
 
 @pytest.fixture()
-def basic_mock_corpus() -> str:
+def basic_mock_corpus(save_mock_corpora) -> str:
     return 'mock-csv-corpus'
 
 @pytest.fixture()
-def small_mock_corpus() -> str:
+def small_mock_corpus(save_mock_corpora) -> str:
     return 'small-mock-corpus'
 
 
 @pytest.fixture()
-def large_mock_corpus() -> str:
+def large_mock_corpus(save_mock_corpora) -> str:
     return 'large-mock-corpus'
 
 
 @pytest.fixture()
-def ml_mock_corpus() -> str:
+def ml_mock_corpus(save_mock_corpora) -> str:
     return 'multilingual-mock-corpus'
 
 @pytest.fixture()
-def media_mock_corpus() -> str:
+def media_mock_corpus(save_mock_corpora) -> str:
     return 'media-mock-corpus'
 
 
 @pytest.fixture()
-def tag_mock_corpus() -> str:
+def tag_mock_corpus(save_mock_corpora) -> str:
     return 'tagging-mock-corpus'
 
 @pytest.fixture()
-def annotated_mock_corpus() -> str:
+def annotated_mock_corpus(save_mock_corpora) -> str:
     return 'annotated-mock-corpus'
 
 def _clear_test_indices(es_client: Elasticsearch):
@@ -225,8 +225,8 @@ def index_json_mock_corpus(db, es_client: Elasticsearch, json_mock_corpus: Corpu
 
 
 # mock corpora
-@pytest.fixture(autouse=True)
-def add_mock_python_corpora_to_db(db, media_dir):
+@pytest.fixture()
+def save_mock_corpora(db, media_dir):
     # add python mock corpora to the database at the start of each test
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', message="Corpus has no 'id' field")
@@ -243,7 +243,7 @@ def json_corpus_definition():
         return json.load(f)
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture()
 def json_mock_corpus(db, json_corpus_definition) -> Corpus:
     # add json mock corpora to the database at the start of each test
     data = {
