@@ -7,8 +7,8 @@ from indexing.models import IndexJob, CreateIndexTask
 from indexing.run_job import perform_indexing
 
 @pytest.fixture()
-def mock_corpus(save_mock_corpora):
-    return 'times'
+def mock_corpus(load_test_corpus):
+    return load_test_corpus('times')
 
 
 @pytest.fixture()

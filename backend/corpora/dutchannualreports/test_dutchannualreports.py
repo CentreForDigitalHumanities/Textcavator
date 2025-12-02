@@ -9,5 +9,5 @@ def test_dutchannualreports(settings, db, admin_client):
     }
     settings.DUTCHANNUALREPORTS_DATA = ''
 
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'dutchannualreports')
     assert corpus['title'] == 'Dutch Annual Reports'

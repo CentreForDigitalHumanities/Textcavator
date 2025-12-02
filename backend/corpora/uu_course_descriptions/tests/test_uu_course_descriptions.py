@@ -15,7 +15,7 @@ def uu_course_descriptions_settings(settings, db):
     settings.UU_COURSE_DESCRIPTIONS_DATA = os.path.join(here, 'data')
 
 def test_uu_course_descriptions_model(uu_course_descriptions_settings, db, admin_client):
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'uu_course_descriptions')
     assert corpus['title'] == 'All faculties'
 
 goal = '''- Begrijpen van de functie van testen in software.
