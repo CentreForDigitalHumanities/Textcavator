@@ -3,7 +3,7 @@ import os
 
 from ianalyzer_readers import extract
 from django.conf import settings
-from corpora.gale.gale import GaleCorpus, GaleMetadata, fix_path_sep
+from corpora.gale.gale import GaleCorpus, GaleMetadata, when_not_empty, fix_path_sep
 from addcorpus.python_corpora.corpus import FieldDefinition
 from api.utils import find_media_file
 
@@ -30,14 +30,14 @@ class HeraldTribuneMetadata(GaleMetadata):
             name='image_path',
             extractor=extract.CSV(
                 'ImageLocation',
-                transform=fix_path_sep
+                transform=when_not_empty(fix_path_sep),
             )
         ),
         FieldDefinition(
             name='data_location',
             extractor=extract.CSV(
                 'XMLLocation',
-                transform=fix_path_sep
+                transform=when_not_empty(fix_path_sep),
             )
         ),
         FieldDefinition(
