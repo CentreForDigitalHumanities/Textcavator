@@ -17,12 +17,8 @@ def csv_directory(settings, tmpdir):
     settings.CSV_FILES_PATH = str(dir)
     return settings.CSV_FILES_PATH
 
-@pytest.fixture(scope='session')
-def ml_mock_corpus():
-    return 'multilingual-mock-corpus'
-
-@pytest.fixture(params=['small-mock-corpus', 'large-mock-corpus', 'multilingual-mock-corpus'], scope='session')
-def mock_corpus(request):
+@pytest.fixture(params=['small-mock-corpus', 'large-mock-corpus', 'multilingual-mock-corpus'])
+def mock_corpus(request, small_mock_corpus, large_mock_corpus, ml_mock_corpus):
     'parametrised version of the mock corpus fixtures: runs with all'
 
     return request.param

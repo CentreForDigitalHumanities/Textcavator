@@ -9,5 +9,5 @@ TEST_BINS = [(1810, 1839), (1840, 1869), (1870, 1899)]
 
 
 @pytest.fixture()
-def mock_corpus():
+def mock_corpus(save_mock_corpora):
     return 'wordmodels-mock-corpus'
