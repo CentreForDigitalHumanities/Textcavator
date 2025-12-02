@@ -1,7 +1,7 @@
 import { Component, output } from '@angular/core';
 
-import { actionIcons } from '../../shared/icons';
-import { DialogService } from '../../services';
+import { actionIcons } from '@shared/icons';
+import { DialogService } from '@services';
 
 @Component({
     selector: 'ia-entity-toggle',

@@ -4,7 +4,7 @@ import { NeighborNetworkComponent } from './neighbor-network.component';
 import { WordmodelsService } from '@services';
 import { WordmodelsServiceMock } from 'mock-data/wordmodels';
 import { corpusFactory } from 'mock-data/corpus';
-import { FreqtableComponent } from 'app/visualization/freqtable.component';
+import { FreqtableComponent } from 'app/visualization/freqtable/freqtable.component';
 import { SharedModule } from '@shared/shared.module';
 
 describe('NeighborNetworkComponent', () => {

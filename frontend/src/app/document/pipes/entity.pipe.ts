@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { icon } from '@fortawesome/fontawesome-svg-core';
 
-import { entityIcons } from '../../shared/icons';
-import { FieldEntities } from '../../models';
+import { entityIcons } from '@shared/icons';
+import { FieldEntities } from '@models';
 
 @Pipe({
     name: 'entity',

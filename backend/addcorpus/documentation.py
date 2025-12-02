@@ -8,6 +8,7 @@ def render_documentation_context(raw_template):
     today = date.today()
     context = Context({
         'frontend_url': settings.BASE_URL,
+        'site_name': settings.SITE_NAME,
         'date': {
             'year': today.year,
             'month': today.strftime('%B'),

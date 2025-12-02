@@ -8,7 +8,7 @@
                     </span>
                 </th>
                 <td [attr.lang]="document.language(field)">
-                    <ng-container *ngIf="field.displayType == 'text_content'; else metadataField">
+                    <ng-container *ngIf="field.displayType === 'text_content'; else metadataField">
                         <ia-content-field-preview [field]="field" [document]="document" />
                     </ng-container>
                     <ng-template #metadataField>

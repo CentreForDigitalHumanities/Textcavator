@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import * as _ from 'lodash';
-import { ParamDirective } from '../../param/param-directive';
+import { ParamDirective } from '@app/param/param-directive';
 import { Normalizer, ChartType, ChartParameters } from '@models';
 import { ParamService } from '@services';
 

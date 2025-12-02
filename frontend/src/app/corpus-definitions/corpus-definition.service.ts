@@ -19,14 +19,12 @@ export class CorpusDefinitionService implements OnDestroy {
     steps$ = new BehaviorSubject<MenuItem[]>([
         { label: 'Corpus information' },
         { label: 'Upload source data' },
-        { label: 'Define fields' },
+        { label: 'Configure fields' },
         { label: 'Index data' },
     ]);
     activeStep$ = new BehaviorSubject<number>(0);
 
-    constructor(
-        private slugify: SlugifyPipe,
-    ) {
+    constructor(private slugify: SlugifyPipe) {
         this.corpus$
             .pipe(takeUntil(this.destroy$), filter(_.negate(_.isUndefined)))
             .subscribe({
@@ -60,6 +58,10 @@ export class CorpusDefinitionService implements OnDestroy {
         this.corpus$.next(corpus);
     }
 
+    public refreshCorpus(): void {
+        this.corpus$.value.refresh();
+    }
+
     public setDelimiter(delimiter: Delimiter): void {
         let sourceDataOpts = this.corpus$.value.definition.source_data.options;
         if (
@@ -82,7 +84,7 @@ export class CorpusDefinitionService implements OnDestroy {
 
     public makeDefaultField(
         dtype: APICorpusDefinitionField['type'],
-        colName: string
+        colName: string,
     ): APICorpusDefinitionField {
         let field: Partial<APICorpusDefinitionField> = {
             name: this.slugify.transform(colName),
@@ -170,25 +172,23 @@ export class CorpusDefinitionService implements OnDestroy {
         return true;
     }
 
-    private hasFields(corpus: CorpusDefinition) {
-        return !_.isEmpty(corpus?.definition.fields);
+    private dataComplete(corpus: CorpusDefinition) {
+        return corpus.hasCompleteData;
     }
 
     private setSteps(corpus: CorpusDefinition) {
-        let maxStep = Infinity;
-        if (!this.metadataComplete(corpus)) {
-            maxStep = 0;
-        }
-        else if (!this.hasFields(corpus)) {
+        let maxStep = 0;
+        if (this.metadataComplete(corpus)) {
             maxStep = 1;
         }
+        if (this.metadataComplete(corpus) && this.dataComplete(corpus)) {
+            maxStep = 3;
+        }
 
-        const steps = this.steps$.value.map(
-            (step, index) => ({
-                ...step,
-                disabled: index > maxStep,
-            })
-        );
+        const steps = this.steps$.value.map((step, index) => ({
+            ...step,
+            disabled: index > maxStep,
+        }));
         this.steps$.next(steps);
     }
 }

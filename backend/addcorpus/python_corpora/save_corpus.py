@@ -3,6 +3,7 @@ from django.db import transaction
 from django.core.files.images import ImageFile
 import warnings
 import sys
+from elastic_transport import ConnectionError
 
 from es.client import elasticsearch
 from es.search import total_hits
@@ -176,8 +177,10 @@ def _save_has_named_entities(configuration: CorpusConfiguration):
             if total_hits(ner_exists):
                 configuration.has_named_entities = True
                 configuration.save()
+        except ConnectionError:
+            warnings.warn('Could not check named entities; cannot connect to Elasticsearch')
         except Exception as e:
-            warnings.warn(Warning('Could not check named enities:', e))
+            warnings.warn(Warning('Could not check named enities due to unexpected error:', e))
 
 
 def _prepare_for_import(corpus: Corpus):

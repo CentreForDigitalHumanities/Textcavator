@@ -47,7 +47,7 @@ body:
     attributes:
       label: Version
       description: |
-        Please add information about the version of I-analyzer where you encountered the bug.
+        Please add information about the version of Textcavator where you encountered the bug.
         You can find the version number (e.g. "1.2.3") in the footer of the site.
     validations:
       required: false

@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { interval, Observable } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
-import { ImageInfo } from '../image-view/image-view.component';
 import {
     AggregateTermFrequencyParameters,
     Corpus,
@@ -38,6 +37,7 @@ import {
     DataFileInfo,
 } from '@models/corpus-definition';
 import { APIIndexHealth, APIIndexJob, isComplete, JobStatus } from '@models/indexing';
+import { ImageInfo } from '@models/image';
 
 interface SolisLoginResponse {
     success: boolean;
@@ -333,6 +333,14 @@ export class ApiService {
         return this.http.delete<null>(url);
     }
 
+    public patchDataFile(
+        fileId: number,
+        data: Partial<CorpusDataFile>
+    ): Observable<CorpusDataFile> {
+        const url = `/api/corpus/datafiles/${fileId}/`;
+        return this.http.patch<CorpusDataFile>(url, data);
+    }
+
     public listDataFiles(
         corpusId: number,
         samples: boolean = false
@@ -343,12 +351,6 @@ export class ApiService {
         return this.http.get<CorpusDataFile[]>('/api/corpus/datafiles/', {
             params: params,
         });
-    }
-
-    public getDataFileInfo(dataFile: CorpusDataFile): Observable<DataFileInfo> {
-        return this.http.get<DataFileInfo>(
-            `/api/corpus/datafiles/${dataFile.id}/info/`
-        );
     }
 
     // Tagging

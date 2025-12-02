@@ -3,8 +3,7 @@
 
 <p class="block">
     Add documentation to help users understand what your corpus is, and how they can use
-    it in their research. You can use
-    <a href="https://www.markdownguide.org/">markdown</a> to style the content.
+    it in their research.
 </p>
 <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="block">
@@ -12,11 +11,7 @@
             <ng-template iaTabPanel *ngFor="let category of categories"
                  [id]="category.id" [title]="category.title">
                 <p class="block">{{category.description}}</p>
-
-                <textarea [formControl]="form.controls[category.id]"
-                    class="textarea" rows="10"
-                    [attr.aria-labelledby]="'tab-' + category.id">
-                </textarea>
+                <ia-markdown-editor [formControl]="form.controls[category.id]" />
             </ng-template>
         </ia-tabs>
     </div>

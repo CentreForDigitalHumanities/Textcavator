@@ -32,7 +32,7 @@ For project settings supported by external libraries, see:
 - [configuration for djangosaml2](https://djangosaml2.readthedocs.io/contents/setup.html#configuration)
 - [configuration for Celery](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html)
 
-In addition, I-analyzer adds the following settings.
+In addition, Textcavator adds the following settings.
 
 ### `SERVERS`
 
@@ -93,7 +93,7 @@ URL of the logo of your organisation. This is used in emails sent to users.
 
 ### `NLTK_DATA_PATH`
 
-Some functionality on I-analyzer will download the stopwords corpus from [NLTK](https://nltk.readthedocs.io/en/latest/). This setting controls the directory where data downloaded from NLTK can be stored.
+Some functionality on Textcavator will download the stopwords corpus from [NLTK](https://nltk.readthedocs.io/en/latest/). This setting controls the directory where data downloaded from NLTK can be stored.
 
 ### `CSV_FILES_PATH`
 

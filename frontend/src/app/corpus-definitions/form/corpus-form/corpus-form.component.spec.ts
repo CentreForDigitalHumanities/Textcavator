@@ -1,26 +1,29 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CorpusFormComponent } from './corpus-form.component';
-import { SlugifyPipe } from '@shared/pipes/slugify.pipe';
-import { StepsModule } from 'primeng/steps';
-import { MetaFormComponent } from '../meta-form/meta-form.component';
-import { FieldFormComponent } from '../field-form/field-form.component';
-import { UploadSampleComponent } from '../upload-sample/upload-sample.component';
-import { ApiService } from '@services';
-import { ApiServiceMock } from 'mock-data/api';
-import { SharedModule } from '@shared/shared.module';
-import { ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ImageUploadComponent } from '../image-upload/image-upload.component';
-import { FormFeedbackComponent } from '../form-feedback/form-feedback.component';
-import { DocumentationFormComponent } from '../documentation-form/documentation-form.component';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService, CorpusService } from '@services';
+import { SlugifyPipe } from '@shared/pipes/slugify.pipe';
+import { SharedModule } from '@shared/shared.module';
+import { ApiServiceMock } from 'mock-data/api';
+import { QuillModule } from 'ngx-quill';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { StepsModule } from 'primeng/steps';
+import { DataFormComponent } from '../data-form/data-form.component';
+import { DocumentationFormComponent } from '../documentation-form/documentation-form.component';
+import { MarkdownEditorComponent } from '../documentation-form/markdown-editor/markdown-editor.component';
+import { FieldFormComponent } from '../field-form/field-form.component';
+import { FormFeedbackComponent } from '../form-feedback/form-feedback.component';
+import { ImageUploadComponent } from '../image-upload/image-upload.component';
+import { MetaFormComponent } from '../meta-form/meta-form.component';
+import { CorpusFormComponent } from './corpus-form.component';
+import { CorpusServiceMock } from '@mock-data/corpus';
 
 describe('CorpusFormComponent', () => {
     let component: CorpusFormComponent;
     let fixture: ComponentFixture<CorpusFormComponent>;
 
-    const mockRoute = { snapshot: { params: {corpusID: 1} } };
+    const mockRoute = { snapshot: { params: { corpusID: 1 } } };
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -28,24 +31,26 @@ describe('CorpusFormComponent', () => {
                 CorpusFormComponent,
                 MetaFormComponent,
                 FieldFormComponent,
-                UploadSampleComponent,
+                DataFormComponent,
                 ImageUploadComponent,
                 FormFeedbackComponent,
                 DocumentationFormComponent,
+                MarkdownEditorComponent,
             ],
             imports: [
                 SharedModule,
                 StepsModule,
                 ReactiveFormsModule,
                 AutoCompleteModule,
+                QuillModule,
             ],
             providers: [
                 SlugifyPipe,
                 { provide: ActivatedRoute, useValue: mockRoute },
                 { provide: ApiService, useClass: ApiServiceMock },
+                { provide: CorpusService, useClass: CorpusServiceMock },
             ],
         }).compileComponents();
-
 
         fixture = TestBed.createComponent(CorpusFormComponent);
         component = fixture.componentInstance;

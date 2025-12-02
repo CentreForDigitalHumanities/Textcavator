@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="prot-19992000--086">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Protokoll</title>
+      </titleStmt>
+      <publicationStmt>
+        <authority>National Library of Sweden and the WESTAC project</authority>
+      </publicationStmt>
+      <sourceDesc>
+        <bibl>
+          <title>Protokoll</title>
+        </bibl>
+      </sourceDesc>
+    </fileDesc>
+    <encodingDesc>
+      <editorialDecl>
+        <correction>
+          <p>Some data curation was done. It is documented in input/curation/instances</p>
+        </correction>
+      </editorialDecl>
+    </encodingDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <div type="preface">
+        <head>prot-19992000--86</head>
+        <docDate when="2000-03-27">2000-03-27</docDate>
+      </div>
+    </front>
+    <body>
+      <div type="commentSection" xml:id="i-zCMF4sXMELFg3boeRU36i">
+        <pb facs="http://data.riksdagen.se/fil/68D322C3-562C-4881-BCC9-11B4EF9C042A#page=1"/>
+        <u xml:id="i-VfJDXzdJc8P7NjbEaJm2JQ" who="unknown">
+          <seg xml:id="i-NENWXyE75p5nb6Zz1e3Rcr">
+            Det justerade protokollet beräknas utkomma om 3 veckor
+          </seg>
+        </u>
+        <note xml:id="i-P3nsRuQBEraky78LUELSWW">
+          --------------------------------------------------------------------
+        </note>
+      </div>
+      <div type="commentSection" xml:id="i-PocEjhkKwAp7HcqmhotYy6">
+        <note xml:id="i-6vGb4qcFFVHtX8wVZSmPtq" type="title">
+          1 § Justering av protokoll
+        </note>
+        <note xml:id="i-FWfrGsr55irKMhMeWEG1bX">
+          Justerades protokollet för den 21 mars.
+        </note>
+      </div>
+      <div type="commentSection" xml:id="i-WxsJMyzV9JzDUYbAZ4bxF6">
+        <note xml:id="i-5epqeggWp6q5bcXKRb4Gen" type="title">
+          2 § Meddelande om frågestund
+        </note>
+        <note xml:id="i-ELNH2rme1C18b8PeimiWSF">
+          Andre vice talmannen meddelade att vid frågestunden torsdagen
+          den 30 mars kl. 14.00 skulle följande statsråd närvara:
+        </note>
+        <note xml:id="i-DSoDDQCpA46JyAM9jdjDfF">
+          Vice statsminister Lena Hjelm-Wallén, jordbruksminister Margareta
+          Winberg, utbildningsminister Thomas Östros, statsrådet Britta
+          Lejon och finansminister Bosse Ringholm.
+        </note>
+      </div>
+      <div type="debateSection" xml:id="i-Q5syRDf2jzZQrb7vQURGPQ" subtype="interpellationDebate">
+        <note xml:id="i-UMSWsWRESfjf43wtPTyXgH" type="title">
+          3 § Svar på interpellation 1999/2000:296 om folkbildningen folkbildningen
+        </note>
+        <note type="speaker" xml:id="i-9to3B1GBCDSHZX9BBiX197">
+          Anf. 1 Statsrådet INGEGERD WÄRNERSSON (s):
+        </note>
+        <u xml:id="i-eb684fe711216620-0" next="i-eb684fe711216620-1" who="i-3wVE19WEnkoueWU41a2FfR">
+          <seg xml:id="i-GuoKZmHUHtXvgs9BHTZj1a">
+            Fru talman! Birgitta Sellén har frågat kulturminister Marita
+            Ulvskog vad hon avser att vidta för åtgärder för att åstadkomma
+            ett förändrat synsätt vid kommunernas bidragsgivning till studieförbunden,
+            dels för att öka de kommunala anslagen, dels för att bidragsgivningen
+            följer de principer som formats i vår nationella folkbildningspolitik.
+            Eftersom dessa frågor huvudsakligen faller inom mitt ansvarsområde
+            har interpellationen överlämnats till mig för besvarande.
+          </seg>
+        </u>
+        <u xml:id="i-eb684fe711216620-1" prev="i-eb684fe711216620-0" who="i-3wVE19WEnkoueWU41a2FfR" next="i-eb684fe711216620-2">
+          <seg xml:id="i-Smxhmi6bLUiKDBjmrePBzf">
+            Folkbildningen är av stort nationellt intresse, inte minst för
+            att en aktiv folkbildningsrörelse stärker och utvecklar demokratin
+            men också för att den ger den enskilde individen möjlighet till
+            kunskap, personlig utveckling och inte minst kulturupplevelser.
+            En fungerande folkbildning skapar förutsättningar för utveckling
+            och framsteg i hela landet genom att erbjuda möjligheter för medborgare,
+            oavsett bostadsort, att få en höjd bildningsnivå.
+          </seg>
+        </u>
+        <u xml:id="i-eb684fe711216620-2" prev="i-eb684fe711216620-1" who="i-3wVE19WEnkoueWU41a2FfR" next="i-eb684fe711216620-3">
+          <seg xml:id="i-Ub5xG3u5LDUWiaxRBei2bS">
+            De bidrag som kommuner och landsting ger till studieförbund och
+            folkhögskolor utgör en viktig del i finansieringen av verksamheterna
+            men är ett frivilligt åtagande från kommuner och landsting. I
+            samband med folkbildningsreformen 1991 uttalade regeringen en
+            förhoppning om att kommunernas och landstingens bidrag skulle
+            ligga på en oförändrad nivå.
+          </seg>
+        </u>
+        <pb facs="http://data.riksdagen.se/fil/68D322C3-562C-4881-BCC9-11B4EF9C042A#page=2"/>
+        <u xml:id="i-eb684fe711216620-3" prev="i-eb684fe711216620-2" who="i-3wVE19WEnkoueWU41a2FfR" next="i-eb684fe711216620-4">
+          <seg xml:id="i-XVzAVxc5aFSpPoCcTMZ7RD">
+            Kommuner har, under de tuffa ekonomiska år som har varit, tvingats
+            göra prioriteringar som drabbat många verksamheter, även folkbildningen.
+            Min förhoppning är att det i dag finns ett större utrymme för
+            att stödja folkbildningen, då det ekonomiska läget är ljusare
+            för många kommuner.
+          </seg>
+        </u>
+        <u xml:id="i-eb684fe711216620-4" prev="i-eb684fe711216620-3" who="i-3wVE19WEnkoueWU41a2FfR" next="i-eb684fe711216620-5">
+          <seg xml:id="i-X6i5Yo13ReyGsuNdtxE5ub">
+            Regeringen har uppmärksammat problematiken med att kommunerna
+            har minskat bidraget till studieförbunden. Folkbildningsrådet
+            har av regeringen fått i uppdrag att redovisa och kommentera utvecklingen
+            av kommunernas bidrag till studieförbunden. Folkbildningsrådet
+            ska även bedöma orsakerna till förändringen av den kommunala bidragsgivningen.
+            Folkbildningsrådet ska redovisa sitt resultat i slutet av februari
+            nästa år.
+          </seg>
+        </u>
+        <u xml:id="i-eb684fe711216620-5" prev="i-eb684fe711216620-4" who="i-3wVE19WEnkoueWU41a2FfR">
+          <seg xml:id="i-Tb1bEfR6dqJFmT7PzJ8WUT">
+            Mot bakgrund av detta har inte regeringen för avsikt att vidta
+            några åtgärder gentemot kommuner och landsting.
+          </seg>
+        </u>
+        <note type="speaker" xml:id="i-PwMesTb32QHteVJdC5Nuzs">
+          Anf. 2 BIRGITTA SELLÉN (c):
+        </note>
+        <u xml:id="i-eb684fe711216620-6" next="i-eb684fe711216620-7" who="i-KktUCXax2JFL3tqFqQN9oq">
+          <seg xml:id="i-L91vAeBsYQ3LxHWcF1cTx3">
+            Fru talman! Jag tackar för svaret. Jag har ställt min interpellation
+            på grund av att vi i dag kan se att kommunerna inte följer de
+            statliga direktiv som skrevs in i folkbildningsreformen 1991.
+            Enligt dessa ska man övergå från regelstyrning till målstyrning.
+          </seg>
+        </u>
+        <u xml:id="i-eb684fe711216620-7" prev="i-eb684fe711216620-6" who="i-KktUCXax2JFL3tqFqQN9oq" next="i-eb684fe711216620-8">
+          <seg xml:id="i-PpPJ9TusydwJ8Qs2SKEhAu">
+            Det innebär enligt förordningen att folkbildningsverksamheten
+            ska bedrivas "fritt och frivilligt utifrån deltagarnas behov och
+            intressen".
+          </seg>
+        </u>
+      </div>
+    </body>
+  </text>
+</TEI>

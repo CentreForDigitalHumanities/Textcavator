@@ -11,6 +11,7 @@ from users.models import CustomUser
 from visualization.term_frequency import parse_datestring
 from tag.filter import corpus_tags
 from visualization.query import get_search_fields, get_query_text
+from api.utils import document_link
 
 
 DOCUMENT_URL_COL = 'document_link'
@@ -154,7 +155,7 @@ def generate_rows(
             entry.update(_tag_values(corpus, doc_id, tags))
         if include_link:
             entry.update(
-                {DOCUMENT_URL_COL: f'{settings.BASE_URL}/document/{corpus.name}/{doc_id}'}
+                {DOCUMENT_URL_COL: document_link(corpus.name, doc_id)}
             )
         yield entry
 

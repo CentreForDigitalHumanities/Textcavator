@@ -1,6 +1,6 @@
 # Corpus definitions
 
-Corpus definitions are the way that we configure each corpus in I-analyzer.
+Corpus definitions are the way that we configure each corpus in Textcavator.
 
 This documents gives a basic explanation of how corpus definitions work in the backend. It introduces the core concepts and mechanics.
 
@@ -31,9 +31,9 @@ These are the key differences between Python and database-only corpora.
 
 ### Data extraction
 
-A Python corpus can theoretically extract data from any format. In practice, we rely on the [ianalyzer_readers](https://ianalyzer-readers.readthedocs.io/en/latest/) package which provides extraction utilities for common file types like CSV and XML, but the methods for extraction can be as complex as you want. The design philosophy is that you can use the original format of a dataset as the source data for I-analyzer, without any pre-processing.
+A Python corpus can theoretically extract data from any format. In practice, we rely on the [ianalyzer_readers](https://ianalyzer-readers.readthedocs.io/en/latest/) package which provides extraction utilities for common file types like CSV and XML, but the methods for extraction can be as complex as you want. The design philosophy is that you can use the original format of a dataset as the source data for Textcavator, without any pre-processing.
 
-A database-only corpus only supports CSV extraction with very little room for customisation. Here, the idea is that you pre-process your data *before* you pass it on to I-analyzer. If it is convenient, you can use the `ianalyzer_readers` package to do so.
+A database-only corpus only supports CSV extraction with very little room for customisation. Here, the idea is that you pre-process your data *before* you pass it on to Textcavator. If it is convenient, you can use the `ianalyzer_readers` package to do so.
 
 ### Customisation of the interface
 

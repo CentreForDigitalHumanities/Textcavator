@@ -5,6 +5,7 @@ import os
 import pytest
 from requests import Response
 from unittest.mock import Mock
+from django.conf import settings
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -19,6 +20,7 @@ def parliament_corpora_settings(settings):
         'parliament-france': 'corpora.parliament.france.ParliamentFrance',
         'parliament-sweden': 'corpora.parliament.sweden.ParliamentSweden',
         'parliament-sweden-old': 'corpora.parliament.sweden-old.ParliamentSwedenOld',
+        'parliament-sweden-swerik': 'corpora.parliament.sweden-swerik.ParliamentSwedenSwerik',
         'parliament-denmark': 'corpora.parliament.denmark.ParliamentDenmark',
         'parliament-denmark-new': 'corpora.parliament.denmark-new.ParliamentDenmarkNew',
         'parliament-finland': 'corpora.parliament.finland.ParliamentFinland',
@@ -45,6 +47,7 @@ def parliament_corpora_settings(settings):
     settings.PP_NORWAY_NEW_DATA = os.path.join(here, 'tests', 'data', 'norway-new')
     settings.PP_SWEDEN_DATA = os.path.join(here, 'tests', 'data', 'sweden')
     settings.PP_SWEDEN_OLD_DATA = os.path.join(here, 'tests', 'data', 'sweden-old')
+    settings.PP_SWEDEN_SWERIK_DATA = os.path.join(here, 'tests', 'data', 'sweden-swerik')
     settings.PP_UK_DATA = os.path.join(here, 'tests', 'data', 'uk')
 
 
@@ -724,6 +727,55 @@ I welcome the Minister, Deputy Simon Coveney, and his officials.  I thank them f
             },
         ],
         "n_documents": 3,
+    },
+    {
+        'name': 'parliament-sweden-swerik',
+        'docs': [
+            {
+                'speaker': None,
+                'speaker_id': None,
+                'url_sweden_corpus': None,
+            },
+            {
+                'chamber': 'Riksdag',
+                'country': 'Sweden',
+                'date_range': {'gte': '2000-03-27', 'lte': '2000-03-27'},
+                'date': '2000-03-27',
+                'debate_id': 'prot-19992000--086',
+                'ministerial_role': ['skolminister'],
+                'role': None,
+                'party': 'Socialdemokraterna',
+                'party_id': 'Q105112',
+                'sequence': 2,
+                'speaker': 'Ingegerd Wärnersson',
+                'speaker_constituency': None,
+                'speaker_gender': 'woman',
+                'speaker_birth_year': 1947,
+                'speaker_death_year': None,
+                'speaker_id': 'Q4990768',
+                'id': 'i-eb684fe711216620-0',
+                'topic': '3 § Svar på interpellation 1999/2000:296 om folkbildningen folkbildningen',
+                'url_sweden_corpus': settings.BASE_URL + '/document/parliament-sweden/i-eb684fe711216620-0'
+            },
+            {
+                'speaker': 'Birgitta Sellén',
+                'ministerial_role': None,
+                'role': 'ledamot',
+                'party': 'Centerpartiet',
+                'speaker_constituency': 'Västernorrlands läns valkrets',
+                'speech': [
+                    'Fru talman! Jag tackar för svaret. Jag har ställt min ' \
+                    'interpellation på grund av att vi i dag kan se att kommunerna ' \
+                    'inte följer de statliga direktiv som skrevs in i ' \
+                    'folkbildningsreformen 1991. Enligt dessa ska man övergå från ' \
+                    'regelstyrning till målstyrning.',
+                    'Det innebär enligt förordningen att folkbildningsverksamheten ' \
+                    'ska bedrivas "fritt och frivilligt utifrån deltagarnas behov och ' \
+                    'intressen".'
+                ]
+            }
+        ],
+        'n_documents': 3,
     },
 ]
 

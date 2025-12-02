@@ -58,7 +58,7 @@ import {
     faUser,
     faArrowUp,
     faArrowDown,
-    faQuestion,
+    faRedo,
 } from '@fortawesome/free-solid-svg-icons';
 
 type IconDefinition = SolidIconDefinition | RegularIconDefinition;
@@ -75,6 +75,7 @@ export const userIcons: Icons = {
 
 export const navIcons: Icons = {
     corpora: faDatabase,
+    myCorpora: faPencil,
     searchHistory: faHistory,
     manual: faBook,
     about: faInfoCircle,
@@ -120,6 +121,7 @@ export const actionIcons: Icons = {
 export const formIcons: Icons = {
     confirm: faCheck,
     reset: faTimes,
+    replace: faRedo,
 };
 
 export const corpusIcons: Icons = {
@@ -127,6 +129,7 @@ export const corpusIcons: Icons = {
     wordModels: faDiagramProject,
     info: faInfo,
     infoAlt: faInfoCircle,
+    edit: actionIcons.edit,
 };
 
 export const searchIcons: Icons = {

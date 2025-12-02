@@ -13,7 +13,11 @@ export class SnippetPipe implements PipeTransform {
      *
      * @param nCharacters Specifies how many leading characters should be displayed
      */
-    transform(text: string, nCharacters=100) {
+    transform(text: string | string[], nCharacters=100) {
+        if (Array.isArray(text)) {
+            text = text.join('\n\n');
+        }
+
         if (text.length > nCharacters) {
             const snippedText = text.slice(0, nCharacters).concat('...');
             return this.sanitizer.bypassSecurityTrustHtml(snippedText);

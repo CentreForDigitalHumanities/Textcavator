@@ -1,6 +1,5 @@
 import re
 from datetime import datetime
-import openpyxl
 import os.path
 import PIL
 from tqdm import tqdm
@@ -16,6 +15,13 @@ from api.utils import find_media_file
 from media.media_url import media_url
 
 
+def when_not_empty(func):
+    def delegate(val):
+        if val is None:
+            return None
+        return func(val)
+    return delegate
+
 def fix_path_sep(path):
     """Replaces backward slashes with the current platforms preferred path separator.
     Removes path spearator if present at the end of the path"""
@@ -27,7 +33,23 @@ def clean_date(issue_date):
         issue_date = issue_date[1:-1]
     if issue_date == 'Date Unknown':
         return None
-    return datetime.strptime(issue_date, '%B %d, %Y').strftime('%Y-%m-%d')
+    if '-' in issue_date:
+        # issue date is a range
+        start, end = issue_date.split('-')
+        # remove ordinal suffix from day
+        split = start.split()
+        for sfx in ['st', 'nd', 'rd', 'th']:
+            split[1] = split[1].removesuffix(sfx)
+        start = ' '.join(split)
+        if len(start.split()) == 3:
+            # start and end date are not the same year
+            return datetime.strptime(start, '%B %d %Y').strftime('%Y-%m-%d')
+        # paste year from and date onto start date
+        return datetime.strptime(start + ', ' + end.split(' ')[-1], '%B %d, %Y').strftime('%Y-%m-%d')
+    try:
+        return datetime.strptime(issue_date, '%B %d, %Y').strftime('%Y-%m-%d')
+    except:
+        return datetime.strptime(issue_date, '%B %d,%Y').strftime('%Y-%m-%d')
 
 
 class GaleMetadata(XLSXCorpusDefinition):
@@ -42,7 +64,8 @@ class GaleMetadata(XLSXCorpusDefinition):
         xlsx_path = os.path.join(self.data_directory, self.filename)
         yield xlsx_path, {}
 
-    required_field = 'PublicationTitle'
+
+    required_field = 'IssueDate'
     fields = [
         FieldDefinition(
             name='title',
@@ -52,21 +75,21 @@ class GaleMetadata(XLSXCorpusDefinition):
             name='date',
             extractor=extract.CSV(
                 'IssueDate',
-                transform=clean_date
+                transform=when_not_empty(clean_date)
             )
         ),
         FieldDefinition(
             name='image_path',
             extractor=extract.CSV(
                 'ImageLocation',
-                transform=fix_path_sep
+                transform=when_not_empty(fix_path_sep)
             )
         ),
         FieldDefinition(
             name='data_location',
             extractor=extract.CSV(
                 'DataLocation',
-                transform=fix_path_sep
+                transform=when_not_empty(fix_path_sep)
             )
         ),
         FieldDefinition(
@@ -77,7 +100,7 @@ class GaleMetadata(XLSXCorpusDefinition):
             name='issue_id',
             extractor=extract.CSV(
                 'Filename',
-                transform=lambda filename: filename.split("_")[0]
+                transform=when_not_empty(lambda filename: filename.split("_")[0])
             )
         ),
 
@@ -97,9 +120,11 @@ class GaleCorpus(XMLCorpusDefinition):
     language = 'en'
     scan_image_type = 'image/png'
 
+    metadata_corpus = GaleMetadata
+
     def sources(self, start, end):
         filename, sheet = self.metafile
-        metadata_corpus = GaleMetadata(self.data_directory, filename, sheet)
+        metadata_corpus = self.metadata_corpus(self.data_directory, filename, sheet)
         all_metadata = {row['issue_id']: row for row in metadata_corpus.documents()}
 
         for issue_id in tqdm(list(all_metadata.keys())):
@@ -269,11 +294,12 @@ class GaleCorpus(XMLCorpusDefinition):
 
     @property
     def page_no(self):
+        # note that page number is not an integer, because it can sometimes be a roman numeral
         return FieldDefinition(
             name="page_no",
             display_name="Page number",
             description="At which page the article starts.",
-            es_mapping={"type": "integer"},
+            es_mapping={"type": "keyword"},
             extractor=extract.XML(
                 lambda metadata: Tag("id", string=metadata["id"]),
                 ParentTag(2),

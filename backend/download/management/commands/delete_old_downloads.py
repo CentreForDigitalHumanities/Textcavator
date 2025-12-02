@@ -7,7 +7,7 @@ from download.models import Download, csv_directory
 class Command(BaseCommand):
     help = '''
     Delete all downloads older than 90 days and remove all files in the downloads folder
-    that are not related to a download object (typically from older I-analyzer versions).
+    that are not related to a download object (typically from older Textcavator versions).
 
     This can be used to reduce storage in the downloads folder.
     '''
@@ -38,9 +38,15 @@ class Command(BaseCommand):
         response = input().lower()
 
         if response == 'y':
+            print('Removing downloads records...')
             old_downloads.delete()
+
+            print('Removing orphan files...')
             for path in orphan_files:
-                os.remove(path)
+                try:
+                    os.remove(path)
+                except Exception as e:
+                    print(self.style.WARNING(f'Could not remove {path}: {e}'))
             print(self.style.SUCCESS('Finished'))
         else:
             print('No action taken.')

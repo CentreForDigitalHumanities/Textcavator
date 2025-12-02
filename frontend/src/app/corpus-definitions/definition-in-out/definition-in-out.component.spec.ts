@@ -3,9 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DefinitionInOutComponent } from './definition-in-out.component';
 import { DefinitionJsonUploadComponent } from '../definition-json-upload/definition-json-upload.component';
 import { SharedModule } from '@shared/shared.module';
-import { ApiService } from '@services';
+import { ApiService, CorpusService } from '@services';
 import { ApiServiceMock } from 'mock-data/api';
 import { ActivatedRoute } from '@angular/router';
+import { CorpusServiceMock } from '@mock-data/corpus';
 
 describe('DefinitionInOutComponent', () => {
     let component: DefinitionInOutComponent;
@@ -20,6 +21,7 @@ describe('DefinitionInOutComponent', () => {
             providers: [
                 { provide: ApiService, useClass: ApiServiceMock },
                 { provide: ActivatedRoute, useValue: mockRoute },
+                { provide: CorpusService, useClass: CorpusServiceMock },
             ],
         })
             .compileComponents();

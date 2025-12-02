@@ -56,7 +56,7 @@ If your data contains **date fields**, make sure that they are formatted correct
 
 If your are processing your data in Python, you can use the [Python csv module](https://docs.python.org/3/library/csv.html#module-csv) to export your data.
 
-Below is an example script to save a CSV file suitable for I-analyzer. The script is using the default options when writing a CSV.
+Below is an example script to save a CSV file suitable for Textcavator. The script is using the default options when writing a CSV.
 
 ```python
 import csv

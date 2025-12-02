@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { commonTestBed } from '../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 import { EntityToggleComponent } from './entity-toggle.component';
 
 describe('EntityToggleComponent', () => {

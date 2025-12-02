@@ -10,7 +10,7 @@ pytest
 pytest-django
 pytest-xdist
 pytest-celery
-elasticsearch
+elasticsearch>=8,<9
 nltk
 beautifulsoup4
 lxml
@@ -19,8 +19,7 @@ textdistance
 gensim
 scikit-learn
 pandas
-celery
-Redis
+celery[redis]
 pypdf
 openpyxl
 tqdm

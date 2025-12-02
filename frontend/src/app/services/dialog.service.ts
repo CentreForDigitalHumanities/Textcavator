@@ -84,7 +84,7 @@ export class DialogService {
         });
 
         const doc = await documentation;
-        const html = marked.parse(doc);
+        const html = await marked.parse(doc);
         this.behavior.next({
             identifier,
             html,
@@ -101,7 +101,7 @@ export class DialogService {
 
     private async parseResponse(response: Response) {
         const text = await response.text();
-        const html = marked.parse(text);
+        const html = await marked.parse(text);
         // mark that the output of the markdown service is safe to accept: it can contain style and id attributes,
         // which normally aren't liked by Angular
         return this.domSanitizer.bypassSecurityTrustHtml(html.replace(/<a href=/g, '<a target="_blank" href='));

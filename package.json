@@ -1,6 +1,6 @@
 {
-  "name": "i-analyzer",
-  "version": "5.23.0",
+  "name": "textcavator",
+  "version": "5.24.0",
   "license": "MIT",
   "scripts": {
     "postinstall": "yarn install-back && yarn install-front",

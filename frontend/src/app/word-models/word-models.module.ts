@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { WordmodelsService } from '@services';
 import { SharedModule } from '@shared/shared.module';
-import { CorpusModule } from '../corpus-header/corpus.module';
+import { CorpusModule } from '../corpus/corpus.module';
 import { VisualizationModule } from '../visualization/visualization.module';
 import { QueryFeedbackComponent } from './query-feedback/query-feedback.component';
 import { RelatedWordsComponent } from './related-words/related-words.component';

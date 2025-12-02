@@ -6,21 +6,23 @@
       "esModuleInterop": true,
       "sourceMap": true,
       "declaration": false,
-      "moduleResolution": "node",
+      "moduleResolution": "bundler",
       "experimentalDecorators": true,
       "target": "ES2022",
       "typeRoots": ["node_modules/@types"],
       "lib": ["es2022", "dom", "dom.iterable"],
-      "module": "esnext",
+      "module": "es2022",
       "baseUrl": "src",
       "paths": {
+          "@app/*": ["app/*"],
           "@shared/*": ["app/shared/*"],
           "@models": ["app/models"],
           "@models/*": ["app/models/*"],
           "@services": ["app/services"],
           "@services/*": ["app/services/*"],
           "@utils/*": ["app/utils/*"],
-          "@environments/*": ["environments/*"]
+          "@environments/*": ["environments/*"],
+          "@mock-data/*": ["mock-data/*"]
       },
       "useDefineForClassFields": false,
       "resolveJsonModule": true

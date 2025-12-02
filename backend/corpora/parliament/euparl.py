@@ -11,7 +11,7 @@ from langcodes import standardize_tag, Language
 import requests
 from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import DCTERMS, FOAF, RDFS, RDF as RDFNS
-from ianalyzer_readers.extract import Backup, Combined, JSON, Metadata, RDF
+from ianalyzer_readers.extract import Backup, Combined, JSON, Metadata, RDF, Pass
 
 from addcorpus.es_mappings import keyword_mapping
 from addcorpus.python_corpora.corpus import (
@@ -155,7 +155,7 @@ class ParliamentEurope(Parliament):
                 metadata["subcorpus"] = i
                 yield filename, metadata
 
-    def source2dicts(self, source):
+    def source2dicts(self, source, **kwargs):
         filename, metadata = source
 
         subcorpus_index = metadata["subcorpus"]
@@ -302,6 +302,9 @@ def api_get_party_name_from_id(party_id: str) -> str:
         return None
     return party_response.json().get('data')[0].get('prefLabel').get('en')
 
+def first(values):
+    if len(values):
+        return values[0]
 
 class ParliamentEuropeFromAPI(JSONCorpusDefinition):
     """
@@ -367,6 +370,7 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
     party.extractor = Combined(
         JSON(
             "data.had_participation.had_participant_person",
+            transform=first,
         ),
         Metadata('date'),
         transform=api_get_party_name,
@@ -374,7 +378,10 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
 
     party_id = field_defaults.party_id()
     party_id.extractor = Combined(
-        JSON("data.had_participation.had_participant_person"),
+        JSON(
+            "data.had_participation.had_participant_person",
+            transform=first
+        ),
         Metadata('date'),
         transform=api_get_party_id,
     )
@@ -387,22 +394,31 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
     source_language.extractor = JSON("originalLanguage", transform=api_get_language)
 
     speaker = field_defaults.speaker()
-    speaker.extractor = JSON(
-        "data.had_participation.had_participant_person",
+    speaker.extractor = Pass(
+            JSON(
+            "data.had_participation.had_participant_person",
+            transform=first,
+        ),
         transform=api_get_speaker_name,
     )
 
     speaker_country = FieldDefinition(
         name='speaker_country',
-        extractor=JSON(
-            "data.had_participation.had_participant_person",
+        extractor=Pass(
+            JSON(
+                "data.had_participation.had_participant_person",
+                transform=first,
+            ),
             transform=api_get_speaker_country,
         ),
     )
 
     speaker_id = field_defaults.speaker_id()
-    speaker_id.extractor = JSON(
-        "data.had_participation.had_participant_person",
+    speaker_id.extractor = Pass(
+        JSON(
+            "data.had_participation.had_participant_person",
+            transform=first,
+        ),
         transform=api_get_speaker_id,
     )
 

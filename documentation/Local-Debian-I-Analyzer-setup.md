@@ -1,4 +1,4 @@
-This is a recipe for installing I-Analyzer on Debian 10 Buster. It uses [Linux containers via LXD](https://linuxcontainers.org/lxd/getting-started-cli/) to keep things isolated from the host system, or you can skip the LXD part and move to installing the prerequisites. Modify as needed.
+This is a recipe for installing Textcavator on Debian 10 Buster. It uses [Linux containers via LXD](https://linuxcontainers.org/lxd/getting-started-cli/) to keep things isolated from the host system, or you can skip the LXD part and move to installing the prerequisites. Modify as needed.
 
 # LXD Container setup
 
@@ -106,8 +106,8 @@ Chrome / chromedriver seems to be needed as well?
     pip3 install virtualenv # virtualenv may not be needed if using a container?
 
 
-# I-Analyzer setup
+# Textcavator setup
 
 If using LXD, login as the user you created: `lxc exec IAnalyzer -- su --login yourname`
 
-Now follow the installation as described in the [README](https://github.com/CentreForDigitalHumanities/I-analyzer/blob/develop/README.md).
+Now follow the installation as described in the [README](https://github.com/CentreForDigitalHumanities/Textcavator/blob/develop/README.md).

@@ -22,8 +22,8 @@
     "@angular/animations": "^19.1.4",
     "@angular/cdk": "^19.1.2",
     "@angular/cli": "^19.1.5",
-    "@angular/common": "^19.1.4",
-    "@angular/compiler": "^19.1.4",
+    "@angular/common": "^19.2.16",
+    "@angular/compiler": "^19.2.17",
     "@angular/core": "^19.1.4",
     "@angular/forms": "^19.1.4",
     "@angular/localize": "^19.1.4",
@@ -53,18 +53,21 @@
     "iv-viewer": "^2.0.1",
     "jsonschema": "^1.5.0",
     "lodash": "^4.17.21",
-    "marked": "^4.1.1",
+    "marked": "^15.0.0",
     "moment": "^2.29.4",
     "ng2-pdf-viewer": "^10.2.2",
     "ngx-cookie-service": "19.1.0",
     "ngx-matomo-client": "7.0.1",
+    "ngx-quill": "^27.0.1",
     "primeng": "^19.0.5",
+    "quill": "^2.0.3",
     "rxjs": "^7.8.1",
     "smoothscroll-polyfill": "^0.3.6",
+    "turndown": "^7.2.1",
     "typescript": "5.7.3",
-    "vega": "^5.32.0",
-    "vega-embed": "^6.26.0",
-    "vega-lite": "^5.19.0",
+    "vega": "^6.2.0",
+    "vega-embed": "^7.1.0",
+    "vega-lite": "^6.4.1",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
@@ -79,6 +82,7 @@
     "@types/jasmine": "~3.6.0",
     "@types/lodash": "^4.14.149",
     "@types/node": "^22.13.17",
+    "@types/turndown": "^5.0.5",
     "@typescript-eslint/eslint-plugin": "~8.29.0",
     "@typescript-eslint/parser": "~8.29.0",
     "eslint": "^8.57.0",
@@ -88,7 +92,7 @@
     "karma-coverage-istanbul-reporter": "^3.0.2",
     "karma-jasmine": "^4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "vite": "^6.3.6"
+    "vite": "^6.4.1"
   },
   "peerDependencies": {
     "webpack": "^5.1.0"

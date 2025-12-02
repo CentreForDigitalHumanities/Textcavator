@@ -1,0 +1,40 @@
+@use '../../../utilities';
+
+.skip-to-content-link {
+    left: 0%;
+    position: absolute;
+    z-index: 1;
+    transform: translateY(-100%);
+    padding: 10px;
+
+    &:focus {
+        transform: translateY(0%);
+    }
+}
+
+.navbar-item img {
+    max-height: 3rem;
+}
+
+.navbar-item:not(.has-dropdown) {
+    &:hover, &.is-active {
+        background-color: var(--bulma-primary-50);
+        color: var(--bulma-primary-50-invert);
+    }
+}
+
+.navbar-burger {
+    color: var(--bulma-primary-invert);
+}
+
+
+.navbar-brand .navbar-item {
+    font-family: utilities.$brand-font;
+    font-size: utilities.$size-4;
+    margin-right: 0.5em;
+}
+
+
+.app-subtitle {
+    font-style: italic;
+}

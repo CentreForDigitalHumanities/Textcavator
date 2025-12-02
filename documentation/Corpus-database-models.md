@@ -31,7 +31,7 @@ If a corpus by the same name already exists in the database, the command will co
 
 Corpora have an `active` status that determines whether they are available for searching. In addition, you can configure the `groups` connected to a corpus, which determines who has access to it. A user will see a corpus if it is active and they are in a group that is given access. (A superuser implicitly has access to all active corpora.)
 
-I-analyzer always includes a group named `'basic'`, which everyone is a member of by default, including anonymous users. If you want a corpus to be public, add this group to it.
+Textcavator always includes a group named `'basic'`, which everyone is a member of by default, including anonymous users. If you want a corpus to be public, add this group to it.
 
 While a corpus is inactive, its validation is less strict. This allows you to build a database-only corpus in steps, and save an incomplete definition as a work in progress. See [Corpus validation](/documentation/Corpus-validation.md) for more details.
 

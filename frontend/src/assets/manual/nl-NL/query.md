@@ -1,4 +1,4 @@
-De database waar I-analyzer mee werkt is georganiseerd met Elasticsearch. Om daarin te zoeken, is het nodig termen en operatoren te gebruiken, die Elasticsearch “begrijpt”. Deze worden uitgebreid uitgelegd in de [Simple Query String-handleiding van Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/8.11/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
+De database waar Textcavator mee werkt is georganiseerd met Elasticsearch. Om daarin te zoeken, is het nodig termen en operatoren te gebruiken, die Elasticsearch “begrijpt”. Deze worden uitgebreid uitgelegd in de [Simple Query String-handleiding van Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/8.11/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
 
 Hieronder volgt een beschrijving van de ondersteunde operatoren.
 
