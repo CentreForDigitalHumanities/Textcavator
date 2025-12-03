@@ -12,7 +12,7 @@ export interface Segment {
 export class AnnotationSegmentsPipe implements PipeTransform {
 
     transform(content: string): Segment[] {
-        const pattern = /\[([^\]]+)\]\(([^\)]+)\)/g;
+        const pattern = /\[([^\]]+)\]\(([^\)]+)\)/g; // [annotatedText](annotation)
         const segments: Segment[] = [];
         let index = 0;
 

@@ -20,8 +20,8 @@ export class EntityLegendComponent implements OnChanges {
 
     ngOnChanges(): void {
         this.entities = Object.values(entityKeys).filter(entityName => {
-            const key = _.invert(entityKeys)[entityName];
-            const pattern = new RegExp(`\\[[^\\]]+\\]\\(${key}\\)`, 'g');
+            const key = _.invert(entityKeys)[entityName]; // e.g. 'PER'
+            const pattern = new RegExp(`\\[[^\\]]+\\]\\(${key}\\)`, 'g'); // e.g. '[William Shakespeare](PER)'
             return pattern.test(this.annotatedContent);
         });
     }
