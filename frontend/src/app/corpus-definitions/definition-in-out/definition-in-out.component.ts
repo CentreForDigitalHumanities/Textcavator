@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { pageTitle } from '@utils/app';
+import { environment } from '@environments/environment';
 
 @Component({
     selector: 'ia-definition-in-out',
@@ -19,12 +20,14 @@ import { pageTitle } from '@utils/app';
 export class DefinitionInOutComponent {
     actionIcons = actionIcons;
     formIcons = formIcons;
+    appName = environment.appName;
 
     reset$: Subject<void> = new Subject();
 
     corpus: CorpusDefinition;
 
     error: Error;
+
 
     constructor(
         private apiService: ApiService,
