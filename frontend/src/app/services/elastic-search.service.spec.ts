@@ -3,8 +3,6 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ElasticSearchService, SearchResponse } from './elastic-search.service';
 import { QueryModel } from '@models';
 import { corpusFactory } from '@mock-data/corpus';
-import { EntityService } from './entity.service';
-import { EntityServiceMock } from '@mock-data/entity';
 import { TagServiceMock } from '@mock-data/tag';
 import { TagService } from './tag.service';
 import { TermsAggregator } from '@models/aggregation';
@@ -72,7 +70,6 @@ describe('ElasticSearchService', () => {
     imports: [],
     providers: [
         ElasticSearchService,
-        { provide: EntityService, useValue: new EntityServiceMock() },
         { provide: TagService, useValue: new TagServiceMock() },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting()
