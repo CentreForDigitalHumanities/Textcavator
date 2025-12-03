@@ -13,7 +13,7 @@ from addcorpus.validation.creation import (
     validate_visualizations_with_mapping)
 from addcorpus.validation.indexing import (validate_essential_fields,
                                            validate_has_configuration,
-                                           validate_has_data_directory,
+                                           validate_has_data,
                                            validate_language_field)
 from addcorpus.validation.publishing import (validate_complete_metadata,
                                              validate_default_sort,
@@ -110,7 +110,7 @@ class Corpus(models.Model):
         config = self.configuration_obj
         fields = config.fields.all()
 
-        validate_has_data_directory(self)
+        validate_has_data(self)
         validate_essential_fields(fields)
         validate_language_field(self)
 
@@ -158,6 +158,10 @@ class Corpus(models.Model):
                     'Corpus is set to "active" but does not meet requirements for publication.',
                     e
                 ])
+
+    @property
+    def datafiles(self) -> models.QuerySet['CorpusDataFile']:
+        return CorpusDataFile.objects.filter(corpus=self)
 
 
 class CorpusConfiguration(models.Model):
@@ -265,7 +269,8 @@ class CorpusConfiguration(models.Model):
         max_length=200,
         validators=[validate_source_data_directory],
         blank=True,
-        help_text='path to directory containing source data files',
+        help_text='Path to directory containing source data files. For database-only ' \
+            'corpora, this can be used to override the CorpusDataFile for the corpus.',
     )
     source_data_delimiter = models.CharField(
         max_length=1,
