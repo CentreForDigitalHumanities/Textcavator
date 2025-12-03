@@ -253,13 +253,11 @@ def json_mock_corpus(db, json_corpus_definition) -> Corpus:
     with open(filepath) as f:
         serializer = CorpusDataFileSerializer(data={
             'corpus': corpus.pk,
-            'file': File(f, name='example.csv')
+            'file': File(f, name='example.csv'),
+            'confirmed': True,
         })
         assert serializer.is_valid()
-        datafile = serializer.create(serializer.validated_data)
-
-    corpus.configuration.data_directory = os.path.join(settings.MEDIA_ROOT, datafile.upload_dir())
-    corpus.configuration.save()
+        serializer.create(serializer.validated_data)
 
     return corpus
 
