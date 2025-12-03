@@ -14,7 +14,7 @@ Textcavator is designed as a flexible application that can serve a variety of re
 
 We have worked with different research projects over time to add corpora and develop the application. You can find more information about some of these projects in our [portfolio](https://cdh.uu.nl/portfolio/).
 
-Textcavator is developed as open source software. The [source code of Textcavator](https://github.com/CentreForDigitalHumanities/I-analyzer) is shared with an MIT licence.
+Textcavator is developed as open source software. The [source code of Textcavator](https://github.com/CentreForDigitalHumanities/Textcavator) is shared with an MIT licence.
 
 ## Research using Textcavator
 
@@ -45,4 +45,4 @@ Do you think that some of these may apply to you? We are still interested in hea
 
 For questions, suggestions, or adding new data: contact us via [cdh@uu.nl](mailto:cdh@uu.nl).
 
-For small suggestions, feedback, or bug reports, you can also make an issue on the [Textcavator github repository](https://github.com/CentreForDigitalHumanities/I-analyzer/issues).
+For small suggestions, feedback, or bug reports, you can also make an issue on the [Textcavator github repository](https://github.com/CentreForDigitalHumanities/Textcavator/issues).
