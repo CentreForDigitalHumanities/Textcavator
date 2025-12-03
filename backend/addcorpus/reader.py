@@ -48,5 +48,5 @@ def _corpus_sources(corpus: Corpus) -> List[str]:
         data_directory = corpus.configuration.data_directory
         return glob.glob(f'{data_directory}/**/*.csv', recursive=True)
     else:
-        datafile = CorpusDataFile.objects.get(corpus=corpus, confirmed=True)
-        return [os.path.abspath(datafile.file.path)]
+        datafiles = CorpusDataFile.objects.filter(corpus=corpus, confirmed=True)
+        return [os.path.abspath(df.file.path) for df in datafiles]
