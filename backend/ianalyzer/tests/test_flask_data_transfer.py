@@ -14,10 +14,6 @@ from users.models import CustomUser
 _here = os.path.abspath(os.path.dirname(__file__))
 flask_test_data_dir = os.path.join(_here, 'flask_test_data')
 
-@pytest.fixture(autouse=True)
-def clear_db():
-    # remove mock corpora
-    Corpus.objects.all().delete()
 
 def test_legacy_data_import():
     user_data = import_table_data(flask_test_data_dir, 'user')

@@ -6,9 +6,9 @@ from es.models import Index
 from indexing.models import IndexJob, CreateIndexTask
 from indexing.run_job import perform_indexing
 
-@pytest.fixture(scope='session')
-def mock_corpus():
-    return 'times'
+@pytest.fixture()
+def mock_corpus(load_test_corpus):
+    return load_test_corpus('times')
 
 
 @pytest.fixture()

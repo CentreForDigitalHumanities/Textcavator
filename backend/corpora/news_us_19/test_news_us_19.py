@@ -9,5 +9,5 @@ def test_news_us_19(settings, db, admin_client):
     }
     settings.NEWS_US_19_DATA = ''
 
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'news_us_19')
     assert corpus['title'] == '19th Century US Newspapers'
