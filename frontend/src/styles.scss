@@ -225,6 +225,14 @@ table.spreadsheet {
     }
 }
 
+.field.is-disabled {
+    color: var(--bulma-text-weak);
+
+    label {
+        color: var(--bulma-text-weak);
+    }
+}
+
 // do not use extra-bold weight for titles
 
 .title {
