@@ -38,7 +38,7 @@ Make a tag for your release and merge it into `develop` and `master`. You can do
 
 ## Check configuration changes
 
-You'll need this for the following two steps: write down what needs to be changed in the configuration of an I-analyzer server (development or production).
+You'll need this for the following two steps: write down what needs to be changed in the configuration of a Textcavator server (development or production).
 
 Look for changes in [settings.py](/backend/ianalyzer/settings.py) or [environment.ts](/frontend/src/environments/environment.ts). You can also look through the list of pull requests, which should note any configuration changes in their description.
 

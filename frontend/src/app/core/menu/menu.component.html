@@ -15,10 +15,10 @@
                 <img *ngIf="brand.logo"
                     [src]="brand.logo"
                     [alt]="brand.logoAlt"
-                    [attr.aria-hidden]="brand.logoAlt?.length">
+                    [attr.aria-hidden]="!brand.logoAlt?.length">
                 <span>{{brand.title}}</span>
                 <span *ngIf="brand.subtitle">
-                    <span class="app-subtitle">{{brand.subtitle}}</span>
+                    |&nbsp; <span class="app-subtitle">{{brand.subtitle}}</span>
                 </span>
             </a>
 

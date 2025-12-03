@@ -1,8 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Corpus } from '@models/corpus';
 import * as _ from 'lodash';
 import { actionIcons } from '@shared/icons';
 import { environment } from '@environments/environment';
+import { BehaviorSubject } from 'rxjs';
+import { showLoading } from '@app/utils/utils';
+import { CorpusService } from '@app/services';
 
 
 @Component({
@@ -12,19 +15,17 @@ import { environment } from '@environments/environment';
     standalone: false
 })
 export class CorpusSelectionComponent implements OnInit {
-    @Input()
     public items: Corpus[];
 
     filteredItems: Corpus[];
 
-
     actionIcons = actionIcons;
 
-    showCorpusFilters: boolean;
+    showCorpusFilters = _.get(environment, 'showCorpusFilters', true);
 
-    constructor() {
-        this.showCorpusFilters = _.get(environment, 'showCorpusFilters', true);
-     }
+    isLoading = new BehaviorSubject<boolean>(false);
+
+    constructor(private corpusService: CorpusService) { }
 
     get displayItems(): Corpus[] {
         if (_.isUndefined(this.filteredItems)) {
@@ -35,5 +36,10 @@ export class CorpusSelectionComponent implements OnInit {
     }
 
     ngOnInit() {
+        showLoading(
+            this.isLoading,
+            this.corpusService.get(true).then((items) => (this.items = items))
+        );
+
     }
 }

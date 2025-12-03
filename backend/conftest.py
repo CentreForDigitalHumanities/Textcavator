@@ -31,14 +31,14 @@ def media_dir(tmpdir, settings):
 def user_credentials():
     return {'username': 'basic_user',
             'password': 'basic_user',
-            'email': 'basicuser@ianalyzer.com'}
+            'email': 'basicuser@textcavator.com'}
 
 
 @pytest.fixture
 def admin_credentials():
     return {'username': 'admin',
             'password': 'admin',
-            'email': 'admin@ianalyzer.com'}
+            'email': 'admin@textcavator.com'}
 
 
 @pytest.fixture

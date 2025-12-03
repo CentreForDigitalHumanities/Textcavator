@@ -1,17 +1,7 @@
 <section class="section">
-    <div class="container is-readable">
-        <h1 class="title">
-            Welcome
-        </h1>
-
-        <p class="subtitle">
-            Select a corpus to search through
-        </p>
-
+    <div class="container is-readable" [class.is-loading]="isLoading | async">
         <ng-container *ngIf="items">
             <ng-container *ngIf="showCorpusFilters; else spacer">
-                <hr>
-
                 <div class="block">
                     <ia-corpus-filter [corpora]="items" (filtered)="filteredItems = $event"></ia-corpus-filter>
                 </div>
@@ -25,7 +15,7 @@
             </div>
         </ng-container>
 
-        <p *ngIf="displayItems?.length == 0">
+        <p *ngIf="displayItems?.length === 0">
             <i>No corpora to display.</i>
         </p>
     </div>

@@ -48,6 +48,7 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
         BrowserModule,
         CommonModule,
         DropdownModule,
+        DialogModule,
         FormsModule,
         FontAwesomeModule,
         BalloonDirective,

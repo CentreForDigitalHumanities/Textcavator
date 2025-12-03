@@ -19,7 +19,7 @@ Types of data
 '''
 
 class MappingType(Enum):
-    'Elasticsearch mapping types that are implemented in I-analyzer'
+    'Elasticsearch mapping types that are implemented in Textcavator'
 
     TEXT = 'text'
     KEYWORD = 'keyword'

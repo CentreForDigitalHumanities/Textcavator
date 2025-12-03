@@ -1,6 +1,6 @@
 # Corpus documentation pages
 
-Corpora can include markdown templates containing documentation. I-analyzer supports several types of documentation pages.
+Corpora can include markdown templates containing documentation. Textcavator supports several types of documentation pages.
 
 - general information
 - citation guidelines

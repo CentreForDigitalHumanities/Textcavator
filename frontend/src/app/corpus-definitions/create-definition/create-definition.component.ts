@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { APIEditableCorpus, CorpusDefinition } from '@models/corpus-definition';
-import { ApiService } from '@services';
+import { ApiService, CorpusService } from '@services';
 import { actionIcons, formIcons } from '@shared/icons';
 import { Subject } from 'rxjs';
 import { SlugifyPipe } from '@shared/pipes/slugify.pipe';
@@ -32,8 +32,9 @@ export class CreateDefinitionComponent {
         private router: Router,
         private slugify: SlugifyPipe,
         private title: Title,
+        private corpusService: CorpusService,
     ) {
-        this.corpus = new CorpusDefinition(this.apiService);
+        this.corpus = new CorpusDefinition(this.apiService, this.corpusService);
         this.title.setTitle(pageTitle('New corpus'));
     }
 

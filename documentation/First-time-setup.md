@@ -1,6 +1,6 @@
 # First time setup (for developers)
 
-These are instructions to set up an I-analyzer server. If you are going to develop I-analyzer, start by following these instructions.
+These are instructions to set up an Textcavator server. If you are going to develop Textcavator, start by following these instructions.
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ These are instructions to set up an I-analyzer server. If you are going to devel
 * [Node.js](https://nodejs.org/). See [.nvmrc](/.nvmrc) for the recommended version.
 * [Yarn](https://yarnpkg.com/)
 
-The documentation includes a [recipe for installing the prerequisites on Debian 10](./documentation/Local-Debian-I-Analyzer-setup.md)
+The documentation includes a [recipe for installing the prerequisites on Debian 10](./documentation/Local-Debian-Textcavator-setup.md)
 
 ## First-time setup
 
@@ -55,7 +55,7 @@ Note: you can also call the .env file .myenv and specify this during startup:
 
 ## Adding corpora
 
-These instructions are for adding *already defined* corpora to your own environment. This means you would be working with a corpus that is already used in I-analyzer or by other developers.
+These instructions are for adding *already defined* corpora to your own environment. This means you would be working with a corpus that is already used in Textcavator or by other developers.
 
 In a first-time setup, it is recommended that you add at least one existing corpus before creating your own. Documentation on creating new corpus definitions is in [Writing a corpus definition in Python](./Writing-a-corpus-definition-in-Python.md) / [Writing a corpus definition in JSON](./Writing-a-corpus-definition-in-JSON.md).
 
@@ -73,9 +73,9 @@ The source files of a corpus are not included in this directory; ask another dev
 
 Note: database-only corpora are still in development and not yet recommended for first-time users.
 
-To add a database-only corpus, you will need a JSON definition of the corpus, and a directory with (a sample of) the pre-processed source data. To retrieve a JSON definition from a running I-analyzer server, log in as a staff user and visit `/corpus-definitions/`. Open the corpus you want to import and click "Download JSON".
+To add a database-only corpus, you will need a JSON definition of the corpus, and a directory with (a sample of) the pre-processed source data. To retrieve a JSON definition from a running Textcavator server, log in as a staff user and visit `/corpus-definitions/`. Open the corpus you want to import and click "Download JSON".
 
-1. Start up your I-analyzer server and log in as a staff user. Go to `localhost:4200/corpus-definitions/new`. Upload the JSON definition file and save.
+1. Start up your Textcavator server and log in as a staff user. Go to `localhost:4200/corpus-definitions/new`. Upload the JSON definition file and save.
 2. Visit the admin menu (`localhost:4200/admin`). Go to "corpus configurations" and select your corpus. In the "data directory" field, add the path to your source data directory.
 3. Activate your python virtual environment. Create an ElasticSearch index from the source files by running `yarn django index {corpusname}`. See [Indexing](documentation/Indexing-corpora.md) for more information.
 4. Visit the admin menu again. Go to "corpora" and select te corpus. Set "active" to true and save.

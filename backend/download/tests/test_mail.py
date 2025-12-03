@@ -29,5 +29,5 @@ def test_download_mail(admin_user, admin_client, finished_download):
 
     csv_mail = mail.outbox[0]
     assert csv_mail
-    assert csv_mail.subject == 'IANALYZER CSV download'
+    assert csv_mail.subject == 'Textcavator CSV download'
     assert csv_mail.to == [admin_user.email]

@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
-import { ApiService } from '@services';
+import { ApiService, CorpusService } from '@services';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, share } from 'rxjs/operators';
+import { filter, share, switchMap, tap } from 'rxjs/operators';
+import { findByName } from '@app/utils/utils';
 
 export type Delimiter = ',' | ';' | '\t';
 
@@ -110,6 +111,7 @@ export class CorpusDefinition {
 
     constructor(
         private apiService: ApiService,
+        private corpusService: CorpusService,
         public id?: number,
     ) {
         if (this.id) {
@@ -150,7 +152,14 @@ export class CorpusDefinition {
             ? this.apiService.updateCorpus(this.id, data)
             : this.apiService.createCorpus(data);
         const result$ = request$.pipe(share());
+
         result$.subscribe((result) => this.setFromAPIData(result));
+        // refresh corpus data if applicable
+        result$.pipe(
+            switchMap(() => this.requireCorpusRefresh()),
+            filter(_.identity)
+        ).subscribe(() => this.corpusService.get(true));
+
         return result$;
     }
 
@@ -171,6 +180,23 @@ export class CorpusDefinition {
 
         // do not edit properties AFTER this !!!
         this.loading$.next(false);
+    }
+
+    /** whether the list of searchable corpora must be refreshed after
+     * changes to this corpus
+     */
+    private requireCorpusRefresh(): Promise<boolean> {
+        // if this corpus is active...
+        if (this.active) {
+            return Promise.resolve(true);
+        }
+        // .. or if it's not active but was already fetched as active
+        if (this.corpusService.corporaPromise) {
+            return this.corpusService.corporaPromise.then(corpora =>
+                !!findByName(corpora, this.definition.name)
+            );
+        }
+        return Promise.resolve(false);
     }
 };
 
