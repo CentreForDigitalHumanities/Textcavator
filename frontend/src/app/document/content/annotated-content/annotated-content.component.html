@@ -1,11 +1,9 @@
 @for (segment of content | annotationSegments; track $index) {
     @let annotation = annotationName(segment.annotation);
-    @if (annotation) {
-        <mark class="entity-{{annotation}}">
-            {{segment.content}}
-            <fa-icon [icon]="entityIcons[annotation]"  class="entity-icon"/>
-        </mark>
-    } @else {
-        {{segment.content}}
-    }
+    @if (annotation)
+        {<mark class="entity-{{annotation}}" ngPreserveWhitespaces
+            >{{segment.content}} <fa-icon [icon]="entityIcons[annotation]"
+            class="entity-icon"/></mark>}
+    @else
+        {<ng-container ngPreserveWhitespaces>{{segment.content}}</ng-container>}
 }
