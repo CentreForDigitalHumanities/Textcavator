@@ -6,10 +6,10 @@
         }
         <ia-entity-legend [annotatedContent]="value" />
     } @else {
-        @let paragraphs = document.fieldValue(field) | paragraph;
+        @let paragraphs = document.fieldValue(field) | elasticsearchHighlight:field:document | paragraph;
         @for (par of paragraphs; track $index) {
             <p ia-highlighted-content
-                [content]="par | elasticsearchHighlight:field:document">
+                [content]="par">
             </p>
         }
     }
