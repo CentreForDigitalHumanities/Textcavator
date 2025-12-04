@@ -2,7 +2,7 @@
 
 > **This documentation is not up to date with version 4.x**
 
-**Authentication** is the process of logging in the user, this can be done by logging in directly on the user database or using a Solis account. **Authorization** is the process of determining what that logged in user is allowed to do: e.g. go to the admin environment and search certain corpora. Both of these are modeled on the front end by the [`User class`](https://github.com/CentreForDigitalHumanities/I-analyzer/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/models/user.ts) and handled by the [`User service`](https://github.com/CentreForDigitalHumanities/I-analyzer/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/services/user.service.ts).
+**Authentication** is the process of logging in the user, this can be done by logging in directly on the user database or using a Solis account. **Authorization** is the process of determining what that logged in user is allowed to do: e.g. go to the admin environment and search certain corpora. Both of these are modeled on the front end by the [`User class`](https://github.com/CentreForDigitalHumanities/Textcavator/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/models/user.ts) and handled by the [`User service`](https://github.com/CentreForDigitalHumanities/Textcavator/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/services/user.service.ts).
 
 A user needs to be logged into both the Flask server (back end) and the Angular user interface (front end). The back end authentication and authorization is essential for the actual security: relying only on front end security would allow accessing the data through manually sending requests. Providing this security on the user interface is mostly for the usability of the application: show only corpora which can actually be queried, display the currently logged on user (or that the user isn't logged on yet) and what other parts of the application might actually be accessible. Ideally both the back end and front end would be in perfect harmony about the user's session status. This is however complicated because sessions are temporary: both the front-end and back-end can separately decide to cancel sessions. Generally because they expire, but it could also happen if a server is reset, the user logs off or the user decides to throw away cookies.
 
@@ -26,7 +26,7 @@ Flask, like most back end frameworks, will expire a session after a certain peri
 
 ## Check before querying
 
-The [`ApiRetryService.requireLogin`](https://github.com/CentreForDigitalHumanities/I-analyzer/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/services/api-retry.service.ts#L18) method is used by the query service to confirm that the session is still active before querying the server. If the user isn't logged on, it will fallback to "guest" or mark the session as expired.
+The [`ApiRetryService.requireLogin`](https://github.com/CentreForDigitalHumanities/Textcavator/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/services/api-retry.service.ts#L18) method is used by the query service to confirm that the session is still active before querying the server. If the user isn't logged on, it will fallback to "guest" or mark the session as expired.
 
 ## Page opened in new tab/page
 
@@ -34,4 +34,4 @@ When opening the front end on a new page, nothing is known yet about any active 
 
 ## Navigating
 
-To check the authorization on (manual) navigation a [`LoggedOnGuard`](https://github.com/CentreForDigitalHumanities/I-analyzer/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/logged-on.guard.ts) and [`CorpusGuard`](https://github.com/CentreForDigitalHumanities/I-analyzer/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/corpus.guard.ts) exist. Both can (depending on the route) check the rights and if necessary redirect to the log on page detailing the lack of authorization.
+To check the authorization on (manual) navigation a [`LoggedOnGuard`](https://github.com/CentreForDigitalHumanities/Textcavator/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/logged-on.guard.ts) and [`CorpusGuard`](https://github.com/CentreForDigitalHumanities/Textcavator/blob/aee207f1a4e1a6fd2521f05f3f34839ab902247c/web-ui/src/app/corpus.guard.ts) exist. Both can (depending on the route) check the rights and if necessary redirect to the log on page detailing the lack of authorization.

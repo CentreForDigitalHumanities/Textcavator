@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { SlugifyPipe } from '@shared/pipes/slugify.pipe';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
+import { environment } from '@environments/environment';
 
 @Component({
     selector: 'ia-create-definition',
@@ -26,6 +27,7 @@ export class CreateDefinitionComponent {
     reset$ = new Subject<void>();
 
     newCorpusTitle: string;
+    appName = environment.appName;
 
     constructor(
         private apiService: ApiService,
