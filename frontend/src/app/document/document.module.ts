@@ -22,6 +22,7 @@ import { KeywordPipe } from './pipes/keyword.pipe';
 import { ParagraphPipe } from './pipes/paragraph.pipe';
 import { SnippetPipe } from './pipes/snippet.pipe';
 import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
+import { HighlightSnippetPipe } from './pipes/highlight-snippet.pipe';
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
         AnnotationSegmentsPipe,
     ],
     imports: [
+        HighlightSnippetPipe,
         DialogModule,
         CorpusModule,
         SharedModule,
