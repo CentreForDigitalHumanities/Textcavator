@@ -20,7 +20,7 @@ When in eternal lines to time thou grow’st,`,
     So long lives this, and this gives life to thee.`,
 ];
 
-fdescribe('elasticsearchHighlightPipe', () => {
+describe('elasticsearchHighlightPipe', () => {
     const field = contentFieldFactory();
     let pipe: ElasticsearchHighlightPipe;
 

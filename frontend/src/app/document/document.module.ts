@@ -48,9 +48,9 @@ import { AnnotatedContentComponent } from './content/annotated-content/annotated
         AnnotationSegmentsPipe,
         HighlightedContentComponent,
         AnnotatedContentComponent,
+        HighlightSnippetPipe,
     ],
     imports: [
-        HighlightSnippetPipe,
         DialogModule,
         CorpusModule,
         SharedModule,

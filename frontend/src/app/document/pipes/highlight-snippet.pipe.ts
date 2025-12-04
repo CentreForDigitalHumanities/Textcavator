@@ -7,7 +7,8 @@ export interface HighlightSegment {
 }
 
 @Pipe({
-    name: 'highlightSnippet'
+    name: 'highlightSnippet',
+    standalone: false,
 })
 export class HighlightSnippetPipe implements PipeTransform {
 

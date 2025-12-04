@@ -7,7 +7,7 @@ import { Component, HostBinding, Input } from '@angular/core';
 })
 export class HighlightedContentComponent {
     /** content with highlights */
-    @Input() content: string;
+    @Input({ required: true }) content: string;
 
     @HostBinding('class') class = 'break-word';
     @HostBinding('style') style = 'white-space: pre-wrap;'
