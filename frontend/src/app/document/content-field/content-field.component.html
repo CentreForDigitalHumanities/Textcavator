@@ -1,9 +1,9 @@
 <div class="content" [attr.lang]="document.language(field)">
     @if (showEntities) {
         @let value = document.namedEntityAnnotatedValue(field) || document.fieldValue(field);
-        @for (p of splitParagraphs(value); track p) {
+        @for (p of splitParagraphs(value); track $index) {
             <p>
-                @for (segment of p | annotationSegments; track segment) {
+                @for (segment of p | annotationSegments; track $index) {
                     @let annotation = annotationName(segment.annotation);
                     @if (annotation) {
                         <mark class="entity-{{annotation}}">

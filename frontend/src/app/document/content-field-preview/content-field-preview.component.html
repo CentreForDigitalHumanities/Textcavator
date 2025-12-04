@@ -1,21 +1,21 @@
-<ng-container *ngIf="field && document">
-    <ng-container *ngIf="document.highlight?.[field.name]; else unhighlightedRow">
-        @for (item of document.highlight[field.name]; track item; let last = $last) {
-            @let segments = item | highlightSnippet;
-            <div class="break-word" style="white-space: pre-wrap;">
-            @for (segment of segments; track segment) {
-                @if (segment.highlight)
-                {<mark class="highlight" ngPreserveWhitespaces>{{segment.content}}</mark>}
-                @else
-                {<ng-container ngPreserveWhitespaces>{{segment.content}}</ng-container>}
+@if (field && document) {
+    <div class="break-word" style="white-space: pre-wrap;">
+        @let snippets = document.highlight?.[field.name];
+        @if (snippets) {
+            @for (snippet of snippets; track $index; let last = $last) {
+                @let segments = snippet | highlightSnippet;
+                @for (segment of segments; track $index) {
+                    @if (segment.highlight)
+                    {<mark class="highlight" ngPreserveWhitespaces>{{segment.content}}</mark>}
+                    @else
+                    {<ng-container ngPreserveWhitespaces>{{segment.content}}</ng-container>}
 
+                }
+                @if (!last) { <hr> }
             }
-            <hr *ngIf="!last">
-        </div>
+        } @else {
+            @let content = document.fieldValue(field) | snippet:250;
+            <ng-container ngPreserveWhitespaces>{{content}}</ng-container>
         }
-    </ng-container>
-    <ng-template #unhighlightedRow>
-        @let content = document.fieldValue(field) | snippet:250;
-        <div class="break-word" style="white-space: pre-wrap;">{{content}}</div>
-    </ng-template>
-</ng-container>
+    </div>
+}
