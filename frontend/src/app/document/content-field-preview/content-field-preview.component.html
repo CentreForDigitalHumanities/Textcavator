@@ -3,14 +3,7 @@
         @let snippets = document.highlight?.[field.name];
         @if (snippets) {
             @for (snippet of snippets; track $index; let last = $last) {
-                @let segments = snippet | highlightSnippet;
-                @for (segment of segments; track $index) {
-                    @if (segment.highlight)
-                    {<mark class="highlight" ngPreserveWhitespaces>{{segment.content}}</mark>}
-                    @else
-                    {<ng-container ngPreserveWhitespaces>{{segment.content}}</ng-container>}
-
-                }
+                <div ia-highlighted-content [content]="snippet"></div>
                 @if (!last) { <hr> }
             }
         } @else {

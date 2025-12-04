@@ -8,11 +8,11 @@ import * as _ from 'lodash';
 export class KeywordPipe implements PipeTransform {
     constructor() {}
 
-    transform(content: any): string {
+    transform(content: string | string): string[] {
         if (_.isArray(content)) {
-            return content.map(String).join(', ');
+            return content;
         } else {
-            return String(content);
+            return [content];
         }
 
     }

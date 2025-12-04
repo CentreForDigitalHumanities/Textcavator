@@ -23,6 +23,8 @@ import { ParagraphPipe } from './pipes/paragraph.pipe';
 import { SnippetPipe } from './pipes/snippet.pipe';
 import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
 import { HighlightSnippetPipe } from './pipes/highlight-snippet.pipe';
+import { HighlightedContentComponent } from './content/highlighted-content/highlighted-content.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -43,6 +45,7 @@ import { HighlightSnippetPipe } from './pipes/highlight-snippet.pipe';
         ContentFieldComponent,
         DateRangePipe,
         AnnotationSegmentsPipe,
+        HighlightedContentComponent,
     ],
     imports: [
         HighlightSnippetPipe,
@@ -58,6 +61,7 @@ import { HighlightSnippetPipe } from './pipes/highlight-snippet.pipe';
     ],
     providers: [
         ElasticSearchService,
+        DatePipe,
     ]
 })
 export class DocumentModule { }

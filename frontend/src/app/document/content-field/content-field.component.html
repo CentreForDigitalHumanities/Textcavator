@@ -19,15 +19,9 @@
         <ia-entity-legend [annotatedContent]="value" />
     } @else {
         @let paragraphs = document.fieldValue(field) | paragraph;
-        @for (p of paragraphs; track $index) {
-            @let segments = p | elasticsearchHighlight:field:document | highlightSnippet;
-            <p class="break-word" style="white-space: pre-wrap;">
-                @for (segment of segments; track $index) {
-                    @if (segment.highlight)
-                    {<mark class="highlight" ngPreserveWhitespaces>{{segment.content}}</mark>}
-                    @else
-                    {<ng-container ngPreserveWhitespaces>{{segment.content}}</ng-container>}
-                }
+        @for (par of paragraphs; track $index) {
+            <p ia-highlighted-content
+                [content]="par | elasticsearchHighlight:field:document">
             </p>
         }
     }
