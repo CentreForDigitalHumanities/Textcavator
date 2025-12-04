@@ -15,8 +15,7 @@
         }
     </ng-container>
     <ng-template #unhighlightedRow>
-        <div class="break-word"
-            [innerHtml]="document.fieldValue(field) | snippet:250">
-        </div>
+        @let content = document.fieldValue(field) | snippet:250;
+        <div class="break-word" style="white-space: pre-wrap;">{{content}}</div>
     </ng-template>
 </ng-container>
