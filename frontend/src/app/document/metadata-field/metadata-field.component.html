@@ -1,9 +1,9 @@
 <ng-container *ngIf="field" [ngSwitch]="field.displayType">
     <div *ngSwitchCase="'text'"
-        [innerHtml]="field | elasticsearchHighlight:document | paragraph">
+        [innerHtml]="document.fieldValue(field) | elasticsearchHighlight:field:document | paragraph">
     </div>
     <div *ngSwitchCase="'keyword'"
-         [innerHTML]="field | elasticsearchHighlight:document | keyword">
+         [innerHTML]="document.fieldValue(field) | elasticsearchHighlight:field:document | keyword">
     </div>
     <ng-container *ngSwitchCase="'date'">
         {{ document.fieldValue(field) | date:'mediumDate' }}

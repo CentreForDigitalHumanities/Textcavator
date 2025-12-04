@@ -14,26 +14,23 @@ export class ElasticsearchHighlightPipe implements PipeTransform {
      *
      * @param document a FoundDocument, containing the fetched highlights
      */
-    transform(field: CorpusField, document: FoundDocument) {
-        const fieldValue = document.fieldValues[field.name];
-
-        if (_.isEmpty(fieldValue)) {
+    transform(content: string, field: CorpusField, document: FoundDocument) {
+        if (_.isEmpty(content)) {
             return;
         }
 
-        const highlighted = this.highlightedInnerHtml(field, document);
+        const highlighted = this.highlightedInnerHtml(content, field, document);
         return highlighted;
     }
 
-    highlightedInnerHtml(field: CorpusField, document: FoundDocument) {
-        let highlighted = document.fieldValues[field.name];
+    highlightedInnerHtml(content: string, field: CorpusField, document: FoundDocument) {;
         if (document.highlight && document.highlight.hasOwnProperty(field.name)) {
                 for (const highlight of document.highlight[field.name]) {
                     const strippedHighlight = this.stripTags(highlight);
-                    highlighted = highlighted.replace(strippedHighlight, highlight);
+                    content = content.replace(strippedHighlight, highlight);
                 }
             }
-        return highlighted;
+        return content;
     }
 
     stripTags(htmlString: string){
