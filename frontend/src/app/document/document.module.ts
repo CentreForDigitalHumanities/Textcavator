@@ -25,6 +25,7 @@ import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
 import { HighlightSnippetPipe } from './pipes/highlight-snippet.pipe';
 import { HighlightedContentComponent } from './content/highlighted-content/highlighted-content.component';
 import { DatePipe } from '@angular/common';
+import { AnnotatedContentComponent } from './content/annotated-content/annotated-content.component';
 
 @NgModule({
     declarations: [
@@ -46,6 +47,7 @@ import { DatePipe } from '@angular/common';
         DateRangePipe,
         AnnotationSegmentsPipe,
         HighlightedContentComponent,
+        AnnotatedContentComponent,
     ],
     imports: [
         HighlightSnippetPipe,
