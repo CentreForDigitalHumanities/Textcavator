@@ -1,12 +1,18 @@
 <ng-container *ngIf="field && document">
     <ng-container *ngIf="document.highlight?.[field.name]; else unhighlightedRow">
-        <ng-container *ngFor="let highlight of document.highlight[field.name];
-            last as isLast">
-            <div ngPreserveWhitespaces class="break-word"
-                [innerHtml]="highlight">
-            </div>
-            <hr *ngIf="!isLast">
-        </ng-container>
+        @for (item of document.highlight[field.name]; track item; let last = $last) {
+            @let segments = item | highlightSnippet;
+            <div class="break-word" style="white-space: pre-wrap;">
+            @for (segment of segments; track segment) {
+                @if (segment.highlight)
+                {<mark class="highlight" ngPreserveWhitespaces>{{segment.content}}</mark>}
+                @else
+                {<ng-container ngPreserveWhitespaces>{{segment.content}}</ng-container>}
+
+            }
+            <hr *ngIf="!last">
+        </div>
+        }
     </ng-container>
     <ng-template #unhighlightedRow>
         <div class="break-word"
