@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
 
 import { CorpusField, FoundDocument } from '@models';
+import { highlightPostTag, highlightPreTag } from '@app/utils/es-query';
 
 @Pipe({
     name: 'elasticsearchHighlight',
@@ -34,9 +35,8 @@ export class ElasticsearchHighlightPipe implements PipeTransform {
         return content;
     }
 
-    stripTags(htmlString: string){
-        const parseHTML= new DOMParser().parseFromString(htmlString, 'text/html');
-        return parseHTML.body.textContent || '';
+    stripTags(snippet: string){
+        return snippet.replaceAll(highlightPreTag, '').replaceAll(highlightPostTag, '');
     }
 
 }

@@ -106,4 +106,16 @@ And summer’s lease hath all too short a date:`,
             ...sonnet.slice(1),
         ]);
     });
+
+    it('should work in documents with other HTML tags', () => {
+        let doc = makeDocument(
+            { content: 'So long lives this, and this gives <i>life</i> to thee.' },
+            corpusFactory(),
+            '0',
+            0.5,
+            { content: [ `this gives <i>${pre}life${post}</i> to thee.` ] },
+        );
+        const result = pipe.transform(doc.fieldValue(field), field, doc);
+        expect(result).toEqual(`So long lives this, and this gives <i>${pre}life${post}</i> to thee.`);
+    });
 });
