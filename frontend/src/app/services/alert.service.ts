@@ -5,16 +5,18 @@ import { ReplaySubject } from 'rxjs';
 export interface AlertConfig {
     message: string;
     onDismiss?: () => any;
-};
-
-const nameChangeAlert = {
-    message: '"I-Analyzer" has been renamed, and is now called "Textcavator". Read more about this change on the about page.',
-    onDismiss: () => localStorage.setItem('closedNameChangeAlert', 'true'),
+    renderHtml?: boolean;
 }
 
+const nameChangeAlert = {
+    message:
+        '"I-Analyzer" has been renamed, and is now called "Textcavator". Read more about this change in <a href="https://github.com/CentreForDigitalHumanities/Textcavator/discussions/1958" target="_blank">this announcement on GitHub.</a>',
+    onDismiss: () => localStorage.setItem('closedNameChangeAlert', 'true'),
+    renderHtml: true,
+};
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class AlertService {
     alert$ = new ReplaySubject<AlertConfig>(1);
@@ -24,7 +26,10 @@ export class AlertService {
     }
 
     private showNamechangeAlert(): void {
-        if (environment.showNamechangeAlert && !localStorage.getItem('closedNameChangeAlert')) {
+        if (
+            environment.showNamechangeAlert &&
+            !localStorage.getItem('closedNameChangeAlert')
+        ) {
             this.alert$.next(nameChangeAlert);
         }
     }
