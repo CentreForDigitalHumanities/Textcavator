@@ -17,8 +17,10 @@ def make_wordcloud_data(documents, field, corpus):
     texts = []
     for document in documents:
         content = document['_source'][field]
-        if content and content != '':
+        if isinstance(content, str) and len(content):
             texts.append(content)
+        if isinstance(content, list) and len(content):
+            texts.append('\n'.join(content))
 
     stopwords = field_stopwords(corpus, field)
     cv = CountVectorizer(max_features=100, max_df=0.7, token_pattern=r'(?u)\b[^0-9\s]{3,30}\b', stop_words=stopwords)

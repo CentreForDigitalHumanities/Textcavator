@@ -1,4 +1,4 @@
-date,genre,title,content
-1818-01-01,"Science fiction","Frankenstein, or, the Modern Prometheus","You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings."
-1813-01-28,"Romance","Pride and Prejudice","It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife."
-1865-11-09,"Children","Alice in Wonderland","Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do."
+date,genre,title,content,url
+1818-01-01,"Science fiction","Frankenstein, or, the Modern Prometheus","You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings.","https://en.wikipedia.org/wiki/Frankenstein"
+1813-01-28,"Romance","Pride and Prejudice","It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.","https://en.wikipedia.org/wiki/Pride_and_Prejudice"
+1865-11-09,"Children","Alice in Wonderland","Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do.","https://en.wikipedia.org/wiki/Alice%27s_Adventures_in_Wonderland"

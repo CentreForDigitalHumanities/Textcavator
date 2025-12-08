@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { environment } from '@environments/environment';
 import { APIEditableCorpus } from '@models/corpus-definition';
 import { ApiService } from '@services';
 import { actionIcons, documentIcons } from '@shared/icons';
@@ -19,13 +20,14 @@ export class DefinitionsOverviewComponent {
     corpora$: Observable<APIEditableCorpus[]>;
 
     handleDelete = this.requestDelete.bind(this);
+    appName = environment.appName;
 
     constructor(
         private apiService: ApiService,
         private title: Title
     ) {
         this.corpora$ = this.apiService.corpusDefinitions();
-        this.title.setTitle(pageTitle('Corpus definitions'));
+        this.title.setTitle(pageTitle('Custom corpora'));
     }
 
     onDeleteComplete() {

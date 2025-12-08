@@ -1,0 +1,100 @@
+@if (!isNil(currentDataFile) && isNil(newDataFile)) {
+    <p>
+        <span
+            >{{ currentDataFile.confirmed ? "Current file: " : "Uploaded: " }}
+            <code>{{ currentDataFile.original_filename }}</code
+            >.
+        </span>
+    </p>
+    <p>Number of documents: {{ currentDataFile.csv_info.n_rows }}.</p>
+    <p *ngIf="!currentDataFile.confirmed">
+        Found the following columns in your sample file:
+    </p>
+
+    <table class="table is-fullwidth">
+        <thead>
+            <tr>
+                <th>Column</th>
+                <th>Data type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let field of currentDataFile.csv_info.fields">
+                <td>{{ field.name }}</td>
+                <td>{{ fieldTypeLabel(field.type) }}</td>
+            </tr>
+        </tbody>
+    </table>
+}
+@if (!isNil(currentDataFile) && !isNil(newDataFile))  {
+    <div class="wrapper">
+        <div class="caption current">
+            <p>
+                <span
+                    >{{
+                        currentDataFile.confirmed
+                            ? "Current file: "
+                            : "Uploaded: "
+                    }}
+                    <code>{{ currentDataFile.original_filename }}</code>
+                </span>
+            </p>
+            <p>Number of documents: {{ currentDataFile.csv_info.n_rows }}.</p>
+        </div>
+        <div class="table current">
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Data type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let field of currentDataFile.csv_info.fields">
+                        <td>{{ field.name }}</td>
+                        <td>{{ fieldTypeLabel(field.type) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="caption new">
+            <p>
+                <span
+                    >{{
+                        newDataFile.confirmed ? "Current file: " : "Uploaded: "
+                    }}
+                    <code>{{ newDataFile.original_filename }}</code>
+                </span>
+            </p>
+            <p>Number of documents: {{ newDataFile.csv_info.n_rows }}.</p>
+        </div>
+
+        <div class="table new">
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Data type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let field of newDataFile.csv_info.fields">
+                        <td>{{ field.name }}</td>
+                        <td>{{ fieldTypeLabel(field.type) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button
+            class="button is-primary"
+            (click)="selectFile(onCurrentSelected)"
+        >
+            <span>Keep the current file</span>
+        </button>
+
+        <button class="button is-primary" (click)="selectFile(onNewSelected)">
+            <span>Replace with new file</span>
+        </button>
+    </div>
+}

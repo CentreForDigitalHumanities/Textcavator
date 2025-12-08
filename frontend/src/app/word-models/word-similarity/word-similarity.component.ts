@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { RouterStoreService } from '../../store/router-store.service';
+import { RouterStoreService } from '@app/store/router-store.service';
 import { ComparedQueries } from '@models/compared-queries';
 import { showLoading } from '@utils/utils';
 import { Corpus, WordSimilarity } from '@models';

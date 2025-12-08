@@ -284,6 +284,14 @@ class CorpusDefinition(Reader):
             if filename:
                 return os.path.join(directory, filename)
 
+    def process_scan(self, filename):
+        '''
+        Run any required processing for making scan files ready for consumption by the frontend.
+        (e.g. converting to a different format)
+        '''
+        logger.info("process_scan() called but it's the empty base implementation")
+        raise NotImplementedError()
+
 
 class ParentCorpusDefinition(CorpusDefinition):
     ''' A class from which other corpus definitions can inherit.

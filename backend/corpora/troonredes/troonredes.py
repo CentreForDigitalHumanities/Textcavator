@@ -31,7 +31,7 @@ class Troonredes(XMLCorpusDefinition):
     title = "Troonredes"
     description = "Speeches by Dutch monarchs"
     min_date = datetime(year=1814, month=1, day=1)
-    max_date = datetime(year=2023, month=12, day=31)
+    max_date = datetime(year=2025, month=12, day=31)
     data_directory = settings.TROONREDES_DATA
     es_index = getattr(settings, 'TROONREDES_ES_INDEX', 'troonredes')
     image = 'troonrede.jpg'

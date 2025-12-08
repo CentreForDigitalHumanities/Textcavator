@@ -2,8 +2,7 @@ Django>=4.0.1,<5
 djangorestframework
 dj-rest-auth[with_social]
 django-livereload-server
-# django-revproxy, see https://github.com/UUDigitalHumanitieslab/cookiecutter-webapp-deluxe/issues/35
-git+https://github.com/jazzband/django-revproxy.git@1defbb2dad5c0632391d54bcd3dbdaeabf46266a
+django-revproxy
 djangosaml2
 langdetect
 psycopg2
@@ -11,7 +10,7 @@ pytest
 pytest-django
 pytest-xdist
 pytest-celery
-elasticsearch
+elasticsearch>=8,<9
 nltk
 beautifulsoup4
 lxml
@@ -20,12 +19,9 @@ textdistance
 gensim
 scikit-learn
 pandas
-celery
-Redis
+celery[redis]
 pypdf
 openpyxl
-selenium
-seleniumbase>3
 tqdm
 langcodes
 language_data

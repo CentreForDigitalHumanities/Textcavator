@@ -8,6 +8,9 @@
     <ng-container *ngSwitchCase="'date'">
         {{ document.fieldValue(field) | date:'mediumDate' }}
     </ng-container>
+    <ng-container *ngSwitchCase="'date_range'">
+        {{ document.fieldValue(field) | dateRange:'mediumDate' }}
+    </ng-container>
     <ng-container *ngSwitchCase="'geo_point'">
         {{ field | geoData:document }}
     </ng-container>

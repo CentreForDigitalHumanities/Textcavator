@@ -72,7 +72,7 @@
                             <p class="help">Enable text searching within this field.</p>
                         </label>
                     </div>
-                    <div *ngIf="field.get('type').value !== 'text_content' " class="control">
+                    <div *ngIf="field.get('type').value !== 'text_content' && field.get('type').value !== 'url' " class="control">
                         <label class="checkbox">
                             <input type="checkbox" name="filter" formControlName="filter" /> Filter
                             <p class="help">Add a filter widget for this field.</p>
@@ -84,7 +84,8 @@
                             <p class="help">Show this field in the results overview.</p>
                         </label>
                     </div>
-                    <div *ngIf="field.get('type').value !== 'text_content' && field.get('type').value !== 'boolean'" class="control">
+                    <div *ngIf="field.get('type').value !== 'text_content' && field.get('type').value !== 'boolean' && field.get('type').value !== 'url'"
+                        class="control">
                         <label class="checkbox">
                             <input type="checkbox" name="sort" formControlName="sort" /> Sort
                             <p class="help">
@@ -158,6 +159,6 @@
         </div>
     </div>
 
-    <ia-form-feedback [showSuccess]="showSuccesMessage$ | async"
-        [showError]="showErrorMessage$ | async" />
+    <ia-form-feedback [showSuccess]="!!(showSuccesMessage$ | async)"
+        [showError]="!!(showErrorMessage$ | async)" />
 </form>

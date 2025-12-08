@@ -9,5 +9,5 @@ def test_goodreads(settings, db, admin_client):
     }
     settings.GOODREADS_DATA = ''
 
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'goodreads')
     assert corpus['title'] == 'DIOPTRA-L'

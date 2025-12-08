@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from glob import glob
 
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
@@ -43,7 +43,8 @@ def format_chamber(chamber):
 class ParliamentSweden(Parliament, CSVCorpusDefinition):
     title = 'People and Parliament (Sweden 1920-2022)'
     description = 'Speeches from the Riksdag'
-    min_date = datetime(year=1920, month=1, day=1)
+    min_date = date(year=1920, month=1, day=1)
+    max_date = date(2022, 1, 11)
     data_directory = settings.PP_SWEDEN_DATA
     es_index = getattr(settings, 'PP_SWEDEN_INDEX', 'parliament-sweden')
     word_model_path = getattr(settings, 'PP_SWEDEN_WM', None)

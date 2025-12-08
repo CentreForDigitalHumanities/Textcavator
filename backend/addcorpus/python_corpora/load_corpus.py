@@ -51,8 +51,7 @@ def _try_loading_corpus_definition(corpus_name, stderr=sys.stderr):
     try:
         return load_corpus_definition(corpus_name)
     except Exception as e:
-        message = 'Could not load corpus {}: {}'.format(corpus_name, e)
-        print(message, file=stderr)
+        logger.exception('Could not load corpus %s: %s', corpus_name, e)
 
 def load_all_corpus_definitions(stderr=sys.stderr):
     '''

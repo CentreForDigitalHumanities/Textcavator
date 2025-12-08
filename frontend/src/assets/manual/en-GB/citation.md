@@ -1,10 +1,10 @@
-## Citing documents from I-analyzer
+## Citing documents from Textcavator
 
-If you want to cite a document that you accessed through I-analyzer, be sure to read the documentation of the corpus. This may include more specific information about the data and how to cite it. This page gives some general advice on citing documents from I-analyzer in your research.
+If you want to cite a document that you accessed through Textcavator, be sure to read the documentation of the corpus. This may include more specific information about the data and how to cite it. This page gives some general advice on citing documents from Textcavator in your research.
 
-### Citing a document from the I-analyzer interface
+### Citing a document from the Textcavator interface
 
-If you downloaded a document from I-analyzer, or read it online in the I-analyzer interface, your citation should make it clear that you retrieved it through here. This provides accountability: loading corpora into I-analyzer is a process that may introduce mistakes, so you should always cite the resource that you actually referenced.
+If you downloaded a document from Textcavator, or read it online in the Textcavator interface, your citation should make it clear that you retrieved it through here. This provides accountability: loading corpora into Textcavator is a process that may introduce mistakes, so you should always cite the resource that you actually referenced.
 
 For example, a citation might look something like the following:
 
@@ -12,9 +12,9 @@ For example, a citation might look something like the following:
 
 The specifics will depend on the citation style you are using and the type of data in the corpus.
 
-Documents in I-analyzer have a unique link, which looks like the one in the example above. This is the most appropriate way to reference a specific document.
+Documents in Textcavator have a unique link, which looks like the one in the example above. This is the most appropriate way to reference a specific document.
 
-Note that not all data on I-analyzer is public. For instance, some corpora are only available with an institutional login. This means that your readers may not be able to follow the link to I-analyzer.
+Note that not all data on Textcavator is public. For instance, some corpora are only available with an institutional login. This means that your readers may not be able to follow the link to Textcavator.
 
 ### Citing collection of documents
 
@@ -26,13 +26,13 @@ Be aware that some corpora may have other contributors who collected, digitised 
 
 ### Citing a document available elsewhere
 
-In some cases, you may have used I-analyzer to find relevant documents, and then accessed them through an external interface or archive. If so, it may be appropriate to cite that source as your reference. If you are unsure, you may consider:
+In some cases, you may have used Textcavator to find relevant documents, and then accessed them through an external interface or archive. If so, it may be appropriate to cite that source as your reference. If you are unsure, you may consider:
 
 - Which resource did you use as your source of truth?
 - Does your citation allow readers to reference your sources? (Is is public? Will it still be available in the future?)
 
-However, even if you cite an external source, a proper account of your research methodology should include how you selected your source material. See below how you can cite I-analyzer as a part of your methodology.
+However, even if you cite an external source, a proper account of your research methodology should include how you selected your source material. See below how you can cite Textcavator as a part of your methodology.
 
-## Citing I-analyzer itself
+## Citing Textcavator itself
 
-To cite I-analyzer as a piece of software, consult our [zenodo page](https://zenodo.org/doi/10.5281/zenodo.8064133). This page details how you can cite I-analyzer; it includes templates for various citation styles, and the option to export a template as a bibtex file, among others.
+To cite Textcavator as a piece of software, consult our [zenodo page](https://zenodo.org/doi/10.5281/zenodo.8064133). This page details how you can cite Textcavator; it includes templates for various citation styles, and the option to export a template as a bibtex file, among others.

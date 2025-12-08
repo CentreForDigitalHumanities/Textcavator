@@ -33,7 +33,7 @@ def book_label():
         es_mapping=text_mapping(),
     )
 
-def chamber():
+def chamber(count=2):
     "human-readable name of chamber (commons, senate, etc)"
     return FieldDefinition(
         name='chamber',
@@ -42,10 +42,11 @@ def chamber():
         es_mapping=keyword_mapping(),
         search_filter = MultipleChoiceFilter(
             description='Search only in debates from the selected chamber(s)',
-            option_count=2
+            option_count=count,
         ),
         visualizations = ['resultscount', 'termfrequency']
     )
+
 
 def committee():
     'Committee that held the debate.'
@@ -149,21 +150,6 @@ def era(include_aggregations = True):
             display_name='Era',
             description='The parliamentary era in which the speech or debate was held',
         )
-
-
-def chamber():
-    "human-readable name of house (commons, senate, etc)"
-    return FieldDefinition(
-        name='chamber',
-        display_name='Chamber',
-        description='Chamber in which the debate took place',
-        es_mapping=keyword_mapping(),
-        search_filter = MultipleChoiceFilter(
-            description='Search only in debates from the selected chamber(s)',
-            option_count=2
-        ),
-        visualizations = ['resultscount', 'termfrequency']
-    )
 
 def column():
     "column number or range (used in UK data) (string)"

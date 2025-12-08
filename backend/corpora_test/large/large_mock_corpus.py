@@ -45,7 +45,7 @@ class LargeMockCorpus(CorpusDefinition):
     def sources(self, start=min_date, end=max_date):
         return range(TOTAL_DOCUMENTS)
 
-    def source2dicts(self, source):
+    def source2dicts(self, source, **kwargs):
         return [{
             'date': generate_date(),
             'content': generate_text()

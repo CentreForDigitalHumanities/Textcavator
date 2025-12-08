@@ -85,3 +85,14 @@ def test_date_term_frequency(transactional_db, admin_client, date_term_frequency
     del date_term_frequency_body['es_query']
     post_response = admin_client.post('/api/visualization/date_term_frequency', date_term_frequency_body, content_type='application/json')
     assert post_response.status_code == 400
+
+def test_term_frequency_limit(transactional_db, admin_client, date_term_frequency_body, aggregate_term_frequency_body, index_small_mock_corpus, celery_worker):
+    for bin in date_term_frequency_body['bins']:
+        bin['size'] = 1000000
+    post_response = admin_client.post('/api/visualization/date_term_frequency', date_term_frequency_body, content_type='application/json')
+    assert post_response.status_code == 400
+
+    for bin in aggregate_term_frequency_body['bins']:
+        bin['size'] = 1000000
+    post_response = admin_client.post('/api/visualization/aggregate_term_frequency', aggregate_term_frequency_body, content_type='application/json')
+    assert post_response.status_code == 400

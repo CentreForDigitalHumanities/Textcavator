@@ -2,7 +2,7 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: I-Analyzer
+title: Textcavator
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
@@ -15,16 +15,16 @@ authors:
 identifiers:
   - type: doi
     value: 10.5281/zenodo.8064133
-repository-code: 'https://github.com/CentreForDigitalHumanities/I-analyzer'
-url: 'https://ianalyzer.hum.uu.nl'
+repository-code: 'https://github.com/CentreForDigitalHumanities/Textcavator'
+url: 'https://textcavator.hum.uu.nl'
 abstract: >-
-  I-analyzer is a tool for exploring corpora (large
-  collections of texts). You can use I-analyzer to find
+  Textcavator is a tool for exploring corpora (large
+  collections of texts). You can use Textcavator to find
   relevant documents, or to make visualisations to
   understand broader trends in the corpus. The interface is
   designed to be accessible for users of all skill levels.
 
-  I-analyzer is primarily intended for academic research and
+  Textcavator is primarily intended for academic research and
   higher education. We focus on data that is relevant for
   the humanities, but we are open to datasets that are
   relevant for other fields.
@@ -35,5 +35,5 @@ keywords:
   - elasticsearch
   - natural language processing
 license: MIT
-version: 5.22.1
-date-released: '2025-09-03'
+version: 5.25.0
+date-released: '2025-12-08'

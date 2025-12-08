@@ -12,6 +12,7 @@ CORPORA = {
     'mock-csv-corpus': mock_corpus_path('basic', 'mock_csv_corpus.py'),
     'wordmodels-mock-corpus': mock_corpus_path('wordmodels', 'wm_mock_corpus.py'),
     'tagging-mock-corpus': mock_corpus_path('tag', 'tag_mock_corpus.py'),
+    'annotated-mock-corpus': mock_corpus_path('named_entities', 'annotated_mock_corpus.py'),
 }
 
 TIMES_DATA = os.path.join(BASE_DIR, 'addcorpus', 'python_corpora', 'tests')

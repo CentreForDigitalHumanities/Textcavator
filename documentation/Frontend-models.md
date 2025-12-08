@@ -2,11 +2,11 @@
 
 This document covers some of the core models that make up the frontend.
 
-I-analyzer has [a general system for route parameter management](./Frontend-deep-routing-and-state-management.md) which many of these models use.
+Textcavator has [a general system for route parameter management](./Frontend-deep-routing-and-state-management.md) which many of these models use.
 
 ## QueryModel
 
-The QueryModel is an essential model to the functionality of I-analyzer. In essence, a QueryModel represents a query, which defines a set of document in a corpus. Different parts of the application build on queries to represent pages results, visualisations, etc.
+The QueryModel is an essential model to the functionality of Textcavator. In essence, a QueryModel represents a query, which defines a set of document in a corpus. Different parts of the application build on queries to represent pages results, visualisations, etc.
 
 When the frontend creates an [API query](./Query-api.md) for a request, it typically uses a QueryModel to generate a [compound query clause](https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html) that defines which documents to select.
 

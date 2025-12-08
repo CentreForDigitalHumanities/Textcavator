@@ -1,7 +1,7 @@
 # Functional test suite
 Functional tests are located in the folder `functional-tests`.
 
-To run functional tests, make sure you have Selenium and Seleniumbase installed (from backend requirements). Also, create a `selenium.ini` file in the `functional-tests` folder, which should have the following setup:
+To run functional tests, make sure you have Selenium and Seleniumbase installed (from `functional-tests` requirements). Also, create a `selenium.ini` file in the `functional-tests` folder, which should have the following setup:
 ```
 [credentials]
     username = {your_username}

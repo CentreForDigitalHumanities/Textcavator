@@ -1,25 +1,27 @@
 import { NgModule } from '@angular/core';
+import { ElasticSearchService } from '@services';
 import { SharedModule } from '@shared/shared.module';
-import { DocumentViewComponent } from './document-view/document-view.component';
-import { DocumentPageComponent } from './document-page/document-page.component';
-import { ImageViewModule } from '../image-view/image-view.module';
-import { SearchRelevanceComponent } from '../search';
-import { CorpusModule } from '../corpus-header/corpus.module';
-import { TagModule } from '../tag/tag.module';
-import { DocumentPopupComponent } from './document-popup/document-popup.component';
 import { DialogModule } from 'primeng/dialog';
+import { CorpusModule } from '../corpus/corpus.module';
+import { SearchRelevanceComponent } from '../search';
+import { TagModule } from '../tag/tag.module';
+import { ContentFieldPreviewComponent } from './content-field-preview/content-field-preview.component';
+import { ContentFieldComponent } from './content-field/content-field.component';
+import { DocumentPageComponent } from './document-page/document-page.component';
+import { DocumentPopupComponent } from './document-popup/document-popup.component';
 import { DocumentPreviewComponent } from './document-preview/document-preview.component';
+import { DocumentViewComponent } from './document-view/document-view.component';
 import { EntityLegendComponent } from './entity-legend/entity-legend.component';
 import { EntityToggleComponent } from './entity-toggle/entity-toggle.component';
+import { ImageViewModule } from './image-view/image-view.module';
 import { MetadataFieldComponent } from './metadata-field/metadata-field.component';
-import { ContentFieldPreviewComponent } from './content-field-preview/content-field-preview.component';
-import { KeywordPipe } from './pipes/keyword.pipe';
+import { DateRangePipe } from './pipes/date-range.pipe';
 import { ElasticsearchHighlightPipe } from './pipes/elasticsearch-highlight.pipe';
 import { GeoDataPipe } from './pipes/geo-data.pipe';
-import { EntityPipe } from './pipes/entity.pipe';
+import { KeywordPipe } from './pipes/keyword.pipe';
 import { ParagraphPipe } from './pipes/paragraph.pipe';
 import { SnippetPipe } from './pipes/snippet.pipe';
-import { ContentFieldComponent } from './content-field/content-field.component';
+import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
 
 @NgModule({
     declarations: [
@@ -32,13 +34,14 @@ import { ContentFieldComponent } from './content-field/content-field.component';
         EntityToggleComponent,
         MetadataFieldComponent,
         ElasticsearchHighlightPipe,
-        EntityPipe,
         GeoDataPipe,
         ParagraphPipe,
         SnippetPipe,
         ContentFieldPreviewComponent,
         KeywordPipe,
         ContentFieldComponent,
+        DateRangePipe,
+        AnnotationSegmentsPipe,
     ],
     imports: [
         DialogModule,
@@ -50,6 +53,9 @@ import { ContentFieldComponent } from './content-field/content-field.component';
         DocumentPreviewComponent,
         DocumentPageComponent,
         DocumentPopupComponent,
+    ],
+    providers: [
+        ElasticSearchService,
     ]
 })
 export class DocumentModule { }

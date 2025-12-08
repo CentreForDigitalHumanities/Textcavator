@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import APIException, ParseError
+from rest_framework.exceptions import APIException, ParseError, ValidationError
 from visualization import tasks
 import logging
 from django.conf import settings
@@ -13,6 +13,8 @@ from addcorpus.permissions import corpus_name_from_request
 from api.utils import check_json_keys
 
 logger = logging.getLogger()
+
+TERM_FREQUENCY_SIZE_LIMIT = 5000
 
 
 class WordcloudView(APIView):
@@ -107,11 +109,15 @@ class DateTermFrequencyView(APIView):
         check_json_keys(
             request, ['es_query', 'corpus_name', 'field_name', 'bins'])
 
-        for bin in request.data['bins']:
+        bins = request.data['bins']
+        for bin in  bins:
             for key in ['start_date', 'end_date', 'size']:
                 if not key in bin:
                     raise ParseError(
                         detail=f'key {key} is not present for all bins in request data')
+
+        if sum(bin['size'] for bin in bins) > TERM_FREQUENCY_SIZE_LIMIT:
+            raise ValidationError(detail='Maximum size exceeded')
 
         try:
             group = tasks.timeline_term_frequency_tasks(
@@ -135,11 +141,15 @@ class AggregateTermFrequencyView(APIView):
         check_json_keys(
             request, ['es_query', 'corpus_name', 'field_name', 'bins'])
 
-        for bin in request.data['bins']:
+        bins = request.data['bins']
+        for bin in bins:
             for key in ['field_value', 'size']:
                 if not key in bin:
                     raise ParseError(
                         detail=f'key {key} is not present for all bins in request data')
+
+        if sum(bin['size'] for bin in bins) > TERM_FREQUENCY_SIZE_LIMIT:
+            raise ValidationError(detail='Maximum size exceeded')
 
         try:
             group = tasks.histogram_term_frequency_tasks(

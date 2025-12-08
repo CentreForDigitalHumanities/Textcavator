@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 def test_title(sb, base_address):
     sb.get(base_address)
-    sb.assert_title_contains('I-Analyzer')
+    sb.assert_title_contains('Textcavator')
 
 def test_admin(sb, admin_address):
     sb.get(admin_address)
@@ -15,7 +15,7 @@ def test_admin(sb, admin_address):
 @pytest.fixture
 def login(sb, login_address, credentials):
     sb.get(login_address)
-    sb.assert_title_contains('I-Analyzer')
+    sb.assert_title_contains('Textcavator')
     sb.type('input[name="username"]', credentials[0])
     sb.type('input[name="password"]', credentials[1])
     sb.click('button.button.is-primary')

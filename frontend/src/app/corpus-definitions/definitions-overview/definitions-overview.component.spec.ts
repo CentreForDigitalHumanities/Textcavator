@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DefinitionsOverviewComponent } from './definitions-overview.component';
-import { commonTestBed } from '../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 describe('DefinitionsOverviewComponent', () => {
     let component: DefinitionsOverviewComponent;

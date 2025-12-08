@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<teiCorpus xmlns="http://www.tei-c.org/ns/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Riksdagens protocols 202122</title>
+      </titleStmt>
+      <editionStmt>
+        <edition>0.13.0</edition>
+      </editionStmt>
+      <publicationStmt>
+        <authority>National Library of Sweden and the WESTAC project</authority>
+      </publicationStmt>
+      <sourceDesc>
+        <bibl>
+          <title>Riksdagens protocols 202122</title>
+        </bibl>
+      </sourceDesc>
+    </fileDesc>
+    <encodingDesc>
+      <editorialDecl>
+        <correction>
+          <p>Some data curation was done. It is documented in input/curation/instances</p>
+        </correction>
+      </editorialDecl>
+    </encodingDesc>
+  </teiHeader>
+  <xi:include href="./199920/prot-19992000--086.xml"/>
+</teiCorpus>

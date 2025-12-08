@@ -15,6 +15,6 @@ export const selectColor = (palette?: string[], index?: number): string => {
         const i = index || 0;
         return palette[modulo(i, palette.length)];
     } else {
-        return '#3F51B5'; // ianalyzer primary
+        return '#3F51B5'; // textcavator primary
     }
 };

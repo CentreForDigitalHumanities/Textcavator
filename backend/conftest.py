@@ -7,9 +7,10 @@ from allauth.account.models import EmailAddress
 from elasticsearch import Elasticsearch
 import warnings
 from django.core.files import File
+from typing import Callable
 
 from es.client import client_from_config
-from addcorpus.python_corpora.save_corpus import load_and_save_all_corpora
+from addcorpus.python_corpora.save_corpus import load_and_save_all_corpora, load_and_save_single_corpus
 from es import sync
 from indexing.models import TaskStatus
 from indexing.create_job import create_indexing_job
@@ -31,14 +32,14 @@ def media_dir(tmpdir, settings):
 def user_credentials():
     return {'username': 'basic_user',
             'password': 'basic_user',
-            'email': 'basicuser@ianalyzer.com'}
+            'email': 'basicuser@textcavator.com'}
 
 
 @pytest.fixture
 def admin_credentials():
     return {'username': 'admin',
             'password': 'admin',
-            'email': 'admin@ianalyzer.com'}
+            'email': 'admin@textcavator.com'}
 
 
 @pytest.fixture
@@ -127,33 +128,42 @@ def es_server(db, settings) -> Server:
     sync.update_server_table_from_settings()
     return Server.objects.get(name='default')
 
+@pytest.fixture()
+def load_test_corpus(db) -> Callable[[str], str]:
+    def import_corpus(corpus_name):
+        load_and_save_single_corpus(corpus_name)
+        return corpus_name
+    return import_corpus
 
 @pytest.fixture()
-def basic_mock_corpus() -> str:
-    return 'mock-csv-corpus'
+def basic_mock_corpus(load_test_corpus) -> str:
+    return load_test_corpus('mock-csv-corpus')
 
 @pytest.fixture()
-def small_mock_corpus() -> str:
-    return 'small-mock-corpus'
-
-
-@pytest.fixture()
-def large_mock_corpus() -> str:
-    return 'large-mock-corpus'
-
+def small_mock_corpus(load_test_corpus) -> str:
+    return load_test_corpus('small-mock-corpus')
 
 @pytest.fixture()
-def ml_mock_corpus() -> str:
-    return 'multilingual-mock-corpus'
-
-@pytest.fixture()
-def media_mock_corpus() -> str:
-    return 'media-mock-corpus'
+def large_mock_corpus(load_test_corpus) -> str:
+    return load_test_corpus('large-mock-corpus')
 
 
 @pytest.fixture()
-def tag_mock_corpus() -> str:
-    return 'tagging-mock-corpus'
+def ml_mock_corpus(load_test_corpus) -> str:
+    return load_test_corpus('multilingual-mock-corpus')
+
+@pytest.fixture()
+def media_mock_corpus(load_test_corpus) -> str:
+    return load_test_corpus('media-mock-corpus')
+
+
+@pytest.fixture()
+def tag_mock_corpus(load_test_corpus) -> str:
+    return load_test_corpus('tagging-mock-corpus')
+
+@pytest.fixture()
+def annotated_mock_corpus(load_test_corpus) -> str:
+    return load_test_corpus('annotated-mock-corpus')
 
 def _clear_test_indices(es_client: Elasticsearch):
     response = es_client.indices.get(index='test-*')
@@ -210,22 +220,14 @@ def index_ml_mock_corpus(db, es_client: Elasticsearch, ml_mock_corpus: str, test
 def index_tag_mock_corpus(db, es_client: Elasticsearch, tag_mock_corpus: str, test_index_cleanup):
     _index_test_corpus(es_client, tag_mock_corpus)
 
+@pytest.fixture()
+def index_annotated_mock_corpus(db, es_client: Elasticsearch, annotated_mock_corpus: str, test_index_cleanup):
+    _index_test_corpus(es_client, annotated_mock_corpus)
+
 
 @pytest.fixture()
 def index_json_mock_corpus(db, es_client: Elasticsearch, json_mock_corpus: Corpus, test_index_cleanup):
     _index_test_corpus(es_client, json_mock_corpus.name)
-
-
-# mock corpora
-@pytest.fixture(autouse=True)
-def add_mock_python_corpora_to_db(db, media_dir):
-    # add python mock corpora to the database at the start of each test
-    with warnings.catch_warnings():
-        warnings.filterwarnings('ignore', message="Corpus has no 'id' field")
-        warnings.filterwarnings(
-            'ignore', message='.* text search for keyword fields without text analysis'
-        )
-        load_and_save_all_corpora()
 
 
 @pytest.fixture()
@@ -235,7 +237,7 @@ def json_corpus_definition():
         return json.load(f)
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture()
 def json_mock_corpus(db, json_corpus_definition) -> Corpus:
     # add json mock corpora to the database at the start of each test
     data = {
@@ -251,13 +253,11 @@ def json_mock_corpus(db, json_corpus_definition) -> Corpus:
     with open(filepath) as f:
         serializer = CorpusDataFileSerializer(data={
             'corpus': corpus.pk,
-            'file': File(f, name='example.csv')
+            'file': File(f, name='example.csv'),
+            'confirmed': True,
         })
         assert serializer.is_valid()
-        datafile = serializer.create(serializer.validated_data)
-
-    corpus.configuration.data_directory = os.path.join(settings.MEDIA_ROOT, datafile.upload_dir())
-    corpus.configuration.save()
+        serializer.create(serializer.validated_data)
 
     return corpus
 

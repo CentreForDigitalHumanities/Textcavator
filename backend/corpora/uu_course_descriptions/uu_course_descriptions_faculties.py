@@ -37,7 +37,7 @@ class _UUCourseDescriptionsFaculty(UUCourseDescriptions):
 
     description_page = None
 
-    def source2dicts(self, source):
+    def source2dicts(self, source, **kwargs):
         all_docs = super().source2dicts(source)
         return filter(_faculty_filter(self.faculty_code), all_docs)
 

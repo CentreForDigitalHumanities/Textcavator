@@ -1,4 +1,4 @@
-If you register an account on I-analyzer, you can tag documents as you search.
+If you register an account on Textcavator, you can tag documents as you search.
 
 Tags are essentially labels that you can assign to documents. You can use them as bookmarks or annotations. Feel free to create as many as you like. When you create tags, they are only visible to you; other users will not see them.
 

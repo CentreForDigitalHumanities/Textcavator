@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<teiCorpus xmlns="http://www.tei-c.org/ns/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Riksdagens protocols 1970</title>
+      </titleStmt>
+      <editionStmt>
+        <edition>0.13.0</edition>
+      </editionStmt>
+      <publicationStmt>
+        <authority>Westac Project, 2020-2021</authority>
+        <availability>
+          <licence target="https://creativecommons.org/licenses/by/4.0/">Licence: Attribution 4.0 International (CC BY 4.0)</licence>
+        </availability>
+      </publicationStmt>
+      <sourceDesc>
+        <bibl>
+          <title>Riksdagens protocols 1970</title>
+        </bibl>
+      </sourceDesc>
+    </fileDesc>
+    <encodingDesc>
+      <editorialDecl>
+        <correction>
+          <p>Some programmatic corrections have been made to counter errors stemming from the OCR process.</p>
+        </correction>
+      </editorialDecl>
+    </encodingDesc>
+  </teiHeader>
+</teiCorpus>

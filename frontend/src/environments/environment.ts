@@ -8,13 +8,31 @@ import { version } from './version';
 
 export const environment = {
     production: false,
-    appName: 'I-Analyzer',
+    appName: 'Textcavator',
     navbarBrand: {
-        title: 'I-analyzer',
+        title: 'Textcavator',
         subtitle: undefined,
-        logo: '/assets/logo.png',
+        logo: '/assets/logo.svg',
         logoAlt: undefined,
     },
+    appDescription: `<p>
+            Textcavator is a tool for exploring corpora (large collections of texts).
+            You can use Textcavator to find relevant documents or visualise broader trends
+            in the corpus.
+        </p>
+
+        <p>
+            Designed with and for researchers in the humanities and social sciences,
+            Textcavator offers an accessible interface to search a wide variety of
+            corpora, such as newspaper archives, online book reviews, and
+            orations. Additional corpora are available for members
+            of Utrecht University.
+        </p>
+
+        <p>
+            You can find out more about Textcavator on our <a href="/about">about page</a>,
+            or start searching a corpus below.
+    </p>`,
     aboutPage: 'ianalyzer',
     apiUrl: '/api/',
     adminUrl: '/admin/',
@@ -23,7 +41,8 @@ export const environment = {
     runInIFrame: false,
     directDownloadLimit: 1000,
     version,
-    sourceUrl: 'https://github.com/CentreForDigitalHumanities/I-analyzer/',
+    sourceUrl: 'https://github.com/CentreForDigitalHumanities/Textcavator/',
     logos: undefined,
     showCorpusFilters: true,
+    showNamechangeAlert: true,
 };

@@ -32,6 +32,15 @@
             "justMyCode": true
         },
         {
+            "name": "django: loadcorpora",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/manage.py",
+            "args": ["loadcorpora"],
+            "django": true,
+            "justMyCode": false
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "attach angular",

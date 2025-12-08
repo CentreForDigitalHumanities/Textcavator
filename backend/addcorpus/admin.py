@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from .models import Corpus, CorpusConfiguration, CorpusDataFile, Field, CorpusDocumentationPage
 
+
 def show_warning_message(request):
     '''
     Message to display when loading a form for a resource based on a python class
@@ -16,9 +17,10 @@ def show_warning_message(request):
 
 class InlineDatafileAdmin(admin.StackedInline):
     model = CorpusDataFile
-    fields = ['file', 'is_sample']
+    fields = ['file', 'is_sample', 'confirmed']
     show_change_link = True,
     extra = 0
+
 
 class CorpusAdmin(admin.ModelAdmin):
     readonly_fields = [
@@ -31,6 +33,7 @@ class CorpusAdmin(admin.ModelAdmin):
     list_display = ['name', 'active']
     list_filter = ['groups', 'active']
     inlines = [InlineDatafileAdmin]
+
 
 class InlineFieldAdmin(admin.StackedInline):
     model = Field
@@ -173,6 +176,7 @@ class CorpusDocumentationAdmin(admin.ModelAdmin):
         if obj and obj.corpus_configuration.corpus.has_python_definition:
             show_warning_message(request)
         return super().get_form(request, obj, **kwargs)
+
 
 admin.site.register(Corpus, CorpusAdmin)
 admin.site.register(CorpusConfiguration, CorpusConfigurationAdmin)

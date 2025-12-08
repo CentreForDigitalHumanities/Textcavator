@@ -9,5 +9,5 @@ def test_troonredes(settings, db, admin_client):
     }
     settings.TROONREDES_DATA = ''
 
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'troonredes')
     assert corpus['title'] == 'Troonredes'

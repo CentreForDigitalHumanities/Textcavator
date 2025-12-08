@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ToggleSearchHistoryComponent } from './toggle-search-history.component';
-import { commonTestBed } from '../../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 describe('ToggleSearchHistoryComponent', () => {
     let component: ToggleSearchHistoryComponent;
