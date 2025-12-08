@@ -7,6 +7,7 @@ import { MenuDropdownComponent } from './menu/menu-dropdown/menu-dropdown.compon
 import { FooterComponent } from './footer/footer.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { CorpusSelectionModule } from '../corpus-selection/corpus-selection.module';
+import { AlertComponent } from './alert/alert.component';
 
 
 /** toplevel components such as the home page and navbar */
@@ -18,16 +19,15 @@ import { CorpusSelectionModule } from '../corpus-selection/corpus-selection.modu
         MenuComponent,
         MenuDropdownComponent,
         NotificationsComponent,
+        AlertComponent,
     ],
-    imports: [
-        SharedModule,
-        CorpusSelectionModule,
-    ],
+    imports: [SharedModule, CorpusSelectionModule],
     exports: [
+        AlertComponent,
         DialogComponent,
         FooterComponent,
         MenuComponent,
         NotificationsComponent,
-    ]
+    ],
 })
-export class CoreModule { }
+export class CoreModule {}

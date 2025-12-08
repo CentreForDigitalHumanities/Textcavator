@@ -15,8 +15,7 @@ export const environment = {
         logo: '/assets/logo.svg',
         logoAlt: undefined,
     },
-    appDescription:
-        `<p>
+    appDescription: `<p>
             Textcavator is a tool for exploring corpora (large collections of texts).
             You can use Textcavator to find relevant documents or visualise broader trends
             in the corpus.
@@ -45,4 +44,5 @@ export const environment = {
     sourceUrl: 'https://github.com/CentreForDigitalHumanities/Textcavator/',
     logos: undefined,
     showCorpusFilters: true,
+    showNamechangeAlert: true,
 };
