@@ -126,8 +126,8 @@ def test_task_status_invalid(json_mock_corpus, es_index_client):
     '''Test task status is set property when validation on the corpus fails'''
 
     corpus = json_mock_corpus
-    corpus.configuration.data_directory = ''
-    corpus.configuration.save()
+    corpus.configuration.fields.all().delete()
+    assert not corpus.ready_to_index()
 
     job = create_indexing_job(corpus, START, END)
     perform_indexing(job)

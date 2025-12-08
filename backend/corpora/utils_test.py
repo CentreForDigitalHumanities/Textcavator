@@ -1,19 +1,17 @@
-from addcorpus.python_corpora.save_corpus import load_and_save_all_corpora
-from addcorpus.models import Corpus
+from addcorpus.python_corpora.save_corpus import load_and_save_single_corpus
 
-def corpus_from_api(client):
+def corpus_from_api(client, corpus_name: str):
     '''
-    Try loading corpora and fetching a corpus through the API.
+    Try loading a corpus and fetching it through the API.
 
-    Used for testing that a corpus definition can be used
-    without validation/syntax/runtime errors.
+    Used for testing that a corpus definition can be used without
+    validation/syntax/runtime errors.
 
-    Returns the serialised version of the first corpus. Most
-    useful when you have configured your settings with only one corpus.
+    Will take the first corpus returned by the API, so the test data should not contain
+    other corpora.
     '''
 
-    Corpus.objects.all().delete()
-    load_and_save_all_corpora()
+    load_and_save_single_corpus(corpus_name)
 
     response = client.get('/api/corpus/')
     assert response.status_code == 200

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '@services';
+import { ApiService, CorpusService } from '@services';
 import { SlugifyPipe } from '@shared/pipes/slugify.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { ApiServiceMock } from 'mock-data/api';
@@ -17,6 +17,7 @@ import { FormFeedbackComponent } from '../form-feedback/form-feedback.component'
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
 import { MetaFormComponent } from '../meta-form/meta-form.component';
 import { CorpusFormComponent } from './corpus-form.component';
+import { CorpusServiceMock } from '@mock-data/corpus';
 
 describe('CorpusFormComponent', () => {
     let component: CorpusFormComponent;
@@ -47,6 +48,7 @@ describe('CorpusFormComponent', () => {
                 SlugifyPipe,
                 { provide: ActivatedRoute, useValue: mockRoute },
                 { provide: ApiService, useClass: ApiServiceMock },
+                { provide: CorpusService, useClass: CorpusServiceMock },
             ],
         }).compileComponents();
 
