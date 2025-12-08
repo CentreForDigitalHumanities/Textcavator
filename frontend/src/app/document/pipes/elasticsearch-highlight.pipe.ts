@@ -14,13 +14,14 @@ export class ElasticsearchHighlightPipe implements PipeTransform {
      *
      * @param document a FoundDocument, containing the fetched highlights
      */
-    transform(content: string, field: CorpusField, document: FoundDocument) {
+    transform(content: string | string[], field: CorpusField, document: FoundDocument) {
         if (_.isEmpty(content)) {
             return;
         }
-
-        const highlighted = this.highlightedInnerHtml(content, field, document);
-        return highlighted;
+        if (_.isArray(content)) {
+            return content.map(item => this.highlightedInnerHtml(item, field, document));
+        }
+        return this.highlightedInnerHtml(content, field, document);
     }
 
     highlightedInnerHtml(content: string, field: CorpusField, document: FoundDocument) {;

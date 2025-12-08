@@ -85,4 +85,25 @@ And often is his gold complexion dimm’d,
 And every ${pre}fair${post} from ${pre}fair${post} sometime declines,
 By chance, or nature’s changing course untrimm’d:`)
     });
+
+    it('should accept array content', () => {
+        let doc = makeDocument(
+            { content: sonnet },
+            corpusFactory(),
+            '18',
+            0.5,
+            { content: [
+                `art more ${pre}lovely${post} and more`,
+                `shake the ${pre}darling${post} buds of`,
+            ]},
+        );
+        const result = pipe.transform(doc.fieldValue(field), field, doc);
+        expect(result).toEqual([
+            `Shall I compare thee to a summer’s day?
+Thou art more ${pre}lovely${post} and more temperate:
+Rough winds do shake the ${pre}darling${post} buds of May,
+And summer’s lease hath all too short a date:`,
+            ...sonnet.slice(1),
+        ]);
+    });
 });
