@@ -3,12 +3,16 @@
         @let snippets = document.highlight?.[field.name];
         @if (snippets) {
             @for (snippet of snippets; track $index; let last = $last) {
-                <div ia-highlighted-content [content]="snippet"></div>
+                @for (par of snippet | paragraph:true; track par) {
+                    <p [class.mb-2]="!last" ia-highlighted-content [content]="par"></p>
+                }
                 @if (!last) { <hr> }
             }
         } @else {
-            @let content = document.fieldValue(field) | snippet:250;
-            <ng-container ngPreserveWhitespaces>{{content}}</ng-container>
+            @let content = document.fieldValue(field) | snippet:250 | paragraph:true;
+            @for (par of content; track par; let last = $last) {
+                <p [class.mb-2]="!last" ngPreserveWhitespaces>{{par}}</p>
+            }
         }
     </div>
 }

@@ -3,7 +3,7 @@ import { ElasticsearchHighlightPipe } from './elasticsearch-highlight.pipe';
 import { makeDocument } from '@mock-data/constructor-helpers';
 import { highlightPostTag as post, highlightPreTag as pre } from '@app/utils/es-query';
 
-const sonnet = [
+export const sonnet = [
 `Shall I compare thee to a summer’s day?
 Thou art more lovely and more temperate:
 Rough winds do shake the darling buds of May,

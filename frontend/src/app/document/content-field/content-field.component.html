@@ -1,12 +1,12 @@
 <div class="content" [attr.lang]="document.language(field)">
     @if (showEntities) {
         @let value = document.namedEntityAnnotatedValue(field) || document.fieldValue(field);
-        @for (p of value | paragraph; track $index) {
+        @for (p of value | paragraph:true; track $index) {
             <p ia-annotated-content [content]="p"></p>
         }
         <ia-entity-legend [annotatedContent]="value" />
     } @else {
-        @let paragraphs = document.fieldValue(field) | elasticsearchHighlight:field:document | paragraph;
+        @let paragraphs = document.fieldValue(field) | elasticsearchHighlight:field:document | paragraph:true;
         @for (par of paragraphs; track $index) {
             <p ia-highlighted-content
                 [content]="par">

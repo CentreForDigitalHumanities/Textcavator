@@ -1,7 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-export const splitParagraphs = (content: string | string[]): string[] => {
-    const paragraphs = typeof content === 'string' ? [content] : content;
+const paragraphArray = (content: string | string[], splitText = false): string[] => {
+    if (typeof content === 'string') {
+        return splitText ? content.split('\n') : [content];
+    } else {
+        return content;
+    }
+}
+
+export const splitParagraphs = (content: string | string[], splitText = false): string[] => {
+    const paragraphs = paragraphArray(content, splitText);
     return paragraphs.filter(p => p !== '')
 }
 
@@ -10,7 +18,7 @@ export const splitParagraphs = (content: string | string[]): string[] => {
     standalone: false
 })
 export class ParagraphPipe implements PipeTransform {
-    transform(content: string | string[]): string[] {
-        return splitParagraphs(content);
+    transform(content: string | string[], split = false): string[] {
+        return splitParagraphs(content, split);
     }
 }
