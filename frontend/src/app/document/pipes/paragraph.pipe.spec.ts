@@ -17,16 +17,16 @@ describe('ParagraphPipe', () => {
         expect(output).toEqual([input]);
     });
 
-    xit('splits single linebreaks linebreaks', () => {
+    it('splits single linebreaks', () => {
         const input = 'Some text.\nAnd some more text.\nAnd even more.';
-        const output = pipe.transform(input);
+        const output = pipe.transform(input, true);
         const expected = ['Some text.', 'And some more text.', 'And even more.'];
         expect(output).toEqual(expected);
     });
 
-    xit('splits multiple linebreaks', () => {
+    it('splits multiple linebreaks', () => {
         const input = '\nSome text.\n\n\nAnd some more text.\n\n';
-        const output = pipe.transform(input);
+        const output = pipe.transform(input, true);
         const expected = ['Some text.', 'And some more text.']
         expect(output).toEqual(expected);
     });
