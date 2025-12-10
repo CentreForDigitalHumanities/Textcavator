@@ -54,7 +54,7 @@ def test_register_verification(client, db, django_user_model):
     assert allauth_email.primary is True
 
 
-def test_register_throttling(client, settings):
+def test_register_throttling(client, settings, db):
     """
     Test that the ThrottledRegisterView returns a 429 error
     after exceeding the allowed number of registration attempts.

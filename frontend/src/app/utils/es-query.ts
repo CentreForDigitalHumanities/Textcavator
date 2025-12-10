@@ -20,7 +20,6 @@ import { SearchFilter } from '@models/field-filter';
 import { APIQuery } from '@models/search-requests';
 import { TagFilter } from '@models/tag-filter';
 import { PageResultsParameters } from '@models/page-results';
-import { DeepPartial } from 'chart.js/dist/types/utils';
 import { SimpleStore } from '../store/simple-store';
 import { searchFieldOptions } from './search-fields';
 
@@ -184,7 +183,7 @@ export const resultsParamsToAPIQuery = (queryModel: QueryModel, params: PageResu
 
     const sort = makeSortSpecification(...params.sort);
     const highlight = makeHighlightSpecification(queryModel.corpus, queryModel.queryText, queryModel.searchFields, params.highlight);
-    const addToQuery: DeepPartial<APIQuery> = {
+    const addToQuery = {
         es_query: {
             ...sort,
             ...highlight,

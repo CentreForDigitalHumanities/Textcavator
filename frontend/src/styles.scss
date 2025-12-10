@@ -4,6 +4,81 @@
 @use "bulma/bulma";
 
 
+@font-face {
+    font-family: "Open Sans";
+    src: url('/assets/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf');
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url('/assets/fonts/Open_Sans/OpenSans-Italic-VariableFont_wdth,wght.ttf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Regular.ttf') format('opentype');
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Italic.ttf') format('opentype');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Bold.ttf') format('opentype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-BoldItalic.ttf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Light.ttf') format('opentype');
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-LightItalic.ttf') format('opentype');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Medium.ttf') format('opentype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-MediumItalic.ttf') format('opentype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-SemiBold.ttf') format('opentype');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Zilla Slab";
+    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-SemiBoldItalic.ttf') format('opentype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+
 [data-balloon]:after {
     border-radius: 0;
 }
@@ -76,6 +151,7 @@ a.dropdown-item[disabled] {
     background-color: rgb(from $color r g b /.2);
     border-bottom: .2em solid;
     border-color: $color;
+    white-space: nowrap;
 
     .entity-icon,
     &.entity-icon {
@@ -147,6 +223,15 @@ table.spreadsheet {
     li.is-active > a {
         color: var(--bulma-text);
     }
+}
+
+// do not use extra-bold weight for titles
+
+.title {
+    --bulma-title-weight: var(--bulma-weight-bold);
+}
+.content {
+    --bulma-content-heading-weight: var(--bulma-weight-bold);
 }
 
 // restore some rules from older bulma versions for compatibility

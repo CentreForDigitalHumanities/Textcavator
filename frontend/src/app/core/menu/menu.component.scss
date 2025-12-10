@@ -1,4 +1,6 @@
- .skip-to-content-link {
+@use '../../../utilities';
+
+.skip-to-content-link {
     left: 0%;
     position: absolute;
     z-index: 1;
@@ -12,7 +14,6 @@
 
 .navbar-item img {
     max-height: 3rem;
-    margin-right: 7px;
 }
 
 .navbar-item:not(.has-dropdown) {
@@ -26,15 +27,14 @@
     color: var(--bulma-primary-invert);
 }
 
-.navbar-brand {
-    text-transform: uppercase;
+
+.navbar-brand .navbar-item {
+    font-family: utilities.$brand-font;
+    font-size: utilities.$size-4;
+    margin-right: 0.5em;
 }
+
 
 .app-subtitle {
     font-style: italic;
-    margin-left: 0.25rem;
-
-    &::before {
-        content: '- '
-    }
 }

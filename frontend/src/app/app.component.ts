@@ -7,14 +7,16 @@ import { environment } from '@environments/environment';
     selector: 'ia-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class AppComponent {
     public iframe: boolean;
 
-    constructor(private authService: AuthService) {
+    constructor(
+        private authService: AuthService,
+    ) {
         this.authService.setInitialAuth();
         this.iframe = environment.runInIFrame;
     }
-}
 
+}

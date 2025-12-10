@@ -47,7 +47,7 @@ SAML_CONFIG = {
     'service': {
         # we are just a lonely SP
         'sp' : {
-            'name': 'I-Analyzer',
+            'name': 'Textcavator',
             'name_id_format': saml2.saml.NAMEID_FORMAT_TRANSIENT,
 
             # For Okta add signed logout requests. Enable this:

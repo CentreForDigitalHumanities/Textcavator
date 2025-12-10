@@ -1,6 +1,6 @@
 # Migrating from Flask
 
-This documentation concerns environments that were already running I-analyzer with a Flask backend (version 3.x or lower).
+This documentation concerns environments that were already running Textcavator with a Flask backend (version 3.x or lower).
 
 ## Install django backend
 

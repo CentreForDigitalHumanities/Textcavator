@@ -89,7 +89,7 @@ def _graph_links(wm, nodes):
 def _graph_vega_doc(timeframes, nodes, links):
 
     return {
-        "$schema": "https://vega.github.io/schema/vega/v5.json",
+        "$schema": "https://vega.github.io/schema/vega/v6.json",
         "description": "A node-link diagram of neighbouring words",
         "width": 700,
         "height": 500,

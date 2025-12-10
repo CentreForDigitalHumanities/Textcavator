@@ -15,13 +15,12 @@ import { TagService } from './tag.service';
 import { APIQuery } from '@models/search-requests';
 import { PageResultsParameters } from '@models/page-results';
 import { resultsParamsToAPIQuery } from '@utils/es-query';
-import { EntityService } from './entity.service';
 
 
 @Injectable()
 export class ElasticSearchService {
 
-    constructor(private http: HttpClient, private entityService: EntityService, private tagService: TagService) {
+    constructor(private http: HttpClient, private tagService: TagService) {
     }
 
     getDocumentById(id: string, corpus: Corpus): Promise<FoundDocument> {
@@ -102,7 +101,7 @@ export class ElasticSearchService {
      * return the id, relevance and field values of a given document
      */
     private hitToDocument(corpus: Corpus, hit: SearchHit, maxScore: number): FoundDocument {
-        return new FoundDocument(this.tagService, this.entityService, corpus, hit, maxScore);
+        return new FoundDocument(this.tagService, corpus, hit, maxScore);
     }
 
 }

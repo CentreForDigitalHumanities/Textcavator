@@ -11,8 +11,8 @@ It's recommended that you use [git-flow to make releases](https://danielkummer.g
 
 Check if anything ought to be included with the new release:
 
-- Check [open pull requests](https://github.com/CentreForDigitalHumanities/I-analyzer/pulls)
-- Check [issues labelled "bug"](https://github.com/CentreForDigitalHumanities/I-analyzer/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+- Check [open pull requests](https://github.com/CentreForDigitalHumanities/Textcavator/pulls)
+- Check [issues labelled "bug"](https://github.com/CentreForDigitalHumanities/Textcavator/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 - Check project boards that keep track of a release cycle. If issues or PRs are scheduled for this release, wait until they are closed or move them to the next release cycle.
 
 Discuss open pull requests, known bugs, and scheduled issues with your fellow developers. If you agree that the develop branch is release-ready, move on to the next step.
@@ -38,7 +38,7 @@ Make a tag for your release and merge it into `develop` and `master`. You can do
 
 ## Check configuration changes
 
-You'll need this for the following two steps: write down what needs to be changed in the configuration of an I-analyzer server (development or production).
+You'll need this for the following two steps: write down what needs to be changed in the configuration of a Textcavator server (development or production).
 
 Look for changes in [settings.py](/backend/ianalyzer/settings.py) or [environment.ts](/frontend/src/environments/environment.ts). You can also look through the list of pull requests, which should note any configuration changes in their description.
 

@@ -1,4 +1,12 @@
-<div [class.is-loading]="isLoading | async">
-    <ia-corpus-selection [items]="items"></ia-corpus-selection>
-</div>
+<section class="section">
+    <div class="container is-readable">
+        <h1 class="title site-header is-2">{{appName}}</h1>
+
+        <div *ngIf="appDescription" class="content" [innerHTML]="appDescription"></div>
+    </div>
+</section>
+
+<hr>
+
+<ia-corpus-selection />
 

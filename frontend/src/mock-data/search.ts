@@ -1,10 +1,8 @@
 import { PageResultsParameters } from '../app/models/page-results';
 import { SearchFilter } from '../app/models/field-filter';
-import { Corpus, CorpusField, FoundDocument, QueryModel, SearchResults } from '../app/models/index';
-import { corpusFactory } from './corpus';
-import { TagServiceMock } from './tag';
-import { ElasticSearchServiceMock } from './elastic-search';
+import { Corpus, CorpusField, QueryModel, SearchResults } from '../app/models/index';
 import { Aggregator } from '../app/models/aggregation';
+import { makeDocument } from './constructor-helpers';
 
 export class SearchServiceMock {
     public async aggregateSearch(corpus: Corpus, queryModel: QueryModel, aggregator: Aggregator<any>): Promise<any> {
@@ -38,20 +36,7 @@ export class SearchServiceMock {
     }
 
     loadResults(queryModel: QueryModel, resultsParams: PageResultsParameters): Promise<SearchResults> {
-        const doc = new FoundDocument(
-            new TagServiceMock() as any,
-            new ElasticSearchServiceMock() as any,
-            corpusFactory(),
-            {
-                _id: 'test_1',
-                _score: 1.0,
-                _source: {
-                    genre: 'Test',
-                    content: 'This is a document!'
-                },
-            },
-            1.0
-        );
+        const doc = makeDocument();
         return Promise.resolve({
             documents: [doc],
             total: { value: 1, relation: 'eq' }

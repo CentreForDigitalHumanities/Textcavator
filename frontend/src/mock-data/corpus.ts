@@ -170,9 +170,10 @@ export const corpusFactory = () =>
 
 
 export class CorpusServiceMock {
+    public corporaPromise = Promise.resolve([corpusFactory()]);
     public currentCorpus = of(corpusFactory());
 
     public get(): Promise<Corpus[]> {
-        return Promise.resolve([corpusFactory()]);
+        return this.corporaPromise;
     }
 }

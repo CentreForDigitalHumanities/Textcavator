@@ -7,16 +7,20 @@
 //
 //
 
-@use "bulma/sass/utilities/mixins";
-
 $theme-color: #303F9F;
+$theme-font: 'Open Sans', sans-serif;
+$brand-font: 'Zilla Slab', serif;
 
-@forward 'bulma/sass/utilities/initial-variables';
+@forward 'bulma/sass/utilities/initial-variables' with (
+    $family-sans-serif: $theme-font,
+);
 @forward 'bulma/sass/utilities/derived-variables' with (
     $primary: $theme-color,
     $link: $theme-color,
 );
+
 @forward "bulma/sass/utilities/mixins";
+@use "bulma/sass/utilities/mixins";
 
 $entity-person:  #303F9F;
 $entity-location: #4e8f2d;
