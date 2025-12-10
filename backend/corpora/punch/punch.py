@@ -10,7 +10,7 @@ from api.utils import find_media_file
 
 class Punch(GaleCorpus):
     title = "Punch Historical Archive"
-    description = "Punch Historical Archive"
+    description = "Archive of Punch, a British satirical magazine."
     min_date = datetime(1841, 7, 1)
     max_date = datetime(1992, 4, 8)
     data_directory = settings.PUNCH_DATA
