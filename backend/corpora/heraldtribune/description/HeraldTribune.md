@@ -1,4 +1,5 @@
-Sold in over 160 countries and read worldwide, the International Herald Tribune is one of the most innovative and original newspapers, famous for its objective and clear coverage. Bringing an international perspective, it provides a valuable counterpoint to the Anglo-American press. The International Herald Tribune Historical Archive, 1887–2013 features the complete run of the International Herald Tribune from its origins as the European Edition of The New York Herald and later the European Edition of the New York Herald Tribune. The archive ends with the last issue of the International Herald Tribune before its relaunch as the International New York Times.
+The International Herald Tribune Archive (1887–2013) includes every published issue of the French, English-language newspaper. It started as the *Paris Herald*, a Paris edition of *The New York Herald*. In 1924, it changed name to *The new York Herald Tribune*, and finally *The International Herald Tribune* by 1967.
+The current *The International New York Times*, established in 2013, is not covered by this archive.
 
 ### Read more
 
