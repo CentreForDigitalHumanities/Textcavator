@@ -5,6 +5,7 @@ The current *The International New York Times*, established in 2013, is not cove
 
 Additional information can be found in the links below:
 - [About this archive (publisher website)](https://www.gale.com/product-catalog/16347313)
+- [Wikipedia](https://en.wikipedia.org/wiki/International_Herald_Tribune)
 
 ### Availability
 
