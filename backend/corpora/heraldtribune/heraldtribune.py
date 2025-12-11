@@ -56,7 +56,7 @@ class HeraldTribuneMetadata(GaleMetadata):
 
 class HeraldTribune(GaleCorpus):
     title = "International Herald Tribune Historical Archive"
-    description = "International Herald Tribune Historical Archive"
+    description = "Archive of the International Herald Tribune, an American globally-focused newspaper."
     min_date = datetime(1887, 11, 11)
     max_date = datetime(2013, 10, 14)
     data_directory = settings.HERALD_TRIBUNE_DATA

@@ -1,5 +1,5 @@
-The Punch Historical Archive, 1841-1992 includes every published issue of the British magazine. Punch is known for its humour, satire, and helped coin the term "cartoon" as a humorous illustration. Mostly influential in the 1840's and 1850's, it was published until 1992.
-A tempory revival of the magazine, from 1996 to 2002, is not covered by this archive.
+The Punch Historical Archive (1841-1992) includes every published issue of the British magazine. Punch is known for its humour, satire, and helped coin the term "cartoon" as a humorous illustration. Mostly influential in the 1840's and 1850's, it was published until 1992.
+A temporay revival of the magazine, from 1996 to 2002, is not covered by this archive.
 
 ### Read more
 Additional information can be found in the links below:
