@@ -1,6 +1,6 @@
 <section class="hero is-light mb-6">
     @if (corpus) {
-        <div class="hero-body container is-readable px-0">
+        <div class="hero-body container px-0">
             <div class="is-pulled-right" *ngIf="corpus.editable">
                 <a class="button is-link is-outlined"
                     [routerLink]="['/custom-corpora/edit', corpus.name]">
@@ -16,7 +16,7 @@
 
         <div class="hero-foot">
             <nav class="tabs" aria-label="secondary navigation">
-                <ul class="container is-readable">
+                <ul class="container">
                     <li [class.is-active]="currentPage === 'search'">
                         <a [routerLink]="['/search', corpus.name]"
                         routerLinkActive ariaCurrentWhenActive="page">

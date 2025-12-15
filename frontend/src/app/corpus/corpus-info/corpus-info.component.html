@@ -1,7 +1,7 @@
 <ia-corpus-header [corpus]="corpus" currentPage="info"></ia-corpus-header>
 
 <section class="section pt-4">
-    <div class="container is-readable">
+    <div class="container">
         <div class="columns">
             <div class="column">
                 <div class="block">
@@ -20,8 +20,8 @@
     </div>
 </section>
 
-<section class="section" style="padding-top: 0;">
-    <div class="container is-readable">
+<section class="section pt-0">
+    <div class="container">
         <ia-tabs *ngIf="documentation$ | async as documentation; else loading">
             <ng-template iaTabPanel *ngFor="let page of documentation"
                 [id]="page.type" [title]="page.type">

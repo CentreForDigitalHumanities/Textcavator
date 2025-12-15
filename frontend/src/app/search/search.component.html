@@ -1,7 +1,7 @@
 <ia-corpus-header [corpus]="corpus" currentPage="search"></ia-corpus-header>
 
 <section class="section search-section" #searchSection [ngClass]="{'is-scrolled-down': isScrolledDown}">
-    <div class="container is-readable">
+    <div class="container">
         <form (ngSubmit)="search()" *ngIf="corpus">
             <div class="field has-addons">
                 <div class="control" iaBalloon="View query documentation" iaBalloonPosition="down-left">
@@ -32,7 +32,7 @@
     </div>
 </section>
 <section class="section search-results">
-    <div class="container is-readable">
+    <div class="container">
         <!-- filters and search results -->
         <div class="columns">
             <!-- Filters, on left -->

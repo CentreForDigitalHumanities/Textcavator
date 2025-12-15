@@ -1,6 +1,6 @@
 <ia-corpus-header [corpus]="corpus" currentPage="document"></ia-corpus-header>
 <div class="section">
-    <div class="container is-readable">
+    <div class="container">
         <div *ngIf="documentFound; else notFound" [ngClass]="{'is-loading': !document}">
             <div class="level block">
                 <div class="level-left">

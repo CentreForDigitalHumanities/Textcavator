@@ -1,5 +1,5 @@
 <section class="section">
-    <div class="container is-readable" [class.is-loading]="isLoading | async">
+    <div class="container" [class.is-loading]="isLoading | async">
         <ng-container *ngIf="items">
             <ng-container *ngIf="showCorpusFilters; else spacer">
                 <div class="block">
