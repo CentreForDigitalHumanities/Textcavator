@@ -1,5 +1,6 @@
-from elasticsearch import Elasticsearch
+from typing import Dict
 
+from elasticsearch import Elasticsearch
 from django.conf import settings
 
 def elasticsearch(corpus_name):
@@ -10,13 +11,15 @@ def elasticsearch(corpus_name):
     selected based on the CORPUS_SERVER_NAMES setting.
     '''
     server_name = server_for_corpus(corpus_name)
-    server_config = settings.SERVERS[server_name]
+    config = server_config(server_name)
 
-    return client_from_config(server_config)
+    return client_from_config(config)
 
 def server_for_corpus(corpus_name) -> str:
     return settings.CORPUS_SERVER_NAMES.get(corpus_name, 'default')
 
+def server_config(server_name: str) -> Dict:
+    return settings.SERVERS[server_name]
 
 def client_from_config(server_config):
     '''

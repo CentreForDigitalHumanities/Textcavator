@@ -99,7 +99,7 @@ def tokens_by_time_interval(corpus_name, es_query, field, bin, ngram_size, term_
     narrow_query = query.add_filter(es_query, date_filter)
     #search for the query text
     search_results, _total = scroll(
-        corpus_name=corpus_name,
+        corpus=corpus_name,
         query_model=narrow_query,
         client=client,
         download_size=max_size_per_interval,
