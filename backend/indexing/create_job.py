@@ -4,10 +4,10 @@ from django.db import transaction
 
 from addcorpus.models import Corpus
 from es.client import elasticsearch, server_for_corpus
-from es.es_alias import get_current_index_name, indices_with_alias
+from es.es_alias import get_current_index_names, indices_with_alias
 from es.versioning import (
     indices_with_base_name, next_version_number, highest_version_in_result,
-    version_from_name
+    version_from_name, index_with_highest_version
 )
 from indexing.models import (
     IndexJob, CreateIndexTask, PopulateIndexTask, UpdateIndexTask,
@@ -131,9 +131,9 @@ def _index_and_base_name_for_job(job: IndexJob, prod: bool, create_new: bool) ->
             next_version = next_version_number(client, base_name)
             versioned_name = f'{base_name}-{next_version}'
         else:
-            versioned_name = get_current_index_name(
+            versioned_name = index_with_highest_version(get_current_index_names(
                 corpus.configuration, client
-            )
+            ))
 
         index, _ = Index.objects.get_or_create(
             server=server, name=versioned_name
@@ -178,19 +178,17 @@ def create_alias_job(corpus: Corpus, clean=False) -> IndexJob:
     if not len(indices):
         raise Exception('No matching index found')
 
-    highest_version = highest_version_in_result(indices, base_name)
-    latest_index, _ = Index.objects.get_or_create(
+    highest_version_name = index_with_highest_version(indices, base_name)
+    latest, _ = Index.objects.get_or_create(
         server=server,
-        name=f'{base_name}-{highest_version}'
+        name=highest_version_name
     )
 
-    _add_alias_rollover_tasks(job, server, base_name, latest_index)
+    _add_alias_rollover_tasks(job, server, base_name, latest)
 
     if clean:
         for index_name in indices:
-            is_highest_version = version_from_name(index_name, base_name) == highest_version
-
-            if not is_highest_version:
+            if index_name != highest_version_name:
                 index, _ = Index.objects.get_or_create(server=server, name=index_name)
                 DeleteIndexTask.objects.create(job=job, index=index)
 

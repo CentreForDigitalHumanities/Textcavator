@@ -85,3 +85,7 @@ def highest_version_in_result(index_names: List[str], base_name: str) -> int:
         return max([v for v in versions if v is not None])
     except:
         return 0
+
+
+def index_with_highest_version(index_names: List[str], base_name: str) -> str:
+    return max(index_names, key=lambda name: version_from_name(name, base_name) or 0)
