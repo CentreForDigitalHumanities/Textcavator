@@ -92,8 +92,6 @@ class CorpusConfigurationSerializer(serializers.ModelSerializer):
             'category',
             'description',
             'document_context',
-            'es_alias',
-            'es_index',
             'languages',
             'min_year',
             'max_year',
