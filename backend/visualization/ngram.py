@@ -3,7 +3,6 @@ from typing import Tuple
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
-from es.search import get_index
 from es.download import scroll
 from es.client import elasticsearch
 from visualization import query, termvectors
@@ -78,7 +77,6 @@ def get_time_bins(es_query, corpus):
 
 
 def tokens_by_time_interval(corpus_name, es_query, field, bin, ngram_size, term_position, freq_compensation, subfield, max_size_per_interval, date_field, **kwargs):
-    index = get_index(corpus_name)
     client = elasticsearch(corpus_name)
     positions_dict = {
         'any': list(range(ngram_size)),
@@ -101,13 +99,14 @@ def tokens_by_time_interval(corpus_name, es_query, field, bin, ngram_size, term_
     narrow_query = query.add_filter(es_query, date_filter)
     #search for the query text
     search_results, _total = scroll(
-        corpus=corpus_name,
+        corpus_name=corpus_name,
         query_model=narrow_query,
         client=client,
         download_size=max_size_per_interval,
     )
     bin_ngrams = Counter()
     for hit in search_results:
+        index = hit['_index']
         identifier = hit['_id']
         # get the term vectors for the hit
         result = client.termvectors(
