@@ -3,35 +3,47 @@ Utility functions for parsing and generating versioned index names.
 '''
 
 import re
-from typing import Optional
+from typing import Optional, List
 from elastic_transport import ObjectApiResponse
 from elasticsearch import Elasticsearch
 
-def next_version_number(client: Elasticsearch, alias: str, base_name: str) -> int:
+def indices_with_base_name(client: Elasticsearch, base_name: str) -> List[str]:
+    pattern = base_name + '*'
+    if not client.indices.exists(index=pattern, allow_no_indices=False):
+        return []
+
+    res = client.indices.get(index=pattern, allow_no_indices=False)
+    return [
+        index_name for index_name in res.keys()
+        if has_base_name(index_name, base_name)
+    ]
+
+
+def next_version_number(client: Elasticsearch, base_name: str) -> int:
     '''
     Get version number for a new versioned index (e.g. `indexname-1`).
 
-    Will be 1 if `alias` does not match any existing indices (either as the index name or
-    an alias).
+    Will be 1 if the base name does not match any existing indices (either as the index
+    name or an alias).
 
-    If an alias exists, the version number of the existing index with
-    the latest version number will be used to determine the new version
-    number. Note that the latter relies on the existence of version numbers in
-    the index names (e.g. `indexname-1`).
+    If the name matches existing indices, this will use the highest version number to
+    determine the next version.
 
     Parameters
         client -- ES client
-        alias -- The alias any versioned indices might be under.
-        base_name -- The unversioned name currently being updated. This will be used to
-            exclude indices starting with different names under the same alias.
+        base_name -- The unversioned name
     '''
 
-    if not client.indices.exists(index=alias):
+    response = indices_with_base_name(client, base_name)
+    if not response:
         return 1
-    # get the indices aliased with `alias`
-    indices = client.indices.get_alias(name=alias)
-    highest_version = highest_version_in_result(indices, base_name)
+
+    highest_version = highest_version_in_result(response, base_name)
     return highest_version + 1
+
+
+def has_base_name(index_name: str, base_name: str) -> bool:
+    return bool(re.match(rf'{base_name}(-[0-9]+)?$', index_name))
 
 
 def version_from_name(index_name: str, base_name: str) -> Optional[int]:
@@ -49,7 +61,7 @@ def version_from_name(index_name: str, base_name: str) -> Optional[int]:
         return int(match.group(1))
 
 
-def highest_version_in_result(indices: ObjectApiResponse, base_name: str) -> int:
+def highest_version_in_result(index_names: List[str], base_name: str) -> int:
     '''
     Extract the highest version number from the Elasticsearch response to an indices
     query.
@@ -65,9 +77,10 @@ def highest_version_in_result(indices: ObjectApiResponse, base_name: str) -> int
         base_name -- The unversioned name currently being updated. This will be used to
             exclude indices starting with different names under the same alias.
     '''
-    if type(indices) is list:
-        raise RuntimeError('`indices` should not be list')
-    versions = [version_from_name(index_name, base_name) for index_name in indices.keys()]
+    versions = [
+        version_from_name(index_name, base_name) for index_name in index_names
+    ]
+
     try:
         return max([v for v in versions if v is not None])
     except:

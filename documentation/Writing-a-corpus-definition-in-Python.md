@@ -62,7 +62,7 @@ The corpus class must define a method `sources(self, **kwargs)`. See the [API do
 | Attribute | Type | Description |
 |-----------|------|-------------|
 | `image` | `str` | The filename of the image used for the corpus in the interface. (See below.) |
-| `es_alias` | `str` | An alias that you want to assign to the index in elasticsearch. |
+| `es_alias` | `str` | An additional alias to assign to the Elasticsearch index of the corpus. This can be used to create a shared alias for multiple corpora. |
 | `es_settings` | `Dict` | Customises the settings of the elasticsearch index. Can be generated using [es_settings.py](../backend/addcorpus/es_settings.py) |
 | `scan_image_type` | `str` | The MIME type of media attachments to documents, if these are included. |
 | `allow_image_download` | `bool` | If the corpus has media attachments, this controls if they can be downloaded from the interface. |

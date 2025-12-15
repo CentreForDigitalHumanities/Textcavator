@@ -109,7 +109,7 @@ class CorpusDefinition(Reader):
         raise NotImplementedError('CorpusDefinition es_index')
 
     '''
-    Elasticsearch alias. Defaults to None.
+    Additional Elasticsearch alias. Defaults to None.
     '''
     es_alias = None
 
