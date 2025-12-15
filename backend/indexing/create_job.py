@@ -101,10 +101,10 @@ def _index_and_alias_for_job(job: IndexJob, prod: bool, create_new: bool) -> Tup
     corpus = job.corpus
     server = _server_for_job(job)
     client = elasticsearch(corpus.name)
-    base_name = corpus.configuration.es_index
+    base_name = _index_base_name(server, corpus)
 
     if prod:
-        alias = corpus.configuration.es_alias or corpus.configuration.es_index
+        alias = corpus.configuration.es_alias or base_name
         if create_new:
             next_version = next_version_number(client, alias, base_name)
             versioned_name = f'{base_name}-{next_version}'
@@ -124,6 +124,14 @@ def _index_and_alias_for_job(job: IndexJob, prod: bool, create_new: bool) -> Tup
 
     return index, alias
 
+
+def _index_base_name(server: Server, corpus: Corpus) -> str:
+    if corpus.configuration.es_index:
+        return corpus.configuration.es_index
+
+    prefix = server.configuration.get('index_prefix', None)
+    name = corpus.name if corpus.has_python_definition else f'custom_{corpus.pk}'
+    return f'{prefix}-{name}' if prefix else name
 
 @transaction.atomic
 def create_alias_job(corpus: Corpus, clean=False) -> IndexJob:
