@@ -1,3 +1,5 @@
+import pytest
+
 from addcorpus.models import Corpus
 from indexing.create_job import create_alias_job
 from indexing.run_job import perform_indexing
@@ -22,6 +24,17 @@ def test_alias_with_clean(es_alias_client):
     indices = es_alias_client.indices.get(
         index='{}-*'.format(corpus.configuration.es_index))
     assert 'test-times-1' not in list(indices.keys())
+
+def test_alias_with_unversioned_index(es_alias_client):
+    '''
+    Tests that alias command fails if there is already an unversioned index.
+    '''
+    es_alias_client.indices.delete(index='test-times-1,test-times-2')
+    es_alias_client.indices.create(index='test-times')
+
+    corpus = Corpus.objects.get(name='times')
+    with pytest.raises(Exception):
+        create_alias_job(corpus)
 
 
 def test_extra_alias(db, es_alias_client):

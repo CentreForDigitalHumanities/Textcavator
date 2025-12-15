@@ -88,6 +88,9 @@ def create_indexing_job(
 
 
 def _add_alias_rollover_tasks(job: IndexJob, server: Server, base_name: str, new_index: Index) -> None:
+    if base_name in indices_with_base_name(server.client(), base_name):
+        raise Exception(f'Cannot rollover: existing index uses {base_name} as a name instead of an alias')
+
     AddAliasTask.objects.create(
         job=job,
         index=new_index,
