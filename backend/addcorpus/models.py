@@ -208,7 +208,8 @@ class CorpusConfiguration(models.Model):
     )
     es_index = models.SlugField(
         max_length=MAX_LENGTH_NAME,
-        help_text='name of the corpus index in elasticsearch'
+        blank=True,
+        help_text='name of the corpus index in elasticsearch; leave blank to auto-generate when indexing'
     )
     image = models.ImageField(
         upload_to='corpus_images',
