@@ -4,10 +4,11 @@ from addcorpus.models import CorpusConfiguration
 from es.client import client_from_config
 from es.models import Server, Index
 from es.versioning import has_base_name
+from es.search import get_index
 
 def get_current_index_names(corpus: CorpusConfiguration, client) -> List[str]:
     """get the names of the current corpus' associated index"""
-    return list(client.indices.get(index=corpus.es_index).keys())
+    return list(client.indices.get(index=get_index(corpus.corpus.name)).keys())
 
 
 def indices_with_alias(server: Server, alias: str, base_name=None) -> Generator[Index, None, None]:

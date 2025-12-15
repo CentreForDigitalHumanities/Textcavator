@@ -15,6 +15,7 @@ from indexing.models import (
 )
 from es.sync import update_server_table_from_settings
 from es.models import Server, Index
+from es.search import get_index
 
 
 @transaction.atomic
@@ -124,7 +125,7 @@ def _index_and_base_name_for_job(job: IndexJob, prod: bool, create_new: bool) ->
     corpus = job.corpus
     server = _server_for_job(job)
     client = elasticsearch(corpus.name)
-    base_name = _index_base_name(server, corpus)
+    base_name = get_index(corpus.name)
 
     if prod:
         if create_new:
@@ -146,15 +147,6 @@ def _index_and_base_name_for_job(job: IndexJob, prod: bool, create_new: bool) ->
     return index, base_name
 
 
-def _index_base_name(server: Server, corpus: Corpus) -> str:
-    if corpus.configuration.es_index:
-        return corpus.configuration.es_index
-
-    prefix = server.configuration.get('index_prefix', None)
-    name = corpus.name if corpus.has_python_definition else f'custom_{corpus.pk}'
-    return f'{prefix}-{name}' if prefix else name
-
-
 def _extra_alias(job: IndexJob) -> Optional[str]:
     if alias := job.corpus.configuration.es_alias:
         return alias
@@ -171,7 +163,7 @@ def create_alias_job(corpus: Corpus, clean=False) -> IndexJob:
     corpus_name = corpus.name
     update_server_table_from_settings()
     server = Server.objects.get(name=server_for_corpus(corpus_name))
-    base_name = _index_base_name(server, corpus)
+    base_name = get_index(corpus.name)
     client = elasticsearch(corpus_name)
 
     indices = indices_with_base_name(client, base_name)
