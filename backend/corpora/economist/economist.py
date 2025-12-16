@@ -51,7 +51,7 @@ class EconomistMetadata(GaleMetadata):
 
 class Economist(GaleCorpus):
     title = "The Economist Archive"
-    description = "The Economist Archive"
+    description = "Archive of The Economist, a weekly news magazine."
     min_date = datetime(1843, 8, 1)
     max_date = datetime(2021, 1, 1)
     data_directory = settings.ECONOMIST_DATA

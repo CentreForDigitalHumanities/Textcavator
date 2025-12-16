@@ -1,0 +1,13 @@
+.notification {
+    --padding-size: .75rem;
+
+    padding: var(--padding-size) var(--padding-size);
+    border-radius: 0;
+    font-size: small;
+
+    button {
+        top: var(--padding-size)
+    }
+}
+
+

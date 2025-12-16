@@ -1,17 +1,23 @@
-<div *ngIf="showEntities && document.entityAnnotations$ | async as annotations ; else showHighlights"
-    class="content"
-    [attr.lang]="document.language(field)">
-    <div *ngIf="annotations[field.name]; else plainText"
-        [innerHtml]="annotations[field.name] | entity | paragraph">
-    </div>
-    <ng-template #plainText>
-        <div [innerHtml]="document.fieldValues[field.name] | paragraph"></div>
-    </ng-template>
-    <ia-entity-legend *ngIf="showEntities" [entityAnnotations]="annotations[field.name]"></ia-entity-legend>
+<div class="content" [attr.lang]="document.language(field)">
+    @if (showEntities) {
+        @let value = document.namedEntityAnnotatedValue(field) || document.fieldValue(field);
+        @for (p of splitParagraphs(value); track p) {
+            <p>
+                @for (segment of p | annotationSegments; track segment) {
+                    @let annotation = annotationName(segment.annotation);
+                    @if (annotation) {
+                        <mark class="entity-{{annotation}}">
+                            {{segment.content}}
+                            <fa-icon [icon]="entityIcons[annotation]"  class="entity-icon"/>
+                        </mark>
+                    } @else {
+                        {{segment.content}}
+                    }
+                }
+            </p>
+        }
+        <ia-entity-legend [annotatedContent]="value" />
+    } @else {
+        <div [innerHtml]="field | elasticsearchHighlight:document | paragraph"></div>
+    }
 </div>
-<ng-template #showHighlights>
-    <div class="content"
-        [attr.lang]="document.language(field)"
-        [innerHtml]="field | elasticsearchHighlight:document | paragraph">
-    </div>
-</ng-template>

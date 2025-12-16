@@ -9,5 +9,5 @@ def test_guardian_observer(settings, db, admin_client):
     }
     settings.GO_DATA = ''
 
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'guardian-observer')
     assert corpus['title'] == 'Guardian-Observer'

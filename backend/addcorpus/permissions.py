@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import Q, QuerySet
 
 from users.models import PUBLIC_GROUP_NAME
-from addcorpus.models import Corpus, CorpusConfiguration
+from addcorpus.models import Corpus
 
 
 def corpus_name_from_request(request: Request):
@@ -27,11 +27,6 @@ def corpus_name_from_request(request: Request):
         None
     )
     return corpus
-
-
-def corpus_config_from_request(request: Request) -> CorpusConfiguration:
-    corpus_name = corpus_name_from_request(request)
-    return CorpusConfiguration.objects.get(corpus__name=corpus_name)
 
 
 def searchable_condition(user: AbstractUser) -> Q:

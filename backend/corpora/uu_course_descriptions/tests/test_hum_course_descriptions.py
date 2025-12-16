@@ -15,7 +15,7 @@ def hum_course_descriptions_settings(settings, db):
     settings.HUM_COURSE_DESCRIPTIONS_DATA = os.path.join(here, 'data')
 
 def test_hum_course_descriptions_model(hum_course_descriptions_settings, db, admin_client):
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'hum_course_descriptions')
     assert corpus['title'] == 'Humanities Course Descriptions'
 
 description = '''- Stap 1 cursusinvoer door contactpersonen; Van dinsdag 1 december t/m vrijdag 15 januari

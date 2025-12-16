@@ -2,7 +2,7 @@
     <div class="container is-readable">
         <nav aria-label="secondary navigation" class="breadcrumb block">
             <ul>
-                <li><a [routerLink]="['/']">I-Analyzer</a></li>
+                <li><a [routerLink]="['/']">{{appName}}</a></li>
                 <li><a [routerLink]="['../..']">Custom corpora</a></li>
                 <li class="is-active" aria-current="page"><a>{{(corpus$ | async).definition?.meta.title ||
                         '...'}}: edit</a></li>

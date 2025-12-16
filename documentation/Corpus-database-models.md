@@ -10,6 +10,7 @@ A full corpus definition is represented in four models:
 - `CorpusConfiguration` - has a one-to-one relationship with `Corpus` and represents all configured metadata
 - `Field` - has a many-to-one relationship with `CorpusConfiguration` and represents a field in the corpus.
 - `CorpusDocumentationPage` - has a many-to-many relationship with `CorpusConfiguration` and represents documentation for users.
+- `CorpusDataFile` - manages CSV source data for database-only corpora.
 
 These are defined in [/backend/addcorpus/models.py](/backend/addcorpus/models.py).
 

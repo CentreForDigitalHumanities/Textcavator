@@ -9,5 +9,5 @@ def test_ecco(settings, db, admin_client):
     }
     settings.ECCO_DATA = ''
 
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'ecco')
     assert corpus['title'] == 'Eighteenth Century Collections Online'
