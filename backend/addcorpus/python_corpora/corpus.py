@@ -101,17 +101,24 @@ class CorpusDefinition(Reader):
     '''
     data_api_key = None
 
-    @property
-    def es_index(self):
-        '''
-        ElasticSearch index name.
-        '''
-        raise NotImplementedError('CorpusDefinition es_index')
+    es_index = None
+    '''
+    Name of the Elasticsearch index of the corpus.
 
+    If blank, the index name will be auto-generated based on the corpus name and
+    application prefix. This can be customised, e.g. to use an existing index with a
+    different naming pattern.
+
+    If set, this is the name name used by search requests. It may match an index or
+    an alias.
+    '''
+
+    es_alias = None
     '''
     Additional Elasticsearch alias. Defaults to None.
+
+    Most common use case is to assign a shared alias to several corpora.
     '''
-    es_alias = None
 
     '''
     Dictionary containing ElasticSearch settings for the corpus' index.
