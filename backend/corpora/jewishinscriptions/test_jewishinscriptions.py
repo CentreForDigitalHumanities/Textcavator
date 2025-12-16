@@ -9,5 +9,5 @@ def test_jewish_inscriptions(settings, db, admin_client):
     }
     settings.JEWISH_INSCRIPTIONS_DATA = ''
 
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'jewish-inscriptions')
     assert corpus['title'] == 'Jewish Funerary Inscriptions'

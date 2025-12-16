@@ -6,9 +6,7 @@ import { Corpus, CorpusField } from './corpus';
 import { FieldValues, HighlightResult, SearchHit } from './elasticsearch';
 import { Tag } from './tag';
 import { Observable, Subject, merge, timer } from 'rxjs';
-import { EntityService } from '@services/entity.service';
 import { TagService } from '@services/tag.service';
-import { FieldEntities } from './search-results';
 
 export class FoundDocument {
     id: string;
@@ -31,12 +29,10 @@ export class FoundDocument {
     tags$: Observable<Tag[]>;
 
     /** named entities associated with the document */
-    entityAnnotations$: Observable<{[fieldName: string]: FieldEntities[]}>;
     private tagsChanged$ = new Subject<void>();
 
     constructor(
         private tagService: TagService,
-        private entityService: EntityService,
         public corpus: Corpus,
         hit: SearchHit,
         maxScore: number = 1,
@@ -54,11 +50,6 @@ export class FoundDocument {
         // add/removeTag, async pipe in document-tags.component template
         this.tags$ = merge(created$, this.tagsChanged$).pipe(
             mergeMap(() => this.fetchTags()),
-            shareReplay(1),
-        );
-
-        this.entityAnnotations$ = created$.pipe(
-            mergeMap(() => this.fetchAnnotatedEntities()),
             shareReplay(1),
         );
     }
@@ -96,6 +87,11 @@ export class FoundDocument {
         return this.fieldValues[field.name];
     }
 
+    namedEntityAnnotatedValue(field: CorpusField) {
+        const annotatedName = field.name + ':ner';
+        return _.get(this.fieldValues, annotatedName);
+    }
+
     language(field: CorpusField) {
         if (field.language === 'dynamic') {
             return this.fieldValue(this.corpus.languageField);
@@ -131,10 +127,6 @@ export class FoundDocument {
             return true;
         }
         return !_.isEmpty(value);
-    }
-
-    private fetchAnnotatedEntities(): Observable<{[fieldName: string]: FieldEntities[]}> {
-        return this.entityService.getDocumentEntities(this.corpus, this.id);
     }
 
     private setTags(tags: Tag[]): Observable<Tag[]> {

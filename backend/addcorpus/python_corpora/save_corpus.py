@@ -9,7 +9,9 @@ from es.client import elasticsearch
 from es.search import total_hits
 from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from addcorpus.models import Corpus, CorpusConfiguration, Field, CorpusDocumentationPage
-from addcorpus.python_corpora.load_corpus import load_all_corpus_definitions, corpus_dir
+from addcorpus.python_corpora.load_corpus import (
+    load_all_corpus_definitions, corpus_dir, load_corpus_definition
+)
 from addcorpus.utils import normalize_date_to_year, clear_corpus_image
 
 def _save_corpus_configuration(corpus: Corpus, corpus_definition: CorpusDefinition):
@@ -240,3 +242,11 @@ def load_and_save_all_corpora(verbose=False, stdout=sys.stdout, stderr=sys.stder
     not_included = Corpus.objects.filter(has_python_definition=True).exclude(name__in=corpus_definitions.keys())
     for corpus in not_included:
         _clear_python_definition(corpus)
+
+
+def load_and_save_single_corpus(corpus_name: str):
+    '''
+    Load and save a single corpus that is included in the settings.
+    '''
+    definition = load_corpus_definition(corpus_name)
+    _save_or_skip_corpus(corpus_name, definition)

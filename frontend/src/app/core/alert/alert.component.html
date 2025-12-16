@@ -1,0 +1,11 @@
+<div *ngIf="visible$|async" class="notification is-warning is-light">
+@let alertConfig = alertMessage$ | async;
+  <button class="delete" (click)="hideAlert()" aria-label="close"></button>
+  @if (alertConfig.renderHtml) {
+    <div [innerHtml]="alertConfig.message"></div>
+  }
+  @else {
+    <div>{{alertConfig.message}}</div>
+  }
+
+</div>

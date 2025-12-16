@@ -14,9 +14,10 @@ pytestmark = [
 
 def test_saved_corpora(db):
     '''
-    Assert that all the mock corpora are saved to the database
-    during test setup
+    Assert that all the mock corpora can be saved to the database.
     '''
+
+    load_and_save_all_corpora()
 
     configured = settings.CORPORA
 
