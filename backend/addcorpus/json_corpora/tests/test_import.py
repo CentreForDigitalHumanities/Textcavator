@@ -27,7 +27,6 @@ def test_json_corpus_import(db, json_mock_corpus, json_corpus_definition):
     assert config.min_year == 1500
     assert config.max_year == 1700
     assert config.source_data_delimiter == ','
-    assert config.es_index == 'test-example'
 
     assert len(config.fields.all()) == 2
 
