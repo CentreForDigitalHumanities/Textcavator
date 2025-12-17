@@ -8,11 +8,13 @@ from django.conf import settings
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
+from addcorpus.es_settings import es_settings
 from addcorpus.es_mappings import keyword_mapping
 from corpora.utils.constants import document_context
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.parliament.utils.parlamint import ner_keyword_field, speech_ner
+
 
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import COUNTRY_CODES, COUNTRY_CODE_TO_NAME, DATE_RANGES
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import get_orgs_metadata, get_persons_metadata, extract_named_entities, person_attribute_extractor, extract_speech, organisation_attribute_extractor, current_party_id_extractor, get_party_list
@@ -26,26 +28,34 @@ def open_xml_as_soup(filepath):
         soup = BeautifulSoup(f, features="xml")
     return soup
 
-class ParlaMintAll(Parliament, XMLCorpusDefinition):
+class ParlaMintAll(XMLCorpusDefinition):
     title = "All ParlaMint Corpora (version 5.0)"
     description = "All corpora from the ParlaMint dataset, including 27 countries"
     category = "parliament"
     image = "parlamint.png"
     description_page = "parlamint_all.md"
     languages = ['en', 'tr', 'de'] # TODO Fill this list up
+    data_directory = settings.PARLAMINT_DATA
+    visualize = []
+    
     es_index = getattr(settings, "PARLAMINT_INDEX", 'parlamint-all')
+    @property
+    def es_settings(self):
+        return es_settings(self.languages, stopword_analysis=True, stemming_analysis=True)
 
+    default_sort = {'field': 'date', 'ascending': False}
+    
     min_date = datetime(year=1996, month=1, day=1)
     max_date = datetime(year=2022, month=12, day=31)
     
-    data_directory = settings.PARLAMINT_DATA
-
     document_context = document_context()
     tag_toplevel = Tag('TEI')
     tag_entry = Tag('u')
 
+    country_codes = COUNTRY_CODES
+
     def sources(self, *args, **kwargs):
-        for country_code in COUNTRY_CODES:
+        for country_code in self.country_codes:
             print("STARTING COUNTRY: ", country_code)
             country_data_directory = os.path.join(self.data_directory, "ParlaMint-{}".format(country_code), "ParlaMint-{}.TEI.ana".format(country_code))
             country_translated_data_directory = os.path.join(self.data_directory, "ParlaMint-{}".format(country_code), "ParlaMint-{}-en.TEI.ana".format(country_code))
@@ -101,7 +111,7 @@ class ParlaMintAll(Parliament, XMLCorpusDefinition):
     )
 
     speech = field_defaults.speech()
-    speech.results_overview = False
+    speech.results_overview = False #hide speech for the full Parlamint corpus, where english is the main field
     speech.extractor = XML(
             Tag('s'),
             multiple=True,
@@ -113,7 +123,7 @@ class ParlaMintAll(Parliament, XMLCorpusDefinition):
         return extract_speech(element) if element else None
 
     speech_translated = field_defaults.speech_translated()
-    speech_translated.results_overview = True
+    speech_translated.results_overview = True #show translated speech instead for full parlamint corpus
     speech_translated.extractor = Backup(
         Combined(
             XML(attribute='xml:id'),
@@ -229,6 +239,45 @@ class ParlaMintAll(Parliament, XMLCorpusDefinition):
         transform=transform_speaker_constituency
     )
 
+    # fields = [
+    #     debate_id,
+    #     country,
+    #     date,
+    #     speech_id,
+    #     speech_translated,
+    #     speech,
+    #     speech_ner,
+    #     sequence,
+    #     speaker,
+    #     speaker_id,
+    #     speaker_gender,
+    #     speaker_birth_year,
+    #     speaker_birthplace,
+    #     speaker_wikimedia,
+    #     speaker_twitter,
+    #     parliamentary_role,
+    #     current_party_id,
+    #     current_party,
+    #     current_party_full,
+    #     current_party_wiki,
+    #     current_party_political_orientation,
+    #     ner_per,
+    #     ner_loc,
+    #     ner_org,
+    #     ner_misc
+    # ]
+        # ministerial_role,
+        # speaker_constituency,
+
+    #define fields property so it can be set in __init__
+    @property
+    def fields(self):
+        return self._fields
+
+    @fields.setter
+    def fields(self, value):
+        self._fields = value
+    
     def __init__(self):
         self.fields = [
             self.debate_id,
@@ -247,13 +296,13 @@ class ParlaMintAll(Parliament, XMLCorpusDefinition):
             self.speaker_wikimedia,
             self.speaker_twitter,
             self.parliamentary_role,
-            # self.ministerial_role,
+            #self.ministerial_role,
             self.current_party_id,
             self.current_party,
             self.current_party_full,
             self.current_party_wiki,
             self.current_party_political_orientation,
-            # self.speaker_constituency,
+            #self.speaker_constituency,
             self.ner_per,
             self.ner_loc,
             self.ner_org,
