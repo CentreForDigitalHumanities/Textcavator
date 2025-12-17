@@ -11,11 +11,10 @@ export class SnippetPipe implements PipeTransform {
      * @param nCharacters Specifies how many leading characters should be displayed
      */
     transform(text: string | string[], nCharacters=100) {
-        if (!text.length) {
-            return text;
-        }
-
         if (Array.isArray(text)) {
+            if (!text.length) {
+                return text;
+            }
             if (text[0].length >= nCharacters) {
                 return [this.transform(text[0], nCharacters)];
             }
@@ -23,8 +22,7 @@ export class SnippetPipe implements PipeTransform {
         }
 
         if (text.length > nCharacters) {
-            const snippedText = text.slice(0, nCharacters).trimEnd().concat('...');
-            return snippedText;
+            return text.slice(0, nCharacters).trimEnd().concat('...');
         } else {
             return text;
         }

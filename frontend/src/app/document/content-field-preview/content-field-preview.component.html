@@ -1,14 +1,12 @@
 @if (field && document) {
     <div class="break-word" style="white-space: pre-wrap;">
         @let snippets = document.highlight?.[field.name];
-        @if (snippets) {
-            @for (snippet of snippets; track $index; let last = $last) {
-                @for (par of snippet | paragraph:true; track par) {
-                    <p [class.mb-2]="!last" ia-highlighted-content [content]="par"></p>
-                }
-                @if (!last) { <hr> }
+        @for (snippet of snippets; track $index; let last = $last) {
+            @for (par of snippet | paragraph:true; track par) {
+                <p [class.mb-2]="!last" ia-highlighted-content [content]="par"></p>
             }
-        } @else {
+            @if (!last) { <hr> }
+        } @empty {
             @let content = document.fieldValue(field) | snippet:250 | paragraph:true;
             @for (par of content; track par; let last = $last) {
                 <p [class.mb-2]="!last" ngPreserveWhitespaces>{{par}}</p>
