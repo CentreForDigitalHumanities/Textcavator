@@ -20,7 +20,6 @@ import { SearchFilter } from '@models/field-filter';
 import { APIQuery } from '@models/search-requests';
 import { TagFilter } from '@models/tag-filter';
 import { PageResultsParameters } from '@models/page-results';
-import { DeepPartial } from 'chart.js/dist/types/utils';
 import { SimpleStore } from '../store/simple-store';
 import { searchFieldOptions } from './search-fields';
 
@@ -113,6 +112,9 @@ const makeFieldHighlightSpec = (field: CorpusField, highlightFields: string[]) =
     return { [field.name]: spec };
 };
 
+export const highlightPreTag = '<mark class="highlight">';
+export const highlightPostTag = '</mark>';
+
 export const makeHighlightSpecification = (corpus: Corpus, queryText: string | undefined, searchFields: CorpusField[], highlightSize?: number) => {
     if (!queryText || !highlightSize) {
         return {};
@@ -122,8 +124,8 @@ export const makeHighlightSpecification = (corpus: Corpus, queryText: string | u
     return {
         highlight: {
             fragment_size: highlightSize,
-            pre_tags: ['<mark class="highlight">'],
-            post_tags: ['</mark>'],
+            pre_tags: [highlightPreTag],
+            post_tags: [highlightPostTag],
             order: 'score',
             fields: corpus.fields
                 .filter(f => includeHighlight(f, highlightFields))
@@ -184,7 +186,7 @@ export const resultsParamsToAPIQuery = (queryModel: QueryModel, params: PageResu
 
     const sort = makeSortSpecification(...params.sort);
     const highlight = makeHighlightSpecification(queryModel.corpus, queryModel.queryText, queryModel.searchFields, params.highlight);
-    const addToQuery: DeepPartial<APIQuery> = {
+    const addToQuery = {
         es_query: {
             ...sort,
             ...highlight,

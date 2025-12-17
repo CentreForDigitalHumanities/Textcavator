@@ -151,6 +151,7 @@ a.dropdown-item[disabled] {
     background-color: rgb(from $color r g b /.2);
     border-bottom: .2em solid;
     border-color: $color;
+    white-space: nowrap;
 
     .entity-icon,
     &.entity-icon {

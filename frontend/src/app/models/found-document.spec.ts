@@ -4,10 +4,8 @@ import { reduce, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { exampleValues, makeDocument } from '@mock-data/constructor-helpers';
 import { corpusFactory } from '@mock-data/corpus';
-import { EntityServiceMock } from '@mock-data/entity';
 import { TagServiceMock, mockTags } from '@mock-data/tag';
 import { FoundDocument } from './found-document';
-import { EntityService } from '@services/entity.service';
 import { TagService } from '@services/tag.service';
 import { Tag } from './tag';
 
@@ -33,21 +31,19 @@ const mockResponse = {
 
 describe('FoundDocument', () => {
     const mockTagService = new TagServiceMock() as any;
-    const mockEntityService = new EntityServiceMock() as any;
     const corpus = corpusFactory();
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
                 { provide: TagService, useClass: TagServiceMock },
-                { provide: EntityService, useClass: EntityServiceMock }
             ]
         });
     });
 
     it('should construct from an elasticsearch response', () => {
         const document = new FoundDocument(
-            mockTagService, mockEntityService,
+            mockTagService,
             corpus,
             mockResponse, maxScore
         );

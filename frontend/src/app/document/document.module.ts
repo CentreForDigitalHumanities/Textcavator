@@ -17,11 +17,15 @@ import { ImageViewModule } from './image-view/image-view.module';
 import { MetadataFieldComponent } from './metadata-field/metadata-field.component';
 import { DateRangePipe } from './pipes/date-range.pipe';
 import { ElasticsearchHighlightPipe } from './pipes/elasticsearch-highlight.pipe';
-import { EntityPipe } from './pipes/entity.pipe';
 import { GeoDataPipe } from './pipes/geo-data.pipe';
 import { KeywordPipe } from './pipes/keyword.pipe';
 import { ParagraphPipe } from './pipes/paragraph.pipe';
 import { SnippetPipe } from './pipes/snippet.pipe';
+import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
+import { HighlightSnippetPipe } from './pipes/highlight-snippet.pipe';
+import { HighlightedContentComponent } from './content/highlighted-content/highlighted-content.component';
+import { DatePipe } from '@angular/common';
+import { AnnotatedContentComponent } from './content/annotated-content/annotated-content.component';
 
 @NgModule({
     declarations: [
@@ -34,7 +38,6 @@ import { SnippetPipe } from './pipes/snippet.pipe';
         EntityToggleComponent,
         MetadataFieldComponent,
         ElasticsearchHighlightPipe,
-        EntityPipe,
         GeoDataPipe,
         ParagraphPipe,
         SnippetPipe,
@@ -42,6 +45,10 @@ import { SnippetPipe } from './pipes/snippet.pipe';
         KeywordPipe,
         ContentFieldComponent,
         DateRangePipe,
+        AnnotationSegmentsPipe,
+        HighlightedContentComponent,
+        AnnotatedContentComponent,
+        HighlightSnippetPipe,
     ],
     imports: [
         DialogModule,
@@ -56,6 +63,7 @@ import { SnippetPipe } from './pipes/snippet.pipe';
     ],
     providers: [
         ElasticSearchService,
+        DatePipe,
     ]
 })
 export class DocumentModule { }

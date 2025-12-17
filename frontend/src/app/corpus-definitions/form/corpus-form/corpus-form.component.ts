@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CorpusService } from '@app/services';
+import { environment } from '@environments/environment';
 
 @Component({
     selector: 'ia-corpus-form',
@@ -30,6 +31,7 @@ export class CorpusFormComponent {
 
     actionIcons = actionIcons;
     corpusIcons = corpusIcons;
+    appName = environment.appName;
 
     constructor(
         private apiService: ApiService,
