@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import Tuple, Dict, List, Literal
+from typing import Tuple, Dict, List, Literal, Iterable
 from elasticsearch import Elasticsearch
 
 from addcorpus.models import CorpusConfiguration
@@ -163,18 +163,36 @@ def _count_tokens_in_document(
     terms = termvectors.get_terms(result, field)
     if terms:
         sorted_tokens = termvectors.get_tokens(terms, sort=True)
-        for match_start, match_stop, match_content in termvectors.token_matches(sorted_tokens, query_text, hit['_index'], field, client):
-            for j in term_positions:
-                start = match_start - j
-                stop = match_stop - 1 - j + ngram_size
-                if start >= 0 and stop <= len(sorted_tokens):
-                    ngram = sorted_tokens[start:stop]
-                    words = ' '.join([token['term'] for token in ngram])
-                    if freq_compensation:
-                        ttf = sum(token['ttf'] for token in ngram) / len(ngram)
-                        ttfs[words] = ttf
-                    tokens.update({ words: 1})
+        matches = termvectors.token_matches(sorted_tokens, query_text, hit['_index'], field, client)
+        token_ranges = _token_ranges(
+            matches, term_positions, ngram_size, len(sorted_tokens), mode=mode
+        )
+        for start, stop in token_ranges:
+            ngram = sorted_tokens[start:stop]
+            words = ' '.join([token['term'] for token in ngram])
+            if freq_compensation:
+                ttf = sum(token['ttf'] for token in ngram) / len(ngram)
+                ttfs[words] = ttf
+            tokens.update({ words: 1})
     return tokens, ttfs
+
+
+def _token_ranges(
+    matches: Iterable[Tuple[int, int, str]],
+    term_positions: List[int],
+    ngram_size: int,
+    document_size: int,
+    mode: Literal['ngrams', 'collocates'] = 'ngrams',
+) -> Iterable[Tuple[int, int]]:
+    '''
+    Provides ranges for every token (n-gram or collocate) surrounding the search term.
+    '''
+    for match_start, match_stop, _match_content in matches:
+        for j in term_positions:
+            start = match_start - j
+            stop = match_stop - 1 - j + ngram_size
+            if start >= 0 and stop <= len(document_size):
+                yield start, stop
 
 
 def get_top_n_ngrams(results, number_of_ngrams=10):
