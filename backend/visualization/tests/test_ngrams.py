@@ -200,6 +200,25 @@ def test_collocation_counter(small_mock_corpus, index_small_mock_corpus, basic_q
     assert dict(counter) == collocations
 
 
+def test_token_ranges():
+    ngram_tokens = list(sorted(ngram._token_ranges(
+        [(2, 3, 'rejoice')],
+        [0, 1, 2],
+        3,
+        20,
+        'ngrams',
+    )))
+    assert ngram_tokens == [(0,3), (1, 4), (2, 5)]
+
+    collocate_tokens = list(sorted(ngram._token_ranges(
+        [(2, 3, 'rejoice')],
+        [0, 1, 2],
+        3,
+        20,
+        'collocates',
+    )))
+    assert collocate_tokens == [(0, 1), (1, 2), (3, 4), (4, 5)]
+
 def test_bigrams_with_quote(small_mock_corpus, index_small_mock_corpus, basic_query):
     cases = [
         {

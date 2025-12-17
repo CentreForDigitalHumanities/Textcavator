@@ -1,6 +1,7 @@
 from collections import Counter
 from typing import Tuple, Dict, List, Literal, Iterable
 from elasticsearch import Elasticsearch
+from itertools import chain
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
@@ -188,25 +189,46 @@ def _token_ranges(
     Provides ranges for every token (n-gram or collocate) surrounding the search term.
     '''
     for match_start, match_stop, _match_content in matches:
-        for start, stop in _ngram_token_ranges(match_start, match_stop, term_positions, ngram_size):
-            if start >= 0 and stop <= len(document_size):
+        if mode == 'ngrams':
+            ranges = _ngram_token_ranges(match_start, match_stop, term_positions, ngram_size)
+        else:
+            window_size = ngram_size - 1
+            ranges = _collocate_token_ranges(match_start, match_stop, window_size)
+
+        for start, stop in ranges:
+            if start >= 0 and stop <= document_size:
                 yield start, stop
 
 
 def _ngram_token_ranges(
     match_start: int, match_stop: int,
-    term_positions: int,
+    term_positions: List[int],
     ngram_size: int,
 ) -> Iterable[Tuple[int, int]]:
     '''
     From the range of a token match, generates ranges for n-grams containing the token.
     '''
-    for j in term_positions:
-        start = match_start - j
-        stop = match_stop - 1 - j + ngram_size
+    for i in term_positions:
+        start = match_start - i
+        stop = match_stop - 1 - i + ngram_size
         yield start, stop
 
 
+def _collocate_token_ranges(
+    match_start: int, match_stop: int,
+    window_size: int,
+) -> Iterable[Tuple[int, int]]:
+    '''
+    From the range of a token match, generates ranges for collocates surrounding the
+    token.
+    '''
+
+    window_start = match_start - window_size
+    window_stop = match_stop + window_size
+    window = chain(range(window_start, match_start), range(match_stop, window_stop))
+
+    for i in window:
+        yield i, i + 1
 
 def get_top_n_ngrams(results, number_of_ngrams=10):
     """
