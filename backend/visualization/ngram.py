@@ -1,9 +1,9 @@
 from collections import Counter
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
+from elasticsearch import Elasticsearch
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
-from es.search import get_index
 from es.download import scroll
 from es.client import elasticsearch
 from visualization import query, termvectors
@@ -90,7 +90,6 @@ def tokens_by_time_interval(
     date_field: str,
     **kwargs
 ) -> Dict:
-    index = get_index(corpus_name)
     client = elasticsearch(corpus_name)
     positions_dict = {
         'any': list(range(ngram_size)),
@@ -120,28 +119,13 @@ def tokens_by_time_interval(
     )
     bin_ngrams = Counter()
     for hit in search_results:
-        identifier = hit['_id']
-        # get the term vectors for the hit
-        result = client.termvectors(
-            index=index,
-            id=identifier,
-            term_statistics=freq_compensation,
-            fields=[field]
+        tokens, ttfs = _count_tokens_in_window(
+            hit, client, field, query_text,
+            term_positions, ngram_size,
+            freq_compensation=freq_compensation
         )
-        terms = termvectors.get_terms(result, field)
-        if terms:
-            sorted_tokens = termvectors.get_tokens(terms, sort=True)
-            for match_start, match_stop, match_content in termvectors.token_matches(sorted_tokens, query_text, index, field, client):
-                for j in term_positions:
-                    start = match_start - j
-                    stop = match_stop - 1 - j + ngram_size
-                    if start >= 0 and stop <= len(sorted_tokens):
-                        ngram = sorted_tokens[start:stop]
-                        words = ' '.join([token['term'] for token in ngram])
-                        if freq_compensation:
-                            ttf = sum(token['ttf'] for token in ngram) / len(ngram)
-                            ngram_ttfs[words] = ttf
-                        bin_ngrams.update({ words: 1})
+        bin_ngrams.update(tokens)
+        ngram_ttfs.update(ttfs)
 
     results = {
         'time_interval': format_time_label(bin[0], bin[1]),
@@ -150,6 +134,44 @@ def tokens_by_time_interval(
     if freq_compensation:
         results['ngram_ttfs'] = ngram_ttfs
     return results
+
+
+def _count_tokens_in_window(
+    hit: Dict,
+    client: Elasticsearch,
+    field: str,
+    query_text: str,
+    term_positions: List[int],
+    ngram_size: int,
+    freq_compensation: bool | None = None,
+) -> Tuple[Counter, Dict]:
+    '''
+    Count token frequencies surrounding the search term from a document
+    '''
+    tokens = Counter()
+    ttfs = dict()
+    # get the term vectors for the hit
+    result = client.termvectors(
+        index=hit['_index'],
+        id=hit['_id'],
+        term_statistics=freq_compensation,
+        fields=[field]
+    )
+    terms = termvectors.get_terms(result, field)
+    if terms:
+        sorted_tokens = termvectors.get_tokens(terms, sort=True)
+        for match_start, match_stop, match_content in termvectors.token_matches(sorted_tokens, query_text, hit['_index'], field, client):
+            for j in term_positions:
+                start = match_start - j
+                stop = match_stop - 1 - j + ngram_size
+                if start >= 0 and stop <= len(sorted_tokens):
+                    ngram = sorted_tokens[start:stop]
+                    words = ' '.join([token['term'] for token in ngram])
+                    if freq_compensation:
+                        ttf = sum(token['ttf'] for token in ngram) / len(ngram)
+                        ttfs[words] = ttf
+                    tokens.update({ words: 1})
+    return tokens, ttfs
 
 
 def get_top_n_ngrams(results, number_of_ngrams=10):
