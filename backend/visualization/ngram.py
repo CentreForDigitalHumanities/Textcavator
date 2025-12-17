@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict, List, Literal
 from elasticsearch import Elasticsearch
 
 from addcorpus.models import CorpusConfiguration
@@ -88,6 +88,7 @@ def tokens_by_time_interval(
     subfield: str,
     max_size_per_interval: int,
     date_field: str,
+    mode: Literal['ngrams', 'collocates'] = 'ngrams',
     **kwargs
 ) -> Dict:
     client = elasticsearch(corpus_name)
@@ -119,10 +120,11 @@ def tokens_by_time_interval(
     )
     bin_ngrams = Counter()
     for hit in search_results:
-        tokens, ttfs = _count_tokens_in_window(
+        tokens, ttfs = _count_tokens_in_document(
             hit, client, field, query_text,
             term_positions, ngram_size,
-            freq_compensation=freq_compensation
+            freq_compensation=freq_compensation,
+            mode=mode,
         )
         bin_ngrams.update(tokens)
         ngram_ttfs.update(ttfs)
@@ -136,7 +138,7 @@ def tokens_by_time_interval(
     return results
 
 
-def _count_tokens_in_window(
+def _count_tokens_in_document(
     hit: Dict,
     client: Elasticsearch,
     field: str,
@@ -144,6 +146,7 @@ def _count_tokens_in_window(
     term_positions: List[int],
     ngram_size: int,
     freq_compensation: bool | None = None,
+    mode: Literal['ngrams', 'collocates'] = 'ngrams',
 ) -> Tuple[Counter, Dict]:
     '''
     Count token frequencies surrounding the search term from a document

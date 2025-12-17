@@ -192,7 +192,7 @@ def test_collocation_counter(small_mock_corpus, index_small_mock_corpus, basic_q
 
     result = ngram.tokens_by_time_interval(
         small_mock_corpus, frequent_query, 'content', (1800, 1900),
-        size, 'any', None, 'none', 20, 'date'
+        size, 'any', None, 'none', 20, 'date', mode='collocates',
     )
 
     counter = result['ngrams']
