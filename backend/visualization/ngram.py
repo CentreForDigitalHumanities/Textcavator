@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import Tuple
+from typing import Tuple, Dict
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
@@ -77,7 +77,19 @@ def get_time_bins(es_query, corpus):
     return bins
 
 
-def tokens_by_time_interval(corpus_name, es_query, field, bin, ngram_size, term_position, freq_compensation, subfield, max_size_per_interval, date_field, **kwargs):
+def tokens_by_time_interval(
+    corpus_name: str,
+    es_query: Dict,
+    field: str,
+    bin: Tuple[int, int],
+    ngram_size: int,
+    term_position: str,
+    freq_compensation: bool | None,
+    subfield: str,
+    max_size_per_interval: int,
+    date_field: str,
+    **kwargs
+) -> Dict:
     index = get_index(corpus_name)
     client = elasticsearch(corpus_name)
     positions_dict = {
