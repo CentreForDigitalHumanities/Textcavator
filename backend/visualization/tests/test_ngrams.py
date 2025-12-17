@@ -177,6 +177,29 @@ def test_absolute_bigrams(small_mock_corpus, index_small_mock_corpus, basic_quer
             else:
                 assert freq == 0
 
+
+def test_collocation_counter(small_mock_corpus, index_small_mock_corpus, basic_query):
+    frequent_query = query.set_query_text(basic_query, 'to')
+    size = 2
+    collocations = {
+        'rejoice': 1,
+        'hear': 1,
+        'beginning': 1,
+        'get': 1,
+        'nothing': 1,
+        'do': 1,
+    }
+
+    result = ngram.tokens_by_time_interval(
+        small_mock_corpus, frequent_query, 'content', (1800, 1900),
+        size, 'any', None, 'none', 20, 'date'
+    )
+
+    counter = result['ngrams']
+
+    assert dict(counter) == collocations
+
+
 def test_bigrams_with_quote(small_mock_corpus, index_small_mock_corpus, basic_query):
     cases = [
         {
@@ -273,5 +296,5 @@ def test_freq_compensation(small_mock_corpus, index_small_mock_corpus, basic_que
     results = get_binned_results(small_mock_corpus, frequent_query, freq_compensation=True)
     top_grams = ngram.get_top_n_ngrams(results)
     assert top_grams
-                              
+
 
