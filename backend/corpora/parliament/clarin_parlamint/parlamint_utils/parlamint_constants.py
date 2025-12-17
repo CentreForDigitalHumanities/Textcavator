@@ -127,6 +127,38 @@ DATE_RANGES = {
     'UA': {'min_year': 2002, 'max_year': 2022}
 }
 
+LANGUAGES = {
+    'AT': ['de', 'en'],
+    'BA': ['bs', 'en'],
+    'BE': ['nl', 'fr', 'en'],
+    'BG': [],
+    'CZ': [],
+    'DK': [],
+    'EE': [],
+    'ES': [],
+    'ES-CT': [],
+    'ES-GA': [],
+    'ES-PV': [],
+    'FI': [],
+    'FR': [],
+    'GB': [],
+    'GR': [],
+    'HR': [],
+    'HU': [],
+    'IS': [],
+    'IT': [],
+    'LV': [],
+    'NL': [],
+    'NO': [],
+    'PL': [],
+    'PT': [],
+    'RS': [],
+    'SE': [],
+    'SI': [],
+    'TR': [],
+    'UA': []
+}
+
 POLITICAL_ORIENTATIONS = {
     'L': 'Left',
     'C': 'Centre',
