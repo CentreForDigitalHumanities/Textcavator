@@ -69,7 +69,7 @@ def test_corpus_documentation_filter_list_view(admin_client, basic_mock_corpus):
         assert page['corpus'] == basic_mock_corpus
 
 
-def test_corpus_documentation_retrieve_view(admin_client: Client):
+def test_corpus_documentation_retrieve_view(admin_client: Client, basic_mock_corpus):
     page = CorpusDocumentationPage.objects.first()
     response = admin_client.get(f'/api/corpus/documentation/{page.pk}/')
     assert status.is_success(response.status_code)

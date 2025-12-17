@@ -56,7 +56,7 @@ defusedxml==0.7.1
     #   python3-openid
 dj-rest-auth[with-social,with_social]==4.0.1
     # via -r requirements.in
-django==4.2.25
+django==4.2.27
     # via
     #   -r requirements.in
     #   dj-rest-auth
@@ -166,7 +166,7 @@ pyopenssl==24.2.1
     # via pysaml2
 pyparsing==3.2.5
     # via rdflib
-pypdf==6.1.3
+pypdf==6.4.0
     # via -r requirements.in
 pysaml2==7.5.2
     # via djangosaml2
@@ -253,7 +253,7 @@ tzdata==2025.2
     # via
     #   kombu
     #   pandas
-urllib3==2.5.0
+urllib3==2.6.0
     # via
     #   django-revproxy
     #   elastic-transport

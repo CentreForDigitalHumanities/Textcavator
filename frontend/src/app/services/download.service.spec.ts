@@ -1,9 +1,9 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { ApiService } from './api.service';
-import { ApiServiceMock } from '../../mock-data/api';
+import { ApiServiceMock } from '@mock-data/api';
 import { DownloadService } from './download.service';
-import { corpusFactory } from '../../mock-data/corpus';
+import { corpusFactory } from '@mock-data/corpus';
 import {
     DownloadOptions,
     LimitedResultsDownloadParameters,

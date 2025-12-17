@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CorpusFilterComponent } from './corpus-filter.component';
-import { commonTestBed } from '../../common-test-bed';
-import { corpusFactory } from '../../../mock-data/corpus';
+import { commonTestBed } from '@app/common-test-bed';
+import { corpusFactory } from '@mock-data/corpus';
 import { Corpus } from '@models';
 
 describe('CorpusFilterComponent', () => {

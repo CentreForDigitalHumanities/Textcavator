@@ -85,13 +85,12 @@ export interface QueryFeedback {
     similarTerms?: string[];
 }
 
-export interface FieldEntities {
-    [entityType: string] : string
-}
-
-export interface NamedEntitiesResult {
-    [fieldName: string]: FieldEntities[]
-}
+export const entityKeys: Record<string, string> = {
+    PER: 'person',
+    LOC: 'location',
+    ORG: 'organization',
+    MISC: 'miscellaneous',
+};
 
 export interface TaskResult { task_ids: string[] };
 

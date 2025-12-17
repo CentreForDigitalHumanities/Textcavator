@@ -13,8 +13,8 @@ def dbnl_corpus(settings):
     settings.DBNL_DATA = os.path.join(here, 'data')
     # for testing purposes, also add the metadata helper corpus
     settings.CORPORA = {
-        'dbnl': os.path.join(here, '..', 'dbnl.py'),
-        'dbnl_metadata': os.path.join(here, '..', 'dbnl_metadata.py'),
+        'dbnl': 'corpora.dbnl.dbnl.DBNL',
+        'dbnl_metadata': 'corpora.dbnl.dbnl_metadata.DBNLMetadata',
     }
     return 'dbnl'
 

@@ -1,3 +1,4 @@
+import pytest
 from visualization import term_frequency
 
 def test_extract_data_for_term_frequency(small_mock_corpus):
@@ -29,30 +30,32 @@ def test_extract_data_for_term_frequency(small_mock_corpus):
     }
     assert aggregators == aggregators_target
 
-def test_match_count(small_mock_corpus, es_client, index_small_mock_corpus):
+
+frequencies = [
+    ('Alice', 2), # 1 in alice in wonderland title, 1 in its content
+    ('rejoice', 1), # 1 in content of frankenstein
+    ('evil forebodings', 2), # multiword, each occurs once
+    ('evil + forebodings', 2), # + does nothing
+    ('"evil forebodings"', 1), # 1 match for prhase
+    ('"Alice in Wonderland" Frankenstein', 2),
+    ('of', 5), # matches in multiple documents
+    ('of Alice', 7),
+    ('of + Alice', 4), # only get hits for 'of' in documents that also contain 'Alice'
+    ('rejuice~1', 1), #fuzzy match
+    ('hav*', 2), # wildcard match
+    ('sit* hav*' , 3),
+    ('-sit* + hav*' , 1),
+    ('nomatches', 0),
+]
+
+@pytest.mark.parametrize('query_text,expected_count', frequencies)
+def test_match_count(small_mock_corpus, es_client, index_small_mock_corpus, query_text, expected_count):
     """Test counting matches of the search term"""
 
-    frequencies = [
-        ('Alice', 2), # 1 in alice in wonderland title, 1 in its content
-        ('rejoice', 1), # 1 in content of frankenstein
-        ('evil forebodings', 2), # multiword, each occurs once
-        ('evil + forebodings', 2), # + does nothing
-        ('"evil forebodings"', 1), # 1 match for prhase
-        ('"Alice in Wonderland" Frankenstein', 2),
-        ('of', 5), # matches in multiple documents
-        ('of Alice', 7),
-        ('of + Alice', 4), # only get hits for 'of' in documents that also contain 'Alice'
-        ('rejuice~1', 1), #fuzzy match
-        ('hav*', 2), # wildcard match
-        ('sit* hav*' , 3),
-        ('nomatches', 0),
-    ]
-
-    for text, freq in frequencies:
-        query = make_query(query_text=text)
-        fieldnames, aggregators = term_frequency.extract_data_for_term_frequency(small_mock_corpus, query)
-        match_count = term_frequency.get_match_count(es_client, query, small_mock_corpus, 100, fieldnames)
-        assert match_count == freq
+    query = make_query(query_text=query_text)
+    fieldnames, aggregators = term_frequency.extract_data_for_term_frequency(small_mock_corpus, query)
+    match_count = term_frequency.get_match_count(es_client, query, small_mock_corpus, 100, fieldnames)
+    assert match_count == expected_count
 
 def test_match_count_estimate(es_client_m_hits, es_client_k_hits, small_mock_corpus, basic_query):
     matches = term_frequency.get_match_count(es_client_m_hits, basic_query, small_mock_corpus, 1000, ['test'])
@@ -169,4 +172,3 @@ def make_query(query_text=None, search_in_fields=None):
 
 
     return query
-

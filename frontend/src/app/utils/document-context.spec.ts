@@ -1,5 +1,5 @@
-import { makeDocument } from '../../mock-data/constructor-helpers';
-import { corpusFactory, intFieldFactory } from '../../mock-data/corpus';
+import { makeDocument } from '@mock-data/constructor-helpers';
+import { corpusFactory, intFieldFactory } from '@mock-data/corpus';
 import { makeContextParams } from './document-context';
 
 describe('document context utils', () => {

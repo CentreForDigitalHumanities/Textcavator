@@ -10,12 +10,12 @@ here = os.path.abspath(os.path.dirname(__file__))
 @pytest.fixture()
 def uu_course_descriptions_settings(settings, db):
     settings.CORPORA = {
-        'uu_course_descriptions': os.path.join(here, '../uu_course_descriptions.py')
+        'uu_course_descriptions': 'corpora.uu_course_descriptions.uu_course_descriptions.UUCourseDescriptions'
     }
     settings.UU_COURSE_DESCRIPTIONS_DATA = os.path.join(here, 'data')
 
 def test_uu_course_descriptions_model(uu_course_descriptions_settings, db, admin_client):
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'uu_course_descriptions')
     assert corpus['title'] == 'All faculties'
 
 goal = '''- Begrijpen van de functie van testen in software.

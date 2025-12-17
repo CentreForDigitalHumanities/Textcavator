@@ -4,19 +4,17 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import {FontAwesomeTestingModule} from '@fortawesome/angular-fontawesome/testing';
 
-import { appRoutes, declarations, imports, providers } from './app.module';
+import { appRoutes, imports, providers } from './app.module';
 
 import { ApiServiceMock } from '../mock-data/api';
 import { AuthServiceMock } from '../mock-data/auth';
 import { CorpusServiceMock } from '../mock-data/corpus';
 import { DialogServiceMock } from '../mock-data/dialog';
 import { ElasticSearchServiceMock } from '../mock-data/elastic-search';
-import { EntityServiceMock } from '../mock-data/entity';
 import { MockCorpusResponse } from '../mock-data/corpus-response';
 import { SearchServiceMock } from '../mock-data/search';
 import { ApiService, AuthService, CorpusService, DialogService, SearchService } from './services';
 import { ElasticSearchService } from './services/elastic-search.service';
-import { EntityService } from './services/entity.service';
 import { WordmodelsService } from './services/wordmodels.service';
 import { WordmodelsServiceMock } from '../mock-data/wordmodels';
 import { VisualizationService } from './services/visualization.service';
@@ -40,47 +38,34 @@ export const commonTestBed = () => {
             }),
         },
         {
-            provide: AuthService,
-            useValue: new AuthServiceMock()
+            provide: AuthService, useClass: AuthServiceMock,
         },
         {
-            provide: CorpusService, useValue: new CorpusServiceMock()
+            provide: CorpusService, useClass: CorpusServiceMock,
         },
         {
-            provide: DialogService,
-            useClass: DialogServiceMock,
+            provide: DialogService, useClass: DialogServiceMock,
         },
         {
-            provide: ElasticSearchService,
-            useValue: new ElasticSearchServiceMock(),
+            provide: ElasticSearchService, useClass: ElasticSearchServiceMock,
         },
         {
-            provide: EntityService,
-            useValue: new EntityServiceMock(),
+            provide: ElementRef, useClass: MockElementRef,
         },
         {
-            provide: ElementRef,
-            useClass: MockElementRef,
+            provide: SearchService, useClass: SearchServiceMock,
         },
         {
-            provide: SearchService,
-            useValue: new SearchServiceMock(),
+            provide: WordmodelsService, useClass: WordmodelsServiceMock,
         },
         {
-            provide: WordmodelsService,
-            useValue: new WordmodelsServiceMock(),
+            provide: VisualizationService, useClass: VisualizationServiceMock,
         },
         {
-            provide: VisualizationService,
-            useValue: new VisualizationServiceMock(),
+            provide: TagService, useClass: TagServiceMock,
         },
         {
-            provide: TagService,
-            useValue: new TagServiceMock(),
-        },
-        {
-            provide: RouterStoreService,
-            useValue: new SimpleStore()
+            provide: RouterStoreService, useClass: SimpleStore,
         },
         {
             provide: CorpusDefinitionService,
@@ -90,7 +75,6 @@ export const commonTestBed = () => {
 
     return {
         testingModule: TestBed.configureTestingModule({
-            declarations,
             imports: filteredImports,
             providers: filteredProviders
         })

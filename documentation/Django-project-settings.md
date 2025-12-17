@@ -32,7 +32,7 @@ For project settings supported by external libraries, see:
 - [configuration for djangosaml2](https://djangosaml2.readthedocs.io/contents/setup.html#configuration)
 - [configuration for Celery](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html)
 
-In addition, I-analyzer adds the following settings.
+In addition, Textcavator adds the following settings.
 
 ### `SERVERS`
 
@@ -71,15 +71,13 @@ Unit tests for the backend will assume that there is a default server configured
 
 A dictionary that specifies Python corpus definitions that should be imported in your project.
 
-Each key must be the name of a corpus, where the value gives the absolute path to the Python file that contains the definition. For example:
+Each key must be the import path to a corpus class (see [Django module loading](https://docs.djangoproject.com/en/5.2/ref/utils/#module-django.utils.module_loading)). For example:
 
 ```python
 CORPORA = {
-    'times': '/home/me/ianalyzer/backend/corpora/times/times.py',
+    'times': 'corpora.times.times.Times',
 }
 ```
-
-The key of the corpus must match the name of the corpus class. This match is not case-sensitive, and your key may include extra non-alphabetic characters (they will be ignored when matching). For example, `'times'` is a valid key for the `Times` class, and so is `'TIMES_1'`. It will usually match the filename as well, but this is not strictly necessary.
 
 ### `CORPUS_SERVER_NAMES`
 
@@ -95,7 +93,7 @@ URL of the logo of your organisation. This is used in emails sent to users.
 
 ### `NLTK_DATA_PATH`
 
-Some functionality on I-analyzer will download the stopwords corpus from [NLTK](https://nltk.readthedocs.io/en/latest/). This setting controls the directory where data downloaded from NLTK can be stored.
+Some functionality on Textcavator will download the stopwords corpus from [NLTK](https://nltk.readthedocs.io/en/latest/). This setting controls the directory where data downloaded from NLTK can be stored.
 
 ### `CSV_FILES_PATH`
 

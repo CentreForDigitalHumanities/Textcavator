@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { commonTestBed } from '../../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 import { PaletteSelectComponent } from './palette-select.component';
 

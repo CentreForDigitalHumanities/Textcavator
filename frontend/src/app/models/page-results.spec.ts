@@ -2,10 +2,10 @@ import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { SearchService } from '@services/search.service';
 import { PageResults } from './page-results';
 import { QueryModel } from './query';
-import { corpusFactory } from '../../mock-data/corpus';
+import { corpusFactory } from '@mock-data/corpus';
 import { SimpleStore } from '../store/simple-store';
 import { take } from 'rxjs/operators';
-import { SearchServiceMock } from '../../mock-data/search';
+import { SearchServiceMock } from '@mock-data/search';
 
 describe('PageResults', () => {
     let store: SimpleStore;

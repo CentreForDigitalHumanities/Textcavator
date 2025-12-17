@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { userIcons } from '@shared/icons';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
+import { environment } from '@environments/environment';
 
 @Component({
     selector: 'ia-request-reset',
@@ -21,6 +22,7 @@ export class RequestResetComponent implements OnInit {
     public showMessage: boolean;
     public message: string;
 
+    appName = environment.appName;
     userIcons = userIcons;
 
     constructor(

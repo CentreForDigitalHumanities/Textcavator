@@ -5,7 +5,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { RequestResetComponent } from './reset-password/request-reset.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { RegistrationComponent } from './registration/registration.component';
-import { ManualModule } from '../manual/manual.module';
+import { AboutModule } from '../about/about.module';
 
 
 
@@ -19,7 +19,7 @@ import { ManualModule } from '../manual/manual.module';
         VerifyEmailComponent,
     ],
     imports: [
-        ManualModule, // to use privacy component
+        AboutModule, // to use privacy component
         SharedModule,
     ],
     exports: [

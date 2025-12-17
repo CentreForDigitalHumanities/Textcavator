@@ -75,6 +75,7 @@ export const userIcons: Icons = {
 
 export const navIcons: Icons = {
     corpora: faDatabase,
+    myCorpora: faPencil,
     searchHistory: faHistory,
     manual: faBook,
     about: faInfoCircle,
@@ -128,6 +129,7 @@ export const corpusIcons: Icons = {
     wordModels: faDiagramProject,
     info: faInfo,
     infoAlt: faInfoCircle,
+    edit: actionIcons.edit,
 };
 
 export const searchIcons: Icons = {

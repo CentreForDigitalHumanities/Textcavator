@@ -6,6 +6,7 @@ from addcorpus.json_corpora.export_json import export_json_corpus
 from addcorpus.json_corpora.import_json import import_json_corpus
 from addcorpus.models import (Corpus, CorpusConfiguration, CorpusDataFile,
                               CorpusDocumentationPage, Field)
+from addcorpus.permissions import can_edit
 from django.core.files import File
 from langcodes import Language, standardize_tag
 from rest_framework import serializers
@@ -107,10 +108,18 @@ class CorpusConfigurationSerializer(serializers.ModelSerializer):
 
 class CorpusSerializer(serializers.ModelSerializer):
     configuration = CorpusConfigurationSerializer(read_only=True)
+    editable = serializers.SerializerMethodField()
 
     class Meta:
         model = Corpus
-        fields = ['id', 'name', 'configuration']
+        fields = ['id', 'name', 'configuration', 'editable']
+
+
+    def get_editable(self, instance):
+        if request := self.context.get('request'):
+            user = request.user
+            return can_edit(user, instance)
+
 
     def to_representation(self, instance: Corpus):
         # flatten representation: corpus configuration
@@ -119,6 +128,7 @@ class CorpusSerializer(serializers.ModelSerializer):
         conf_data = data.pop('configuration')
         data.update(conf_data)
         return data
+
 
 class DocumentationTemplateField(serializers.CharField):
     '''

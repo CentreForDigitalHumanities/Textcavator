@@ -10,12 +10,12 @@ here = os.path.abspath(os.path.dirname(__file__))
 @pytest.fixture()
 def hum_course_descriptions_settings(settings, db):
     settings.CORPORA = {
-        'hum_course_descriptions': os.path.join(here, '../uu_course_descriptions_gw_2023.py')
+        'hum_course_descriptions': 'corpora.uu_course_descriptions.uu_course_descriptions_gw_2023.HumCourseDescriptions',
     }
     settings.HUM_COURSE_DESCRIPTIONS_DATA = os.path.join(here, 'data')
 
 def test_hum_course_descriptions_model(hum_course_descriptions_settings, db, admin_client):
-    corpus = corpus_from_api(admin_client)
+    corpus = corpus_from_api(admin_client, 'hum_course_descriptions')
     assert corpus['title'] == 'Humanities Course Descriptions'
 
 description = '''- Stap 1 cursusinvoer door contactpersonen; Van dinsdag 1 december t/m vrijdag 15 januari

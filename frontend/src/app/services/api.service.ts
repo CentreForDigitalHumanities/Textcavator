@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { interval, Observable } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
-import { ImageInfo } from '../image-view/image-view.component';
 import {
     AggregateTermFrequencyParameters,
     Corpus,
@@ -38,6 +37,7 @@ import {
     DataFileInfo,
 } from '@models/corpus-definition';
 import { APIIndexHealth, APIIndexJob, isComplete, JobStatus } from '@models/indexing';
+import { ImageInfo } from '@models/image';
 
 interface SolisLoginResponse {
     success: boolean;

@@ -1,5 +1,5 @@
 # Named Entities
-I-Analyzer has the capacity to display named entities.
+Textcavator has the capacity to display named entities.
 
 ## Named entity fields
 To determine whether named entities are available for a given corpus, the application checks if a given corpus contains fields ending with `:ner`.

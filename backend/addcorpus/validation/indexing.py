@@ -77,22 +77,24 @@ def validate_language_field(corpus):
             'field_language for the corpus'
         )
 
-def validate_has_data_directory(corpus):
+def validate_has_data(corpus):
     '''
     If the corpus does not have a Python definition, validate that it has a data
-    directory.
+    directory, or at least one confirmed data file.
     '''
 
     if corpus.has_python_definition:
         return
 
     config = corpus.configuration
-    if not config.data_directory:
-        raise CorpusNotIndexableError(
-            'Missing data directory'
-        )
+    datafiles = corpus.datafiles
 
-    if not os.path.isdir(config.data_directory):
+    if config.data_directory:
+        if not os.path.isdir(config.data_directory):
+            raise CorpusNotIndexableError(
+                'Configured data directory does not exist.'
+            )
+    elif not datafiles.filter(confirmed=True).exists():
         raise CorpusNotIndexableError(
-            'Configured data directory does not exist.'
+            'Missing data files or data directory'
         )

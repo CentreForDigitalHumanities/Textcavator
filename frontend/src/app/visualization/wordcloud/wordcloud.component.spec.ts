@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { WordcloudComponent, sizeScale } from './wordcloud.component';
-import { commonTestBed } from '../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 describe('WordcloudComponent', () => {
   let component: WordcloudComponent;

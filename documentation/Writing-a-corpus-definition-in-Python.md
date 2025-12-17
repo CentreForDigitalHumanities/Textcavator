@@ -4,13 +4,13 @@ This document is a guide to writing a Python corpus definition.
 
 The steps of adding a new Python corpus are usually the following:
 
-- Create a new python class in the I-analyzer repository, which will describe the corpus
+- Create a new python class in the Textcavator repository, which will describe the corpus
 - Include the corpus in your local django settings and include (local) source data
 - Load the corpus into your local database
 - Create and populate a local elasticsearch index for the corpus
 - Workshop the corpus definition, add unit tests
 - Make a pull request
-- Create and populate a production elasticsearch index on the production cluster using your test branch. (We use a dedicated I-analyzer instance for indexing.)
+- Create and populate a production elasticsearch index on the production cluster using your test branch. (We use a dedicated Textcavator instance for indexing.)
 - Include the corpus definition in the next release and deploy it in production.
 - Verify everything works as expected and adjust the corpus permissions in the production admin interface, so users can see it.
 
@@ -55,7 +55,7 @@ The following attributes are required for a corpus to function.
 
 ### Required methods
 
-The corpus class must define a method `sources(self, **kwargs)`. See the [API documentation of ianalyzer_readers](https://ianalyzer-readers.readthedocs.io/en/stable/api/). When you run the indexing command, I-analyzer can provide two named arguments, `start` and `end`, which give a minimum and maximum date to select source files.
+The corpus class must define a method `sources(self, **kwargs)`. See the [API documentation of ianalyzer_readers](https://ianalyzer-readers.readthedocs.io/en/stable/api/). When you run the indexing command, Textcavator can provide two named arguments, `start` and `end`, which give a minimum and maximum date to select source files.
 
 ### Optional attributes
 

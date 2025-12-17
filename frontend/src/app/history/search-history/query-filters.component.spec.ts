@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { QueryModel } from '@models';
-import { corpusFactory } from '../../../mock-data/corpus';
-import { commonTestBed } from '../../common-test-bed';
+import { corpusFactory } from '@mock-data/corpus';
+import { commonTestBed } from '@app/common-test-bed';
 
 import { QueryFiltersComponent } from './query-filters.component';
 

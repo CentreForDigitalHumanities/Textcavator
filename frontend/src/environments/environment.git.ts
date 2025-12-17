@@ -4,7 +4,7 @@ export const environment = {
     production: true,
     appName: 'Something completely different',
     navbarBrand: {
-        title: 'I-analyzer',
+        title: 'Textcavator',
         subtitle: undefined,
         logo: '/assets/logo.png',
         logoAlt: undefined,
@@ -17,6 +17,6 @@ export const environment = {
     runInIFrame: false,
     directDownloadLimit: 1000,
     version,
-    sourceUrl: 'https://github.com/CentreForDigitalHumanities/I-analyzer/',
+    sourceUrl: 'https://github.com/CentreForDigitalHumanities/Textcavator/',
     logos: undefined,
 };

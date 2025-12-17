@@ -1,0 +1,12 @@
+<a class="navbar-link"
+    tabindex="0" role="button"
+    (click)="toggleDropdown()"
+    (keydown.enter)="toggleDropdown()"
+    [attr.aria-expanded]="dropdownOpen$ | async"
+    [attr.data-target]="dropdownID">
+    <ng-content select="[iaMenuDropdownLabel]" />
+</a>
+<div class="navbar-dropdown is-right"
+    [id]="dropdownID" #dropdownMenu>
+    <ng-content />
+</div>

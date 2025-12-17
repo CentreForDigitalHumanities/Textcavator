@@ -2,7 +2,7 @@ import {
     highlightFromParams, omitNullParameters, pageFromParams, pageToParams, searchFieldsFromParams,
     sortSettingsFromParams, sortSettingsToParams
 } from './params';
-import { corpusFactory } from '../../mock-data/corpus';
+import { corpusFactory } from '@mock-data/corpus';
 import { Corpus, CorpusField, SortState } from '@models';
 import * as _ from 'lodash';
 import { PageParameters, PageResultsParameters } from '@models/page-results';

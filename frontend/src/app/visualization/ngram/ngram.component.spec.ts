@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { QueryModel } from '@models';
-import { corpusFactory } from '../../../mock-data/corpus';
-import { commonTestBed } from '../../common-test-bed';
+import { corpusFactory } from '@mock-data/corpus';
+import { commonTestBed } from '@app/common-test-bed';
 import { NgramComponent } from './ngram.component';
 import { ApiService, VisualizationService } from '@services';
-import { ApiServiceMock, fakeNgramResult } from '../../../mock-data/api';
-import { VisualizationServiceMock } from '../../../mock-data/visualization';
+import { ApiServiceMock, fakeNgramResult } from '@mock-data/api';
+import { VisualizationServiceMock } from '@mock-data/visualization';
 import { Subject } from 'rxjs';
 import { NgramSettings } from '@models/ngram';
 

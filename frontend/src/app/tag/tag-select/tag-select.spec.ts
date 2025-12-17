@@ -2,7 +2,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TagSelectComponent } from './tag-select.component';
-import { commonTestBed } from '../../common-test-bed';
+import { commonTestBed } from '@app/common-test-bed';
 
 describe('TagSelectComponent', () => {
     let component: TagSelectComponent;

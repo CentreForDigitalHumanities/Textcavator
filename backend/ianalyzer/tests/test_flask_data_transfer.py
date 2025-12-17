@@ -14,10 +14,6 @@ from users.models import CustomUser
 _here = os.path.abspath(os.path.dirname(__file__))
 flask_test_data_dir = os.path.join(_here, 'flask_test_data')
 
-@pytest.fixture(autouse=True)
-def clear_db():
-    # remove mock corpora
-    Corpus.objects.all().delete()
 
 def test_legacy_data_import():
     user_data = import_table_data(flask_test_data_dir, 'user')
@@ -29,7 +25,7 @@ def test_legacy_data_import():
         'id': '1',
         'username': 'admin',
         'password': 'password',
-        'email': 'admin@ianalyzer.nl',
+        'email': 'admin@textcavator.nl',
         'active': '1',
         'authenticated': '1',
         'download_limit': '10000',
@@ -76,7 +72,7 @@ def test_save_legacy_user(db):
     assert len(users) == 4
     admin = CustomUser.objects.get(username='admin')
     assert admin.username == 'admin'
-    assert admin.email == 'admin@ianalyzer.nl'
+    assert admin.email == 'admin@textcavator.nl'
     assert admin.is_superuser
     assert admin.is_staff
     assert not admin.saml

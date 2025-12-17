@@ -1,0 +1,142 @@
+<nav class="navbar is-primary" aria-label="primary navigation">
+    <div class="container is-fluid">
+        <!-- skip link for keyboard navigation.
+            Complicated setup because the menu is outside of router-outlet and so
+            it can't use [routerLink]="." -->
+        <a class="skip-to-content-link
+            has-background-primary-soft has-text-primary-soft-invert"
+            *ngIf="route$ | async as route"
+
+            [routerLink]="route.url" [queryParams]="route.queryParams" fragment="main">
+            Skip to content
+        </a>
+        <div class="navbar-brand">
+            <a class="navbar-item" [routerLink]="['/home']">
+                <img *ngIf="brand.logo"
+                    [src]="brand.logo"
+                    [alt]="brand.logoAlt"
+                    [attr.aria-hidden]="!brand.logoAlt?.length">
+                <span>{{brand.title}}</span>
+                <span *ngIf="brand.subtitle">
+                    |&nbsp; <span class="app-subtitle">{{brand.subtitle}}</span>
+                </span>
+            </a>
+
+            <a  role="button" tabindex="0"
+                (click)="toggleMenu()" (keydown.enter)="toggleMenu()"
+                class="navbar-burger" [class.is-active]="menuOpen$ | async"
+                aria-label="menu" [attr.aria-expanded]="menuOpen$ | async"
+                data-target="navigation-menu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu" id="navigation-menu" [class.is-active]="menuOpen$ | async">
+            <div class="navbar-start">
+                <!-- navbar items -->
+                <a class="navbar-item"
+                    [routerLinkActive]="'is-active'" [routerLink]="['/home']">
+                    <span class="icon" aria-hidden="true">
+                        <fa-icon [icon]="navIcons.corpora"></fa-icon>
+                    </span>
+                    Corpora
+                </a>
+                <a class="navbar-item"
+                    [routerLinkActive]="'is-active'" [routerLink]="['/manual', 'main']">
+                    <span class="icon" aria-hidden="true">
+                        <fa-icon [icon]="navIcons.manual"></fa-icon>
+                    </span>
+                    Manual
+                </a>
+                <a class="navbar-item" [routerLinkActive]="'is-active'" [routerLink]="['/about']">
+                    <span class="icon" aria-hidden="true">
+                        <fa-icon [icon]="navIcons.about"></fa-icon>
+                    </span>
+                    About
+                </a>
+            </div>
+            <div class="navbar-end">
+                <ia-menu-dropdown *ngIf="user$ | async as user; else notLoggedIn">
+                    <div iaMenuDropdownLabel>
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="userIcons.user"></fa-icon>
+                        </span>
+                        {{user.name}}
+                    </div>
+                <!-- menu items -->
+                    <a class="navbar-item"
+                        *ngIf="user.canEditCorpora"
+                        [routerLink]="['/custom-corpora']"
+                        [routerLinkActive]="'is-active'">
+                        <span class="icon" arai-hidden="true">
+                            <fa-icon [icon]="navIcons.corpora" />
+                        </span>
+                        Custom corpora
+                    </a>
+                    <a class="navbar-item"
+                        [routerLink]="['/search-history']"
+                        routerLinkActive="is-active">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="navIcons.searchHistory"></fa-icon>
+                        </span>
+                        Search history
+                    </a>
+                    <a class="navbar-item"
+                        [routerLink]="['/download-history']"
+                        routerLinkActive="is-active">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="navIcons.downloads"></fa-icon>
+                        </span>
+                        Downloads
+                    </a>
+                    <a class="navbar-item"
+                        [routerLink]="['/tags']"
+                        routerLinkActive="is-active">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="navIcons.tags"></fa-icon>
+                        </span>
+                        Tags
+                    </a>
+                    <a class="navbar-item"
+                        [routerLink]="['/settings']"
+                        routerLinkActive="is-active">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="navIcons.settings"></fa-icon>
+                        </span>
+                        Settings
+                    </a>
+                    <a class="navbar-item"
+                        *ngIf="user.isAdmin"
+                        href="{{adminUrl}}">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="navIcons.admin"></fa-icon>
+                        </span>
+                        Administration
+                    </a>
+                    <a class="navbar-item"
+                        role="button"
+                        tabindex="0"
+                        (click)="logout()"
+                        (keydown.enter)="logout()">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="userIcons.logout"></fa-icon>
+                        </span>
+                        Sign out
+                    </a>
+                </ia-menu-dropdown>
+                <ng-template #notLoggedIn>
+                    <a class="navbar-item"
+                        [routerLink]="['/login']" [routerLinkActive]="'is-active'">
+                        Sign in
+                    </a>
+                    <a class="navbar-item"
+                    [routerLink]="['/registration']" [routerLinkActive]="'is-active'">
+                        Register
+                </a>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</nav>

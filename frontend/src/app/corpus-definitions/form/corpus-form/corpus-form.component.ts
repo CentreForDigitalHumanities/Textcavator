@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CorpusDefinition } from '../../../models/corpus-definition';
-import { ApiService } from '../../../services';
+import { CorpusDefinition } from '@models/corpus-definition';
+import { ApiService } from '@services/api.service';
 import { CorpusDefinitionService } from '../../corpus-definition.service';
 import { combineLatest, map, tap } from 'rxjs';
 import _ from 'lodash';
-import { actionIcons } from '@shared/icons';
+import { actionIcons, corpusIcons } from '@shared/icons';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CorpusService } from '@app/services';
+import { environment } from '@environments/environment';
 
 @Component({
     selector: 'ia-corpus-form',
@@ -28,15 +30,18 @@ export class CorpusFormComponent {
     corpus$ = this.corpusDefService.corpus$.asObservable();
 
     actionIcons = actionIcons;
+    corpusIcons = corpusIcons;
+    appName = environment.appName;
 
     constructor(
         private apiService: ApiService,
         private route: ActivatedRoute,
         private corpusDefService: CorpusDefinitionService,
+        private corpusService: CorpusService,
         private title: Title,
     ) {
         const id = parseInt(this.route.snapshot.params['corpusID'], 10);
-        const fetchedCorpus = new CorpusDefinition(this.apiService, id);
+        const fetchedCorpus = new CorpusDefinition(this.apiService, this.corpusService, id);
         this.corpusDefService.setCorpus(fetchedCorpus);
         fetchedCorpus.definitionUpdated$.pipe(
             takeUntilDestroyed(),

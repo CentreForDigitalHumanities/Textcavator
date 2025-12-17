@@ -1,5 +1,5 @@
 """
-WSGI config for ianalyzer project.
+WSGI config for textcavator project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

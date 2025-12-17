@@ -12,5 +12,5 @@ Please note that our collection currently includes only the newspaper set from D
 
 ### Recent newspapers (1876-1995)
 
-All users have direct access to the Delpher newspaper dataset for the period 1600–1876. A more recent dataset, which includes newspapers up to 1995, is also available for exploration in I-Analyzer. However, access requires prior permission from the rightsholder, The National Library of the Netherlands (KB). To use the full newspaper dataset, you must first complete and sign an individual agreement to comply with the KB's usage conditions. This form can be requested via
+All users have direct access to the Delpher newspaper dataset for the period 1600–1876. A more recent dataset, which includes newspapers up to 1995, is also available for exploration in {{ site_name }}. However, access requires prior permission from the rightsholder, The National Library of the Netherlands (KB). To use the full newspaper dataset, you must first complete and sign an individual agreement to comply with the KB's usage conditions. This form can be requested via
 [cdh@uu.nl](mailto:cdh@uu.nl), after which we can assist you with finalizing the application process.
