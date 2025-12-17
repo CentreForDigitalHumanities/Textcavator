@@ -1,8 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-export const splitParagraphs = (content: string | string[]): string[] => {
-    const paragraphs = typeof content === 'string' ? content.split('\n') : content;
+const paragraphArray = (content: string | string[], splitText = false): string[] => {
+    if (typeof content === 'string') {
+        return splitText ? content.split('\n') : [content];
+    } else {
+        return content;
+    }
+}
+
+export const splitParagraphs = (content: string | string[], splitText = false): string[] => {
+    const paragraphs = paragraphArray(content, splitText);
     return paragraphs.filter(p => p !== '')
 }
 
@@ -11,22 +18,7 @@ export const splitParagraphs = (content: string | string[]): string[] => {
     standalone: false
 })
 export class ParagraphPipe implements PipeTransform {
-    constructor(private domSanitizer: DomSanitizer) {}
-
-    transform(content: string | string[]): unknown {
-        const splitText = this.addParagraphBreaks(content);
-        return splitText;
+    transform(content: string | string[], split = false): string[] {
+        return splitParagraphs(content, split);
     }
-
-    addParagraphBreaks(content: string | string[]): SafeHtml {
-        const paragraphs = splitParagraphs(content);
-        if (!paragraphs || paragraphs.length === 1) {
-            return content as string;
-        }
-        const cleanedParagraphs = paragraphs.filter(p => p !== '')
-        const wrapped = cleanedParagraphs.join('</p><p>')
-        return this.domSanitizer.bypassSecurityTrustHtml(`<p>${wrapped}</p>`);
-    }
-
-
 }

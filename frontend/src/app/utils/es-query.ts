@@ -112,6 +112,9 @@ const makeFieldHighlightSpec = (field: CorpusField, highlightFields: string[]) =
     return { [field.name]: spec };
 };
 
+export const highlightPreTag = '<mark class="highlight">';
+export const highlightPostTag = '</mark>';
+
 export const makeHighlightSpecification = (corpus: Corpus, queryText: string | undefined, searchFields: CorpusField[], highlightSize?: number) => {
     if (!queryText || !highlightSize) {
         return {};
@@ -121,8 +124,8 @@ export const makeHighlightSpecification = (corpus: Corpus, queryText: string | u
     return {
         highlight: {
             fragment_size: highlightSize,
-            pre_tags: ['<mark class="highlight">'],
-            post_tags: ['</mark>'],
+            pre_tags: [highlightPreTag],
+            post_tags: [highlightPostTag],
             order: 'score',
             fields: corpus.fields
                 .filter(f => includeHighlight(f, highlightFields))
