@@ -188,11 +188,24 @@ def _token_ranges(
     Provides ranges for every token (n-gram or collocate) surrounding the search term.
     '''
     for match_start, match_stop, _match_content in matches:
-        for j in term_positions:
-            start = match_start - j
-            stop = match_stop - 1 - j + ngram_size
+        for start, stop in _ngram_token_ranges(match_start, match_stop, term_positions, ngram_size):
             if start >= 0 and stop <= len(document_size):
                 yield start, stop
+
+
+def _ngram_token_ranges(
+    match_start: int, match_stop: int,
+    term_positions: int,
+    ngram_size: int,
+) -> Iterable[Tuple[int, int]]:
+    '''
+    From the range of a token match, generates ranges for n-grams containing the token.
+    '''
+    for j in term_positions:
+        start = match_start - j
+        stop = match_stop - 1 - j + ngram_size
+        yield start, stop
+
 
 
 def get_top_n_ngrams(results, number_of_ngrams=10):
