@@ -22,6 +22,7 @@ export class ThemeService {
 
     /** Default dark/light preference from the browser/OS */
     private systemTheme$: Observable<Theme>;
+    private storageKey = 'theme';
 
     constructor(
 
@@ -57,14 +58,19 @@ export class ThemeService {
     }
 
     private readStoredTheme(): Theme | null {
-        return (localStorage.getItem('theme') as Theme) || null;
+        const value = localStorage.getItem(this.storageKey);
+        if ([Theme.DARK, Theme.LIGHT].map(String).includes(value)) {
+            return value as Theme;
+        } else {
+            return null;
+        }
     }
 
     private writeStoredTheme(theme: Theme | null): void {
         if (theme) {
-            localStorage.setItem('theme', theme);
+            localStorage.setItem(this.storageKey, theme);
         } else {
-            localStorage.removeItem('theme');
+            localStorage.removeItem(this.storageKey);
         }
     }
 }
