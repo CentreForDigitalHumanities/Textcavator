@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, fromEvent, map, Observable, startWith } from 'rxjs';
 import { Chart } from 'chart.js';
 import _ from 'lodash';
+import { environment } from '@environments/environment';
 
 export enum Theme {
     DARK = 'dark',
@@ -27,7 +28,11 @@ export class ThemeService {
     constructor(
 
     ) {
-        this.selection.next(this.readStoredTheme());
+        if (environment.runInIFrame) {
+            this.selection.next(Theme.LIGHT);
+        } else {
+            this.selection.next(this.readStoredTheme());
+        }
         const query = window.matchMedia('(prefers-color-scheme: dark)');
         this.systemTheme$ = fromEvent<MediaQueryListEvent>(query, 'change').pipe(
             startWith(query),
