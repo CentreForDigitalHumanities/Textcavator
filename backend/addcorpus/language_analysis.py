@@ -5,7 +5,7 @@ from langcodes import closest_match
 
 from addcorpus.language_utils import (
     analyzer_name, stopwords_filter, stemmer_filter,
-    number_char_filter, get_language_key, read_nltk_stopwords,
+    number_char_filter, get_language_key, read_stopwords,
 )
 
 class LanguageAnalyzer(ABC):
@@ -118,7 +118,7 @@ class LanguageAnalyzer(ABC):
         Fetch list of stopwords for the language
         '''
         if self.has_stopwords:
-            return read_nltk_stopwords(get_language_key(self.code))
+            return read_stopwords(get_language_key(self.code))
 
 
     @property
@@ -192,6 +192,24 @@ class LanguageAnalyzer(ABC):
 
 # LANGUAGE SPECS
 #========================================================================================
+
+class Bosnian(LanguageAnalyzer):
+    code = 'bs'
+    has_stopwords = True
+    has_stemming = False
+
+    def stopwords(self):
+        return read_stopwords('bosnian', 'supplementary')
+
+
+class Bulgarian(LanguageAnalyzer):
+    code = 'bg'
+    has_stopwords = True
+    has_stemming = True
+
+    def stopwords(self):
+        return read_stopwords('bulgarian', 'supplementary')
+
 
 class Chinese(LanguageAnalyzer):
     code = 'zh'
@@ -306,6 +324,8 @@ class Swedish(LanguageAnalyzer):
 # Full language list, and dummy class for unknown language fields
 
 LANGUAGES: List[Type[LanguageAnalyzer]] = [
+    Bosnian,
+    Bulgarian,
     Chinese,
     Danish,
     Dutch,

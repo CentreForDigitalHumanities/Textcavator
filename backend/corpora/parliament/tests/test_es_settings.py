@@ -3,7 +3,7 @@ import os
 import shutil
 from addcorpus import language_analysis
 
-def test_stopwords(clean_nltk_data_directory, settings, connected_to_internet):
+def test_stopwords(clean_nltk_data_directory, settings):
     """
     Check that stopwords results are valid and all languages are included
     """

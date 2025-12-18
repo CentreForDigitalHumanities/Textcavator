@@ -27,21 +27,24 @@ def get_language_key(language_code):
 
 # STOPWORDS
 
+SUPPLEMENTARY_STOPWORDS_DIR = os.path.join(settings.BASE_DIR, 'addcorpus', 'stopword_data', 'supplementary_data')
+
 def _stopwords_directory() -> str:
     stopwords_dir = os.path.join(settings.NLTK_DATA_PATH, 'corpora', 'stopwords')
     if not os.path.exists(stopwords_dir):
         nltk.download('stopwords', settings.NLTK_DATA_PATH)
     return stopwords_dir
 
+def read_stopwords(key: str, source='nltk') -> List[str]:
+    if source == 'ntlk':
+        dir = _stopwords_directory()
+    else:
+        dir = SUPPLEMENTARY_STOPWORDS_DIR
 
-def read_nltk_stopwords(key: str) -> List[str]:
-    dir = _stopwords_directory()
     path = os.path.join(dir, key)
-
-    if os.path.exists(path):
-        with open(path) as infile:
-            words = [line.strip() for line in infile.readlines()]
-            return words
+    with open(path) as infile:
+        words = [line.strip() for line in infile.readlines()]
+        return words
 
 
 def stopwords_filter(stopwords: List[str]) -> Dict:
