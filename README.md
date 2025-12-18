@@ -16,7 +16,7 @@ Textcavator is primarily intended for academic research and higher education. We
 
 ## Contents
 
-This repository contains the source code for the Textcavator web application, which consists of a Django backend and Angular frontend.
+This repository contains the source code for the Textcavator web application, which consists of a [Django backend](/backend/) and [Angular frontend](/frontend/). It also contains [developer documentation](/documentation/), [functional tests](/functional-tests/), and a [test app for embedding Textcavator](/iframe-test-app/).
 
 For corpora included in Textcavator, the backend includes a definition file that specifies how to read the source files, and how this data should be structured and presented in Textcavator. This repository does _not_ include the source data itself, beyond a few sample files for testing.
 
