@@ -6,7 +6,7 @@ import { modulo } from '@utils/utils';
 @Component({
     selector: 'button[ia-theme-button]',
     template: `<span class="icon" aria-hidden="true">
-        <fa-icon [icon]="currentOption.icon" />
+        <fa-icon [icon]="currentOption?.icon" />
     </span>`,
     standalone: false,
 })
