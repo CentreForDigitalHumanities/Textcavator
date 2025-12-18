@@ -58,7 +58,20 @@
                 </a>
             </div>
             <div class="navbar-end">
-                <button ia-theme-button class="navbar-item"></button>
+                <!-- theme dropdown -->
+                <ia-menu-dropdown>
+                    <span iaMenuDropdownLabel>
+                        <fa-icon [icon]="currentThemeOption.icon"/>
+                    </span>
+                    @for (option of themeOptions; track option.value) {
+                        <a class="navbar-item" role="button" (click)="setTheme(option.value)">
+                            <span class="icon" aria-hidden><fa-icon [icon]="option.icon"/></span>
+                            <span>{{option.label}}</span>
+                        </a>
+                    }
+                </ia-menu-dropdown>
+
+                <!-- user dropdown -->
                 <ia-menu-dropdown *ngIf="user$ | async as user; else notLoggedIn">
                     <div iaMenuDropdownLabel>
                         <span class="icon" aria-hidden="true">

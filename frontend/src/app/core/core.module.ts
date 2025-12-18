@@ -8,7 +8,6 @@ import { FooterComponent } from './footer/footer.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { CorpusSelectionModule } from '../corpus-selection/corpus-selection.module';
 import { AlertComponent } from './alert/alert.component';
-import { ThemeButtonComponent } from '@app/core/menu/theme-button/theme-button.component';
 
 
 /** toplevel components such as the home page and navbar */
@@ -21,7 +20,6 @@ import { ThemeButtonComponent } from '@app/core/menu/theme-button/theme-button.c
         MenuDropdownComponent,
         NotificationsComponent,
         AlertComponent,
-        ThemeButtonComponent,
     ],
     imports: [SharedModule, CorpusSelectionModule],
     exports: [

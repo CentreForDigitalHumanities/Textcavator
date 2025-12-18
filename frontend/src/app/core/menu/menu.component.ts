@@ -5,8 +5,9 @@ import { User } from '@models/index';
 import { environment } from '@environments/environment';
 import { AuthService } from '@services/auth.service';
 import { filter, map } from 'rxjs/operators';
-import { navIcons, userIcons } from '@shared/icons';
+import { navIcons, themeIcons, userIcons } from '@shared/icons';
 import * as _ from 'lodash';
+import { Theme, ThemeService } from '@app/services/theme.service';
 
 @Component({
     selector: 'ia-menu',
@@ -30,6 +31,12 @@ export class MenuComponent implements OnDestroy, OnInit {
     navIcons = navIcons;
     userIcons = userIcons;
 
+    themeOptions = [
+        { label: 'auto', icon: themeIcons.system, value: undefined },
+        { label: 'light', icon: themeIcons.light, value: Theme.LIGHT },
+        { label: 'dark', icon: themeIcons.dark, value: Theme.DARK },
+    ];
+
 
     private destroy$ = new Subject<void>();
 
@@ -37,7 +44,14 @@ export class MenuComponent implements OnDestroy, OnInit {
         private authService: AuthService,
         private router: Router,
         private route: ActivatedRoute,
+        private themeService: ThemeService,
     ) {}
+
+    get currentThemeOption() {
+        return this.themeOptions.find(
+            option => option.value == this.themeService.selection.value
+        );
+    }
 
     ngOnDestroy() {
         this.destroy$.next(undefined);
@@ -50,6 +64,10 @@ export class MenuComponent implements OnDestroy, OnInit {
 
     toggleMenu() {
         this.menuOpen$.next(!this.menuOpen$.value);
+    }
+
+    setTheme(value: Theme | undefined) {
+        this.themeService.selection.next(value);
     }
 
     public async logout() {
