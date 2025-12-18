@@ -273,6 +273,14 @@ button {
     }
 }
 
+.input, .select {
+    &:focus {
+        outline: auto !important;
+        border: inherit !important;
+        box-shadow: inherit !important;
+    }
+}
+
 
 // primeNG
 
@@ -316,5 +324,32 @@ button {
         ol, ul {
             padding-left: 0em; // so spacing is not added in both margin AND padding
         }
+    }
+}
+
+
+// dark mode
+
+[data-theme="dark"] {
+    // increase contrast in dark mode
+
+    --bulma-border-l: 40%;
+    --bulma-background-l: 30%;
+    --bulma-shadow: 0 0 0 1px hsla(var(--bulma-shadow-h), var(--bulma-shadow-s), var(--bulma-shadow-l), 0.3);
+
+    --bulma-scheme-main-l: 5%;
+    --bulma-scheme-main-bis-l: 15%;
+    --bulma-scheme-main-ter-l: 20%;
+    --bulma-text-l: 85%;
+    --bulma-text-weak-l: 70%;
+    --bulma-link-on-scheme-l: 77%;
+    --bulma-link-text: hsl(var(--bulma-link-h), 80%, var(--bulma-link-on-scheme-l));
+
+    .control, .input, .select {
+        --bulma-input-placeholder-color: hsla(var(--bulma-text-h), var(--bulma-text-s), var(--bulma-text-strong-l), 0.5);
+    }
+
+    .navbar.is-primary {
+        --bulma-navbar-dropdown-item-background-l: 20%;
     }
 }
