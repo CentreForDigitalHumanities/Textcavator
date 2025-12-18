@@ -23,32 +23,42 @@ def get_language_key(language_code):
 
     return Language.make(standardize_tag(language_code)).display_name().lower()
 
-def _stopwords_directory() -> str:
-    stopwords_dir = os.path.join(settings.NLTK_DATA_PATH, 'corpora', 'stopwords')
-    if not os.path.exists(stopwords_dir):
+def _nltk_stopwords_directory() -> str:
+    nltk_stopwords_dir = os.path.join(settings.NLTK_DATA_PATH, 'corpora', 'stopwords')
+    if not os.path.exists(nltk_stopwords_dir):
         nltk.download('stopwords', settings.NLTK_DATA_PATH)
-    return stopwords_dir
+    return nltk_stopwords_dir
 
-def _stopwords_path(language_code: str):
-    dir = _stopwords_directory()
+def _nltk_stopwords_path(language_code: str):
+    dir = _nltk_stopwords_directory()
+    language = get_language_key(language_code)
+    return os.path.join(dir, language)
+
+def _supplementary_path(language_code: str):
+    dir = os.path.join(settings.BASE_DIR, 'addcorpus', 'stopword_data', 'supplementary_data')
     language = get_language_key(language_code)
     return os.path.join(dir, language)
 
 def stopwords_available(language_code: str) -> bool:
     if not language_code:
         return False
-    path = _stopwords_path(language_code)
-    return os.path.exists(path)
+    nltk_path = _nltk_stopwords_path(language_code)
+    supplementary_path = _supplementary_path(language_code)
+    return True if (os.path.exists(nltk_path) or os.path.exists(supplementary_path)) else False
 
-def get_nltk_stopwords(language_code):
-    path = _stopwords_path(language_code)
-
-    if os.path.exists(path):
-        with open(path) as infile:
+def get_stopwords(language_code):
+    nltk_path = _nltk_stopwords_path(language_code)
+    supplementary_path = _supplementary_path(language_code)
+    if os.path.exists(nltk_path):
+        with open(nltk_path) as infile:
+            words = [line.strip() for line in infile.readlines()]
+            return words
+    elif os.path.exists(supplementary_path):
+        with open(supplementary_path) as infile:
             words = [line.strip() for line in infile.readlines()]
             return words
     else:
-        raise NotImplementedError('language {} has no nltk stopwords list'.format(language_code))
+        raise NotImplementedError('language {} has no stopwords list'.format(language_code))
 
 def add_language_string(name, language):
     return '{}_{}'.format(name, language) if language else name
@@ -119,7 +129,7 @@ def number_filter():
 
 def make_stopword_filter(language):
     try:
-        stopwords = get_nltk_stopwords(language)
+        stopwords = get_stopwords(language)
         return {
             "type": "stop",
             'stopwords': stopwords

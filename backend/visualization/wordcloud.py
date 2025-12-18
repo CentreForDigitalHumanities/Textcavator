@@ -2,14 +2,14 @@ from collections import Counter
 from sklearn.feature_extraction.text import CountVectorizer
 
 from addcorpus.models import Corpus
-from addcorpus.es_settings import get_nltk_stopwords
+from addcorpus.es_settings import get_stopwords
 from es import download as download
 
 def field_stopwords(corpus_name, field_name):
     corpus = Corpus.objects.get(name=corpus_name)
     field = corpus.configuration.fields.get(name=field_name)
     if field.language and field.language != 'dynamic':
-        return get_nltk_stopwords(field.language)
+        return get_stopwords(field.language)
     else:
         return []
 
