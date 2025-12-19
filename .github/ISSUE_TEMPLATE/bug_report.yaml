@@ -35,7 +35,7 @@ body:
       label: Where did you find the bug?
       description: Please add where you found the bug.
       options:
-        - label: https://ianalyzer.hum.uu.nl
+        - label: https://textcavator.hum.uu.nl
         - label: https://peopleandparliament.hum.uu.nl
         - label: https://peace.sites.uu.nl
         - label: a server hosted elsewhere (i.e. not by the research software lab)
@@ -58,7 +58,7 @@ body:
       description: |
         How can a developer replicate the issue? Please provide any information you can. For
         example: "I went to
-        https://ianalyzer.hum.uu.nl/search/troonredes?date=1814-01-01:1972-01-01 and then
+        https://textcavator.hum.uu.nl/search/troonredes?date=1814-01-01:1972-01-01 and then
         clicked on Download CSV. I pressed cancel and then I clicked Download CSV again."
     validations:
       required: true
