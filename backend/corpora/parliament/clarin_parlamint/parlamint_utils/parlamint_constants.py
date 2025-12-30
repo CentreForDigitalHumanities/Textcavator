@@ -120,7 +120,7 @@ DATE_RANGES = {
     'NO': {'min_year': 1998, 'max_year': 2022},
     'PL': {'min_year': 2015, 'max_year': 2022},
     'PT': {'min_year': 2015, 'max_year': 2022},
-    'RS': {'min_year': 1998, 'max_year': 2022},
+    'RS': {'min_year': 1997, 'max_year': 2022},
     'SE': {'min_year': 1998, 'max_year': 2022},
     'SI': {'min_year': 2000, 'max_year': 2022},
     'TR': {'min_year': 2011, 'max_year': 2022},

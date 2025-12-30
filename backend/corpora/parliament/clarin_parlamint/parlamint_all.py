@@ -34,7 +34,7 @@ class ParlaMintAll(XMLCorpusDefinition):
     category = "parliament"
     image = "parlamint.png"
     description_page = "parlamint_all.md"
-    languages = ['en', 'tr', 'de'] # TODO Fill this list up
+    languages = ['en']
     data_directory = settings.PARLAMINT_DATA
     visualize = []
     
@@ -53,6 +53,7 @@ class ParlaMintAll(XMLCorpusDefinition):
     tag_entry = Tag('u')
 
     country_codes = COUNTRY_CODES
+    country_code = None
 
     def sources(self, *args, **kwargs):
         for country_code in self.country_codes:
@@ -111,7 +112,6 @@ class ParlaMintAll(XMLCorpusDefinition):
     )
 
     speech = field_defaults.speech()
-    speech.results_overview = False #hide speech for the full Parlamint corpus, where english is the main field
     speech.extractor = XML(
             Tag('s'),
             multiple=True,
@@ -123,7 +123,6 @@ class ParlaMintAll(XMLCorpusDefinition):
         return extract_speech(element) if element else None
 
     speech_translated = field_defaults.speech_translated()
-    speech_translated.results_overview = True #show translated speech instead for full parlamint corpus
     speech_translated.extractor = Backup(
         Combined(
             XML(attribute='xml:id'),
@@ -239,37 +238,6 @@ class ParlaMintAll(XMLCorpusDefinition):
         transform=transform_speaker_constituency
     )
 
-    # fields = [
-    #     debate_id,
-    #     country,
-    #     date,
-    #     speech_id,
-    #     speech_translated,
-    #     speech,
-    #     speech_ner,
-    #     sequence,
-    #     speaker,
-    #     speaker_id,
-    #     speaker_gender,
-    #     speaker_birth_year,
-    #     speaker_birthplace,
-    #     speaker_wikimedia,
-    #     speaker_twitter,
-    #     parliamentary_role,
-    #     current_party_id,
-    #     current_party,
-    #     current_party_full,
-    #     current_party_wiki,
-    #     current_party_political_orientation,
-    #     ner_per,
-    #     ner_loc,
-    #     ner_org,
-    #     ner_misc
-    # ]
-        # ministerial_role,
-        # speaker_constituency,
-
-    #define fields property so it can be set in __init__
     @property
     def fields(self):
         return self._fields
@@ -279,13 +247,15 @@ class ParlaMintAll(XMLCorpusDefinition):
         self._fields = value
     
     def __init__(self):
+        self.speech.results_overview = True if self.country_code else False 
+        self.speech_translated.results_overview = False if self.country_code else True
         self.fields = [
+            self.speech_translated,
+            self.speech,
             self.debate_id,
             self.country,
             self.date,
             self.speech_id,
-            self.speech_translated,
-            self.speech,
             self.speech_ner,
             self.sequence,
             self.speaker,
