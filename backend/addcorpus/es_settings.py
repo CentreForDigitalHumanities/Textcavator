@@ -20,7 +20,6 @@ def es_settings(languages=[]):
         'index': {'number_of_shards': 1, 'number_of_replicas': 1},
         'analysis': analysis,
     }
-
     return settings
 
 def _join_dicts(dicts: Iterable[Dict]) -> Dict:
