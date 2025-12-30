@@ -97,6 +97,8 @@ def es_settings(languages=[], stopword_analysis=False, stemming_analysis=False):
 
         if stopword_analysis or stemming_analysis:
             if not set_stopword_filter(settings, add_language_string(stopword_filter_name, language), language):
+                warnings.warn('You specified `stopword_analysis=True`, but \
+                                      there are no stopwords available for this language')
                 continue # skip languages for which we do not have a stopword list
 
             if stopword_analysis:
