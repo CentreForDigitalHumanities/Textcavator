@@ -9,7 +9,7 @@ from django.conf import settings
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from addcorpus.es_settings import es_settings
-from addcorpus.es_mappings import keyword_mapping
+from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from corpora.utils.constants import document_context
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
@@ -35,10 +35,10 @@ class ParlaMintAll(XMLCorpusDefinition):
     image = "parlamint.png"
     description_page = "parlamint_all.md"
     languages = ['en']
-    data_directory = settings.PARLAMINT_DATA
+    data_directory = settings.PARLAMINT_ALL_DATA
     visualize = []
     
-    es_index = getattr(settings, "PARLAMINT_INDEX", 'parlamint-all')
+    es_index = getattr(settings, "PARLAMINT_ALL_INDEX", 'parlamint-all')
     @property
     def es_settings(self):
         return es_settings(self.languages, stopword_analysis=True, stemming_analysis=True)
@@ -111,7 +111,24 @@ class ParlaMintAll(XMLCorpusDefinition):
         attribute='xml:id'
     )
 
-    speech = field_defaults.speech()
+    speech = FieldDefinition(
+        name='speech',
+        display_name='Speech',
+        description='The transcribed speech in the original language',
+        # No stemming or stopword analysis for the full set of corpora
+        es_mapping = main_content_mapping(
+            token_counts=True,
+            stopword_analysis=False,
+            stemming_analysis=False,
+            language=None,
+        ),
+        results_overview=False,
+        search_field_core=True,
+        display_type='text_content',
+        visualizations=['wordcloud', 'ngram'],
+        csv_core=True,
+        language=None,
+    )
     speech.extractor = XML(
             Tag('s'),
             multiple=True,
@@ -122,7 +139,24 @@ class ParlaMintAll(XMLCorpusDefinition):
         element = tuple[1].find(attrs={'xml:id': tuple[0]})
         return extract_speech(element) if element else None
 
-    speech_translated = field_defaults.speech_translated()
+    speech_translated = FieldDefinition(
+        name='speech_translated',
+        display_name='Speech (machine-translated)',
+        description='The machine-translated speech',
+        # Translated field does have stemming and stopword analysis
+        es_mapping = main_content_mapping(
+            token_counts=True,
+            stopword_analysis=True,
+            stemming_analysis=True,
+            language='en',
+        ),
+        results_overview=True,
+        search_field_core=True,
+        display_type='text_content',
+        visualizations=['wordcloud', 'ngram'],
+        csv_core=True,
+        language='en'
+    )
     speech_translated.extractor = Backup(
         Combined(
             XML(attribute='xml:id'),
@@ -247,8 +281,6 @@ class ParlaMintAll(XMLCorpusDefinition):
         self._fields = value
     
     def __init__(self):
-        self.speech.results_overview = True if self.country_code else False 
-        self.speech_translated.results_overview = False if self.country_code else True
         self.fields = [
             self.speech_translated,
             self.speech,
