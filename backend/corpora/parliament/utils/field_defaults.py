@@ -299,8 +299,8 @@ def speech_translated():
         # each index has its own definition of the 'clean' and 'stemmed' analyzer, based on language
         es_mapping = main_content_mapping(
             token_counts=False,
-            stopword_analysis='en',
-            stemming_analysis='en',
+            stopword_analysis=True,
+            stemming_analysis=True,
             language='en',
         ),
         results_overview=False,
