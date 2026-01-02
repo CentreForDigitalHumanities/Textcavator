@@ -27,7 +27,11 @@ class _ParlaMint(ParlaMintAll):
 
     @property
     def es_index(self):
-        return super().es_index + '-' + self.country_code.lower()
+        '''
+        this property expects the full parlamint corpus to be named
+        'parlamint-all', and will produce 'parlamint-at' for Austria for example
+        '''
+        return super().es_index.replace('all', self.country_code.lower())
 
     @property
     def image(self):
