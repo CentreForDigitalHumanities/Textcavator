@@ -1,7 +1,7 @@
 import os
 from bs4.element import NavigableString
 
-from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import POLITICAL_ORIENTATIONS, COUNTRY_PARLIAMENTS
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import POLITICAL_ORIENTATIONS, COUNTRY_PARLIAMENTS, COUNTRY_GOVERNMENTS
 
 def transform_xml_filename(filepath, country_extension):
     '''transforms the original-version xml file path to the machine-translated file path'''
@@ -70,6 +70,16 @@ def transform_ministerial_role(data):
             for child_node in node.children:
                 if child_node.name == 'roleName' and child_node.get('xml:lang') == 'en':
                     return child_node.text.strip()
+
+def transform_government(data):
+    org_nodes, date, country = data
+    if not org_nodes:
+        return 'Non-government'
+    for node in org_nodes:
+        if node['ref'] == COUNTRY_GOVERNMENTS[country] and node_is_current(node, date):
+            return 'Government'
+        else:
+            return 'Non-government'
 
 def transform_speaker_constituency(data):
     # TODO: make it universal

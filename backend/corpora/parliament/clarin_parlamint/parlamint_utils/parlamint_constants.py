@@ -62,6 +62,38 @@ COUNTRY_CODE_TO_NAME = {
     'UA': 'Ukraine'
 }
 
+COUNTRY_GOVERNMENTS = {
+    'AT': '#GOV',
+    'BA': '#government.BA',
+    'BE': '#government.BE',
+    'BG': '#gov.BGGov',
+    'CZ': '#government.VladaCR',
+    'DK': '#ParlaMint-DK-GOV',
+    'EE': '#government.Valitsus',
+    'ES': '#GOV',
+    'ES-CT': '#GOV',
+    'ES-GA': '#GOV',
+    'ES-PV': '#government.PV',
+    'FI': '#GOV',
+    'FR': '#ParlaMint-FR-GOV',
+    'GB': '#GoGB',
+    'GR': '#GOV',
+    'HR': '#government.HR',
+    'HU': '#GOV',
+    'IS': '#GOV_LV',
+    'IT': '#GOV',
+    'LV': '#GOV',
+    'NL': '#GOV',
+    'NO': '#government.NO',
+    'PL': '#government.PL',
+    'PT': '#Government',
+    'RS': '#government.RS',
+    'SE': '#GOV',
+    'SI': '#parliament',
+    'TR': '#GOV_TR',
+    'UA': '#GOV.UA'
+}
+
 COUNTRY_PARLIAMENTS = {
     'AT': ['#NR', '#BR'],
     'BA': ['#PS'],

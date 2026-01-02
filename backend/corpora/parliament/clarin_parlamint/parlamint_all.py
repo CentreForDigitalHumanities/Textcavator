@@ -18,7 +18,7 @@ from corpora.parliament.utils.parlamint import ner_keyword_field, speech_ner
 
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import COUNTRY_CODES, COUNTRY_CODE_TO_NAME, DATE_RANGES
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import get_orgs_metadata, get_persons_metadata, extract_named_entities, person_attribute_extractor, extract_speech, party_attribute_extractor, current_party_id_extractor, get_party_list
-from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_transform import transform_xml_filename, transform_ministerial_role, transform_parliamentary_role, transform_political_orientation, transform_speaker_constituency
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_transform import transform_xml_filename, transform_ministerial_role, transform_parliamentary_role, transform_political_orientation, transform_speaker_constituency, transform_government
 
 from ianalyzer_readers.extract import Backup, XML, Combined, Order, Metadata, Pass
 from ianalyzer_readers.xml_tag import Tag
@@ -227,6 +227,24 @@ class ParlaMintAll(XMLCorpusDefinition):
         searchable=False,
     )
 
+    government = FieldDefinition(
+        name='government',
+        display_name='Government',
+        description='Whether speaker is part of the government',
+        es_mapping=keyword_mapping(),
+        searchable=False,
+        search_filter = MultipleChoiceFilter(
+            description='Search speeches by members of government',
+            option_count=2
+        ),   
+        extractor = Combined(
+            person_attribute_extractor('org_nodes'),
+            Metadata('date'),
+            Metadata('country'),
+            transform=transform_government
+        )
+    )
+
     parliamentary_role = field_defaults.parliamentary_role()
     parliamentary_role.extractor = Combined(
         person_attribute_extractor('org_nodes'),
@@ -309,6 +327,7 @@ class ParlaMintAll(XMLCorpusDefinition):
             self.speaker_birthplace,
             self.speaker_wikimedia,
             self.speaker_twitter,
+            self.government,
             self.parliamentary_role,
             #self.ministerial_role,
             self.current_party_id,
