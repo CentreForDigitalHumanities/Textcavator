@@ -139,7 +139,7 @@ def current_party_id_extractor():
         transform=transform_current_party_id
     )
 
-def organisation_attribute_extractor(attribute):
+def party_attribute_extractor(attribute):
     """Extractor that finds the speaker's party and party's
     attributes defined in extract_party_data()"""
     return Combined(

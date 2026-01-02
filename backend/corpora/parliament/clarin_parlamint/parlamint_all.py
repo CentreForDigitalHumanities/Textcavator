@@ -17,7 +17,7 @@ from corpora.parliament.utils.parlamint import ner_keyword_field, speech_ner
 
 
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import COUNTRY_CODES, COUNTRY_CODE_TO_NAME, DATE_RANGES
-from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import get_orgs_metadata, get_persons_metadata, extract_named_entities, person_attribute_extractor, extract_speech, organisation_attribute_extractor, current_party_id_extractor, get_party_list
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import get_orgs_metadata, get_persons_metadata, extract_named_entities, person_attribute_extractor, extract_speech, party_attribute_extractor, current_party_id_extractor, get_party_list
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_transform import transform_xml_filename, transform_ministerial_role, transform_parliamentary_role, transform_political_orientation, transform_speaker_constituency
 
 from ianalyzer_readers.extract import Backup, XML, Combined, Order, Metadata, Pass
@@ -81,6 +81,27 @@ class ParlaMintAll(XMLCorpusDefinition):
                     if os.path.exists(translated_file_path):
                         metadata['translated_soup'] = open_xml_as_soup(translated_file_path)
                     yield xml_file, metadata
+
+    chamber = FieldDefinition(
+        name='chamber',
+        display_name='Chamber',
+        description='In which chamber or house of parliament in which the speeches took place',
+        searchable=False,
+        es_mapping=keyword_mapping(),
+        search_filter=MultipleChoiceFilter(
+            description='Search from speeches from the selected chamber',
+            option_count=5
+        ),
+        extractor=XML(
+            Tag('teiHeader'),
+            Tag('fileDesc'),
+            Tag('titleStmt'),
+            Tag('meeting'),
+            toplevel=True,
+            attribute='corresp'
+        ),
+        visualizations=['resultscount', 'termfrequency']
+    )
 
     country = FieldDefinition(
         name='country',
@@ -163,7 +184,6 @@ class ParlaMintAll(XMLCorpusDefinition):
         transform=lookup_translated_speech
     )
 
-
     speech_ner = speech_ner()
 
     ner_per = ner_keyword_field("person")
@@ -226,10 +246,10 @@ class ParlaMintAll(XMLCorpusDefinition):
     current_party_id.extractor = current_party_id_extractor()
 
     current_party = field_defaults.party()
-    current_party.extractor = organisation_attribute_extractor('name')
+    current_party.extractor = party_attribute_extractor('name')
 
     current_party_full = field_defaults.party_full()
-    current_party_full.extractor = organisation_attribute_extractor('full_name')
+    current_party_full.extractor = party_attribute_extractor('full_name')
 
     current_party_wiki = FieldDefinition(
         name='party_wiki_url',
@@ -239,7 +259,7 @@ class ParlaMintAll(XMLCorpusDefinition):
         es_mapping=keyword_mapping(),
         searchable=False,
     )
-    current_party_wiki.extractor = organisation_attribute_extractor('wikimedia')
+    current_party_wiki.extractor = party_attribute_extractor('wikimedia')
 
     current_party_political_orientation = FieldDefinition(
         name='political_orientation',
@@ -252,7 +272,7 @@ class ParlaMintAll(XMLCorpusDefinition):
         ),
     )
     current_party_political_orientation.extractor = Pass(
-        organisation_attribute_extractor('political_orientation'),
+        party_attribute_extractor('political_orientation'),
         transform=transform_political_orientation
     )
 
@@ -275,9 +295,10 @@ class ParlaMintAll(XMLCorpusDefinition):
         self.fields = [
             self.speech_translated,
             self.speech,
-            self.debate_id,
+            self.chamber,
             self.country,
             self.date,
+            self.debate_id,
             self.speech_id,
             self.speech_ner,
             self.sequence,
