@@ -157,19 +157,10 @@ class ParlaMintAll(XMLCorpusDefinition):
         csv_core=True,
         language='en'
     )
-    speech_translated.extractor = Backup(
-        Combined(
-            XML(attribute='xml:id'),
-            Metadata('translated_soup'),
-            transform=lookup_translated_speech
-        ),
-        # just use the original for the GB corpus TODO: make it a conditional, could not get it to work yet
-        XML(
-            Tag('s'),
-            multiple=True,
-            extract_soup_func = extract_speech,
-            transform=' '.join
-        )
+    speech_translated.extractor = Combined(
+        XML(attribute='xml:id'),
+        Metadata('translated_soup'),
+        transform=lookup_translated_speech
     )
 
 

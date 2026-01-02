@@ -1,15 +1,15 @@
 from datetime import datetime
+import os
+import re
+from glob import glob
 
 from addcorpus.python_corpora.corpus import FieldDefinition
 from addcorpus.es_mappings import main_content_mapping
-from addcorpus.es_settings import es_settings
-from corpora.parliament.clarin_parlamint.parlamint_all import ParlaMintAll
+from corpora.parliament.clarin_parlamint.parlamint_all import ParlaMintAll, open_xml_as_soup
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import COUNTRY_CODE_TO_NAME, LANGUAGES, DATE_RANGES
-from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import get_orgs_metadata, get_persons_metadata, extract_named_entities, person_attribute_extractor, extract_speech, organisation_attribute_extractor, current_party_id_extractor, get_party_list
-import corpora.parliament.utils.field_defaults as field_defaults
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import get_orgs_metadata, get_persons_metadata, extract_named_entities, extract_speech, get_party_list
 
-
-from ianalyzer_readers.extract import Backup, XML, Combined, Order, Metadata, Pass
+from ianalyzer_readers.extract import XML
 from ianalyzer_readers.xml_tag import Tag
 
 
@@ -469,6 +469,30 @@ class ParlaMintGB(_ParlaMint):
     languages = ['en']
     min_date = datetime(year=DATE_RANGES['GB']['min_year'], month=1, day=1)
     max_date = datetime(year=DATE_RANGES['GB']['max_year'], month=12, day=31)
+
+    def sources(self, *args, **kwargs):
+        '''
+        UK-specific sources function to simply reuse the original data for the machine-translated speech field
+        '''
+        country_code = self.country_code
+        print("STARTING COUNTRY: GB")
+        country_data_directory = os.path.join(self.data_directory, "ParlaMint-{}".format(country_code), "ParlaMint-{}.TEI.ana".format(country_code))
+        persons_metadata = get_persons_metadata(country_data_directory, country_code)
+        all_orgs_metadata = get_orgs_metadata(country_data_directory, country_code)
+        party_list = get_party_list(all_orgs_metadata)
+        metadata = {
+            'persons': persons_metadata,
+            'organisations': all_orgs_metadata,
+            'party_list': party_list,
+            'country': country_code
+        }
+        for year in range(DATE_RANGES[country_code]['min_year'], DATE_RANGES[country_code]['max_year']):
+            for xml_file in glob('{}/ParlaMint-{}/ParlaMint-{}.TEI.ana/{}/*.xml'.format(self.data_directory, country_code, country_code, year)):
+                metadata['date'] = re.search(r"\d{4}-\d{2}-\d{2}", xml_file).group()
+                metadata["ner"] = extract_named_entities(xml_file)
+                if os.path.exists(xml_file):
+                    metadata['translated_soup'] = open_xml_as_soup(xml_file)
+                yield xml_file, metadata
 
 
     def __init__(self):
