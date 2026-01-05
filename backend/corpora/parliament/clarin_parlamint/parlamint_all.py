@@ -136,7 +136,7 @@ class ParlaMintAll(XMLCorpusDefinition):
         name='speech',
         display_name='Speech',
         description='The transcribed speech in the original language',
-        # No stemming or stopword analysis for the full set of corpora
+        # stemming or stopword analysis is set by the child corpus
         es_mapping = main_content_mapping(
             token_counts=True,
             stopword_analysis=False,
