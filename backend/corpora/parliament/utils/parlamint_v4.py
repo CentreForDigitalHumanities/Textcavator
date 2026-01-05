@@ -12,15 +12,14 @@ from ianalyzer_readers.xml_tag import Tag
 from addcorpus.es_mappings import non_indexed_text_mapping, keyword_mapping
 from addcorpus.python_corpora.corpus import FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
-from corpora.parliament.utils.parlamint import (
-    metadata_attribute_transform_func,
-    person_attribute_extractor,
-)
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_transform import metadata_attribute_transform_func
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import person_attribute_extractor
 
 
 """
 This file was created as an updated utils file for the ParlaMint dataset, version 4.0. The previous utils file
-is based on version 2.0.
+is based on version 2.0. A more recent version of logic that exists in this file can be found in
+backend/corpora/parliament/clarin_parlamint/. This file is only kept for its use in People & Parliament.
 """
 
 POLITICAL_ORIENTATIONS = {
@@ -353,3 +352,28 @@ def extract_named_entities(xml_file: str) -> dict:
             annotations_dict[annotation["type"]].append(annotated)
         output[speech["xml:id"]] = annotations_dict
     return output
+
+def extract_party_data(node):
+    id = node['xml:id']
+
+    full_name_node = node.find('orgName', full='yes')
+    full_name = full_name_node.text if full_name_node else None
+
+    abbreviation_node = node.find('orgName', full='init')
+    name = abbreviation_node.text if abbreviation_node else full_name or id
+
+    return {
+        'name': name,
+        'full_name': full_name,
+        'role': node['role'],
+        'id': id
+    }
+
+def extract_all_party_data(soup):
+    parties_list = soup.find('listOrg')
+    party_data = map(extract_party_data, parties_list.find_all('org'))
+    make_id = lambda name: '#party.' + name if not name.startswith('party.') else '#' + name
+
+    return {
+        make_id(party['id']): party for party in party_data
+    }

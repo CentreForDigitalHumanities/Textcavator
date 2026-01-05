@@ -8,7 +8,7 @@ from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.constants import document_context
 from bs4 import BeautifulSoup
-from corpora.parliament.utils.parlamint import extract_all_party_data, extract_people_data, extract_role_data, party_attribute_extractor, person_attribute_extractor, clean_value
+from corpora.parliament.utils.parlamint_v4 import extract_all_party_data, extract_people_data, extract_role_data, party_attribute_extractor, person_attribute_extractor, clean_value
 
 from django.conf import settings
 

@@ -1,7 +1,7 @@
 import os
 from bs4 import BeautifulSoup
 
-from ianalyzer_readers.extract import XML, Constant, Combined, Order, Metadata, Pass
+from ianalyzer_readers.extract import XML, Combined, Metadata
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_transform import metadata_attribute_transform_func, transform_current_party_id
 
 def extract_person_data(node):

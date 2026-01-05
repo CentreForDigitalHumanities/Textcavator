@@ -9,10 +9,10 @@ from django.conf import settings
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from addcorpus.es_settings import es_settings
-from addcorpus.es_mappings import keyword_mapping, main_content_mapping
+from addcorpus.es_mappings import keyword_mapping, main_content_mapping, non_indexed_text_mapping
 from corpora.utils.constants import document_context
 import corpora.parliament.utils.field_defaults as field_defaults
-from corpora.parliament.utils.parlamint import ner_keyword_field, speech_ner
+from corpora.parliament.utils.parlamint_v4 import ner_keyword_field, speech_ner
 
 
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import COUNTRY_CODES, COUNTRY_CODE_TO_NAME, DATE_RANGES, PARLIAMENT_NAMES
