@@ -77,7 +77,7 @@ class ParlaMintAll(XMLCorpusDefinition):
                         country_translated_data_directory,
                         str(year), 
                         transform_xml_filename(xml_file, country_code)
-                    ) # en-file Path
+                    ) if country_code != 'GB' else xml_file  # the UK can reuse the original path
                     if os.path.exists(translated_file_path):
                         metadata['translated_soup'] = open_xml_as_soup(translated_file_path)
                     yield xml_file, metadata
