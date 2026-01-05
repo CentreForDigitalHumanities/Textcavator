@@ -72,6 +72,14 @@ def transform_ministerial_role(data):
                     return child_node.text.strip()
 
 def transform_government(data):
+    '''
+    Checks a person's org_nodes for membership to a government
+
+    Data contain:
+     - org_nodes: list of BS4 nodes
+     - date: string of date (YYYY-MM-DD)
+     - country: string of country code (e.g. 'NL')
+    '''
     org_nodes, date, country = data
     if not org_nodes:
         return 'Non-government'
@@ -92,7 +100,17 @@ def transform_speaker_constituency(data):
                 return 'Constituency unknown'
             
 def transform_current_party_id(data):
-    '''looks up party affiliation for a person'''
+    '''
+    looks up party affiliation for a person at a given date. 
+    The input data contain:
+     - id (string)
+     - persons (dictionary: {id (string): person_metadata (dict)})
+     - party_list [str], list of party names
+     - date (string YYYY-MM-DD)
+
+     returns:
+       str: a single party name
+    '''
     id, persons, party_list, date = data
     if not id or not persons or not party_list or not date:
         return 'NA'

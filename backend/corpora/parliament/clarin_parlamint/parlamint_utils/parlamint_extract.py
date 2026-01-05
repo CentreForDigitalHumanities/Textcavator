@@ -41,6 +41,12 @@ def extract_person_data(node):
 
 
 def extract_people_data(soup):
+    '''
+    Takes a soup and searches it for person nodes and adds all metadata
+    to a dictionary.
+
+    Returns: a dictionary with a metadata dict for each person ID.
+    '''
     person_nodes = soup.find_all('person')
     person_data = map(extract_person_data, person_nodes)
     return {
