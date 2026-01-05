@@ -64,6 +64,8 @@ def transform_parliamentary_role(data):
 
 def transform_ministerial_role(data):
     org_nodes, date, country = data
+    if not org_nodes:
+        return None
     for node in org_nodes:
         if COUNTRY_GOVERNMENTS[country] in node['ref'] and node['role'] == 'minister' and node_is_current(node, date):
             for child_node in node.children:
