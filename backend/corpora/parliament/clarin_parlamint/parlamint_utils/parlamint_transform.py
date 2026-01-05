@@ -63,10 +63,9 @@ def transform_parliamentary_role(data):
         return 'non-MP'
 
 def transform_ministerial_role(data):
-    # TODO: make universal, .#mstr is a Turkish convention
     org_nodes, date, country = data
     for node in org_nodes:
-        if '#mstr.' in node['ref'] and node['role'] == 'head' and node_is_current(node, date):
+        if COUNTRY_GOVERNMENTS[country] in node['ref'] and node['role'] == 'minister' and node_is_current(node, date):
             for child_node in node.children:
                 if child_node.name == 'roleName' and child_node.get('xml:lang') == 'en':
                     return child_node.text.strip()
@@ -88,16 +87,6 @@ def transform_government(data):
             return 'Government'
         else:
             return 'Non-government'
-
-def transform_speaker_constituency(data):
-    # TODO: make it universal
-    org_nodes, date = data
-    for node in org_nodes:
-        if node['ref'] == '#TBMM' and node['role'] == 'member' and node_is_current(node, date):
-            if "#constituency-TR." in node['ana']:
-                return node['ana'].split('#constituency-TR.')[1] if node['ana'].split('#constituency-TR.')[1] else None
-            else:
-                return 'Constituency unknown'
             
 def transform_current_party_id(data):
     '''

@@ -32,7 +32,7 @@ def extract_person_data(node):
         'role': role,
         'gender': gender,
         'org_ids': org_ids,
-        'org_nodes': org_nodes,  # unsure about this still: might be a bit much to store the nodes in the metadata
+        'org_nodes': org_nodes, 
         'birth_year': birth_year,
         'birthplace': birthplace,
         'wikimedia': wikimedia_uri,

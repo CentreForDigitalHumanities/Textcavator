@@ -6,7 +6,7 @@ from glob import glob
 from addcorpus.python_corpora.corpus import FieldDefinition
 from addcorpus.es_mappings import main_content_mapping
 from corpora.parliament.clarin_parlamint.parlamint_all import ParlaMintAll, open_xml_as_soup
-from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import COUNTRY_CODE_TO_NAME, LANGUAGES, DATE_RANGES
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import DATE_RANGES
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import get_orgs_metadata, get_persons_metadata, extract_named_entities, extract_speech, get_party_list
 
 from ianalyzer_readers.extract import XML
@@ -22,6 +22,9 @@ def speech_extractor():
     )
 
 class _ParlaMint(ParlaMintAll):
+    '''
+    Parent class for country-specific ParlaMint corpora
+    '''
     country_code = None
     description_page = None
 
@@ -74,7 +77,6 @@ class ParlaMintAT(_ParlaMint):
 
 
 class ParlaMintBA(_ParlaMint):
-    # TODO: check if bs is a supported language for es
     title = "Bosnia"
     description = 'Speeches and debates from the Bosnian Parliament'
     country_code = 'BA'
@@ -106,7 +108,6 @@ class ParlaMintBA(_ParlaMint):
         self.fields = [self.speech] + [field for field in self.fields if field.name != 'speech']
 
 class ParlaMintBE(_ParlaMint):
-    # TODO: needs multilingual stemming
     title = "Belgium"
     description = 'Speeches and debates from the Belgian Parliament'
     country_code = 'BE'

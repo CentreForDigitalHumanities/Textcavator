@@ -11,7 +11,6 @@ from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from addcorpus.es_settings import es_settings
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from corpora.utils.constants import document_context
-from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.parliament.utils.parlamint import ner_keyword_field, speech_ner
 
@@ -295,13 +294,6 @@ class ParlaMintAll(XMLCorpusDefinition):
         transform=transform_political_orientation
     )
 
-    speaker_constituency = field_defaults.speaker_constituency()
-    speaker_constituency.extractor = Combined(
-        person_attribute_extractor('org_nodes'),
-        Metadata('date'),
-        transform=transform_speaker_constituency
-    )
-
     @property
     def fields(self):
         return self._fields
@@ -330,13 +322,12 @@ class ParlaMintAll(XMLCorpusDefinition):
             self.speaker_twitter,
             self.government,
             self.parliamentary_role,
-            #self.ministerial_role,
+            self.ministerial_role,
             self.current_party_id,
             self.current_party,
             self.current_party_full,
             self.current_party_wiki,
             self.current_party_political_orientation,
-            #self.speaker_constituency,
             self.ner_per,
             self.ner_loc,
             self.ner_org,
