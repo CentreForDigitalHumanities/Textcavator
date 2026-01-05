@@ -16,7 +16,7 @@ import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.parliament.utils.parlamint import ner_keyword_field, speech_ner
 
 
-from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import COUNTRY_CODES, COUNTRY_CODE_TO_NAME, DATE_RANGES
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_constants import COUNTRY_CODES, COUNTRY_CODE_TO_NAME, DATE_RANGES, PARLIAMENT_NAMES
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import get_orgs_metadata, get_persons_metadata, extract_named_entities, person_attribute_extractor, extract_speech, party_attribute_extractor, current_party_id_extractor, get_party_list
 from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_transform import transform_xml_filename, transform_ministerial_role, transform_parliamentary_role, transform_political_orientation, transform_speaker_constituency, transform_government
 
@@ -98,7 +98,8 @@ class ParlaMintAll(XMLCorpusDefinition):
             Tag('titleStmt'),
             Tag('meeting'),
             toplevel=True,
-            attribute='corresp'
+            attribute='corresp',
+            transform= lambda x: PARLIAMENT_NAMES[x]
         ),
         visualizations=['resultscount', 'termfrequency']
     )
