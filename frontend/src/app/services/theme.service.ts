@@ -16,7 +16,7 @@ export class ThemeService {
     /** Theme selection from the user.
      * `null` means no explicit preference, i.e. use  the system theme.
      */
-    selection = new BehaviorSubject<Theme | null>(null);
+    selection$ = new BehaviorSubject<Theme | null>(null);
 
     /** Theme used by the site */
     theme$: Observable<Theme>;
@@ -25,33 +25,35 @@ export class ThemeService {
     private systemTheme$: Observable<Theme>;
     private storageKey = 'theme';
 
-    constructor(
+    constructor() {
+        const initialSelection = environment.runInIFrame ? Theme.LIGHT : this.readStoredSelection();
+        this.selection$.next(initialSelection);
+        this.selection$.subscribe((theme) => this.storeSelection(theme));
 
-    ) {
-        if (environment.runInIFrame) {
-            this.selection.next(Theme.LIGHT);
-        } else {
-            this.selection.next(this.readStoredTheme());
-        }
+        this.systemTheme$ = this.watchSystemTheme();
+        this.theme$ = combineLatest([this.selection$, this.systemTheme$]).pipe(
+            map(([selection, system]) => selection || system)
+        );
+        this.theme$.subscribe((theme) => this.applyTheme(theme));
+    }
+
+    private watchSystemTheme(): Observable<Theme> {
         const query = window.matchMedia('(prefers-color-scheme: dark)');
-        this.systemTheme$ = fromEvent<MediaQueryListEvent>(query, 'change').pipe(
+        return fromEvent<MediaQueryListEvent>(query, 'change').pipe(
             startWith(query),
             map(list => list.matches ? Theme.DARK : Theme.LIGHT)
         );
-        this.theme$ = combineLatest([this.selection, this.systemTheme$]).pipe(
-            map(([selection, system]) => selection || system)
-        );
-        this.selection.subscribe((theme) => this.writeStoredTheme(theme));
-        this.theme$.subscribe((theme) => this.setTheme(theme));
     }
 
-    setTheme(theme: Theme) {
+    /** set theme in the site layout */
+    private applyTheme(theme: Theme) {
         const root = (document.getRootNode() as Document).documentElement;
         root.setAttribute('data-theme', theme);
-        this.setChartJSTheme();
+        this.applyChartJSTheme();
     }
 
-    setChartJSTheme() {
+    /** set chartjs defaults based on current style, and update active charts */
+    private applyChartJSTheme() {
         const style = window.getComputedStyle(document.body);
         Chart.defaults.color = () => style.getPropertyValue('--bulma-text-strong');
         Chart.defaults.borderColor = () => style.getPropertyValue('--bulma-border');
@@ -62,7 +64,7 @@ export class ThemeService {
         }
     }
 
-    private readStoredTheme(): Theme | null {
+    private readStoredSelection(): Theme | null {
         const value = localStorage.getItem(this.storageKey);
         if ([Theme.DARK, Theme.LIGHT].map(String).includes(value)) {
             return value as Theme;
@@ -71,7 +73,7 @@ export class ThemeService {
         }
     }
 
-    private writeStoredTheme(theme: Theme | null): void {
+    private storeSelection(theme: Theme | null): void {
         if (theme) {
             localStorage.setItem(this.storageKey, theme);
         } else {

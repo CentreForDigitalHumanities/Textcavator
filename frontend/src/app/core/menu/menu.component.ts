@@ -49,7 +49,7 @@ export class MenuComponent implements OnDestroy, OnInit {
 
     get currentThemeOption() {
         return this.themeOptions.find(
-            option => option.value == this.themeService.selection.value
+            option => option.value == this.themeService.selection$.value
         );
     }
 
@@ -67,7 +67,7 @@ export class MenuComponent implements OnDestroy, OnInit {
     }
 
     setTheme(value: Theme | undefined) {
-        this.themeService.selection.next(value);
+        this.themeService.selection$.next(value);
     }
 
     public async logout() {
