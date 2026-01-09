@@ -202,7 +202,7 @@ export class SimilarityChartComponent implements OnInit, OnChanges, OnDestroy {
         const options: ChartOptions = {
             elements: {
                 line: {
-                    tension: 0, // dthis.chart.update();isables bezier curves
+                    tension: 0, // disables bezier curves
                 },
                 point: {
                     radius: 0, // hide points
