@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from langcodes import standardize_tag, Language
 import requests
-from ianalyzer_readers.extract import Combined, JSON, Metadata, Pass, CSV
+from ianalyzer_readers.extract import Combined, JSON, Metadata, Pass, CSV, Constant
 from ianalyzer_readers.readers.core import Field
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
@@ -51,6 +51,7 @@ class ParliamentEurope(Parliament):
 
     def sources(self, **kwargs):
         for i, subcorpus in enumerate(self.subcorpora):
+            logger.info(f'Extracting subcorpus: {subcorpus.__class__.__name__}')
             for source in subcorpus.sources(**kwargs):
                 filename, metadata = source
                 metadata["subcorpus"] = i
@@ -79,8 +80,8 @@ class ParliamentEurope(Parliament):
     )
     sequence = field_defaults.sequence()
     source_language = FieldDefinition(
-        name='source_language',
-        display_name='Source language',
+        name='language',
+        display_name='Language',
         description='Original language of the speech',
         es_mapping=keyword_mapping(),
         search_filter=MultipleChoiceFilter(
@@ -115,6 +116,7 @@ class ParliamentEurope(Parliament):
     )
     speech_id = field_defaults.speech_id()
     url = field_defaults.url()
+    source_archive = field_defaults.source_archive()
 
     def __init__(self):
         self.fields = [
@@ -136,6 +138,7 @@ class ParliamentEurope(Parliament):
             self.speech_original,
             self.speech_id,
             self.url,
+            self.source_archive,
         ]
 
 
@@ -263,7 +266,7 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
         ['data', 'activity_id'],
     ]
 
-    def sources(self, start, end, **kwargs):
+    def sources(self, **kwargs):
         date = self.min_date
         while date < self.max_date:
             date += timedelta(days=1)
@@ -339,7 +342,6 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
     sequence.extractor = Metadata('sequence')
 
     source_language = field_defaults.language()
-    source_language.name = 'source_language'
     source_language.extractor = JSON("originalLanguage", transform=api_get_language)
 
     speaker = field_defaults.speaker()
@@ -380,6 +382,9 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
     speech_id = field_defaults.speech_id()
     speech_id.extractor = JSON("data.activity_id")
 
+    source_archive = field_defaults.source_archive()
+    source_archive.extractor = Constant('Europarl Open Data')
+
     fields = [
         date,
         debate_id,
@@ -394,12 +399,18 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
         speaker_id,
         speech,
         speech_id,
+        source_archive,
     ]
 
 
 def _to_int(value) -> Optional[int]:
     if value or value == 0:
         return int(value)
+
+def _format_name(values) -> str:
+    return ' '.join(
+        value for value in filter(None, values)
+    )
 
 class EUPDCorpReader(RDSReader):
     data_directory = settings.PP_EUPARL_DATA
@@ -423,7 +434,7 @@ class EUPDCorpReader(RDSReader):
             extractor=CSV('agenda'),
         ),
         Field(
-            name='source_language',
+            name='language',
             extractor=CSV(
                 'language',
                 transform=lambda value: language_name(value.lower()),
@@ -458,7 +469,7 @@ class EUPDCorpReader(RDSReader):
             extractor=Combined(
                 CSV('firstname'),
                 CSV('lastname'),
-                transform=' '.join,
+                transform=_format_name,
             )
         ),
         Field(
@@ -483,4 +494,8 @@ class EUPDCorpReader(RDSReader):
             name='speaker_country',
             extractor=CSV('nationality'),
         ),
+        Field(
+            name='source_archive',
+            extractor=Constant('EUPDCorp'),
+        )
     ]

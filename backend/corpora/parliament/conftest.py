@@ -710,8 +710,9 @@ I welcome the Minister, Deputy Simon Coveney, and his officials.  I thank them f
                     "universal suffrage and in Article 10 (3) of Parliament's Rules "
                     'of Procedure. Mr Crowley has asked for the floor on a point of '
                     'order.',
-                'source_language': 'Italian',
+                'language': 'Italian',
                 'sequence': 1,
+                'source_archive': 'EUPDCorp',
             },
             {
                 'speaker': 'Brian Crowley',
@@ -728,12 +729,13 @@ I welcome the Minister, Deputy Simon Coveney, and his officials.  I thank them f
                 "party": 'ECR',
                 'party_full': 'European Conservatives and Reformists',
                 "party_id": "7037",
-                "source_language": "English",
+                "language": "English",
                 "sequence": 1,
                 "speaker": "Roberts Zīle",
                 "speaker_country": "Latvia",
                 "speaker_id": "28615",
                 "speech": "Thank you, Commissioner McGuinness, and I would also like to thank you for your work on the AML package and many other issues, also for today's issues. Thank you very much.",
+                'source_archive': 'Europarl Open Data',
             }
         ],
         "n_documents": 6,
