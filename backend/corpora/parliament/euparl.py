@@ -1,131 +1,32 @@
 from datetime import datetime, timedelta
 from functools import cache
-from itertools import chain
 import logging
 import os
-from typing import Optional, Tuple, Union
+from typing import Optional
 
 from bs4 import BeautifulSoup
 from django.conf import settings
 from langcodes import standardize_tag, Language
 import requests
-from rdflib import Graph, Namespace, URIRef
-from rdflib.namespace import DCTERMS, FOAF, RDFS, RDF as RDFNS
-from ianalyzer_readers.extract import Backup, Combined, JSON, Metadata, RDF, Pass
+from ianalyzer_readers.extract import Combined, JSON, Metadata, Pass, CSV
+from ianalyzer_readers.readers.core import Field
 
-from addcorpus.es_mappings import keyword_mapping
+from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from addcorpus.python_corpora.corpus import (
     FieldDefinition,
     JSONCorpusDefinition,
-    RDFCorpusDefinition,
 )
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.constants import document_context
+from corpora.parliament.utils.rds_reader import RDSReader
 
 logger = logging.getLogger('indexing')
-
-EVENTS_METADATA = 'Events_and_structure.ttl'
-MP_METADATA = 'MembersOfParliament_background.ttl'
-SPEECHES = 'English.ttl'
-
-# Namespaces of Linked Politics (NB: the purl links resolve to dead sites)
-LP_EU = Namespace('http://purl.org/linkedpolitics/eu/plenary/')
-LPV_EU = Namespace('http://purl.org/linkedpolitics/vocabulary/eu/plenary/')
-LP = Namespace('http://purl.org/linkedpolitics/')
-LPV = Namespace('http://purl.org/linkedpolitics/vocabulary/')
-
-def add_speaker_metadata(filename: str) -> dict:
-    """Parse all relevant metadata out of MembersOfParliament ttl to dict"""
-    speaker_dict = {}
-    speaker_graph = Graph()
-    speaker_graph.parse(filename)
-    speaker_subjects = speaker_graph.subjects(object=LPV.MemberOfParliament)
-    for speaker in speaker_subjects:
-        try:
-            name = speaker_graph.value(speaker, FOAF.name).value
-        except AttributeError:
-            # We cannot find the name of the speaker subject
-            continue
-        country_node = speaker_graph.value(speaker, LPV.countryOfRepresentation)
-        country_name = speaker_graph.value(country_node, RDFS.label).value
-        party_list = []
-        speaker_functions = speaker_graph.objects(speaker, LPV.politicalFunction)
-        for function in speaker_functions:
-            function_type = speaker_graph.value(function, LPV.institution)
-            if speaker_graph.value(function_type, RDFNS.type) == LPV.EUParty:
-                party_labels = list(speaker_graph.objects(function_type, RDFS.label))
-                party_acronym = min(party_labels, key=len)
-                party_name = max(party_labels, key=len)
-                date_start = speaker_graph.value(function, LPV.beginning)
-                date_end = speaker_graph.value(function, LPV.end)
-                party_list.append({
-                    'party_acronym': party_acronym,
-                    'party_name': party_name,
-                    'date_start': date_start.value,
-                    'date_end': date_end.value
-                })
-        speaker_dict.update({speaker: {
-            'name': name,
-            'country': country_name,
-            'parties': party_list
-            }
-        })
-    return speaker_dict
-
-
-def get_identifier(input_string: str) -> str:
-    return input_string.split('/')[-1]
 
 
 def language_name(lang_code: str) -> str:
     return Language.make(language=standardize_tag(lang_code)).display_name()
-
-
-def get_speaker(input_data: Tuple[URIRef, dict]) -> str:
-    (speaker, speaker_dict) = input_data
-    return speaker_dict.get(speaker).get('name')
-
-
-def get_speaker_country(input_data: Tuple[URIRef, dict]) -> str:
-    (speaker, speaker_dict) = input_data
-    return speaker_dict.get(speaker).get('country')
-
-
-def get_speaker_party(input_data: Tuple[str, datetime, dict]) -> str:
-    ''' look up the which EU party the speaker was part of at the date of their speech '''
-    (speaker, date, party_data) = input_data
-    party_list = party_data.get(speaker).get('parties')
-    return next(
-        (
-            f"{p['party_name'].value} ({p['party_acronym'].value})"
-            for p in party_list
-            if (date >= p["date_start"] and date <= p["date_end"])
-        ),
-        None,
-    )
-
-
-def get_speech_index(input_data: Tuple[str, list]) -> int:
-    ''' find index of speech in array of debate parts '''
-    speech, speeches = input_data
-    if not speech:
-        return None
-    return speeches.index(speech) + 1
-
-
-def get_speech_text(input_string: str) -> str:
-    ''' remove leading language information, e.g., `(IT)`'''
-    return input_string.split(') ')[-1]
-
-
-def get_uri(input_data: Union[URIRef, str]) -> str:
-    ''' convert input from URIRef to string '''
-    try:
-        return input_data.n3().strip('<>')
-    except:
-        return input_data
 
 
 class ParliamentEurope(Parliament):
@@ -144,13 +45,13 @@ class ParliamentEurope(Parliament):
     @property
     def subcorpora(self):
         return [
-            ParliamentEuropeFromRDF(),
+            EUPDCorpReader(),
             ParliamentEuropeFromAPI(),
         ]
 
-    def sources(self, start, end):
+    def sources(self, **kwargs):
         for i, subcorpus in enumerate(self.subcorpora):
-            for source in subcorpus.sources(start, end):
+            for source in subcorpus.sources(**kwargs):
                 filename, metadata = source
                 metadata["subcorpus"] = i
                 yield filename, metadata
@@ -169,7 +70,13 @@ class ParliamentEurope(Parliament):
     debate_title = field_defaults.debate_title()
     date = field_defaults.date(min_date, max_date)
     party = field_defaults.party()
+    party_full = field_defaults.party_full()
     party_id = field_defaults.party_id()
+    party_national = FieldDefinition(
+        name='party_national',
+        display_name='National party',
+        es_mapping=keyword_mapping(enable_full_text_search=True),
+    )
     sequence = field_defaults.sequence()
     source_language = FieldDefinition(
         name='source_language',
@@ -196,7 +103,16 @@ class ParliamentEurope(Parliament):
         ),
         visualizations=['resultscount', 'termfrequency'],
     )
+    speaker_gender = field_defaults.speaker_gender()
+    speaker_birth_year = field_defaults.speaker_birth_year()
     speech = field_defaults.speech(language='en')
+    speech.description = 'Speech translated to English'
+    speech_original = FieldDefinition(
+        name='speech_original',
+        display_name='Original speech',
+        description='Speech in the original language',
+        es_mapping=main_content_mapping(),
+    )
     speech_id = field_defaults.speech_id()
     url = field_defaults.url()
 
@@ -206,13 +122,18 @@ class ParliamentEurope(Parliament):
             self.debate_id,
             self.debate_title,
             self.party,
+            self.party_full,
             self.party_id,
+            self.party_national,
             self.sequence,
             self.source_language,
             self.speaker,
             self.speaker_country,
+            self.speaker_gender,
+            self.speaker_birth_year,
             self.speaker_id,
             self.speech,
+            self.speech_original,
             self.speech_id,
             self.url,
         ]
@@ -300,7 +221,25 @@ def api_get_party_name_from_id(party_id: str) -> str:
     )
     if party_response.status_code != 200:
         return None
-    return party_response.json().get('data')[0].get('prefLabel').get('en')
+    return party_response.json().get('data')[0].get('label')
+
+
+def _api_get_party_full_name(data) -> Optional[str]:
+    party_id = api_get_party_id(data)
+    return _api_get_party_full_name_from_id(party_id)
+
+
+@cache
+def _api_get_party_full_name_from_id(party_id: str) -> str:
+    if not party_id:
+        return None
+    party_response = requests.get(
+        f'https://data.europarl.europa.eu/api/v2/corporate-bodies/{party_id}?format=application%2Fld%2Bjson&language=en'
+    )
+    if party_response.status_code != 200:
+        return None
+    return party_response.json().get('data')[0].get('altLabel').get('en')
+
 
 def first(values):
     if len(values):
@@ -376,6 +315,16 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
         transform=api_get_party_name,
     )
 
+    party_full = field_defaults.party_full()
+    party_full.extractor = Combined(
+        JSON(
+            "data.had_participation.had_participant_person",
+            transform=first,
+        ),
+        Metadata('date'),
+        transform=_api_get_party_full_name,
+    )
+
     party_id = field_defaults.party_id()
     party_id.extractor = Combined(
         JSON(
@@ -436,6 +385,7 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
         debate_id,
         debate_title,
         party,
+        party_full,
         party_id,
         sequence,
         source_language,
@@ -447,106 +397,90 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
     ]
 
 
-class ParliamentEuropeFromRDF(RDFCorpusDefinition):
-    """
-    Speeches of the European parliament, originally in or translated to English,
-    provided as Linked Open Data by the "Talk of Europe" project
-    """
+def _to_int(value) -> Optional[int]:
+    if value or value == 0:
+        return int(value)
 
-    min_date = datetime(year=1999, month=7, day=20)
-    max_date = datetime(year=2017, month=7, day=6)
-
+class EUPDCorpReader(RDSReader):
     data_directory = settings.PP_EUPARL_DATA
 
-    def sources(self, start, end, **kwargs):
-        metadata = {
-            "speakers": add_speaker_metadata(
-                os.path.join(self.data_directory, MP_METADATA)
-            )
-        }
-        yield os.path.join(self.data_directory, SPEECHES), metadata
-
-    def document_subjects(self, graph: Graph):
-        """return all subjects which have either translated or spoken text"""
-        return chain(
-            graph.subjects(predicate=LPV.translatedText),
-            graph.subjects(predicate=LPV.spokenText),
-        )
-
-    def data_from_file(self, filename: str) -> Graph:
-        '''we combine the graphs in place, to keep memory load low'''
-        graph = Graph()
-        graph.parse(filename)
-        graph.parse(os.path.join(self.data_directory, EVENTS_METADATA))
-        return graph
-
-    date = field_defaults.date(min_date, max_date)
-    date.extractor = RDF(DCTERMS.date, transform=lambda x: x.strftime('%Y-%m-%d'))
-
-    debate_id = field_defaults.debate_id()
-    debate_id.extractor = RDF(DCTERMS.isPartOf, transform=get_identifier)
-
-    debate_title = field_defaults.debate_title()
-    debate_title.extractor = RDF(DCTERMS.isPartOf, DCTERMS.title)
-
-    party = field_defaults.party()
-    party.extractor = Combined(
-        RDF(LPV.speaker),
-        RDF(DCTERMS.date),
-        Metadata('speakers'),
-        transform=get_speaker_party,
-    )
-
-    sequence = field_defaults.sequence()
-    sequence.extractor = Combined(
-        RDF(),
-        RDF(DCTERMS.isPartOf, DCTERMS.hasPart, multiple=True),
-        transform=get_speech_index,
-    )
-
-    source_language = field_defaults.language()
-    source_language.name = 'source_language'
-    source_language.extractor = RDF(DCTERMS.language, transform=language_name)
-
-    speaker = field_defaults.speaker()
-    speaker.extractor = Combined(
-        RDF(LPV.speaker), Metadata('speakers'), transform=get_speaker
-    )
-
-    speaker_country = FieldDefinition(
-        name='speaker_country',
-        extractor=Combined(
-            RDF(LPV.speaker), Metadata('speakers'), transform=get_speaker_country
-        ),
-    )
-
-    speech = field_defaults.speech(language='en')
-    speech.extractor = Backup(
-        RDF(
-            LPV.spokenText,
-        ),
-        RDF(
-            LPV.translatedText,
-        ),
-        transform=get_speech_text,
-    )
-
-    speech_id = field_defaults.speech_id()
-    speech_id.extractor = RDF(transform=get_identifier)
-
-    url = field_defaults.url()
-    url.extractor = Backup(RDF(LPV.videoURI, transform=get_uri), RDF(transform=get_uri))
+    def sources(self, **kwargs):
+        for filename in os.listdir(self.data_directory):
+            if filename.lower().endswith('.rds'):
+                yield os.path.join(self.data_directory, filename), {}
 
     fields = [
-        date,
-        debate_id,
-        debate_title,
-        party,
-        sequence,
-        source_language,
-        speaker,
-        speaker_country,
-        speech,
-        speech_id,
-        url,
+        Field(
+            name='date',
+            extractor=CSV('date'),
+        ),
+        Field(
+            name='debate_id',
+            extractor=CSV('file'),
+        ),
+        Field(
+            name='debate_title',
+            extractor=CSV('agenda'),
+        ),
+        Field(
+            name='source_language',
+            extractor=CSV(
+                'language',
+                transform=lambda value: language_name(value.lower()),
+            ),
+        ),
+        Field(
+            name='party',
+            extractor=CSV('epg_short'),
+        ),
+        Field(
+            name='party_full',
+            extractor=CSV('epg_long'),
+        ),
+        Field(
+            name='party_national',
+            extractor=CSV('party_name'),
+        ),
+        Field(
+            name='sequence',
+            extractor=CSV('doc_id', transform=int),
+        ),
+        Field(
+            name='speech',
+            extractor=CSV('speech_en'),
+        ),
+        Field(
+            name='speech_original',
+            extractor=CSV('speech'),
+        ),
+        Field(
+            name='speaker',
+            extractor=Combined(
+                CSV('firstname'),
+                CSV('lastname'),
+                transform=' '.join,
+            )
+        ),
+        Field(
+            name='speaker_id',
+            extractor=Pass(
+                CSV('mepid', transform=_to_int),
+                transform=str,
+            ),
+        ),
+        Field(
+            name='speaker_gender',
+            extractor=CSV(
+                'gender',
+                transform=lambda value: 'Male' if value else 'Female',
+            )
+        ),
+        Field(
+            name='speaker_birth_year',
+            extractor=CSV('birth_year', transform=_to_int)
+        ),
+        Field(
+            name='speaker_country',
+            extractor=CSV('nationality'),
+        ),
     ]
