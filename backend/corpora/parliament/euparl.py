@@ -136,7 +136,7 @@ class ParliamentEurope(Parliament):
 
 
 def api_convert_xml(speech_xml: str) -> str:
-    speech_soup = BeautifulSoup(speech_xml, 'lxml')
+    speech_soup = BeautifulSoup(speech_xml, 'lxml-xml')
     return speech_soup.find('speech').find('p').text
 
 
@@ -154,7 +154,7 @@ def api_get_preflabel(url: str) -> Optional[str]:
     response = requests.get(url)
     if response.status_code != 200:
         return None
-    soup = BeautifulSoup(response.content, 'lxml')
+    soup = BeautifulSoup(response.content, 'lxml-xml')
     return soup.find('skos:preflabel', {'xml:lang': 'en'}).text
 
 
