@@ -79,17 +79,10 @@ class ParliamentEurope(Parliament):
         es_mapping=keyword_mapping(enable_full_text_search=True),
     )
     sequence = field_defaults.sequence()
-    source_language = FieldDefinition(
-        name='language',
-        display_name='Language',
-        description='Original language of the speech',
-        es_mapping=keyword_mapping(),
-        search_filter=MultipleChoiceFilter(
-            description='Search only in speeches in the selected original languages',
-            option_count=50,
-        ),
-        visualizations=['resultscount', 'termfrequency'],
-    )
+    original_language = field_defaults.language()
+    original_language.name = 'original_language'
+    original_language.display_name='Original language'
+    original_language.description = 'Original language of the speech'
 
     speaker = field_defaults.speaker()
     speaker_id = field_defaults.speaker_id()
@@ -123,12 +116,12 @@ class ParliamentEurope(Parliament):
             self.date,
             self.debate_id,
             self.debate_title,
+            self.original_language,
             self.party,
             self.party_full,
             self.party_id,
             self.party_national,
             self.sequence,
-            self.source_language,
             self.speaker,
             self.speaker_country,
             self.speaker_gender,
@@ -341,8 +334,9 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
     sequence = field_defaults.sequence()
     sequence.extractor = Metadata('sequence')
 
-    source_language = field_defaults.language()
-    source_language.extractor = JSON("originalLanguage", transform=api_get_language)
+    original_language = field_defaults.language()
+    original_language.name = 'original_language'
+    original_language.extractor = JSON("originalLanguage", transform=api_get_language)
 
     speaker = field_defaults.speaker()
     speaker.extractor = Pass(
@@ -393,7 +387,7 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
         party_full,
         party_id,
         sequence,
-        source_language,
+        original_language,
         speaker,
         speaker_country,
         speaker_id,
@@ -434,7 +428,7 @@ class EUPDCorpReader(RDSReader):
             extractor=CSV('agenda'),
         ),
         Field(
-            name='language',
+            name='original_language',
             extractor=CSV(
                 'language',
                 transform=lambda value: language_name(value.lower()),
