@@ -10,12 +10,10 @@ from langcodes import standardize_tag, Language
 import requests
 from ianalyzer_readers.extract import Combined, JSON, Metadata, Pass, CSV, Constant
 from ianalyzer_readers.readers.core import Field
+from ianalyzer_readers.readers.json import JSONReader
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
-from addcorpus.python_corpora.corpus import (
-    FieldDefinition,
-    JSONCorpusDefinition,
-)
+from addcorpus.python_corpora.corpus import FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
@@ -110,7 +108,11 @@ class ParliamentEurope(Parliament):
     )
     speech_id = field_defaults.speech_id()
     url = field_defaults.url()
-    source_archive = field_defaults.source_archive()
+    source_archive = FieldDefinition(
+        name='source_archive',
+        display_name='Source archive',
+        description='Source dataset for this document',
+    )
 
     def __init__(self):
         self.fields = [
@@ -252,7 +254,7 @@ def first(values):
     if len(values):
         return values[0]
 
-class ParliamentEuropeFromAPI(JSONCorpusDefinition):
+class ParliamentEuropeFromAPI(JSONReader):
     """
     Speeches of the European parliament, originally in or translated to English,
     provided through the Europarl Open Data API
@@ -261,9 +263,6 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
     min_date = datetime(year=2024, month=7, day=7)
     max_date = datetime.now()
 
-    # Variables to hold interim metadata
-    speaker_metadata = {}
-    party_metadata = {}
     record_path = ['data', 'recorded_in_a_realization_of']
     meta = [
         ['data', 'had_participation', 'had_participant_person'],
@@ -311,108 +310,105 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
         filtered_data = data | { 'data': speeches_with_speaker}
         return super().iterate_data(filtered_data, metadata)
 
-    debate_id = field_defaults.debate_id()
-    debate_id.extractor = Metadata('debate_id')
-
-    debate_title = field_defaults.debate_title()
-    debate_title.extractor = Metadata('debate_title')
-
-    date = field_defaults.date(min_date, max_date)
-    date.extractor = Metadata('date')
-
-    party = field_defaults.party()
-    party.extractor = Combined(
-        JSON(
-            "data.had_participation.had_participant_person",
-            transform=first,
-        ),
-        Metadata('date'),
-        transform=api_get_party_name,
-    )
-
-    party_full = field_defaults.party_full()
-    party_full.extractor = Combined(
-        JSON(
-            "data.had_participation.had_participant_person",
-            transform=first,
-        ),
-        Metadata('date'),
-        transform=_api_get_party_full_name,
-    )
-
-    party_id = field_defaults.party_id()
-    party_id.extractor = Combined(
-        JSON(
-            "data.had_participation.had_participant_person",
-            transform=first
-        ),
-        Metadata('date'),
-        transform=api_get_party_id,
-    )
-
-    sequence = field_defaults.sequence()
-    sequence.extractor = Metadata('sequence')
-
-    original_language = field_defaults.language()
-    original_language.name = 'original_language'
-    original_language.extractor = JSON("originalLanguage", transform=api_get_language)
-
-    speaker = field_defaults.speaker()
-    speaker.extractor = Pass(
-            JSON(
-            "data.had_participation.had_participant_person",
-            transform=first,
-        ),
-        transform=api_get_speaker_name,
-    )
-
-    speaker_country = FieldDefinition(
-        name='speaker_country',
-        extractor=Pass(
-            JSON(
-                "data.had_participation.had_participant_person",
-                transform=first,
-            ),
-            transform=api_get_speaker_country,
-        ),
-    )
-
-    speaker_id = field_defaults.speaker_id()
-    speaker_id.extractor = Pass(
-        JSON(
-            "data.had_participation.had_participant_person",
-            transform=first,
-        ),
-        transform=api_get_speaker_id,
-    )
-
-    speech = field_defaults.speech()
-    speech.extractor = JSON(
-        "api:xmlFragment.en",
-        transform=api_convert_xml,
-    )
-
-    speech_id = field_defaults.speech_id()
-    speech_id.extractor = JSON("data.activity_id")
-
-    source_archive = field_defaults.source_archive()
-    source_archive.extractor = Constant('Europarl Open Data')
-
     fields = [
-        date,
-        debate_id,
-        debate_title,
-        party,
-        party_full,
-        party_id,
-        sequence,
-        original_language,
-        speaker,
-        speaker_country,
-        speaker_id,
-        speech,
-        speech_id,
-        source_archive,
+        Field(
+            name='debate_id',
+            extractor=Metadata('debate_id'),
+        ),
+        Field(
+            name='debate_title',
+            extractor=Metadata('debate_title'),
+        ),
+        Field(
+            name='date',
+            extractor=Metadata('date')
+        ),
+        Field(
+            name='party',
+            extractor=Combined(
+                JSON(
+                    "data.had_participation.had_participant_person",
+                    transform=first,
+                ),
+                Metadata('date'),
+                transform=api_get_party_name,
+            )
+        ),
+        Field(
+            name='party_full',
+            extractor=Combined(
+                JSON(
+                    "data.had_participation.had_participant_person",
+                    transform=first,
+                ),
+                Metadata('date'),
+                transform=_api_get_party_full_name,
+            )
+        ),
+        Field(
+            name='party_id',
+            extractor=Combined(
+                JSON(
+                    "data.had_participation.had_participant_person",
+                    transform=first
+                ),
+                Metadata('date'),
+                transform=api_get_party_id,
+            )
+        ),
+        Field(
+            name='sequence',
+            extractor=Metadata('sequence')
+        ),
+        Field(
+            name='original_language',
+            extractor=JSON("originalLanguage", transform=api_get_language)
+        ),
+        Field(
+            name='speaker',
+            extractor=Pass(
+                    JSON(
+                    "data.had_participation.had_participant_person",
+                    transform=first,
+                ),
+                transform=api_get_speaker_name,
+            )
+        ),
+        Field(
+            name='speaker_country',
+            extractor=Pass(
+                JSON(
+                    "data.had_participation.had_participant_person",
+                    transform=first,
+                ),
+                transform=api_get_speaker_country,
+            ),
+        ),
+        Field(
+            name='speaker_id',
+            extractor=Pass(
+                JSON(
+                    "data.had_participation.had_participant_person",
+                    transform=first,
+                ),
+                transform=api_get_speaker_id,
+            )
+        ),
+        Field(
+            name='speech',
+            extractor=JSON(
+                "api:xmlFragment.en",
+                transform=api_convert_xml,
+            )
+        ),
+        Field(
+            name='id',
+            extractor=JSON("data.activity_id")
+        ),
+        Field(
+            name='source_archive',
+            extractor=Constant('European Parliament Open Data API')
+        ),
     ]
 
 
