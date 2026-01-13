@@ -211,6 +211,12 @@ def api_get_party_name(data) -> Optional[str]:
     party_id = api_get_party_id(data)
     return api_get_party_name_from_id(party_id)
 
+_party_name_replacements = {
+    'The Left': 'GUENGL',
+    'Verts/ALE': 'GEFA',
+    'S&D': 'SOCPESPASD',
+}
+'Replaces some party labels with the ones used in the 1999-2024 datasets'
 
 @cache
 def api_get_party_name_from_id(party_id: str) -> str:
@@ -221,7 +227,8 @@ def api_get_party_name_from_id(party_id: str) -> str:
     )
     if party_response.status_code != 200:
         return None
-    return party_response.json().get('data')[0].get('label')
+    label = party_response.json().get('data')[0].get('label')
+    return _party_name_replacements.get(label, label)
 
 
 def _api_get_party_full_name(data) -> Optional[str]:
