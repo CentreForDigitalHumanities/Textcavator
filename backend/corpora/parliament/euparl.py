@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from functools import cache
 import logging
 import os
-from typing import Optional
+from typing import Optional, Dict, List, Tuple
 
 from bs4 import BeautifulSoup
 from django.conf import settings
@@ -39,6 +39,7 @@ class ParliamentEurope(Parliament):
     image = 'euparl.jpeg'
     min_date = datetime(year=1999, month=7, day=20)
     max_date = datetime.now()
+    language_field = 'original_language_code'
 
     @property
     def subcorpora(self):
@@ -83,6 +84,12 @@ class ParliamentEurope(Parliament):
     original_language.display_name='Original language'
     original_language.description = 'Original language of the speech'
 
+    original_language_code = FieldDefinition(
+        name='original_language_code',
+        es_mapping=keyword_mapping(),
+        hidden=True,
+    )
+
     speaker = field_defaults.speaker()
     speaker_id = field_defaults.speaker_id()
     speaker_country = FieldDefinition(
@@ -98,14 +105,20 @@ class ParliamentEurope(Parliament):
     )
     speaker_gender = field_defaults.speaker_gender()
     speaker_birth_year = field_defaults.speaker_birth_year()
+
     speech = field_defaults.speech(language='en')
     speech.description = 'Speech translated to English'
+    speech.language = 'en'
+
     speech_original = FieldDefinition(
         name='speech_original',
         display_name='Original speech',
         description='Speech in the original language',
         es_mapping=main_content_mapping(),
+        display_type='text_content',
+        language='dynamic',
     )
+
     speech_id = field_defaults.speech_id()
     url = field_defaults.url()
     source_archive = FieldDefinition(
@@ -120,6 +133,7 @@ class ParliamentEurope(Parliament):
             self.debate_id,
             self.debate_title,
             self.original_language,
+            self.original_language_code,
             self.party,
             self.party_full,
             self.party_id,
@@ -144,10 +158,23 @@ def api_convert_xml(speech_xml: str) -> str:
     return '\n\n'.join(p.text for p in paragraphs)
 
 
-def api_get_language(languages: list[str]) -> str:
-    language = language_name(languages[0].split('/')[-1])
-    return language
+def api_get_language(languages: List[str]) -> Optional[str]:
+    label, _ = _api_get_language_data(languages[0])
+    return label
 
+def _api_get_language_code(languages: List[str]):
+    _, code = _api_get_language_data(languages[0])
+    return code
+
+@cache
+def _api_get_language_data(url: str) -> Tuple[str, str] | Tuple[None, None]:
+    response = requests.get(url)
+    if response.status_code != 200:
+        return None, None
+    soup = BeautifulSoup(response.content, 'lxml-xml')
+    label = soup.find('skos:prefLabel', {'xml:lang': 'en'}).text
+    code = soup.find('skos:notation', {'rdf:datatype': 'http://publications.europa.eu/ontology/euvoc#ISO_639_1'}).text
+    return label, code
 
 def api_get_speaker_id(participant: str) -> str:
     return participant.split('/')[-1]
@@ -294,7 +321,7 @@ class ParliamentEuropeFromAPI(JSONReader):
                 for speech in event.get('consists_of'):
                     speech_id = speech.split("/")[-1]
                     speech_response = requests.get(
-                        f'https://data.europarl.europa.eu/api/v2/speeches/{speech_id}?include-output=xml_fragment&language=en&format=application%2Fld%2Bjson'
+                        f'https://data.europarl.europa.eu/api/v2/speeches/{speech_id}?include-output=xml_fragment&format=application%2Fld%2Bjson'
                     )
                     if speech_response.status_code != 200:
                         continue
@@ -368,6 +395,10 @@ class ParliamentEuropeFromAPI(JSONReader):
         Field(
             name='original_language',
             extractor=JSON("originalLanguage", transform=api_get_language)
+        ),
+        Field(
+            name='original_language_code',
+            extractor=JSON('originalLanguage', transform=_api_get_language_code)
         ),
         Field(
             name='speaker',
@@ -453,6 +484,10 @@ class EUPDCorpReader(RDSReader):
                 'language',
                 transform=lambda value: language_name(value.lower()),
             ),
+        ),
+        Field(
+            name='original_language_code',
+            extractor=CSV('language', transform=lambda value: value.lower())
         ),
         Field(
             name='party',
