@@ -308,7 +308,12 @@ class ParliamentEuropeFromAPI(JSONReader):
             if 'had_participation' in item
         ]
         filtered_data = data | { 'data': speeches_with_speaker}
-        return super().iterate_data(filtered_data, metadata)
+        records = list(super().iterate_data(filtered_data, metadata))
+        filtered_records = [
+            record for record in records
+            if record['data'].get('api:xmlFragment.en')
+        ]
+        return filtered_records
 
     fields = [
         Field(
