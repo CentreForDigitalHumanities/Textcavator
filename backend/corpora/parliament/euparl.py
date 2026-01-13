@@ -137,7 +137,8 @@ class ParliamentEurope(Parliament):
 
 def api_convert_xml(speech_xml: str) -> str:
     speech_soup = BeautifulSoup(speech_xml, 'lxml-xml')
-    return speech_soup.find('speech').find('p').text
+    paragraphs = speech_soup.find('speech').find_all('p')
+    return '\n\n'.join(p.text for p in paragraphs)
 
 
 def api_get_language(languages: list[str]) -> str:
