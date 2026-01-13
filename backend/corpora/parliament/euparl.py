@@ -292,6 +292,14 @@ class ParliamentEuropeFromAPI(JSONCorpusDefinition):
                     metadata['sequence'] = sequence_in_debate
                     yield speech_response, metadata
 
+    def iterate_data(self, data: Dict, metadata):
+        speeches_with_speaker = [
+            item for item in data['data']
+            if 'had_participation' in item
+        ]
+        filtered_data = data | { 'data': speeches_with_speaker}
+        return super().iterate_data(filtered_data, metadata)
+
     debate_id = field_defaults.debate_id()
     debate_id.extractor = Metadata('debate_id')
 
