@@ -52,6 +52,7 @@ class ParliamentEurope(Parliament):
     def sources(self, **kwargs):
         for i, subcorpus in enumerate(self.subcorpora):
             logger.info(f'Extracting subcorpus: {subcorpus.__class__.__name__}')
+
             for source in subcorpus.sources(**kwargs):
                 filename, metadata = source
                 metadata["subcorpus"] = i
@@ -137,7 +138,7 @@ class ParliamentEurope(Parliament):
 
 def api_convert_xml(speech_xml: str) -> str:
     speech_soup = BeautifulSoup(speech_xml, 'lxml-xml')
-    paragraphs = speech_soup.find('speech').find_all('p')
+    paragraphs = speech_soup.find_all('p')
     return '\n\n'.join(p.text for p in paragraphs)
 
 
