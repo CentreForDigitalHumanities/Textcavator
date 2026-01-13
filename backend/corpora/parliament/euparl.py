@@ -189,7 +189,7 @@ def api_get_speaker_name(participant: str) -> str:
 def api_get_party_id(data) -> dict:
     participant, date = data
     speaker_metadata = api_get_speaker_info(participant)
-    memberships = speaker_metadata.get('hasMembership')
+    memberships = speaker_metadata.get('hasMembership') or []
     for membership in memberships:
         if (
             membership.get('membershipClassification')
