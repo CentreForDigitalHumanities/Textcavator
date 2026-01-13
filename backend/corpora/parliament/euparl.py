@@ -166,7 +166,7 @@ def api_get_speaker_info(participant: str) -> dict:
         f'https://data.europarl.europa.eu/api/v2/meps/{speaker_id}?format=application%2Fld%2Bjson'
     )
     if not speaker_response.status_code == 200:
-        logger.warning(f"No response for {speaker_id}")
+        logger.warning(f"No response for person {speaker_id}")
         return {}
     else:
         return speaker_response.json().get('data')[0]
@@ -175,14 +175,16 @@ def api_get_speaker_info(participant: str) -> dict:
 def api_get_speaker_country(participant: str) -> Optional[str]:
     speaker_metadata = api_get_speaker_info(participant)
     citizenship = speaker_metadata.get('citizenship')
-    return api_get_preflabel(citizenship)
+    if citizenship:
+        return api_get_preflabel(citizenship)
 
 
 def api_get_speaker_name(participant: str) -> str:
     speaker_metadata = api_get_speaker_info(participant)
     given_name = speaker_metadata.get('givenName')
     family_name = speaker_metadata.get('familyName')
-    return f'{given_name} {family_name}'
+    if given_name or family_name:
+        return f'{given_name} {family_name}'
 
 
 @cache
