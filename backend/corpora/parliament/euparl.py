@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from functools import cache
 import logging
 import os
-from typing import Optional, Dict, List, Tuple
+from typing import Optional, Dict, List, Tuple, Union
 
 from bs4 import BeautifulSoup
 from django.conf import settings
@@ -277,9 +277,30 @@ def _api_get_party_full_name_from_id(party_id: str) -> str:
     return party_response.json().get('data')[0].get('altLabel').get('en')
 
 
+def _api_speech_key(language_code: str):
+    return f'api:xmlFragment.{language_code}'
+
+
+def _api_get_original_speech(data):
+    _, code = _api_get_language_data(data['originalLanguage'][0])
+    return data.get(_api_speech_key(code))
+
+
 def first(values):
     if len(values):
         return values[0]
+
+class _JSON(JSON):
+    '''
+    Edited JSON extractor that also accepts 0 keys to return the object as-is
+    '''
+    # TODO: make this change in ianalyzer_readers
+
+    def _apply(self, data: Union[str, dict], key_index: int = 0, **kwargs):
+        if not len(self.keys):
+            return data
+        return super()._apply(data, key_index, **kwargs)
+
 
 class ParliamentEuropeFromAPI(JSONReader):
     """
@@ -338,7 +359,7 @@ class ParliamentEuropeFromAPI(JSONReader):
         records = list(super().iterate_data(filtered_data, metadata))
         filtered_records = [
             record for record in records
-            if record['data'].get('api:xmlFragment.en')
+            if record['data'].get(_api_speech_key('en'))
         ]
         return filtered_records
 
@@ -433,7 +454,16 @@ class ParliamentEuropeFromAPI(JSONReader):
         Field(
             name='speech',
             extractor=JSON(
-                "api:xmlFragment.en",
+                _api_speech_key('en'),
+                transform=api_convert_xml,
+            )
+        ),
+        Field(
+            name='speech_original',
+            extractor=Pass(
+                _JSON(
+                    transform=_api_get_original_speech
+                ),
                 transform=api_convert_xml,
             )
         ),
