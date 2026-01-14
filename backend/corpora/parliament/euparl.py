@@ -3,6 +3,7 @@ from functools import cache
 import logging
 import os
 from typing import Optional, Dict, List, Tuple, Union
+from urllib import parse
 
 from bs4 import BeautifulSoup
 from django.conf import settings
@@ -152,6 +153,17 @@ class ParliamentEurope(Parliament):
         ]
 
 
+def _api_url(path: str, query: Dict = dict()) -> str:
+    full_path = parse.urljoin('/api/v2/', path)
+    base_query = {
+        'format': 'application/ld+json',
+        'User-Agent': 'textcavator',
+    }
+    query_string = parse.urlencode(base_query | query)
+    url = parse.urlunsplit(['https', 'data.europarl.europa.eu', full_path, query_string, ''])
+    return url
+
+
 def api_convert_xml(speech_xml: str) -> str:
     speech_soup = BeautifulSoup(speech_xml, 'lxml-xml')
     paragraphs = speech_soup.find_all('p')
@@ -193,9 +205,8 @@ def api_get_preflabel(url: str) -> Optional[str]:
 def api_get_speaker_info(participant: str) -> dict:
     '''Query metadata about the speaker, unless it's already been queried before'''
     speaker_id = api_get_speaker_id(participant)
-    speaker_response = requests.get(
-        f'https://data.europarl.europa.eu/api/v2/meps/{speaker_id}?format=application%2Fld%2Bjson'
-    )
+    speaker_url = _api_url(f'meps/{speaker_id}')
+    speaker_response = requests.get(speaker_url)
     if not speaker_response.status_code == 200:
         logger.warning(f"No response for person {speaker_id}")
         return {}
@@ -292,9 +303,8 @@ def _api_get_party_full_name_from_id(party_id: str) -> str:
 def _api_get_party_metadata(party_id: str) -> Dict:
     if not party_id:
         return None
-    party_response = requests.get(
-        f'https://data.europarl.europa.eu/api/v2/corporate-bodies/{party_id}?format=application%2Fld%2Bjson&language=en'
-    )
+    party_url = _api_url(f'corporate-bodies/{party_id}', {'language': 'en'})
+    party_response = requests.get(party_url)
     if party_response.status_code != 200:
         return None
     return party_response.json()
@@ -345,8 +355,9 @@ class ParliamentEuropeFromAPI(JSONReader):
             date += timedelta(days=1)
             formatted_date = date.strftime('%Y-%m-%d')
             meeting_id = f'MTG-PL-{formatted_date}'
+            meeting_url = _api_url(f'meetings/{meeting_id}/activities')
             response = requests.get(
-                f'https://data.europarl.europa.eu/api/v2/meetings/{meeting_id}/activities?format=application%2Fld%2Bjson',
+                meeting_url,
                 headers={'accept': 'application/ld+json'},
             )
             if response.status_code != 200:
@@ -363,9 +374,8 @@ class ParliamentEuropeFromAPI(JSONReader):
 
                 for speech in event.get('consists_of'):
                     speech_id = speech.split("/")[-1]
-                    speech_response = requests.get(
-                        f'https://data.europarl.europa.eu/api/v2/speeches/{speech_id}?include-output=xml_fragment&format=application%2Fld%2Bjson'
-                    )
+                    speech_url = _api_url(f'speeches/{speech_id}', {'include-output': 'xml_fragment'})
+                    speech_response = requests.get(speech_url)
                     if speech_response.status_code != 200:
                         continue
                     sequence_in_debate += 1
