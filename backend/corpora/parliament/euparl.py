@@ -121,7 +121,6 @@ class ParliamentEurope(Parliament):
     )
 
     speech_id = field_defaults.speech_id()
-    url = field_defaults.url()
     source_archive = FieldDefinition(
         name='source_archive',
         display_name='Source archive',
@@ -148,7 +147,6 @@ class ParliamentEurope(Parliament):
             self.speech,
             self.speech_original,
             self.speech_id,
-            self.url,
             self.source_archive,
         ]
 
