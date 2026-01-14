@@ -196,11 +196,12 @@ def api_get_preflabel(url: str) -> Optional[str]:
     if response.status_code != 200:
         return None
     soup = BeautifulSoup(response.content, 'lxml-xml')
-    return soup.find('skos:preflabel', {'xml:lang': 'en'}).text
+    return soup.find('skos:prefLabel', {'xml:lang': 'en'}).text
+
 
 
 @cache
-def api_get_speaker_info(participant: str) -> dict:
+def api_get_speaker_info(participant: str) -> Optional[Dict]:
     '''Query metadata about the speaker, unless it's already been queried before'''
     speaker_id = api_get_speaker_id(participant)
     speaker_url = _api_url(f'meps/{speaker_id}')
