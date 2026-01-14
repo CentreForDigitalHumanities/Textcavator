@@ -210,6 +210,19 @@ def api_get_speaker_country(participant: str) -> Optional[str]:
         return api_get_preflabel(citizenship)
 
 
+def _api_get_speaker_gender(participant: str) -> Optional[str]:
+    speaker_metadata = api_get_speaker_info(participant)
+    gender_uri = speaker_metadata.get('hasGender')
+    if gender_uri:
+        return gender_uri.split('/')[-1].title()
+
+def _api_get_speaker_birth_year(participant: str) -> Optional[int]:
+    speaker_metadata = api_get_speaker_info(participant)
+    birth_date = speaker_metadata.get('bday')
+    if birth_date:
+        d = datetime.strptime(birth_date, '%Y-%m-%d')
+        return d.year
+
 def api_get_speaker_name(participant: str) -> str:
     speaker_metadata = api_get_speaker_info(participant)
     given_name = speaker_metadata.get('givenName')
@@ -219,26 +232,33 @@ def api_get_speaker_name(participant: str) -> str:
 
 
 @cache
-def api_get_party_id(data) -> dict:
+def api_get_party_id(data: Tuple[str, datetime]) -> dict:
     participant, date = data
+    return _api_select_party(participant, date, 'def/ep-entities/EU_POLITICAL_GROUP')
+
+def _api_select_party(participant: str, date: datetime, classification: str) -> Optional[str]:
     speaker_metadata = api_get_speaker_info(participant)
     memberships = speaker_metadata.get('hasMembership') or []
     for membership in memberships:
-        if (
-            membership.get('membershipClassification')
-            != 'def/ep-entities/EU_POLITICAL_GROUP'
-        ):
+        if membership.get('membershipClassification') != classification:
             continue
         membership_period = membership.get('memberDuring')
         end_date = membership_period.get('endDate', datetime.now().strftime('%Y-%m-%d'))
         if membership_period.get('startDate') <= date <= end_date:
             return membership.get('organization').split('/')[-1]
-    return ''
+
+def _api_get_national_party_id(data: Tuple[str, datetime]) -> Optional[str]:
+    participant, date = data
+    return _api_select_party(participant, date, 'def/ep-entities/NATIONAL_POLITICAL_GROUP')
 
 
 def api_get_party_name(data) -> Optional[str]:
     party_id = api_get_party_id(data)
     return api_get_party_name_from_id(party_id)
+
+def _api_get_national_party_name(data: Tuple[str, datetime]) -> Optional[str]:
+    party_id = _api_get_national_party_id(data)
+    return api_get_party_name_from_id(party_id, False)
 
 _party_name_replacements = {
     'The Left': 'GUENGL',
@@ -248,16 +268,13 @@ _party_name_replacements = {
 'Replaces some party labels with the ones used in the 1999-2024 datasets'
 
 @cache
-def api_get_party_name_from_id(party_id: str) -> str:
-    if not party_id:
-        return None
-    party_response = requests.get(
-        f'https://data.europarl.europa.eu/api/v2/corporate-bodies/{party_id}?format=application%2Fld%2Bjson&language=en'
-    )
-    if party_response.status_code != 200:
-        return None
-    label = party_response.json().get('data')[0].get('label')
-    return _party_name_replacements.get(label, label)
+def api_get_party_name_from_id(party_id: str, replacements=True) -> str:
+    data = _api_get_party_metadata(party_id)
+    if data:
+        label = data.get('data')[0].get('label')
+        if replacements:
+            return _party_name_replacements.get(label, label)
+        return label
 
 
 def _api_get_party_full_name(data) -> Optional[str]:
@@ -267,6 +284,12 @@ def _api_get_party_full_name(data) -> Optional[str]:
 
 @cache
 def _api_get_party_full_name_from_id(party_id: str) -> str:
+    data = _api_get_party_metadata(party_id)
+    if data:
+        return data.get('data')[0].get('altLabel').get('en')
+
+@cache
+def _api_get_party_metadata(party_id: str) -> Dict:
     if not party_id:
         return None
     party_response = requests.get(
@@ -274,8 +297,7 @@ def _api_get_party_full_name_from_id(party_id: str) -> str:
     )
     if party_response.status_code != 200:
         return None
-    return party_response.json().get('data')[0].get('altLabel').get('en')
-
+    return party_response.json()
 
 def _api_speech_key(language_code: str):
     return f'api:xmlFragment.{language_code}'
@@ -410,6 +432,17 @@ class ParliamentEuropeFromAPI(JSONReader):
             )
         ),
         Field(
+            name='party_national',
+            extractor=Combined(
+                JSON(
+                    "data.had_participation.had_participant_person",
+                    transform=first
+                ),
+                Metadata('date'),
+                transform=_api_get_national_party_name,
+            )
+        ),
+        Field(
             name='sequence',
             extractor=Metadata('sequence')
         ),
@@ -440,6 +473,26 @@ class ParliamentEuropeFromAPI(JSONReader):
                 ),
                 transform=api_get_speaker_country,
             ),
+        ),
+        Field(
+            name='speaker_gender',
+            extractor=Pass(
+                JSON(
+                    'data.had_participation.had_participant_person',
+                    transform=first,
+                ),
+                transform=_api_get_speaker_gender,
+            )
+        ),
+        Field(
+            name='speaker_birth_year',
+            extractor=Pass(
+                JSON(
+                    'data.had_participation.had_participant_person',
+                    transform=first,
+                ),
+                transform=_api_get_speaker_birth_year,
+            )
         ),
         Field(
             name='speaker_id',
