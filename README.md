@@ -22,7 +22,7 @@ For corpora included in Textcavator, the backend includes a definition file that
 
 ## Usage
 
-If you are interested in using Textcavator, the most straightforward way to get started is to visit [ianalyzer.hum.uu.nl](https://ianalyzer.hum.uu.nl/). This server is maintained by the Research Software Lab and contains corpora focused on a variety of fields. We also maintain more specialised collections at [PEACE portal](https://peace.sites.uu.nl/epigraphy/search/) and [People & Parliament](https://people-and-parliament.hum.uu.nl/).
+If you are interested in using Textcavator, the most straightforward way to get started is to visit [textcavator.hum.uu.nl](https://textcavator.hum.uu.nl/). This server is maintained by the Research Software Lab and contains corpora focused on a variety of fields. We also maintain more specialised collections at [PEACE portal](https://peace.sites.uu.nl/epigraphy/search/) and [People & Parliament](https://people-and-parliament.hum.uu.nl/).
 
 Textcavator does not have an "upload data" option (yet!). If you are interested in using Textcavator as a way to publish your dataset, or to make it easier to search and analyse, you can go about this two ways:
 
