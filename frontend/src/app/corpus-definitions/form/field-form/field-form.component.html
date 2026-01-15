@@ -1,4 +1,5 @@
 <h1 class="title">Fields</h1>
+
 <form class="container is-readable" [formGroup]="fieldsForm" (ngSubmit)="onSubmit()">
     <ng-container formArrayName="fields">
         <div class="box"
@@ -144,11 +145,44 @@
                         <fa-icon [icon]="directionIcons.down" aria-hidden="true" />
                     </button>
                 </div>
+                <div class="control">
+                    <button class="button" type="button" aria-label="remove"
+                        iaBalloon="remove field">
+                        <fa-icon [icon]="actionIcons.remove" aria-hidden="true" />
+                    </button>
+                </div>
             </div>
         </div>
     </ng-container>
 
-
+    <div class="box has-background-light ">
+        <h2 class="title is-5">Add field</h2>
+        <p class="block">
+            Some of the columns in your data file are not used as fields. You can add
+            a new field based on a data column.
+        </p>
+        <div class="field">
+            <label class="label" for="column_name">Column name</label>
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    <div class="select is-fullwidth">
+                        <select>
+                            <option>foo</option>
+                            <option>bar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
+                    <button class="button" type="button" aria-label="add">
+                        <span class="icon">
+                            <fa-icon [icon]="actionIcons.add" aria-hidden="true" />
+                        </span>
+                        <span>Add</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="field">
         <div class="control">
