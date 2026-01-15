@@ -15,8 +15,6 @@ The documentation includes a [recipe for installing the prerequisites on Debian 
 
 ## First-time setup
 
-For the SAML integration, the following libraries are required: xmlsec, python3-dev, libssl-dev and libsasl2-dev. This has been tested on Unix systems, but installation may be more difficult on Windows. As the dependencies on `xmlsec` are only called in the `settings_saml` module, however, they should not affect running the application when not explicitly using this settings module.
-
 To get an instance running, do all of the following inside an activated `virtualenv`:
 
 1. Create the file `backend/ianalyzer/settings_local.py`.`ianalyzer/settings_local.py` is included in .gitignore and thus not cloned to your machine. It can be used to customise your environment. You can leave the file empty for now.
@@ -88,3 +86,13 @@ To add a database-only corpus, you will need a JSON definition of the corpus, an
 3. (optional) If you want to use celery, start your local redis server by running `redis-server` in a separate terminal.
 4. (optional) If you want to use celery, activate your python environment. Run `yarn celery worker`. Celery is used for long downloads and the word cloud and ngrams visualisations.
 5. Start the frontend by running `yarn start-front`.
+
+## Next steps
+
+Now that you have a working Textcavator environment, here are some common next steps:
+
+Configure your environment -> [Django project settings](./Django-project-settings.md) / [Frontend environment settings](./Frontend-environment-settings.md)
+
+Create a new Python corpus -> [Writing a corpus definition in Python](./Writing-a-corpus-definition-in-Python.md)
+
+Add SAML intergration in your environment -> [SAML](./SAML.md)

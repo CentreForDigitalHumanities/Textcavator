@@ -1,5 +1,9 @@
 # SAML
 
+Textcavator users can register an account directly, or sign in via Utrecht University (or different connected identity provided). UU login is based on SAML.
+
+## How it works
+
 In order to login with Solis ID, Textcavator has SAML integration with ITS. For this, it uses the [djangosaml2 library](https://djangosaml2.readthedocs.io/). More information on working with SAML, setting up a local environment to test the SAML integration, etc. can be found [here](https://github.com/UUDigitalHumanitieslab/dh-info/blob/master/SAML.md)
 
 The urls exposed by DjangoSaml2 are included as part of our `users` application, e.g., `<hostname>/users/saml2/login`. DjangoSaml2 takes care of consuming the response from the Identity Provider and logging in the user. The `SAML_ATTRIBUTE_MAPPING` variable contains a dictionary of the data coming in from the identity provider, e.g., `uushortid`, and translating that to the corresponding column in the user table, e.g., `username`. Moreover, the setting `SAML_CREATE_UNKNOWN_USER = True` makes sure that we create a user in our database if it's not present yet.
@@ -11,3 +15,23 @@ The only tweaks added on top of the DjangoSaml2 package are:
 ### Authorisation
 
 The setting [SAML_GROUP_NAME](/documentation/Django-project-settings.md#saml_group_name) can be used to control permissions for SAML users.
+
+## Developing with SAML
+
+SAML intergration depends on the [`xmlsec` Python library](https://xmlsec.readthedocs.io/en/stable/) which requires additional libraries. The Docker environment also includes these. If you are not using Docker, follow the installation instructions in the `xmlsec` documentation.
+
+To use SAML login in a development environment, you can use the CDH [Development Identity Provider](https://centrefordigitalhumanities.github.io/Federated-Authentication-Docs/developmentidp/index.html).
+
+To use the development IdP, import the [SAML development settings](../backend/ianalyzer/settings_saml.py) in your `settings_local.py`:
+
+```python
+from settings_saml import *
+```
+
+Then start up Textcavator.
+
+Now follow the README instructions in the Development IdP to run the application and register Textcavator as a service provider. You can find the metadata for Textcavator at `http://localhost:8000/users/saml2/metadata/`.
+
+Notes:
+- If you run the Development IdP in a Docker container, it may not be able to access your application at `localhost:8000`. In that case, just copy-paste the metadata XML.
+- If the IdP gives an error because a `validUntil` attribute is missing, enter the metada XML manually and add the following attribute to the root node: `validUntil="2100-01-01"`.
