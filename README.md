@@ -4,8 +4,8 @@
 > We are currently in the process of renaming this application from I-analyzer to Textcavator.
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8064133.svg)](https://doi.org/10.5281/zenodo.8064133)
-[![Backend unit tests](https://github.com/CentreForDigitalHumanities/I-analyzer/actions/workflows/backend-test.yml/badge.svg)](https://github.com/CentreForDigitalHumanities/I-analyzer/actions/workflows/backend-test.yml)
-[![Frontend unit tests](https://github.com/CentreForDigitalHumanities/I-analyzer/actions/workflows/frontend-test.yml/badge.svg)](https://github.com/CentreForDigitalHumanities/I-analyzer/actions/workflows/frontend-test.yml)
+[![Backend unit tests](https://github.com/CentreForDigitalHumanities/Textcavator/actions/workflows/backend-test.yml/badge.svg)](https://github.com/CentreForDigitalHumanities/Textcavator/actions/workflows/backend-test.yml)
+[![Frontend unit tests](https://github.com/CentreForDigitalHumanities/Textcavator/actions/workflows/frontend-test.yml/badge.svg)](https://github.com/CentreForDigitalHumanities/Textcavator/actions/workflows/frontend-test.yml)
 
 > "The great text mining tool that obviates all others."
 > — Julian Gonggrijp
@@ -22,7 +22,7 @@ For corpora included in Textcavator, the backend includes a definition file that
 
 ## Usage
 
-If you are interested in using Textcavator, the most straightforward way to get started is to visit [ianalyzer.hum.uu.nl](https://ianalyzer.hum.uu.nl/). This server is maintained by the Research Software Lab and contains corpora focused on a variety of fields. We also maintain more specialised collections at [PEACE portal](https://peace.sites.uu.nl/epigraphy/search/) and [People & Parliament](https://people-and-parliament.hum.uu.nl/).
+If you are interested in using Textcavator, the most straightforward way to get started is to visit [textcavator.hum.uu.nl](https://textcavator.hum.uu.nl/). This server is maintained by the Research Software Lab and contains corpora focused on a variety of fields. We also maintain more specialised collections at [PEACE portal](https://peace.sites.uu.nl/epigraphy/search/) and [People & Parliament](https://people-and-parliament.hum.uu.nl/).
 
 Textcavator does not have an "upload data" option (yet!). If you are interested in using Textcavator as a way to publish your dataset, or to make it easier to search and analyse, you can go about this two ways:
 
@@ -53,7 +53,7 @@ If you wish to cite material that you accessed through Textcavator, or you are n
 
 ## Contact
 
-For questions, small feature suggestions, and bug reports, feel free to [create an issue](https://github.com/CentreForDigitalHumanities/I-analyzer/issues/new/choose). If you don't have a Github account, you can also [contact the Centre for Digital Humanities](https://cdh.uu.nl/contact/).
+For questions, small feature suggestions, and bug reports, feel free to [create an issue](https://github.com/CentreForDigitalHumanities/Textcavator/issues/new/choose). If you don't have a Github account, you can also [contact the Centre for Digital Humanities](https://cdh.uu.nl/contact/).
 
 If you want to add a new corpus to Textcavator, or have an idea for a project, please [contact the Centre for Digital Humanities](https://cdh.uu.nl/contact/) rather than making an issue, so we can discuss the possibilities with you.
 

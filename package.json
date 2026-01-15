@@ -1,6 +1,6 @@
 {
   "name": "textcavator",
-  "version": "5.24.0",
+  "version": "5.26.1",
   "license": "MIT",
   "scripts": {
     "postinstall": "yarn install-back && yarn install-front",

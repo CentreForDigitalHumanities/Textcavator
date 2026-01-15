@@ -7,7 +7,7 @@ here = op.abspath(op.dirname(__file__))
 @pytest.fixture()
 def rechtspraak_test_settings(settings):
     settings.CORPORA = {
-        'rechtspraak': op.join(here, 'rechtspraak.py')
+        'rechtspraak': 'corpora.rechtspraak.rechtspraak.Rechtspraak'
     }
 
     settings.RECHTSPRAAK_DATA = op.join(here, 'tests', 'data')

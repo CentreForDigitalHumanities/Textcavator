@@ -8,7 +8,7 @@ from api.utils import find_media_file
 
 class IllustratedLondonNews(GaleCorpus):
     title = "Illustrated London News"
-    description = "Illustrated London News"
+    description = "Archive of Illustrated London News, a British weekly news magazine."
     min_date = datetime(1842, 5, 14)
     max_date = datetime(2003, 7, 7)
     data_directory = settings.ILLUSTRATED_LONDON_NEWS_DATA

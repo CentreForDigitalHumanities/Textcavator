@@ -5,7 +5,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 def test_dutchannualreports(settings, db, admin_client):
     settings.CORPORA = {
-        'dutchannualreports': os.path.join(here, 'dutchannualreports.py')
+        'dutchannualreports': 'corpora.dutchannualreports.dutchannualreports.DutchAnnualReports',
     }
     settings.DUTCHANNUALREPORTS_DATA = ''
 

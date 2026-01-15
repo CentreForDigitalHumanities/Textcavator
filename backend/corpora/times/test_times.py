@@ -5,7 +5,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 def test_times(settings, db, admin_client):
     settings.CORPORA = {
-        'times': os.path.join(here, 'times.py')
+        'times': 'corpora.times.times.Times',
     }
     settings.TIMES_DATA = ''
 

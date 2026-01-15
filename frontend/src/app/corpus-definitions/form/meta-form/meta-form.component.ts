@@ -33,7 +33,7 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         { value: 'oration', label: 'Orations' },
         { value: 'book', label: 'Books' },
         { value: 'letter', label: 'Letters and life writing' },
-        { value: 'poerty', label: 'Poetry and songs' },
+        { value: 'poetry', label: 'Poetry and songs' },
         { value: 'social', label: 'Social media' },
         { value: 'informative', label: 'Informative' },
         { value: undefined, label: 'Other' },
