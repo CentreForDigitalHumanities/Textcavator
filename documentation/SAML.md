@@ -22,13 +22,11 @@ SAML intergration depends on the [`xmlsec` Python library](https://xmlsec.readth
 
 To use SAML login in a development environment, you can use the CDH [Development Identity Provider](https://centrefordigitalhumanities.github.io/Federated-Authentication-Docs/developmentidp/index.html).
 
-To use the development IdP, import the [SAML development settings](../backend/ianalyzer/settings_saml.py) in your `settings_local.py`:
+To use the development IdP, import the [SAML development settings](../backend/ianalyzer/settings_saml.py). Start up Textcavator with:
 
-```python
-from settings_saml import *
+```sh
+yarn start-back --settings ianalyzer.settings_saml
 ```
-
-Then start up Textcavator.
 
 Now follow the README instructions in the Development IdP to run the application and register Textcavator as a service provider. You can find the metadata for Textcavator at `http://localhost:8000/users/saml2/metadata/`.
 
