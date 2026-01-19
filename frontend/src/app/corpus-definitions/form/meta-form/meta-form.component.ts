@@ -95,13 +95,18 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.corpus) {
             this.corpus.definitionUpdated$
-                .pipe(
-                    take(1),
-                    takeUntil(this.destroy$)
-                )
-                .subscribe(() =>
-                    this.metaForm.patchValue(this.dataToFormValue(this.corpus.definition.meta))
-                );
+            .pipe(
+                take(1),
+                takeUntil(this.destroy$)
+            )
+            .subscribe(() => {
+                if (this.corpus.active) {
+                    this.metaForm.controls.title.disable();
+                } else {
+                    this.metaForm.controls.title.enable();
+                }
+                this.metaForm.patchValue(this.dataToFormValue(this.corpus.definition.meta))
+            });
         }
     }
 

@@ -64,7 +64,7 @@ export class FieldFormComponent {
         return this.fieldsForm.get('fields') as FormArray;
     }
 
-    makeFieldFormgroup(field: APICorpusDefinitionField): FormGroup {
+    makeFieldFormgroup(field: APICorpusDefinitionField, corpusIsActive: boolean): FormGroup {
         let fg = new FormGroup({
             display_name: new FormControl(),
             description: new FormControl(),
@@ -84,6 +84,9 @@ export class FieldFormComponent {
                 column: new FormControl(),
             }),
         });
+        if (corpusIsActive) {
+            this.disableControls(fg);
+        }
         fg.patchValue(field);
 
         fg.valueChanges.pipe(
@@ -92,6 +95,7 @@ export class FieldFormComponent {
 
         return fg;
     }
+
 
     getFieldProperty(field: FormGroup, prop: string) {
         const fieldType = field.get('type').value;
@@ -102,12 +106,12 @@ export class FieldFormComponent {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.corpus) {
             this.corpus.definitionUpdated$
-                .pipe(takeUntil(this.destroy$))
+            .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
                     this.languageOptions = this.getLanguageOptions();
                     this.fieldsForm.controls.fields = new FormArray(
                         this.corpus.definition.fields.map(
-                            this.makeFieldFormgroup.bind(this)
+                            field => this.makeFieldFormgroup(field, this.corpus.active)
                         )
                     );
                 });
@@ -179,5 +183,15 @@ export class FieldFormComponent {
         const languages = allLanguages.filter(l => languageCodes.includes(l.code));
         languages.push({ code: '', displayName: 'Unknown', altNames: ''});
         return languages;
+    }
+
+    private disableControls(form: FormGroup) {
+        form.controls.type.disable();
+        form.controls.name.disable();
+        form.controls.extract.disable();
+        form.controls.language.disable();
+        const options = (form.controls.options as FormGroup);
+        options.controls.search.disable();
+        options.controls.filter.disable();
     }
 }

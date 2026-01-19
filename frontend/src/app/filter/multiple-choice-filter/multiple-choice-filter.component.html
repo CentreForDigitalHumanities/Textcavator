@@ -1,7 +1,8 @@
 <div class="mc">
     <p-multiSelect [id]="filter.corpusField.name" [disabled]="!options.length" [filter]="options.length>=6" [options]="options" [maxSelectedLabels]=1
             placeholder="Choose" [ngModel]="data" (onChange)="update($event.value)"
-            ariaLabelledBy="legend-filter-{{filter.displayName | slugify}}">
+            ariaLabelledBy="legend-filter-{{filter.displayName | slugify}}"
+            fluid>
         <ng-template let-item pTemplate="item">
             <div class="select-label">{{item.label}}</div>
             <div class="select-count">{{item.doc_count}}</div>
