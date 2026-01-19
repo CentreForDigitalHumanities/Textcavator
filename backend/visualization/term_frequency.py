@@ -60,6 +60,11 @@ def extract_data_for_term_frequency(corpus, es_query):
     return fieldnames, token_count_aggregators
 
 def _term_frequency_search_fields(corpus, es_query) -> List[Field]:
+    '''
+    Select search fields for term frequency analysis.
+
+    Selects either the fields selected in the query, or all text fields in the corpus.
+    '''
     corpus_conf = CorpusConfiguration.objects.get(corpus__name=corpus)
     all_fields = corpus_conf.fields.all()
     search_fields = query.get_search_fields(es_query)
