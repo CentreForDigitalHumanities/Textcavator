@@ -82,8 +82,8 @@ def get_match_count(es_client, es_query, corpus, size, fieldnames):
         query_model=es_query,
         download_size=size,
         client=es_client,
-        source=[],
-        explain=True,
+        source=[], # do not include source document in result
+        explain=True, # add information about score computation in result
     )
 
     query_text = query.get_query_text(es_query)
