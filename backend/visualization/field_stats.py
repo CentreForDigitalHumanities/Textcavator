@@ -10,7 +10,7 @@ def count_field(es_client, corpus_name, fieldname):
 
     body = {'query': {'exists': {'field': fieldname}}}
     result = search(
-        corpus=corpus_name,
+        corpus_name=corpus_name,
         query_model=body,
         client=es_client,
         size=0,
@@ -26,7 +26,7 @@ def count_total(es_client, corpus_name):
     '''
 
     result = search(
-        corpus=corpus_name,
+        corpus_name=corpus_name,
         client=es_client,
         query_model=MATCH_ALL,
         size=0,

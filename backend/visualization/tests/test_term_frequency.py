@@ -1,5 +1,8 @@
 import pytest
 from visualization import term_frequency
+from es.search import search, hits
+import pytest
+from visualization.conftest import MockClient
 
 def test_extract_data_for_term_frequency(small_mock_corpus):
     es_query = make_query('test', ['content', 'title'])
@@ -44,6 +47,7 @@ frequencies = [
     ('rejuice~1', 1), #fuzzy match
     ('hav*', 2), # wildcard match
     ('sit* hav*' , 3),
+    ('-sit* hav*' , 2),
     ('-sit* + hav*' , 1),
     ('nomatches', 0),
 ]
@@ -57,15 +61,25 @@ def test_match_count(small_mock_corpus, es_client, index_small_mock_corpus, quer
     match_count = term_frequency.get_match_count(es_client, query, small_mock_corpus, 100, fieldnames)
     assert match_count == expected_count
 
-def test_match_count_estimate(es_client_m_hits, es_client_k_hits, small_mock_corpus, basic_query):
-    matches = term_frequency.get_match_count(es_client_m_hits, basic_query, small_mock_corpus, 1000, ['test'])
-    # es_client_m_hits gives 5000 total hits and 10'000 terms for the 1000 document sample
+@pytest.fixture()
+def fix_match_count(monkeypatch):
+    def count_matches_alt(*args, **kwargs):
+        return 10
+
+    monkeypatch.setattr(term_frequency, 'count_matches_in_document', count_matches_alt)
+
+
+def test_match_count_estimate(small_mock_corpus, basic_query, fix_match_count):
+    client = MockClient(5000)
+    matches = term_frequency.get_match_count(client, basic_query, small_mock_corpus, 1000, ['test'])
+    # client gives 5,000 total hits and 10,000 terms for the 1,000 document sample
     # it estimates (10 - 1) * 4000 / 2 + 4000 = 22000 terms for the uncounted documents
     assert matches == 32000
 
-def test_match_count_full(es_client_k_hits, small_mock_corpus, basic_query):
-    matches = term_frequency.get_match_count(es_client_k_hits, basic_query, small_mock_corpus, 1000, ['test'])
-    # es_client_k_hits gives 500 total hits and 5000 terms (fully counted)
+def test_match_count_full(small_mock_corpus, basic_query, fix_match_count):
+    client = MockClient(500)
+    matches = term_frequency.get_match_count(client, basic_query, small_mock_corpus, 1000, ['test'])
+    # client gives 500 total hits and 5000 terms (fully counted)
     assert matches == 5000
 
 def test_total_docs_and_tokens(es_client, mock_corpus, index_mock_corpus, mock_corpus_specs):
@@ -172,3 +186,40 @@ def make_query(query_text=None, search_in_fields=None):
 
 
     return query
+
+
+term_count_cases = [
+    ('disaster', 1),
+    ('DISASTER', 1),
+    ('disaster regarded', 2),
+    ('disaster + regarded', 2),
+    ('"evil forebodings"', 1),
+    ('disaster "evil forebodings"', 2),
+    ('disaster -regarded', 1),
+    ('rejuice~2', 1),
+]
+
+@pytest.mark.parametrize('query_text,expected_count', term_count_cases)
+def test_term_count_from_explain(small_mock_corpus, index_small_mock_corpus, query_text, expected_count):
+    def query(query_text: str):
+        return {
+            "query": {
+                "bool": {
+                    "must": {
+                        "simple_query_string": {
+                            "query": query_text,
+                            "fields": ["content"]
+                        }
+                    },
+                    'filter': {
+                        'term': { 'genre': 'Science fiction' },
+                    }
+                }
+            },
+            "explain": True,
+        }
+
+    result = search(small_mock_corpus, query(query_text))
+    hit = hits(result)[0]
+    count = term_frequency.count_matches_from_explanation(hit)
+    assert count == expected_count
