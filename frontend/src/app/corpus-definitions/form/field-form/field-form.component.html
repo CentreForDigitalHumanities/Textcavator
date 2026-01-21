@@ -155,7 +155,8 @@
         </div>
     </ng-container>
 
-    @if (unusedCsvFields$ | async; as fields) {
+    @let unusedFields = unusedCsvFields$ | async;
+    @if (unusedFields?.length) {
         <div class="box has-background-light ">
             <h2 class="title is-5">Add field</h2>
             <p class="block">
@@ -167,15 +168,16 @@
                 <div class="field is-grouped">
                     <div class="control is-expanded">
                         <div class="select is-fullwidth">
-                            <select>
-                                @for (field of fields; track field.name) {
-                                    <option>{{field.name}}</option>
+                            <select #fieldSelect>
+                                @for (field of unusedFields; track field.name; let index = $index) {
+                                    <option [value]="field.name">{{field.name}}</option>
                                 }
                             </select>
                         </div>
                     </div>
                     <div class="control">
-                        <button class="button" type="button" aria-label="add">
+                        <button class="button" type="button" aria-label="add"
+                            (click)="addField(fieldSelect.value)">
                             <span class="icon">
                                 <fa-icon [icon]="actionIcons.add" aria-hidden="true" />
                             </span>

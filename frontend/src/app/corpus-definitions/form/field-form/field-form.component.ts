@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
     APICorpusDefinitionField,
@@ -8,13 +8,15 @@ import {
     FIELD_TYPE_OPTIONS,
 } from '@models/corpus-definition';
 import { MenuItem } from 'primeng/api';
-import { catchError, combineLatest, map, Observable, of, shareReplay, startWith, Subject, takeUntil, tap } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, shareReplay, startWith, Subject, take, takeUntil, tap } from 'rxjs';
 import * as _ from 'lodash';
 
 import { collectLanguages, Language } from '../constants';
 import { actionIcons, directionIcons, formIcons } from '@shared/icons';
 import { mergeAsBooleans } from '@utils/observables';
 import { ApiService, DialogService } from '@services';
+import { CorpusDefinitionService } from '@app/corpus-definitions/corpus-definition.service';
+import { findByName } from '@app/utils/utils';
 
 const allLanguages = collectLanguages();
 
@@ -64,8 +66,8 @@ export class FieldFormComponent implements OnChanges {
         private el: ElementRef<HTMLElement>,
         private dialogService: DialogService,
         private apiService: ApiService,
+        private corpusDefService: CorpusDefinitionService,
     ) {}
-
 
     get fields(): FormArray {
         return this.fieldsForm.get('fields') as FormArray;
@@ -195,6 +197,20 @@ export class FieldFormComponent implements OnChanges {
     languageLabel(field: FormGroup): string {
         const value = field.controls.language.value;
         return this.languageOptions.find(o => o.code == value).displayName;
+    }
+
+    addField(name: string) {
+        const field$ = this.unusedCsvFields$.pipe(
+            take(1),
+            map(fields => findByName(fields, name)),
+            map(info => this.corpusDefService.makeDefaultField(info.type, info.name))
+        );
+
+        field$.subscribe(field => {
+            const fg = this.makeFieldFormgroup(field);
+            this.fieldsForm.controls.fields.push(fg);
+            this.fieldsForm.updateValueAndValidity();
+        });
     }
 
     removeField(index: number) {
