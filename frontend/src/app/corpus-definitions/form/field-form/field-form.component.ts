@@ -1,18 +1,20 @@
-import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
     APICorpusDefinitionField,
+    CorpusDataFile,
     CorpusDefinition,
+    DataFileFieldInfo,
     FIELD_TYPE_OPTIONS,
 } from '@models/corpus-definition';
 import { MenuItem } from 'primeng/api';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, shareReplay, Subject, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 
 import { collectLanguages, Language } from '../constants';
 import { actionIcons, directionIcons, formIcons } from '@shared/icons';
 import { mergeAsBooleans } from '@utils/observables';
-import { DialogService } from '@services';
+import { ApiService, DialogService } from '@services';
 
 const allLanguages = collectLanguages();
 
@@ -22,7 +24,7 @@ const allLanguages = collectLanguages();
     styleUrl: './field-form.component.scss',
     standalone: false
 })
-export class FieldFormComponent {
+export class FieldFormComponent implements OnInit {
     @Input({ required: true }) corpus!: CorpusDefinition;
     destroy$ = new Subject<void>();
 
@@ -55,13 +57,39 @@ export class FieldFormComponent {
         false: [this.valueChange$, this.changesSubmitted$],
     });
 
+    dataFile$: Observable<CorpusDataFile | undefined>;
+    unusedCsvFields$: Observable<DataFileFieldInfo[]>;
+
     constructor(
         private el: ElementRef<HTMLElement>,
         private dialogService: DialogService,
+        private apiService: ApiService,
     ) {}
+
 
     get fields(): FormArray {
         return this.fieldsForm.get('fields') as FormArray;
+    }
+
+    ngOnInit(): void {
+        this.dataFile$ = this.apiService.listDataFiles(this.corpus.id).pipe(
+            map(files => files.find(file => file.confirmed)),
+            catchError(() => of(undefined)),
+            shareReplay(1),
+        );
+        const formValue$ = this.fieldsForm.valueChanges.pipe(
+            map(() => this.fieldsForm.value)
+        );
+        this.unusedCsvFields$ = combineLatest([
+            this.dataFile$,
+            formValue$
+        ]).pipe(
+            map(([file, formValue]) => {
+                const csvFields = file.csv_info.fields;
+                const formFields = formValue.fields.map(field => field.extract.column);
+                return csvFields.filter(field => !formFields.includes(field.name));
+            })
+        );
     }
 
     makeFieldFormgroup(field: APICorpusDefinitionField): FormGroup {
