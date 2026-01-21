@@ -197,6 +197,10 @@ export class FieldFormComponent implements OnInit {
         return this.languageOptions.find(o => o.code == value).displayName;
     }
 
+    removeField(index: number) {
+        this.fieldsForm.controls.fields.removeAt(index);
+    }
+
     private getLanguageOptions() {
         // include corpus languages + interface language
         const languageCodes = this.corpus.definition.meta.languages;
