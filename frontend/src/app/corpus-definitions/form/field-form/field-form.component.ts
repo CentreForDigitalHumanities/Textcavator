@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
     APICorpusDefinitionField,
@@ -8,7 +8,7 @@ import {
     FIELD_TYPE_OPTIONS,
 } from '@models/corpus-definition';
 import { MenuItem } from 'primeng/api';
-import { catchError, combineLatest, map, Observable, of, shareReplay, Subject, takeUntil } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, shareReplay, startWith, Subject, takeUntil, tap } from 'rxjs';
 import * as _ from 'lodash';
 
 import { collectLanguages, Language } from '../constants';
@@ -24,7 +24,7 @@ const allLanguages = collectLanguages();
     styleUrl: './field-form.component.scss',
     standalone: false
 })
-export class FieldFormComponent implements OnInit {
+export class FieldFormComponent implements OnChanges {
     @Input({ required: true }) corpus!: CorpusDefinition;
     destroy$ = new Subject<void>();
 
@@ -71,27 +71,6 @@ export class FieldFormComponent implements OnInit {
         return this.fieldsForm.get('fields') as FormArray;
     }
 
-    ngOnInit(): void {
-        this.dataFile$ = this.apiService.listDataFiles(this.corpus.id).pipe(
-            map(files => files.find(file => file.confirmed)),
-            catchError(() => of(undefined)),
-            shareReplay(1),
-        );
-        const formValue$ = this.fieldsForm.valueChanges.pipe(
-            map(() => this.fieldsForm.value)
-        );
-        this.unusedCsvFields$ = combineLatest([
-            this.dataFile$,
-            formValue$
-        ]).pipe(
-            map(([file, formValue]) => {
-                const csvFields = file.csv_info.fields;
-                const formFields = formValue.fields.map(field => field.extract.column);
-                return csvFields.filter(field => !formFields.includes(field.name));
-            })
-        );
-    }
-
     makeFieldFormgroup(field: APICorpusDefinitionField): FormGroup {
         let fg = new FormGroup({
             display_name: new FormControl(),
@@ -129,6 +108,26 @@ export class FieldFormComponent implements OnInit {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.corpus) {
+            this.dataFile$ = this.apiService.listDataFiles(this.corpus.id).pipe(
+                map(files => files.find(file => file.confirmed)),
+                catchError(() => of(undefined)),
+                shareReplay(1),
+            );
+            const formValue$ = this.fieldsForm.valueChanges.pipe(
+                startWith(() => undefined),
+                map(() => this.fieldsForm.value)
+            );
+            this.unusedCsvFields$ = combineLatest([
+                this.dataFile$,
+                formValue$
+            ]).pipe(
+                map(([file, formValue]) => {
+                    const csvFields = file.csv_info.fields;
+                    const formFields = formValue.fields.map(field => field.extract.column);
+                    const filtered = csvFields.filter(field => !formFields.includes(field.name));
+                    return filtered;
+                })
+            );
             this.corpus.definitionUpdated$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
@@ -138,6 +137,7 @@ export class FieldFormComponent implements OnInit {
                             this.makeFieldFormgroup.bind(this)
                         )
                     );
+                    this.fieldsForm.updateValueAndValidity();
                 });
         }
     }
@@ -199,6 +199,7 @@ export class FieldFormComponent implements OnInit {
 
     removeField(index: number) {
         this.fieldsForm.controls.fields.removeAt(index);
+        this.fieldsForm.updateValueAndValidity();
     }
 
     private getLanguageOptions() {
