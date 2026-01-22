@@ -543,7 +543,7 @@ class ParliamentEuropeFromAPI(JSONReader):
 
 
 def _to_int(value) -> Optional[int]:
-    if value or value == 0 and not math.isnan(value):
+    if (value or value == 0) and not math.isnan(value):
         return int(value)
 
 def _format_name(values) -> str:
