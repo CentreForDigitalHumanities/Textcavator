@@ -39,7 +39,7 @@ class ParliamentEurope(Parliament):
     description_page = 'euparl.md'
     image = 'euparl.jpeg'
     min_date = datetime(year=1999, month=7, day=20)
-    max_date = datetime.now()
+    max_date = getattr(settings, 'PP_EUPARL_MAX_DATE', datetime.now())
     language_field = 'original_language_code'
 
     @property
