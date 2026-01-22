@@ -93,10 +93,10 @@ export class FieldFormComponent implements OnChanges {
                 column: new FormControl(),
             }),
         });
+        fg.patchValue(field);
         if (corpusIsActive) {
             this.disableControls(fg);
         }
-        fg.patchValue(field);
 
         fg.valueChanges.pipe(
             takeUntil(this.destroy$),
@@ -121,7 +121,7 @@ export class FieldFormComponent implements OnChanges {
             );
             const formValue$ = this.fieldsForm.valueChanges.pipe(
                 startWith(() => undefined),
-                map(() => this.fieldsForm.value)
+                map(() => this.fieldsForm.getRawValue())
             );
             this.unusedCsvFields$ = combineLatest([
                 this.dataFile$,
@@ -154,7 +154,7 @@ export class FieldFormComponent implements OnChanges {
     }
 
     onSubmit(): void {
-        const newFields = this.fields.value as APICorpusDefinitionField[];
+        const newFields = this.fields.getRawValue() as APICorpusDefinitionField[];
         this.corpus.definition.fields =
             newFields as CorpusDefinition['definition']['fields'];
         this.corpus.save().subscribe({
