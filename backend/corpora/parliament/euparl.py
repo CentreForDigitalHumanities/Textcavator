@@ -4,6 +4,8 @@ import logging
 import os
 from typing import Optional, Dict, List, Tuple, Union
 from urllib import parse
+import math
+import numbers
 
 from bs4 import BeautifulSoup
 from django.conf import settings
@@ -541,13 +543,24 @@ class ParliamentEuropeFromAPI(JSONReader):
 
 
 def _to_int(value) -> Optional[int]:
-    if value or value == 0:
+    if value or value == 0 and not math.isnan(value):
         return int(value)
 
 def _format_name(values) -> str:
     return ' '.join(
         value for value in filter(None, values)
     )
+
+def _nan_to_none(value):
+    if not isinstance(value, numbers.Number) or not math.isnan(value):
+        return value
+
+def _format_gender(value):
+    if value == 1:
+        return 'Male'
+    if value == 0:
+        return 'Female'
+
 
 class EUPDCorpReader(RDSReader):
     data_directory = settings.PP_EUPARL_DATA
@@ -583,15 +596,15 @@ class EUPDCorpReader(RDSReader):
         ),
         Field(
             name='party',
-            extractor=CSV('epg_short'),
+            extractor=CSV('epg_short', transform=_nan_to_none),
         ),
         Field(
             name='party_full',
-            extractor=CSV('epg_long'),
+            extractor=CSV('epg_long', transform=_nan_to_none),
         ),
         Field(
             name='party_national',
-            extractor=CSV('party_name'),
+            extractor=CSV('party_name', transform=_nan_to_none),
         ),
         Field(
             name='sequence',
@@ -622,10 +635,7 @@ class EUPDCorpReader(RDSReader):
         ),
         Field(
             name='speaker_gender',
-            extractor=CSV(
-                'gender',
-                transform=lambda value: 'Male' if value else 'Female',
-            )
+            extractor=CSV('gender', transform=_format_gender)
         ),
         Field(
             name='speaker_birth_year',
@@ -633,7 +643,7 @@ class EUPDCorpReader(RDSReader):
         ),
         Field(
             name='speaker_country',
-            extractor=CSV('nationality'),
+            extractor=CSV('nationality', transform=_nan_to_none),
         ),
         Field(
             name='source_archive',
