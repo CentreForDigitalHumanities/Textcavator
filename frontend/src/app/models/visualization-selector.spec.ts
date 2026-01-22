@@ -76,4 +76,13 @@ describe('VisualizationSelector', () => {
             field: corpus.fields[1],
         });
     });
+
+    it('handles a corpus without visualisations', () => {
+        corpus = corpusFactory();
+        corpus.fields = [];
+        query = new QueryModel(corpus, store);
+        selector = new VisualizationSelector(store, query);
+        expect(selector.options).toEqual([]);
+        expect(selector.state$.value).toBeNull();
+    });
 });

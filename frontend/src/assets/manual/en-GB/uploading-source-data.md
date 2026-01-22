@@ -103,7 +103,7 @@ The table below describes formatting requirements per data type.
 
 | Data type | Notes |
 |-----------|-------|
-| text      | To avoid problems when the text contains the separator character (e.g. `,`), put the text between double quotes (`"`). (You can use quotes for other fields types, as well, but it is not necessary.) If the text field may contain line breaks and/or quote characters, put the text between three quotes (`"""`). |
+| text      | To avoid problems when the text contains the separator character (e.g. `,`), put the text between double quotes (`"`). (You can use quotes for other fields types, as well, but it is not necessary.) Text between quotes can span multiple lines. |
 | date      | Must be formatted as *year-month-day*. For example, "March 18th, 1927" can be written as `1927-3-18` or `1927-03-18`. |
 | number (integer) | Plain numbers, without decimal points or units. |
 | number (decimal) | Use a demical point (`.`), not a comma (`,`). The column can contain a mix of decimal and whole numbers. |
@@ -116,9 +116,9 @@ Below is an example of a valid CSV file.
 
 ```csv
 date,genre,pages,rating,female_author,title,content
-1818-01-01,"Science fiction",150,3.9,true,"Frankenstein, or, the Modern Prometheus","""You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings."""
-1813-01-28,"Romance",334,4.1,true,"Pride and Prejudice","""It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife."""
-1865-11-09,"Children",false,239,4.0,false,"Alice's adventures in Wonderland / Through the Looking Glass","""Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do."""
+1818-01-01,"Science fiction",150,3.9,true,"Frankenstein, or, the Modern Prometheus","You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings."
+1813-01-28,"Romance",334,4.1,true,"Pride and Prejudice","It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife."
+1865-11-09,"Children",false,239,4.0,false,"Alice's adventures in Wonderland / Through the Looking Glass","Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do."
 ```
 
 This file contains the following columns:  `date` (date), `genre` (text), `pages` (number, integer), `rating` (number, decimal), `female_author` (boolean), `title` (text), `content` (text).

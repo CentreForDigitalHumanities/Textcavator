@@ -65,7 +65,7 @@ def make_chunks(client, index, size, scroll_timeout, query_model, total, downloa
 
 def normal_search(corpus, query_model):
     result = search(
-        corpus=corpus,
+        corpus_name=corpus,
         query_model=query_model
     )
     return hits(result)

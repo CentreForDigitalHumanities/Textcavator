@@ -9,8 +9,9 @@
             </ul>
         </nav>
 
+        @let corpus = corpus$ | async;
+
         <div class="columns">
-            @let corpus = corpus$ | async;
             <div class="column">
                 <h1 class="title">Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
             </div>
@@ -25,6 +26,17 @@
             </div>
         </div>
 
+        @if (corpus.active) {
+            <div class="message">
+                <div class="message-body">
+                    <p class="block">
+                        This corpus is currently active and available for searching. Some
+                        editing options are locked. To enable them, deactive the corpus in
+                        step 4.
+                    </p>
+                </div>
+            </div>
+        }
     </div>
 </div>
 

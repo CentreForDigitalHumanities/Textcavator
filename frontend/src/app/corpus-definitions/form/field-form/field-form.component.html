@@ -7,7 +7,7 @@
                 index as i; first as isFirst; last as isLast;
                 trackBy: fieldControlName"
             [formGroupName]="i">
-            <div class="field">
+            <div class="field is-disabled">
                 <label class="label" for="column_name">Column name</label>
                 <div class="control">
                     <input class="input" type="text" name="column_name"
@@ -38,8 +38,10 @@
                 </p>
             </div>
 
-            <div class="field">
-                <label class="label" for="input-type">Type</label>
+            <div class="field" [class.is-disabled]="corpus.active">
+                <label class="label" for="input-type" >
+                    Type
+                </label>
                 <div class="control">
                     <ia-dropdown formControlName="type" id="input-type">
                         <span iaDropdownLabel>{{getFieldProperty(field, 'label')}}</span>
@@ -63,18 +65,18 @@
                 </p>
             </div>
 
-            <div class="field">
-                <label class="label" for="options">Options</label>
+            <fieldset class="field">
+                <legend class="label">Options</legend>
                 <ng-container formGroupName="options">
                     <div *ngIf="field.get('type').value === 'text_content' || field.get('type').value === 'text_metadata' "
                         class="control">
-                        <label class="checkbox">
+                        <label class="checkbox" [class.is-disabled]="corpus.active">
                             <input type="checkbox" name="search" formControlName="search" /> Search
                             <p class="help">Enable text searching within this field.</p>
                         </label>
                     </div>
                     <div *ngIf="field.get('type').value !== 'text_content' && field.get('type').value !== 'url' " class="control">
-                        <label class="checkbox">
+                        <label class="checkbox" [class.is-disabled]="corpus.active">
                             <input type="checkbox" name="filter" formControlName="filter" /> Filter
                             <p class="help">Add a filter widget for this field.</p>
                         </label>
@@ -101,8 +103,9 @@
                         </label>
                     </div>
                 </ng-container>
-            </div>
-            <div *ngIf="getFieldProperty(field, 'hasLanguage')" class="field">
+            </fieldset>
+            <div *ngIf="getFieldProperty(field, 'hasLanguage')" class="field"
+                [class.is-disabled]="corpus.active">
                 <label class="label" id="language-label">Language (optional)</label>
                 <ia-dropdown formControlName="language" labelledBy="language-label">
                     <span iaDropdownLabel>{{languageLabel(field)}}</span>

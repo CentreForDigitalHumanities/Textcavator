@@ -7,66 +7,21 @@ from corpora_test.large.large_mock_corpus import SPECS as LARGE_MOCK_CORPUS_SPEC
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-class MockIndex(object):
-    def analyze(self, **kwargs):
-        return {'tokens': [{'token': 'test'}]}
-
 class MockClient(object):
-    ''' Mock ES Client returning random hits and term vectors '''
+    '''Mock ES Client returning fixed number of (empty) hits'''
     def __init__(self, num_hits):
         self.num_hits = num_hits
-        self.indices = MockIndex()
 
     def search(self, index, size, **kwargs):
         return {'hits':
             {'total': {'value': self.num_hits},
-            'hits': [{'_id': hit_id} for hit_id in range(min(size, self.num_hits))]},
+            'hits': [{'_id': hit_id, '_index': index} for hit_id in range(min(size, self.num_hits))]},
             '_scroll_id': '42'
         }
 
     def clear_scroll(self, scroll_id):
         return {'status': 'ok'}
 
-    def termvectors(self, index, id, fields):
-        ''' return 10 matches for term `test` '''
-        return {'term_vectors': {field: {
-            "terms": {'test': {
-                    'ttf': random.randrange(1, 20000),
-                    'tokens': [
-                        {
-                        "position": random.randrange(1, 200)
-                        }
-                        for j in range(10)
-                    ]
-                }, 'nottest': {
-                    'ttf': random.randrange(1, 20000),
-                    'tokens': [
-                        {
-                        "position": random.randrange(1, 200)
-                        }
-                        for j in range(5)
-                    ]
-                }
-                }
-            } for field in fields}}
-
-@pytest.fixture()
-def es_client_m_hits():
-    ''' return a client that is expected to give:
-    - 5000 total hits
-    - size hits
-    - size * 10 term matches
-    '''
-    return MockClient(5000)
-
-@pytest.fixture()
-def es_client_k_hits():
-    ''' return a client that is expected give:
-    - 500 total hits
-    - size hits
-    - size * 10 term matches
-    '''
-    return MockClient(500)
 
 @pytest.fixture(params=['small-mock-corpus', 'large-mock-corpus'])
 def mock_corpus(request):
