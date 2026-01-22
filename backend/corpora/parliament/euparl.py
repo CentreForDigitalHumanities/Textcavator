@@ -127,6 +127,7 @@ class ParliamentEurope(Parliament):
         name='source_archive',
         display_name='Source archive',
         description='Source dataset for this document',
+        es_mapping=keyword_mapping(),
     )
 
     def __init__(self):
