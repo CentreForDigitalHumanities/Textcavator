@@ -1,21 +1,17 @@
 # iframe test app
 
-This is a minimal application to test embedding Textcavator in another site using an iframe. It is essentially just a web page that embeds your Textcavator development server. You can use it to test the layout, or try out the workflow in an embedded frame.
+This is a minimal setup to test embedding Textcavator in another site using an iframe. It serves a web page that embeds your Textcavator development server. You can use it to test the layout, or try out the workflow in an embedded frame.
 
 ## Usage
 
-The test app is built using Vite. It requires Node and Yarn to run (which are also requirements for Textcavator itself.) To install dependencies, run from this directory:
-
-```sh
-yarn
-```
+The test app is run using `server.py`. It requires Python to use, no dependencies.
 
 To run, start your Texcavator development server. Then run the container app by running:
 
 ```sh
-yarn dev
+python server.py
 ```
 
-The container app will run at http://localhost:5173/
+The container app will run at http://localhost:9000/. Use ctrl + C to quit.
 
-The iframe will show `/search/troonredes/`, so on your Textcavator server, the Troonredes corpus should be active and public (or you can change the source url).
+The iframe will show `/search/troonredes/`, so on your Textcavator server, the Troonredes corpus should be active and public (or you can change the source url in `index.html`).
