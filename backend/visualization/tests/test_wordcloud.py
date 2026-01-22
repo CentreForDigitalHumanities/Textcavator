@@ -21,7 +21,7 @@ def make_filtered_query():
 @pytest.fixture()
 def small_mock_corpus_complete_wordcloud(small_mock_corpus, index_small_mock_corpus):
     result = search.search(
-        corpus=small_mock_corpus,
+        corpus_name=small_mock_corpus,
         query_model=query.MATCH_ALL,
         size=10
     )
@@ -75,7 +75,7 @@ def test_wordcloud_filtered(small_mock_corpus, es_client, index_small_mock_corpu
     filtered_query = make_filtered_query()
 
     result = search.search(
-        corpus=small_mock_corpus,
+        corpus_name=small_mock_corpus,
         query_model=filtered_query,
         size=10,
         client=es_client
