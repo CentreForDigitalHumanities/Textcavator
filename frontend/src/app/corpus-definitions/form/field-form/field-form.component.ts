@@ -211,7 +211,7 @@ export class FieldFormComponent implements OnChanges {
         );
 
         field$.subscribe(field => {
-            const fg = this.makeFieldFormgroup(field);
+            const fg = this.makeFieldFormgroup(field, this.corpus.active);
             this.fieldsForm.controls.fields.push(fg);
             this.fieldsForm.updateValueAndValidity();
         });
