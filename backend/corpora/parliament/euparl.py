@@ -338,11 +338,12 @@ class _JSON(JSON):
 
 class ParliamentEuropeFromAPI(JSONReader):
     """
-    Speeches of the European parliament, originally in or translated to English,
-    provided through the Europarl Open Data API
+    Reader to extract speeches from the Europarl Open Data API
+
+    Extracts from 9/2/2024 until the present.
     """
 
-    min_date = datetime(year=2024, month=7, day=7)
+    min_date = datetime(year=2024, month=2, day=9)
     max_date = datetime.now()
 
     record_path = ['data', 'recorded_in_a_realization_of']
@@ -564,6 +565,10 @@ def _format_gender(value):
 
 
 class EUPDCorpReader(RDSReader):
+    '''
+    Reader for the EUPDCorp dataset. Contains debates from 20/7/1999 to 8/2/2024
+    '''
+
     data_directory = settings.PP_EUPARL_DATA
 
     def sources(self, **kwargs):
