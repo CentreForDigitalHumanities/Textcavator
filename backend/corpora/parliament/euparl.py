@@ -80,6 +80,8 @@ class ParliamentEurope(Parliament):
         name='party_national',
         display_name='National party',
         es_mapping=keyword_mapping(enable_full_text_search=True),
+        search_filter=MultipleChoiceFilter(),
+        visualizations=['resultscount', 'termfrequency'],
     )
     sequence = field_defaults.sequence()
     original_language = field_defaults.language()
@@ -118,6 +120,7 @@ class ParliamentEurope(Parliament):
         display_name='Original speech',
         description='Speech in the original language',
         es_mapping=main_content_mapping(),
+        search_field_core=True,
         display_type='text_content',
         language='dynamic',
     )
@@ -135,8 +138,6 @@ class ParliamentEurope(Parliament):
             self.date,
             self.debate_id,
             self.debate_title,
-            self.original_language,
-            self.original_language_code,
             self.party,
             self.party_full,
             self.party_id,
@@ -149,6 +150,8 @@ class ParliamentEurope(Parliament):
             self.speaker_id,
             self.speech,
             self.speech_original,
+            self.original_language,
+            self.original_language_code,
             self.speech_id,
             self.source_archive,
         ]
