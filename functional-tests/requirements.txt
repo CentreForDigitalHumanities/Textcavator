@@ -67,11 +67,12 @@ outcome==1.2.0
     # via
     #   seleniumbase
     #   trio
-packaging==23.1
+packaging==26.0
     # via
     #   pytest
     #   pytest-rerunfailures
     #   seleniumbase
+    #   wheel
 parameterized==0.9.0
     # via seleniumbase
 parse==1.19.1
@@ -174,7 +175,7 @@ urllib3[socks]==1.26.16
     #   requests
     #   selenium
     #   seleniumbase
-wheel==0.41.2
+wheel==0.46.2
     # via seleniumbase
 wsproto==1.2.0
     # via
