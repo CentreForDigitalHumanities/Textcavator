@@ -368,7 +368,7 @@ class ParliamentEuropeFromAPI(JSONReader):
             )
             if response.status_code != 200:
                 continue
-            meeting_data = response.json().get('data')
+            meeting_data = response.json().get('data', [])
             metadata = {'date': formatted_date}
             for event in meeting_data:
                 if event.get("had_activity_type") != "def/ep-activities/PLENARY_DEBATE":
@@ -378,7 +378,7 @@ class ParliamentEuropeFromAPI(JSONReader):
 
                 sequence_in_debate = 0
 
-                for speech in event.get('consists_of'):
+                for speech in event.get('consists_of', []):
                     speech_id = speech.split("/")[-1]
                     speech_url = _api_url(f'speeches/{speech_id}', {'include-output': 'xml_fragment'})
                     speech_response = requests.get(speech_url)
