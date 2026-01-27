@@ -362,6 +362,7 @@ class ParliamentEuropeFromAPI(JSONReader):
             formatted_date = date.strftime('%Y-%m-%d')
             meeting_id = f'MTG-PL-{formatted_date}'
             meeting_url = _api_url(f'meetings/{meeting_id}/activities')
+            logger.info(f'Meeting URL: {meeting_url}')
             response = requests.get(
                 meeting_url,
                 headers={'accept': 'application/ld+json'},
