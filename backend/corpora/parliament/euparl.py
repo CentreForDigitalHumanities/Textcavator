@@ -395,7 +395,7 @@ class ParliamentEuropeFromAPI(JSONReader):
             # if results are capped, use a shorter range
             split_end = end_date  - ((end_date - start_date) / 2)
             yield from self.sources(start_date, split_end, 0)
-            split_start = end_date + timedelta(days=1)
+            split_start = split_end + timedelta(days=1)
             yield from self.sources(split_start, end_date)
         else:
             yield response, {}
