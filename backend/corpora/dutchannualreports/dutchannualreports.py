@@ -1,24 +1,19 @@
-import csv
-import re
-import os
 import os.path as op
-import logging
 from datetime import datetime
-from ianalyzer_readers.xml_tag import Tag
 
 from django.conf import settings
 
 from api.utils import find_media_file
-from ianalyzer_readers.extract import XML, Metadata, Combined
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
+from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from media.image_processing import get_pdf_info, retrieve_pdf, pdf_pages, build_partial_pdf
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from addcorpus.es_settings import es_settings
+from corpora.dutchannualreports.old_data import DutchAnnualReportsOldDataReader
 
 from media.media_url import media_url
 
-class DutchAnnualReports(XMLCorpusDefinition):
+class DutchAnnualReports(CorpusDefinition):
     """ Alto XML corpus of Dutch annual reports. """
 
     title = "Dutch Annual Reports"
@@ -32,80 +27,31 @@ class DutchAnnualReports(XMLCorpusDefinition):
     description_page = 'dutchannualreports.md'
     allow_image_download = getattr(settings, 'DUTCHANNUALREPORTS_ALLOW_IMAGE_DOWNLOAD', True)
     word_model_path = getattr(settings, 'DUTCHANNUALREPORTS_WM', None)
+    es_settings = es_settings('nl', stopword_analysis=True, stemming_analysis=True)
 
     languages = ['nl']
     category = 'finance'
 
     mimetype = 'application/pdf'
 
-    tag_toplevel = Tag('alto')
-    tag_entry = Tag('Page')
+    readers = [
+        DutchAnnualReportsOldDataReader(),
+    ]
 
-    # New data members
-    non_xml_msg = 'Skipping non-XML file {}'
-    non_match_msg = 'Skipping XML file with nonmatching name {}'
+    def sources(self, **kwargs):
+        for i, reader in enumerate(self.readers):
+            for source, metadata in reader.sources(**kwargs):
+                meta = metadata & { 'reader': i }
+                yield source, meta
 
-    dutchannualreports_map = {}
+    def source2dicts(self, source, **kwargs):
+        _, metadata = source
 
-    @property
-    def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        reader = self.readers[metadata['reader']]
+        docs = reader.source2dicts(source)
 
-    with open(op.join(os.path.dirname(__file__), 'dutchannualreports_mapping.csv')) as f:
-        reader = csv.DictReader(f)
-        for line in reader:
-            dutchannualreports_map[line['abbr']] = line['name']
-
-    def sources(self, start=min_date, end=max_date):
-         # make the mapping dictionary from the csv file defined in config
-        logger = logging.getLogger(__name__)
-        for directory, _, filenames in os.walk(self.data_directory):
-            rel_dir = op.relpath(directory, self.data_directory)
-            _, tail = op.split(directory)
-            if tail == "Financials":
-                company_type = "Financial"
-            elif tail == "Non-Financials":
-                company_type = "Non-Financial"
-            for filename in filenames:
-                name, extension = op.splitext(filename)
-                full_path = op.join(directory, filename)
-                file_path = op.join(rel_dir, filename)
-                image_path = op.join(
-                    rel_dir, name + '.pdf')
-                if extension != '.xml':
-                    logger.debug(self.non_xml_msg.format(full_path))
-                    continue
-                information = re.split("_", name)
-                # financial folders contain multiple xmls, ignore the abby files
-                if information[-1] == "abby" or len(information[-1]) > 5:
-                    continue
-                company = information[0]
-                if re.match("[a-zA-Z]+", information[1]):
-                    # second part of file name is part of company name
-                    company = "_".join([company, information[1]])
-                # using first four-integer string in the file name as year
-                years = re.compile("[0-9]{4}")
-                year = next((info for info in information
-                             if re.match(years, info)), None)
-                if len(information) == 3:
-                    serial = information[-1]
-                    scan = "00001"
-                else:
-                    serial = information[-2]
-                    scan = information[-1]
-                # to do: what about year reports which are combined (e.g. "1969_1970" in filepath)
-                # or which cover parts of two years ("br" in filepath)?
-                if int(year) < start.year or end.year < int(year):
-                    continue
-                yield full_path, {
-                    'file_path': file_path,
-                    'image_path': image_path,
-                    'company': company,
-                    'company_type': company_type,
-                    'year': year,
-                    'serial': serial,
-                    'scan': scan,
-                }
+        for doc in docs:
+            yield {field.name: doc.get(field.name, None) for field in self.fields}
 
     fields = [
         FieldDefinition(
@@ -121,7 +67,6 @@ class DutchAnnualReports(XMLCorpusDefinition):
                 upper=max_date.year,
             ),
             visualization_sort="key",
-            extractor=Metadata(key='year', transform=int),
             csv_core=True,
             sortable=True
         ),
@@ -134,11 +79,6 @@ class DutchAnnualReports(XMLCorpusDefinition):
             es_mapping={'type': 'keyword'},
             search_filter=MultipleChoiceFilter(
                 description='Search only within these companies.',
-                option_count=len(dutchannualreports_map.keys()),
-            ),
-            extractor=Metadata(
-                key='company',
-                transform=lambda x: dutchannualreports_map[x],
             ),
             csv_core=True
         ),
@@ -151,16 +91,13 @@ class DutchAnnualReports(XMLCorpusDefinition):
                 description=(
                     'Accept only financial / non-financial companies'
                 ),
-                option_count = 2,
             ),
-            extractor=Metadata(key='company_type')
         ),
         FieldDefinition(
             name='page',
             display_name='Page Number',
             description='The number of the page in the scan',
             es_mapping={'type': 'integer'},
-            extractor=XML(attribute='PHYSICAL_IMG_NR', transform=int),
             csv_core=True,
             sortable=True
         ),
@@ -169,12 +106,6 @@ class DutchAnnualReports(XMLCorpusDefinition):
             display_name='ID',
             es_mapping=keyword_mapping(),
             description='Unique identifier of the page.',
-            extractor=Combined(
-                Metadata(key='company'),
-                Metadata(key='year'),
-                XML(attribute='ID'),
-                transform=lambda x: '_'.join(x),
-            ),
             hidden=True,
         ),
         FieldDefinition(
@@ -185,12 +116,6 @@ class DutchAnnualReports(XMLCorpusDefinition):
             visualizations=['wordcloud'],
             description='Text content of the page.',
             results_overview=True,
-            extractor=XML(
-                Tag('String'),
-                attribute='CONTENT',
-                multiple=True,
-                transform=lambda x: ' '.join(x),
-            ),
             search_field_core=True,
             language='nl',
         ),
@@ -200,7 +125,6 @@ class DutchAnnualReports(XMLCorpusDefinition):
             display_name='File path',
             description='Filepath of the source file containing the document,\
             relative to the corpus data directory.',
-            extractor=Metadata(key='file_path'),
             hidden=True,
         ),
         FieldDefinition(
@@ -209,7 +133,6 @@ class DutchAnnualReports(XMLCorpusDefinition):
             display_name="Image path",
             description="Path of the source image corresponding to the document,\
             relative to the corpus data directory.",
-            extractor=Metadata(key='image_path'),
             hidden=True,
         )
     ]
