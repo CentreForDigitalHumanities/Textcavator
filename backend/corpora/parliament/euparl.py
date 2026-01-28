@@ -331,8 +331,8 @@ def first(values):
     if len(values):
         return values[0]
 
-def parse_date(value):
-    return value
+def _api_format_date(value: datetime):
+    return value.strftime('%Y-%m-%d')
 
 
 class _JSON(JSON):
@@ -369,51 +369,41 @@ class ParliamentEuropeFromAPI(JSONReader):
         ['data', 'inverse_consists_of'],
     ]
 
-    def sources(self, **kwargs):
+    def sources(self, start_date=min_date, end_date=max_date, offset=0, **kwargs):
         # Uses the /speeches endpoint to request paginated speeches in the date range.
-        # Limitation is that the iteration is capped at 10.000 speeches, so the interval
-        # is dynamically broken up into smaller time intervals as neede.
+        # Limitation is that the iteration is capped at 10.000 speeches, so the time
+        # interval is dynamically broken up into smaller time intervals as needed.
+        # Implicitly assumes that start_date < end_date, and that there are never more
+        # than 10.000 speeches in a single day.
 
-        start_date = self.min_date
-        end_date = self.max_date
-
-        format_date = lambda date: date.strftime('%Y-%m-%d')
-
-        offset = 0
         limit = 50
-        done = False
+        url = _api_url('speeches', {
+            'activity-type': 'PLENARY_DEBATE_SPEECH',
+            'sitting-date': _api_format_date(start_date),
+            'sitting-date-end': _api_format_date(end_date),
+            'include-output': 'xml_fragment',
+            'sort-by': 'sitting-date:asc,numbering:asc',
+            'offset': offset,
+            'limit': limit,
+        })
+        logger.info(url)
+        response = requests.get(url)
+        data = response.json()
+        total = data.get('meta').get('total')
 
-        while not done:
-            url = _api_url('speeches', {
-                'activity-type': 'PLENARY_DEBATE_SPEECH',
-                'sitting-date': format_date(start_date),
-                'sitting-date-end': format_date(end_date),
-                'include-output': 'xml_fragment',
-                'sort-by': 'sitting-date:asc,numbering:asc',
-                'offset': offset,
-                'limit': limit,
-            })
-            logger.info(url)
-            response = requests.get(url)
-            data = response.json()
-            total = data.get('meta').get('total')
+        if total == 10000:
+            # if results are capped, use a shorter range
+            split_end = end_date  - ((end_date - start_date) / 2)
+            yield from self.sources(start_date, split_end, 0)
+            split_start = end_date + timedelta(days=1)
+            yield from self.sources(split_start, end_date)
+        else:
+            yield response, {}
 
-            if total == 10000:
-                # if results are capped, use a shorter range
-                end_date -= (end_date - start_date) / 2
-            else:
-                yield response, {}
-
-                if offset + limit < total:
-                    # if we're not through results yet, move to the next page
-                    offset += limit
-                elif end_date < self.max_date:
-                    # if we're through the results and the timeframe was limited, move it up
-                    start_date = end_date + timedelta(days=1)
-                    end_date = self.max_date
-                    offset = 0
-                else:
-                    done = True
+            if offset + limit < total:
+                # if we're not through results yet, move to the next page
+                next_offset = offset + limit
+                yield from self.sources(start_date, end_date, next_offset)
 
 
     def iterate_data(self, data: Dict, metadata):
@@ -439,7 +429,6 @@ class ParliamentEuropeFromAPI(JSONReader):
 
     _date_extractor = JSON(
         'data.activity_date',
-        transform=parse_date
     )
 
     fields = [
