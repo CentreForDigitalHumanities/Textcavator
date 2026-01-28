@@ -322,10 +322,18 @@ def _api_get_original_speech(data):
     _, code = _api_get_language_data(data['originalLanguage'][0])
     return data.get(_api_speech_key(code))
 
+def _api_get_meeting_id(value: List[str]):
+    path = first(value)
+    if path:
+        return path.split('/')[-1]
 
 def first(values):
     if len(values):
         return values[0]
+
+def parse_date(value):
+    return value
+
 
 class _JSON(JSON):
     '''
@@ -353,37 +361,53 @@ class ParliamentEuropeFromAPI(JSONReader):
     meta = [
         ['data', 'had_participation', 'had_participant_person'],
         ['data', 'activity_id'],
+        ['data', 'activity_date'],
+        ['data', 'activity_label'],
+        ['data', 'inverse_consists_of'],
     ]
 
     def sources(self, **kwargs):
-        date = self.min_date
-        while date < self.max_date:
-            date += timedelta(days=1)
-            formatted_date = date.strftime('%Y-%m-%d')
-            meeting_id = f'MTG-PL-{formatted_date}'
-            meeting_url = _api_url(f'meetings/{meeting_id}/activities')
-            logger.info(f'Meeting URL: {meeting_url}')
-            response = requests.get(
-                meeting_url,
-                headers={'accept': 'application/ld+json'},
-            )
-            if response.status_code != 200:
-                continue
-            meeting_data = response.json().get('data', [])
-            metadata = {'date': formatted_date}
-            for event in meeting_data:
-                if event.get("had_activity_type") != "def/ep-activities/PLENARY_DEBATE":
-                    continue
-                metadata['debate_id'] = event.get('activity_id')
-                metadata['debate_title'] = event.get('activity_label').get('en')
+        start_date = self.min_date
+        end_date = self.max_date
 
-                for speech in event.get('consists_of', []):
-                    speech_id = speech.split("/")[-1]
-                    speech_url = _api_url(f'speeches/{speech_id}', {'include-output': 'xml_fragment'})
-                    speech_response = requests.get(speech_url)
-                    if speech_response.status_code != 200:
-                        continue
-                    yield speech_response, metadata
+        format_date = lambda date: date.strftime('%Y-%m-%d')
+
+        offset = 0
+        limit = 50
+        done = False
+
+        while not done:
+            url = _api_url('speeches', {
+                'activity-type': 'PLENARY_DEBATE_SPEECH',
+                'sitting-date': format_date(start_date),
+                'sitting-date-end': format_date(end_date),
+                'include-output': 'xml_fragment',
+                'sort-by': 'sitting-date:asc,numbering:asc',
+                'offset': offset,
+                'limit': limit,
+            })
+            logger.info(url)
+            response = requests.get(url)
+            data = response.json()
+            total = data.get('meta').get('total')
+
+            if total == 10000:
+                # if results are capped, use a shorter range
+                end_date -= (end_date - start_date) / 2
+            else:
+                yield response, {}
+
+                if offset + limit < total:
+                    # if we're not through results yet, move to the next page
+                    offset += limit
+                elif end_date < self.max_date:
+                    # if we're through the results and the timeframe was limited, move it up
+                    start_date = end_date + timedelta(days=1)
+                    end_date = self.max_date
+                    offset = 0
+                else:
+                    done = True
+
 
     def iterate_data(self, data: Dict, metadata):
         speeches_with_speaker = [
@@ -398,18 +422,24 @@ class ParliamentEuropeFromAPI(JSONReader):
         ]
         return filtered_records
 
+
+    _date_extractor = JSON(
+        'data.activity_date',
+        transform=parse_date
+    )
+
     fields = [
         Field(
             name='debate_id',
-            extractor=Metadata('debate_id'),
+            extractor=JSON('data.inverse_consists_of', transform=_api_get_meeting_id),
         ),
         Field(
             name='debate_title',
-            extractor=Metadata('debate_title'),
+            extractor=JSON('data.activity_label', 'en'),
         ),
         Field(
             name='date',
-            extractor=Metadata('date')
+            extractor=_date_extractor
         ),
         Field(
             name='party',
@@ -418,7 +448,7 @@ class ParliamentEuropeFromAPI(JSONReader):
                     "data.had_participation.had_participant_person",
                     transform=first,
                 ),
-                Metadata('date'),
+                _date_extractor,
                 transform=api_get_party_name,
             )
         ),
@@ -429,7 +459,7 @@ class ParliamentEuropeFromAPI(JSONReader):
                     "data.had_participation.had_participant_person",
                     transform=first,
                 ),
-                Metadata('date'),
+                _date_extractor,
                 transform=_api_get_party_full_name,
             )
         ),
@@ -440,7 +470,7 @@ class ParliamentEuropeFromAPI(JSONReader):
                     "data.had_participation.had_participant_person",
                     transform=first
                 ),
-                Metadata('date'),
+                _date_extractor,
                 transform=api_get_party_id,
             )
         ),
@@ -451,7 +481,7 @@ class ParliamentEuropeFromAPI(JSONReader):
                     "data.had_participation.had_participant_person",
                     transform=first
                 ),
-                Metadata('date'),
+                _date_extractor,
                 transform=_api_get_national_party_name,
             )
         ),

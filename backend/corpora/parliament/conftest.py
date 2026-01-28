@@ -724,7 +724,7 @@ I welcome the Minister, Deputy Simon Coveney, and his officials.  I thank them f
             {
                 "date": "2024-11-13",
                 "debate_id": "MTG-PL-2024-11-13-PVCRE-ITM-17",
-                "debate_title": "17. Fight against money laundering and terrorist financing: listing Russia as a high-risk third country in the EU (debate)",
+                "debate_title": "Fight against money laundering and terrorist financing: listing Russia as a high-risk third country in the EU (debate)",
                 "id": "MTG-PL-2024-11-13-OTH-2017005042457",
                 "party": 'ECR',
                 'party_full': 'European Conservatives and Reformists',
