@@ -351,7 +351,10 @@ class ParliamentEuropeFromAPI(JSONReader):
     """
     Reader to extract speeches from the Europarl Open Data API
 
-    Extracts from 9/2/2024 until the present.
+    See https://data.europarl.europa.eu/en/developer-corner/opendata-api for API
+    documentation.
+
+    Extracts from 9/2/2024 (the end of EUPDCorp) until the present.
     """
 
     min_date = datetime(year=2024, month=2, day=9)
@@ -367,6 +370,10 @@ class ParliamentEuropeFromAPI(JSONReader):
     ]
 
     def sources(self, **kwargs):
+        # Uses the /speeches endpoint to request paginated speeches in the date range.
+        # Limitation is that the iteration is capped at 10.000 speeches, so the interval
+        # is dynamically broken up into smaller time intervals as neede.
+
         start_date = self.min_date
         end_date = self.max_date
 
@@ -410,12 +417,19 @@ class ParliamentEuropeFromAPI(JSONReader):
 
 
     def iterate_data(self, data: Dict, metadata):
-        speeches_with_speaker = [
-            item for item in data['data']
+        # overrides the JSON data iterator to do some manipulations on the data
+        # to ensure validity
+
+        # add empty debate ID if key does not exist...
+        ensure_debate_id = lambda item: { 'inverse_consists_of': [] } | item
+        # ... & filter speeches without speaker metadata
+        complete_speeches = [
+            ensure_debate_id(item) for item in data['data']
             if 'had_participation' in item
         ]
-        filtered_data = data | { 'data': speeches_with_speaker}
+        filtered_data = data | {'data': complete_speeches}
         records = list(super().iterate_data(filtered_data, metadata))
+        # filter records without transcription data
         filtered_records = [
             record for record in records
             if record['data'].get(_api_speech_key('en'))
