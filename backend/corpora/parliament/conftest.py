@@ -731,7 +731,7 @@ I welcome the Minister, Deputy Simon Coveney, and his officials.  I thank them f
                 'party_national': None,
                 "party_id": "7037",
                 'original_language': "English",
-                "sequence": 1,
+                "sequence": 321,
                 "speaker": "Roberts Zīle",
                 "speaker_country": "Latvia",
                 'speaker_gender': 'Male',

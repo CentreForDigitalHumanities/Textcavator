@@ -377,16 +377,12 @@ class ParliamentEuropeFromAPI(JSONReader):
                 metadata['debate_id'] = event.get('activity_id')
                 metadata['debate_title'] = event.get('activity_label').get('en')
 
-                sequence_in_debate = 0
-
                 for speech in event.get('consists_of', []):
                     speech_id = speech.split("/")[-1]
                     speech_url = _api_url(f'speeches/{speech_id}', {'include-output': 'xml_fragment'})
                     speech_response = requests.get(speech_url)
                     if speech_response.status_code != 200:
                         continue
-                    sequence_in_debate += 1
-                    metadata['sequence'] = sequence_in_debate
                     yield speech_response, metadata
 
     def iterate_data(self, data: Dict, metadata):
@@ -461,7 +457,7 @@ class ParliamentEuropeFromAPI(JSONReader):
         ),
         Field(
             name='sequence',
-            extractor=Metadata('sequence')
+            extractor=JSON('numbering')
         ),
         Field(
             name='original_language',
