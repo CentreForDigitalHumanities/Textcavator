@@ -2,7 +2,7 @@
 
 Corpus definitions are the way that we configure each corpus in Textcavator.
 
-This documents gives a basic explanation of how corpus definitions work in the backend. It introduces the core concepts and mechanics.
+This document gives a basic explanation of how corpus definitions work in the backend. It introduces the core concepts and mechanics.
 
 ## Corpus definitions
 

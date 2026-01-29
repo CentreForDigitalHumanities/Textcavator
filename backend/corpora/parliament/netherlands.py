@@ -9,9 +9,6 @@ from ianalyzer_readers.xml_tag import Tag, FindParentTag, PreviousTag, Transform
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition
 from ianalyzer_readers.extract import XML, Constant, Combined, Order
-from corpora.parliament.utils.parlamint import (
-    party_attribute_extractor,
-)
 from corpora.parliament.utils.parlamint_v4 import (
     current_party_id_extractor,
     extract_named_entities,

@@ -1,3 +1,5 @@
+from ianalyzer_readers.extract import XML, Combined, Metadata
+from bs4.element import NavigableString
 from glob import glob
 from string import punctuation
 from typing import Iterable
@@ -10,15 +12,14 @@ from ianalyzer_readers.xml_tag import Tag
 from addcorpus.es_mappings import non_indexed_text_mapping, keyword_mapping
 from addcorpus.python_corpora.corpus import FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
-from corpora.parliament.utils.parlamint import (
-    metadata_attribute_transform_func,
-    person_attribute_extractor,
-)
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_transform import metadata_attribute_transform_func
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import person_attribute_extractor
 
 
 """
 This file was created as an updated utils file for the ParlaMint dataset, version 4.0. The previous utils file
-is based on version 2.0.
+is based on version 2.0. A more recent version of logic that exists in this file can be found in
+backend/corpora/parliament/clarin_parlamint/. This file is only kept for its use in People & Parliament.
 """
 
 POLITICAL_ORIENTATIONS = {
@@ -144,6 +145,37 @@ def extract_people_data(soup):
        person['id']: person for person in person_data
     }
 
+def extract_role_data(soup):
+    role_nodes = soup.find('encodingDesc').find_all('category')
+    # return dict that maps IDs to terms data contains duplicate role IDs
+    # go through data in reverse order so earlier (more general) terms 
+    # overwrite later (more specific) ones
+    return {
+        node['xml:id']: node.find('term').text.strip()
+        for node in reversed(role_nodes)
+    }
+
+def metadata_attribute_transform_func(attribute):
+    """
+    Creates a transformation function that extracts and cleans a specific 
+    attribute from a collection.
+    """
+    def get_attribute(which, collection):
+        if which and collection and which in collection:
+            value = collection[which][attribute]
+            return clean_value(value)
+
+    return lambda values: get_attribute(*values)
+
+def person_attribute_extractor(attribute, id_attribute = 'who'):
+    """Extractor that finds the speaker ID and returns one of the person's
+    attributes defined in extract_person_data()"""
+    return Combined(
+        XML(attribute=id_attribute),
+        Metadata('persons'),
+        transform = metadata_attribute_transform_func(attribute),
+    )
+
 def current_party_id_extractor():
     """Extractor that finds the current party, given a date
     if no date is given, it return the last party in the node"""
@@ -202,8 +234,8 @@ def ner_keyword_field(entity: str):
     return FieldDefinition(
         name=f"{entity}:ner-kw",
         display_name=f"Named Entity: {entity.capitalize()}",
-        searchable=True,
-        es_mapping=keyword_mapping(enable_full_text_search=True),
+        searchable=False,
+        es_mapping=keyword_mapping(enable_full_text_search=False),
         search_filter=MultipleChoiceFilter(
             description=f"Select only speeches which contain this {entity} entity",
             option_count=100,
@@ -266,7 +298,7 @@ def speech_ner():
         hidden=True,
         es_mapping=non_indexed_text_mapping(),
         display_type="text_content",
-        searchable=True,
+        searchable=False,
         extractor=XML(
             Tag("seg"),
             multiple=True,
@@ -320,3 +352,28 @@ def extract_named_entities(xml_file: str) -> dict:
             annotations_dict[annotation["type"]].append(annotated)
         output[speech["xml:id"]] = annotations_dict
     return output
+
+def extract_party_data(node):
+    id = node['xml:id']
+
+    full_name_node = node.find('orgName', full='yes')
+    full_name = full_name_node.text if full_name_node else None
+
+    abbreviation_node = node.find('orgName', full='init')
+    name = abbreviation_node.text if abbreviation_node else full_name or id
+
+    return {
+        'name': name,
+        'full_name': full_name,
+        'role': node['role'],
+        'id': id
+    }
+
+def extract_all_party_data(soup):
+    parties_list = soup.find('listOrg')
+    party_data = map(extract_party_data, parties_list.find_all('org'))
+    make_id = lambda name: '#party.' + name if not name.startswith('party.') else '#' + name
+
+    return {
+        make_id(party['id']): party for party in party_data
+    }

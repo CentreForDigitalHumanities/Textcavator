@@ -105,7 +105,7 @@ Documentation pages must be markdown files. See [corpus documentation](/document
 
 ## Definining fields
 
-The `fields` property lists the configuration for each field in the corpus. Each of these defines how that field should be extracted from the source file, how it should be stored in elasticsearch, and how it should appear in the interface. See [corpus.py](../backend/addcorpus/corpus.py) for the class definition.
+The `fields` property lists the configuration for each field in the corpus. Each of these defines how that field should be extracted from the source file, how it should be stored in elasticsearch, and how it should appear in the interface. See [corpus.py](../backend/addcorpus/python_corpora/corpus.py) for the class definition.
 
 Note that unlike with `CorpusDefinition`, fields are not defined as _classes_ but as _objects_. Rather than creating a custom subclass of `FieldDefinition`, you can just call the `FieldDefinition()` constructor with appropriate parameters.
 

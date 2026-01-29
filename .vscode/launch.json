@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "django: runserver",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/backend/manage.py",
             "args": ["runserver"],
@@ -15,7 +15,7 @@
         },
         {
             "name": "django: shell",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/backend/manage.py",
             "args": ["shell"],
@@ -24,10 +24,19 @@
         },
         {
             "name": "django: index",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/backend/manage.py",
-            "args": ["index", "${input:corpusName}"],
+            "args": ["index", "${input:corpusName}", "-d"],
+            "django": true,
+            "justMyCode": true
+        },
+        {
+            "name": "django: loadcorpora",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/manage.py",
+            "args": ["loadcorpora"],
             "django": true,
             "justMyCode": true
         },

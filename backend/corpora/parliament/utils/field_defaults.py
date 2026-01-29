@@ -67,6 +67,7 @@ def country():
         name='country',
         display_name='Country',
         description='Country in which the debate took place',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -77,6 +78,7 @@ def date(min_date: datetime = MIN_DATE, max_date: datetime = MAX_DATE):
         name="date",
         display_name="Date",
         description="The date on which the debate took place.",
+        searchable=False,
         es_mapping=date_mapping(),
         results_overview=True,
         search_filter=DateFilter(
@@ -186,6 +188,7 @@ def debate_id():
         name='debate_id',
         display_name='Debate ID',
         description='Unique identifier of the debate in which the speech was held',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -284,12 +287,37 @@ def speech(language=None):
         language=language,
     )
 
+def speech_translated():
+    """
+    speech is a multifield with subfields clean (lowercase, stopwords, no numbers) and stemmed (as clean, but also stemmed)
+    stopword and stemmer filter need to be defined for each language
+    """
+    return FieldDefinition(
+        name='speech_translated',
+        display_name='Speech (machine-translated)',
+        description='The transcribed speech, machine-translated to English',
+        # each index has its own definition of the 'clean' and 'stemmed' analyzer, based on language
+        es_mapping = main_content_mapping(
+            token_counts=False,
+            stopword_analysis=True,
+            stemming_analysis=True,
+            language='en',
+        ),
+        results_overview=False,
+        search_field_core=True,
+        display_type='text_content',
+        visualizations=[],
+        csv_core=True,
+        language='en',
+    )
+
 def speech_id():
     "unique (corpus-level) ID for the speech"
     return FieldDefinition(
         name='id',
         display_name='Speech ID',
         description='Unique identifier of the speech',
+        searchable=False,
         es_mapping=keyword_mapping(),
         csv_core=True,
     )
@@ -313,6 +341,7 @@ def speech_type():
         name='speech_type',
         display_name='Speech type',
         description='The type of speech',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -322,6 +351,7 @@ def speaker_id():
         name='speaker_id',
         display_name='Speaker ID',
         description='Unique identifier of the speaker',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -331,6 +361,7 @@ def speaker_constituency():
         name='speaker_constituency',
         display_name='Speaker constituency',
         description='Constituency represented by the speaker',
+        searchable=False,
         es_mapping=keyword_mapping(),
         visualizations=['resultscount', 'termfrequency']
     )
@@ -342,6 +373,7 @@ def speaker_birthplace():
         display_name='Speaker place of birth',
         description='Birthplace of the speaker',
         es_mapping=keyword_mapping(),
+        searchable=False,
     )
 
 def speaker_birth_country():
@@ -350,6 +382,7 @@ def speaker_birth_country():
         name='speaker_birth_country',
         display_name='Speaker country of birth',
         description='Country in which the speaker was born',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -377,6 +410,7 @@ def speaker_gender():
         name='speaker_gender',
         display_name='Speaker gender',
         description='Gender of the speaker',
+        searchable=False,
         es_mapping=keyword_mapping(),
         visualizations=['resultscount', 'termfrequency'],
     )
@@ -387,6 +421,7 @@ def speaker_profession():
         name='speaker_profession',
         display_name='Speaker profession',
         description='Profession of the speaker',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -396,6 +431,7 @@ def speaker_aristocracy():
         name='speaker_aristocracy',
         display_name='Speaker aristocracy',
         description='Aristocratic title of the speaker',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -405,6 +441,7 @@ def speaker_academic_title():
         name='speaker_academic_title',
         display_name='Speaker academic title',
         description='Academic title of the speaker',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -415,6 +452,7 @@ def parliamentary_role():
         name='role',
         display_name='Parliamentary role',
         description='Role of the speaker in parliament',
+        searchable=False,
         es_mapping=keyword_mapping(),
         search_filter=MultipleChoiceFilter(
             description='Search for speeches by speakers with the selected roles',
@@ -428,6 +466,7 @@ def ministerial_role():
         name='ministerial_role',
         display_name='Ministerial role',
         description='Ministerial role of the speaker',
+        searchable=False,
         es_mapping=keyword_mapping(),
         search_filter=MultipleChoiceFilter(
             description='Search for speeches by speakers with the selected ministerial roles',
@@ -450,6 +489,7 @@ def party():
         name='party',
         display_name='Party',
         description='Political party that the speaker belongs to',
+        searchable=False,
         es_mapping=keyword_mapping(),
         search_filter= MultipleChoiceFilter(
             description='Search in speeches from the selected parties',
@@ -464,6 +504,7 @@ def party_id():
         name='party_id',
         display_name='Party ID',
         description='Unique identifier of the political party the speaker belongs to',
+        searchable=False,
         es_mapping=keyword_mapping(),
     )
 
@@ -473,6 +514,7 @@ def party_full():
         name='party_full',
         display_name='Party (full name)',
         description='Full name of the political party that the speaker belongs to',
+        searchable=False,
         es_mapping=text_mapping(),
     )
 
@@ -484,6 +526,7 @@ def party_role():
         name='party_role',
         display_name='Party role',
         description='Role of the speaker\'s political party in parliament at the time of speaking',
+        searchable=False,
         es_mapping=keyword_mapping(),
         search_filter= MultipleChoiceFilter(
             description='Search in speeches from the selected parties',
@@ -508,7 +551,8 @@ def page_source():
         name='page_source',
         display_name='Source page number',
         description='Page number in source document',
-        es_mapping=keyword_mapping()
+        es_mapping=keyword_mapping(),
+        searchable=False,
     )
 
 

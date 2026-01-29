@@ -15,7 +15,8 @@ from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 import corpora.utils.formatting as formatting
 from corpora.utils.filter_sources import in_date_range
-import corpora.parliament.utils.parlamint as parlamint
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_transform import metadata_attribute_transform_func
+from corpora.parliament.clarin_parlamint.parlamint_utils.parlamint_extract import person_attribute_extractor
 
 
 def format_mininster_role(position, department):
@@ -297,7 +298,7 @@ def role_extractor(role_type):
         Metadata('roles'),
         transform = compose(
             role_type_filter(role_type),
-            parlamint.metadata_attribute_transform_func('name')
+            metadata_attribute_transform_func('name')
         ),
     )
 
@@ -371,7 +372,7 @@ class ParliamentIrelandNew(XMLCorpusDefinition):
     party_id = field_defaults.party_id()
 
     speaker = field_defaults.speaker()
-    speaker.extractor = parlamint.person_attribute_extractor(
+    speaker.extractor = person_attribute_extractor(
         'name',
         id_attribute = 'by'
     )

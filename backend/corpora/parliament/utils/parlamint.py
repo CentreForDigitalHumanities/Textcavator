@@ -1,5 +1,20 @@
 from ianalyzer_readers.extract import XML, Combined, Metadata
 from bs4.element import NavigableString
+from bs4.element import NavigableString, Tag as Node
+from string import punctuation
+from typing import Iterable
+
+from addcorpus.es_mappings import non_indexed_text_mapping, keyword_mapping
+from ianalyzer_readers.xml_tag import Tag
+from addcorpus.python_corpora.filters import MultipleChoiceFilter
+from addcorpus.python_corpora.corpus import FieldDefinition
+
+"""
+This file remains in place, but it is outdated. More recent parlamint logic can be found in 
+backend/corpora/parliament/clarin_parlamint/parlamint_utils. This file is kept for backwards 
+compatibility for the Finland corpus.
+"""
+
 
 def clean_value(value):
     if type(value) == str or type(value) == NavigableString:
@@ -108,3 +123,110 @@ def party_attribute_extractor(attribute):
         Metadata('parties'),
         transform = metadata_attribute_transform_func(attribute),
     )
+
+
+def get_entity_shorthand(entity: str):
+    if entity == "location":
+        return "LOC"
+    elif entity == "miscellaneous":
+        return "MISC"
+    elif entity == "organization":
+        return "ORG"
+    else:
+        return "PER"
+
+
+def get_entity_list(extracted_data: tuple[str, dict], entity: str) -> list[str]:
+    '''collect all named entities for the processed speech and this category
+
+    Parameters:
+        extracted_data: tuple of the speech id and the metadata dictionary
+        entity: string of the entity class (location /misc / organization / person)
+
+    '''
+    speech_id, metadata = extracted_data
+    shorthand = get_entity_shorthand(entity)
+    return list(set(metadata.get(speech_id).get(shorthand)))
+
+
+def ner_keyword_field(entity: str):
+    return FieldDefinition(
+        name=f"{entity}:ner-kw",
+        display_name=f"Named Entity: {entity.capitalize()}",
+        searchable=False,
+        es_mapping=keyword_mapping(enable_full_text_search=False),
+        search_filter=MultipleChoiceFilter(
+            description=f"Select only speeches which contain this {entity} entity",
+            option_count=100,
+        ),
+        extractor=Combined(
+            XML(attribute="xml:id"),
+            Metadata("ner"),
+            transform=lambda x: get_entity_list(x, entity),
+        ),
+    )
+
+
+def detokenize_parlamint(tokens: Iterable[str]) -> str:
+    """Detokenize the content of `w` and `pc` tags in the ParlaMint XML
+    The `join="right"` attribute indicates that there should not be whitespace after the word
+    """
+    output = ""
+    for token in tokens:
+        if token.get("join") != "right":
+            output += f"{token.string} "
+        else:
+            output += token.string if token.string else ''
+    # do not include the last character (always whitespace) in the output
+    return output[:-1]
+
+
+def format_annotated_segment(element: Node) -> str:
+    """For each <seg> tag, extract the annotations indicated by <name>"""
+    annotations = element.find_all("name")
+    formatted_annotations = [format_annotated_text(anno) for anno in annotations]
+    return "".join(formatted_annotations)
+
+
+def format_annotated_text(element: Node) -> str:
+    """For each <name> tag, format the annotation in Elasticsearch's annotated_text format,
+    and embed it in the text extracted from adjoining <w> and <pc> tags
+    """
+    output = ""
+    tokens = [el.extract() for el in element.find_previous_siblings(["w", "pc"])]
+    output += detokenize_parlamint(reversed(tokens))
+    annotated = element.find_all("w")
+    formatted = " ".join([a.string for a in annotated if a.string])
+    if output:
+        # if there is preceding text, add whitespace prior to annotation
+        output += " "
+    output += f"[{formatted}]({element['type']})"
+    if not element.find_next_sibling("name"):
+        # after last annotation, add remaining text
+        remaining_text = detokenize_parlamint(element.find_next_siblings(["w", "pc"]))
+        if remaining_text and remaining_text[0] not in punctuation:
+            # remaining text does not start with punctuation: add whitespace
+            output += " "
+        output += remaining_text
+    return output
+
+
+def speech_ner():
+    return FieldDefinition(
+        name="speech:ner",
+        hidden=True,
+        es_mapping=non_indexed_text_mapping(),
+        display_type="text_content",
+        searchable=False,
+        extractor=XML(
+            Tag("seg"),
+            multiple=True,
+            extract_soup_func=format_annotated_segment,
+            transform=lambda x: "\n".join(x),
+        ),
+    )
+
+
+def extract_speech(segment: Node) -> str:
+    text_nodes = segment.find_all(["w", "pc"])
+    return detokenize_parlamint(text_nodes)
