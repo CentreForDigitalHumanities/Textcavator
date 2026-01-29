@@ -36,8 +36,6 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@freearhey/iso-639-3": "^1.0.0",
     "@primeng/themes": "^19.0.9",
-    "@typescript-eslint/types": "^8.0.0",
-    "@typescript-eslint/utils": "^7.11.0",
     "balloon-css": "^0.5.2",
     "bulma": "^1.0.4",
     "chart.js": "^4.4.2",
@@ -63,7 +61,6 @@
     "rxjs": "^7.8.1",
     "smoothscroll-polyfill": "^0.3.6",
     "turndown": "^7.2.1",
-    "typescript": "5.7.3",
     "vega": "^6.2.0",
     "vega-embed": "^7.1.0",
     "vega-lite": "^6.4.1",
@@ -84,6 +81,8 @@
     "@types/turndown": "^5.0.5",
     "@typescript-eslint/eslint-plugin": "~8.29.0",
     "@typescript-eslint/parser": "~8.29.0",
+    "@typescript-eslint/types": "^8.0.0",
+    "@typescript-eslint/utils": "^7.11.0",
     "eslint": "^8.57.0",
     "jasmine-core": "^3.7.0",
     "karma": "~6.4.4",
@@ -91,6 +90,7 @@
     "karma-coverage-istanbul-reporter": "^3.0.2",
     "karma-jasmine": "^4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "typescript": "^5.7.3",
     "vite": "^6.4.1"
   },
   "peerDependencies": {
