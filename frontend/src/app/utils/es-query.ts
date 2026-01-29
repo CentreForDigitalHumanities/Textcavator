@@ -167,18 +167,22 @@ const queryTextFromEsSearchClause = (query: EsSearchClause | BooleanQuery | EsFi
 const filtersFromEsQuery = (query: EsQuery, corpus: Corpus): SearchFilter[] => {
     if ('bool' in query.query) {
         const filters = query.query.bool.filter;
-        return filters.map(filter => esFilterToSearchFilter(filter, corpus));
+        return filters
+            .map(filter => esFilterToSearchFilter(filter, corpus))
+            .filter(f => !!f);
     }
     return [];
 };
 
-const esFilterToSearchFilter = (esFilter: EsFilter, corpus: Corpus): SearchFilter => {
+const esFilterToSearchFilter = (esFilter: EsFilter, corpus: Corpus): SearchFilter | undefined => {
     const filterType = _.first(_.keys(esFilter)) as 'term'|'terms'|'range';
     const fieldName = _.first(_.keys(esFilter[filterType]));
     const field = findByName(corpus.fields, fieldName);
-    const filter = field.makeSearchFilter();
-    filter.set(filter.dataFromEsFilter(esFilter as any)); // we know that the esFilter is of the correct type
-    return filter;
+    if (field) {
+        const filter = field.makeSearchFilter();
+        filter.set(filter.dataFromEsFilter(esFilter as any)); // we know that the esFilter is of the correct type
+        return filter;
+    }
 };
 
 export const resultsParamsToAPIQuery = (queryModel: QueryModel, params: PageResultsParameters): APIQuery => {
