@@ -12,6 +12,6 @@ To run, start your Texcavator development server. Then run the container app by 
 python server.py
 ```
 
-The container app will run at http://localhost:9000/. Use ctrl + C to quit.
+The container app will run at http://localhost:9000/ . Use ctrl + C to quit.
 
-The iframe will show `/search/troonredes/`, so on your Textcavator server, the Troonredes corpus should be active and public (or you can change the source url in `index.html`).
+To direct the iframe to a specific corpus, you can include a query parameter `corpus` in the URL with the corpus name, e.g. http://localhost:9000/?corpus=troonredes .
