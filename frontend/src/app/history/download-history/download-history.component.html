@@ -1,7 +1,9 @@
 <section class="section">
     <h1 class="title">Downloads</h1>
 
-    <p-table #dt *ngIf="downloads && corpora" [value]="downloads" [paginator]="true" [rows]="10">
+    <p-table #dt *ngIf="downloads && corpora" [value]="downloads"
+        [paginator]="downloads.length > 10"
+        [rows]="10">
         <ng-template pTemplate="caption">
             <div>
                 Downloads
@@ -18,17 +20,19 @@
                 <th rowspan="2">Status</th>
                 <th rowspan="2">Download</th>
             </tr>
-            <tr>
-                <th>
-                    <p-columnFilter field="corpus" matchMode="equals" [showMenu]="false">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                            <p-dropdown [options]="corpusMenuItems" [style]="{'width':'100%'}" placeholder="Any"
-                                [ngModel]="value" (onChange)="filter($event.value)">
-                            </p-dropdown>
-                        </ng-template>
-                    </p-columnFilter>
-                </th>
-            </tr>
+            @if (downloads.length > 10) {
+                <tr>
+                    <th>
+                        <p-columnFilter field="corpus" matchMode="equals" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-select [options]="corpusMenuItems" placeholder="Any"
+                                    [ngModel]="value" (onChange)="filter($event.value)">
+                                </p-select>
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+                </tr>
+            }
         </ng-template>
         <ng-template pTemplate="body" let-download>
             <tr>

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { DropdownModule } from 'primeng/dropdown';
 import { DownloadModule } from '../download/download.module';
 import { DownloadService, QueryService } from '@services';
 import { SharedModule } from '@shared/shared.module';
@@ -9,6 +8,7 @@ import {
     QueryTextPipe,
     SearchHistoryComponent,
 } from './search-history';
+import { SelectModule } from 'primeng/select';
 
 
 
@@ -21,7 +21,7 @@ import {
         QueryTextPipe,
         SearchHistoryComponent,
     ],
-    imports: [DownloadModule, DropdownModule, SharedModule],
+    imports: [DownloadModule, SelectModule, SharedModule],
     exports: [DownloadHistoryComponent, SearchHistoryComponent],
 })
-export class HistoryModule {}
+export class HistoryModule { }
