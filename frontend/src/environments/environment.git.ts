@@ -1,6 +1,7 @@
+import { Environment } from './environment-type';
 import { version } from './version';
 
-export const environment = {
+export const environment: Environment = {
     production: true,
     appName: 'Something completely different',
     navbarBrand: {

@@ -4,9 +4,10 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 // see /documentation/Frontend-environment-settings.md for a description of available settings
+import { Environment } from './environment-type';
 import { version } from './version';
 
-export const environment = {
+export const environment: Environment = {
     production: false,
     appName: 'Textcavator',
     navbarBrand: {
