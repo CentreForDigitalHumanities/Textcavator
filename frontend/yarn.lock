@@ -256,17 +256,17 @@
     tslib "^2.3.0"
     yargs "^17.2.1"
 
-"@angular/compiler@^19.2.17":
-  version "19.2.17"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-19.2.17.tgz#e74a321e2d20f52bbd809498e4a810028e16020f"
-  integrity sha512-qo8psYASAlDiQ8fAL8i/E2JfWH2nPTpZDKKZxSWvgBVA8o+zUEjYAJu6/k6btnu+4Qcb425T0rmM/zao6EU9Aw==
+"@angular/compiler@^19.2.18":
+  version "19.2.18"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-19.2.18.tgz#c86f7126c9bd757bca180b2f98d0be57462bd162"
+  integrity sha512-3MscvODxRVxc3Cs0ZlHI5Pk5rEvE80otfvxZTMksOZuPlv1B+S8MjWfc3X3jk9SbyUEzODBEH55iCaBHD48V3g==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^19.1.4":
-  version "19.2.16"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.2.16.tgz#df4cf08ca72aecfd44dfa8049a8a75f5b5a2ab22"
-  integrity sha512-aBt4rYq0sMonUsl7k9kHAVgeP+6NM3CNGVvxqLmeSiQI2BUTWTTvfGR/52cQyUmDBuBRmaV6YK0F3zEAnOZzyA==
+"@angular/core@^19.2.18":
+  version "19.2.18"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.2.18.tgz#50e561c20e98e5339ce351f207d6d7aeecf10f85"
+  integrity sha512-+QRrf0Igt8ccUWXHA+7doK5W6ODyhHdqVyblSlcQ8OciwkzIIGGEYNZom5OZyWMh+oI54lcSeyV2O3xaDepSrQ==
   dependencies:
     tslib "^2.3.0"
 
@@ -5777,9 +5777,9 @@ locate-path@^7.1.0:
     p-locate "^6.0.0"
 
 lodash-es@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
-  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+  version "4.17.23"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.23.tgz#58c4360fd1b5d33afc6c0bbd3d1149349b1138e0"
+  integrity sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==
 
 lodash.clonedeep@^4.5.0:
   version "4.5.0"
@@ -5801,10 +5801,10 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
-  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+lodash@^4.17.21, lodash@^4.17.23:
+  version "4.17.23"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.23.tgz#f113b0378386103be4f6893388c73d0bde7f2c5a"
+  integrity sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==
 
 log-symbols@^4.1.0:
   version "4.1.0"
@@ -8208,9 +8208,9 @@ vega-format@^2.1.0, vega-format@~2.1.0:
     vega-util "^2.1.0"
 
 vega-functions@^6.1.0, vega-functions@~6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/vega-functions/-/vega-functions-6.1.0.tgz#d3726c46744f8a9769df5954a41a3d42fefad57e"
-  integrity sha512-yooEbWt0FWMBNoohwLsl25lEh08WsWabTXbbS+q0IXZzWSpX4Cyi45+q7IFyy/2L4oaIfGIIV14dgn3srQQcGA==
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/vega-functions/-/vega-functions-6.1.1.tgz#5d4e9746aadde2b3b70d8da3e6338892d05cd9d2"
+  integrity sha512-Due6jP0y0FfsGMTrHnzUGnEwXPu7VwE+9relfo+LjL/tRPYnnKqwWvzt7n9JkeBuZqjkgYjMzm/WucNn6Hkw5A==
   dependencies:
     d3-array "^3.2.4"
     d3-color "^3.1.0"

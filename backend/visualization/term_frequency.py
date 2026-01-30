@@ -60,6 +60,11 @@ def extract_data_for_term_frequency(corpus, es_query):
     return fieldnames, token_count_aggregators
 
 def _term_frequency_search_fields(corpus, es_query) -> List[Field]:
+    '''
+    Select search fields for term frequency analysis.
+
+    Selects either the fields selected in the query, or all text fields in the corpus.
+    '''
     corpus_conf = CorpusConfiguration.objects.get(corpus__name=corpus)
     all_fields = corpus_conf.fields.all()
     search_fields = query.get_search_fields(es_query)
@@ -77,8 +82,8 @@ def get_match_count(es_client, es_query, corpus, size, fieldnames):
         query_model=es_query,
         download_size=size,
         client=es_client,
-        source=[],
-        explain=True,
+        source=[], # do not include source document in result
+        explain=True, # add information about score computation in result
     )
 
     query_text = query.get_query_text(es_query)
