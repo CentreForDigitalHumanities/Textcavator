@@ -17,9 +17,11 @@ export interface CorpusDataFile {
     csv_info: DataFileInfo;
 }
 
+export type DataFileFieldInfo = Pick<APICorpusDefinitionField, 'name' | 'type'>;
+
 export interface DataFileInfo {
     n_rows: number;
-    fields: Pick<APICorpusDefinitionField, 'name' | 'type'>[];
+    fields: DataFileFieldInfo[];
     delimiter: Delimiter;
 }
 
