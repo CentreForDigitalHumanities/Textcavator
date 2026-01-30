@@ -14,6 +14,8 @@ We keep different settings files to handle different environments.
 
 `settings_test.py` is used during unit tests. It imports everything configured in `settings.py`, but can add or override some settings. Note that you can also adjust settings for individual tests.
 
+`settings_saml.py` can be used used during development, to enable signing in using the CDH Development Identity Provider. It imports `settings.py` and adds extra configurations. See [SAML](./SAML.md).
+
 ### Using a different settings module
 
 Django supports using a different settings module ([more about settings in Django](https://docs.djangoproject.com/en/5.0/topics/settings/)).

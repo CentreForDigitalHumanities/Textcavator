@@ -22,10 +22,10 @@ LOGOUT_REDIRECT_URL = 'http://localhost:4200'
 SAML_LOGOUT_REQUEST_PREFERRED_BINDING = saml2.BINDING_HTTP_POST
 
 SAML_ATTRIBUTE_MAPPING = {
-    "uushortid": ("username", ),
+    "uuShortID": ("username", ),
     "mail": ("email", ),
     "givenName": ("first_name", ),
-    "uuprefixedsn": ("last_name", ),
+    "uuPrefixedSn": ("last_name", ),
     "saml": ("save_saml_login", ),
 }
 
@@ -43,12 +43,15 @@ SAML_CONFIG = {
     # otherwise...without OID will be rejected
     'allow_unknown_attributes': True,
 
+    'valid_for': 365 * 24 * 10, # 10 years, for development
+
     # this block states what services we provide
     'service': {
         # we are just a lonely SP
         'sp' : {
             'name': 'Textcavator',
             'name_id_format': saml2.saml.NAMEID_FORMAT_TRANSIENT,
+            'name_id_policy_format': saml2.saml.NAMEID_FORMAT_TRANSIENT,
 
             # For Okta add signed logout requests. Enable this:
             # "logout_requests_signed": True,
