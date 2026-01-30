@@ -25,7 +25,7 @@ SAML_ATTRIBUTE_MAPPING = {
     "uuShortID": ("username", ),
     "mail": ("email", ),
     "givenName": ("first_name", ),
-    "uuPrefixSn": ("last_name", ),
+    "uuPrefixedSn": ("last_name", ),
     "saml": ("save_saml_login", ),
 }
 
@@ -42,6 +42,8 @@ SAML_CONFIG = {
     # Permits to have attributes not configured in attribute-mappings
     # otherwise...without OID will be rejected
     'allow_unknown_attributes': True,
+
+    'valid_for': 365 * 24 * 10, # 10 years, for development
 
     # this block states what services we provide
     'service': {
