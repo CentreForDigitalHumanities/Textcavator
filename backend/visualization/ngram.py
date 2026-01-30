@@ -1,9 +1,10 @@
 from collections import Counter
-from typing import Tuple
+from typing import Tuple, Dict, List, Literal, Iterable
+from elasticsearch import Elasticsearch
+from itertools import chain
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
-from es.search import get_index
 from es.download import scroll
 from es.client import elasticsearch
 from visualization import query, termvectors
@@ -77,8 +78,20 @@ def get_time_bins(es_query, corpus):
     return bins
 
 
-def tokens_by_time_interval(corpus_name, es_query, field, bin, ngram_size, term_position, freq_compensation, subfield, max_size_per_interval, date_field, **kwargs):
-    index = get_index(corpus_name)
+def tokens_by_time_interval(
+    corpus_name: str,
+    es_query: Dict,
+    field: str,
+    bin: Tuple[int, int],
+    ngram_size: int,
+    term_position: str,
+    freq_compensation: bool | None,
+    subfield: str,
+    max_size_per_interval: int,
+    date_field: str,
+    mode: Literal['ngrams', 'collocates'] = 'ngrams',
+    **kwargs
+) -> Dict:
     client = elasticsearch(corpus_name)
     positions_dict = {
         'any': list(range(ngram_size)),
@@ -108,28 +121,14 @@ def tokens_by_time_interval(corpus_name, es_query, field, bin, ngram_size, term_
     )
     bin_ngrams = Counter()
     for hit in search_results:
-        identifier = hit['_id']
-        # get the term vectors for the hit
-        result = client.termvectors(
-            index=index,
-            id=identifier,
-            term_statistics=freq_compensation,
-            fields=[field]
+        tokens, ttfs = _count_tokens_in_document(
+            hit, client, field, query_text,
+            term_positions, ngram_size,
+            freq_compensation=freq_compensation,
+            mode=mode,
         )
-        terms = termvectors.get_terms(result, field)
-        if terms:
-            sorted_tokens = termvectors.get_tokens(terms, sort=True)
-            for match_start, match_stop, match_content in termvectors.token_matches(sorted_tokens, query_text, index, field, client):
-                for j in term_positions:
-                    start = match_start - j
-                    stop = match_stop - 1 - j + ngram_size
-                    if start >= 0 and stop <= len(sorted_tokens):
-                        ngram = sorted_tokens[start:stop]
-                        words = ' '.join([token['term'] for token in ngram])
-                        if freq_compensation:
-                            ttf = sum(token['ttf'] for token in ngram) / len(ngram)
-                            ngram_ttfs[words] = ttf
-                        bin_ngrams.update({ words: 1})
+        bin_ngrams.update(tokens)
+        ngram_ttfs.update(ttfs)
 
     results = {
         'time_interval': format_time_label(bin[0], bin[1]),
@@ -139,6 +138,97 @@ def tokens_by_time_interval(corpus_name, es_query, field, bin, ngram_size, term_
         results['ngram_ttfs'] = ngram_ttfs
     return results
 
+
+def _count_tokens_in_document(
+    hit: Dict,
+    client: Elasticsearch,
+    field: str,
+    query_text: str,
+    term_positions: List[int],
+    ngram_size: int,
+    freq_compensation: bool | None = None,
+    mode: Literal['ngrams', 'collocates'] = 'ngrams',
+) -> Tuple[Counter, Dict]:
+    '''
+    Count token frequencies surrounding the search term from a document
+    '''
+    tokens = Counter()
+    ttfs = dict()
+    # get the term vectors for the hit
+    result = client.termvectors(
+        index=hit['_index'],
+        id=hit['_id'],
+        term_statistics=freq_compensation,
+        fields=[field]
+    )
+    terms = termvectors.get_terms(result, field)
+    if terms:
+        sorted_tokens = termvectors.get_tokens(terms, sort=True)
+        matches = termvectors.token_matches(sorted_tokens, query_text, hit['_index'], field, client)
+        token_ranges = _token_ranges(
+            matches, term_positions, ngram_size, len(sorted_tokens), mode=mode
+        )
+        for start, stop in token_ranges:
+            ngram = sorted_tokens[start:stop]
+            words = ' '.join([token['term'] for token in ngram])
+            if freq_compensation:
+                ttf = sum(token['ttf'] for token in ngram) / len(ngram)
+                ttfs[words] = ttf
+            tokens.update({ words: 1})
+    return tokens, ttfs
+
+
+def _token_ranges(
+    matches: Iterable[Tuple[int, int, str]],
+    term_positions: List[int],
+    ngram_size: int,
+    document_size: int,
+    mode: Literal['ngrams', 'collocates'] = 'ngrams',
+) -> Iterable[Tuple[int, int]]:
+    '''
+    Provides ranges for every token (n-gram or collocate) surrounding the search term.
+    '''
+    for match_start, match_stop, _match_content in matches:
+        if mode == 'ngrams':
+            ranges = _ngram_token_ranges(match_start, match_stop, term_positions, ngram_size)
+        else:
+            window_size = ngram_size - 1
+            ranges = _collocate_token_ranges(match_start, match_stop, window_size)
+
+        for start, stop in ranges:
+            if start >= 0 and stop <= document_size:
+                yield start, stop
+
+
+def _ngram_token_ranges(
+    match_start: int, match_stop: int,
+    term_positions: List[int],
+    ngram_size: int,
+) -> Iterable[Tuple[int, int]]:
+    '''
+    From the range of a token match, generates ranges for n-grams containing the token.
+    '''
+    for i in term_positions:
+        start = match_start - i
+        stop = match_stop - 1 - i + ngram_size
+        yield start, stop
+
+
+def _collocate_token_ranges(
+    match_start: int, match_stop: int,
+    window_size: int,
+) -> Iterable[Tuple[int, int]]:
+    '''
+    From the range of a token match, generates ranges for collocates surrounding the
+    token.
+    '''
+
+    window_start = match_start - window_size
+    window_stop = match_stop + window_size
+    window = chain(range(window_start, match_start), range(match_stop, window_stop))
+
+    for i in window:
+        yield i, i + 1
 
 def get_top_n_ngrams(results, number_of_ngrams=10):
     """
