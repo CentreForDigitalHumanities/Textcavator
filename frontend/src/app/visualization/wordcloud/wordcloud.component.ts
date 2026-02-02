@@ -104,7 +104,7 @@ export class WordcloudComponent implements OnChanges, OnDestroy {
                 this.chart.data = data;
                 this.chart.update();
             } else {
-                this.chart = new WordCloudChart('wordcloud', { data, options });
+                this.chart = new WordCloudChart('wordCloud', { data, options });
             }
         }
     }
