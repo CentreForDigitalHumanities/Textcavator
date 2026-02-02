@@ -1,18 +1,22 @@
-import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
     APICorpusDefinitionField,
+    CorpusDataFile,
     CorpusDefinition,
+    DataFileFieldInfo,
     FIELD_TYPE_OPTIONS,
 } from '@models/corpus-definition';
 import { MenuItem } from 'primeng/api';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, shareReplay, startWith, Subject, take, takeUntil, tap } from 'rxjs';
 import * as _ from 'lodash';
 
 import { collectLanguages, Language } from '../constants';
 import { actionIcons, directionIcons, formIcons } from '@shared/icons';
 import { mergeAsBooleans } from '@utils/observables';
-import { DialogService } from '@services';
+import { ApiService, DialogService } from '@services';
+import { CorpusDefinitionService } from '@app/corpus-definitions/corpus-definition.service';
+import { findByName } from '@app/utils/utils';
 
 const allLanguages = collectLanguages();
 
@@ -22,7 +26,7 @@ const allLanguages = collectLanguages();
     styleUrl: './field-form.component.scss',
     standalone: false
 })
-export class FieldFormComponent {
+export class FieldFormComponent implements OnChanges {
     @Input({ required: true }) corpus!: CorpusDefinition;
     destroy$ = new Subject<void>();
 
@@ -55,9 +59,14 @@ export class FieldFormComponent {
         false: [this.valueChange$, this.changesSubmitted$],
     });
 
+    dataFile$: Observable<CorpusDataFile | undefined>;
+    unusedCsvFields$: Observable<DataFileFieldInfo[]>;
+
     constructor(
         private el: ElementRef<HTMLElement>,
         private dialogService: DialogService,
+        private apiService: ApiService,
+        private corpusDefService: CorpusDefinitionService,
     ) {}
 
     get fields(): FormArray {
@@ -84,10 +93,10 @@ export class FieldFormComponent {
                 column: new FormControl(),
             }),
         });
+        fg.patchValue(field);
         if (corpusIsActive) {
             this.disableControls(fg);
         }
-        fg.patchValue(field);
 
         fg.valueChanges.pipe(
             takeUntil(this.destroy$),
@@ -105,6 +114,26 @@ export class FieldFormComponent {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.corpus) {
+            this.dataFile$ = this.apiService.listDataFiles(this.corpus.id).pipe(
+                map(files => files.find(file => file.confirmed)),
+                catchError(() => of(undefined)),
+                shareReplay(1),
+            );
+            const formValue$ = this.fieldsForm.valueChanges.pipe(
+                startWith(() => undefined),
+                map(() => this.fieldsForm.getRawValue())
+            );
+            this.unusedCsvFields$ = combineLatest([
+                this.dataFile$,
+                formValue$
+            ]).pipe(
+                map(([file, formValue]) => {
+                    const csvFields = file.csv_info.fields;
+                    const formFields = formValue.fields.map(field => field.extract.column);
+                    const filtered = csvFields.filter(field => !formFields.includes(field.name));
+                    return filtered;
+                })
+            );
             this.corpus.definitionUpdated$
             .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
@@ -114,6 +143,7 @@ export class FieldFormComponent {
                             field => this.makeFieldFormgroup(field, this.corpus.active)
                         )
                     );
+                    this.fieldsForm.updateValueAndValidity();
                 });
         }
     }
@@ -124,7 +154,7 @@ export class FieldFormComponent {
     }
 
     onSubmit(): void {
-        const newFields = this.fields.value as APICorpusDefinitionField[];
+        const newFields = this.fields.getRawValue() as APICorpusDefinitionField[];
         this.corpus.definition.fields =
             newFields as CorpusDefinition['definition']['fields'];
         this.corpus.save().subscribe({
@@ -171,6 +201,25 @@ export class FieldFormComponent {
     languageLabel(field: FormGroup): string {
         const value = field.controls.language.value;
         return this.languageOptions.find(o => o.code == value).displayName;
+    }
+
+    addField(name: string) {
+        const field$ = this.unusedCsvFields$.pipe(
+            take(1),
+            map(fields => findByName(fields, name)),
+            map(info => this.corpusDefService.makeDefaultField(info.type, info.name))
+        );
+
+        field$.subscribe(field => {
+            const fg = this.makeFieldFormgroup(field, this.corpus.active);
+            this.fieldsForm.controls.fields.push(fg);
+            this.fieldsForm.updateValueAndValidity();
+        });
+    }
+
+    removeField(index: number) {
+        this.fieldsForm.controls.fields.removeAt(index);
+        this.fieldsForm.updateValueAndValidity();
     }
 
     private getLanguageOptions() {
