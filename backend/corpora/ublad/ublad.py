@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import bs4
 from os.path import join
 import logging
 
@@ -19,7 +20,7 @@ def transform_content(soup):
     """
     page_text = ""
     for child in soup.children:
-        if isinstance(child, Tag) and 'ocr_carea' in child.get('class', []):
+        if isinstance(child, bs4.Tag) and 'ocr_carea' in child.get('class', []):
             paragraph_text = ""
             paragraph_list = child.get_text().split('\n')
             for item in paragraph_list[1:]:
