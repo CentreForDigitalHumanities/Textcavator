@@ -97,14 +97,16 @@ export class WordcloudComponent implements OnChanges, OnDestroy {
 
     makeChart(result: MostFrequentWordsResult[]) {
         if (!this.asTable) {
-            const data = this.chartData(result);
+            const data: ChartData<'wordCloud'> = this.chartData(
+                result,
+            ) as ChartData<'wordCloud'>;
             const options = this.chartOptions(result);
 
             if (this.chart) {
                 this.chart.data = data;
                 this.chart.update();
             } else {
-                this.chart = new WordCloudChart('wordCloud', { data, options });
+                this.chart = new WordCloudChart('wordcloud', { data, options });
             }
         }
     }
