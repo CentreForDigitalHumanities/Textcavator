@@ -1,7 +1,5 @@
 <ia-corpus-header [corpus]="corpus" currentPage="search"></ia-corpus-header>
 
-<ia-back-to-top-button />
-
 <section class="section search-section">
     <div class="container">
         <form (ngSubmit)="search()" *ngIf="corpus">
@@ -64,3 +62,5 @@
         </div>
     </div>
 </section>
+
+<ia-back-to-top-button />
