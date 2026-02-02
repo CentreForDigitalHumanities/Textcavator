@@ -88,21 +88,6 @@
 }
 
 .search-section {
-    background: var(--bulma-body-background-color);
-    position: sticky;
-    top: 0;
-    transition: box-shadow 0.2s;
-    z-index: 500;
-
-    // slightly less padding because the search entry field needs a separate section to be allowed to be sticky
-    // (or at least meaningfully sticky)
-    padding-top: utilities.$size-6;
-    padding-bottom: utilities.$size-6;
-
-    &.is-scrolled-down {
-        box-shadow: var(--bulma-shadow);
-    }
-
     +section {
         padding-top: utilities.$size-6;
     }

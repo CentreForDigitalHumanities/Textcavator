@@ -1,6 +1,6 @@
 <ia-corpus-header [corpus]="corpus" currentPage="word-models"></ia-corpus-header>
 
-<section class="section search-section" #searchSection [ngClass]="{'is-scrolled-down': isScrolledDown}">
+<section class="section search-section">
     <div class="container">
         <form class="block">
             <div class="field has-addons">
@@ -68,7 +68,7 @@
                                 (wordSimilarityError)="setErrorMessage($event)">
                             </ia-word-similarity>
 
-                            <ia-neighbor-network *ngIf="tab=='neighbornetwork'"
+                            <ia-neighbor-network *ngIf="tab==='neighbornetwork'"
                                 [corpus]="corpus" [queryText]="activeQuery"
                                 [asTable]="asTable"
                                 />
