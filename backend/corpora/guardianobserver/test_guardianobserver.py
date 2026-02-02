@@ -5,7 +5,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 def test_guardian_observer(settings, db, admin_client):
     settings.CORPORA = {
-        'guardian-observer': os.path.join(here, 'guardianobserver.py')
+        'guardian-observer': 'corpora.guardianobserver.guardianobserver.GuardianObserver',
     }
     settings.GO_DATA = ''
 

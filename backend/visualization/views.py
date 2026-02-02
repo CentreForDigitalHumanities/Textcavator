@@ -1,11 +1,9 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException, ParseError, ValidationError
 from visualization import tasks
 import logging
 from django.conf import settings
-from rest_framework.permissions import IsAuthenticated
 from addcorpus.permissions import CanSearchCorpus
 from tag.permissions import CanSearchTags
 from visualization.field_stats import report_coverage
@@ -14,7 +12,13 @@ from api.utils import check_json_keys
 
 logger = logging.getLogger()
 
-TERM_FREQUENCY_SIZE_LIMIT = 5000
+TERM_FREQUENCY_SIZE_LIMIT = 10000
+'''Limit for the term frequency graph. This limit is applied in the frontend. Here it is
+used for validation to prevent overuse.
+
+The frontend rounds up in every bin so the total size of the request may be
+`10.000 + N(bins)`.
+'''
 
 
 class WordcloudView(APIView):
@@ -76,7 +80,8 @@ class MapCentroidView(APIView):
 
 class NgramView(APIView):
     '''
-    Schedule a task to retrieve ngrams containing the search term
+    Schedule a task to retrieve ngrams containing the search term, or collocates
+    of the search term.
     '''
 
     permission_classes = [CanSearchCorpus, CanSearchTags]
@@ -148,7 +153,8 @@ class AggregateTermFrequencyView(APIView):
                     raise ParseError(
                         detail=f'key {key} is not present for all bins in request data')
 
-        if sum(bin['size'] for bin in bins) > TERM_FREQUENCY_SIZE_LIMIT:
+        max_size = TERM_FREQUENCY_SIZE_LIMIT + len(bins)
+        if sum(bin['size'] for bin in bins) > max_size:
             raise ValidationError(detail='Maximum size exceeded')
 
         try:

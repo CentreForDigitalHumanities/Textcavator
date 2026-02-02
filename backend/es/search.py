@@ -6,7 +6,7 @@ def get_index(corpus_name):
     corpus_conf = CorpusConfiguration.objects.get(corpus__name=corpus_name)
     return corpus_conf.es_index
 
-def search(corpus, query_model: Dict = {}, client = None, **kwargs):
+def search(corpus_name, query_model: Dict = {}, client = None, **kwargs):
     """
     Make a basic search request.
 
@@ -18,10 +18,10 @@ def search(corpus, query_model: Dict = {}, client = None, **kwargs):
     - kwargs: any arguments that should be passed on to the `search()` function of
     the elasticsearch client
     """
-    index = get_index(corpus)
+    index = get_index(corpus_name)
 
     if not client:
-        client = elasticsearch(corpus)
+        client = elasticsearch(corpus_name)
 
     search_result = client.search(
         index=index,

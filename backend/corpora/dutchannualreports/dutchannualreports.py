@@ -13,7 +13,6 @@ from ianalyzer_readers.extract import XML, Metadata, Combined
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from media.image_processing import get_pdf_info, retrieve_pdf, pdf_pages, build_partial_pdf
-from addcorpus.python_corpora.load_corpus import corpus_dir
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from addcorpus.es_settings import es_settings
 
@@ -52,7 +51,7 @@ class DutchAnnualReports(XMLCorpusDefinition):
     def es_settings(self):
         return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
 
-    with open(op.join(corpus_dir('dutchannualreports'), 'dutchannualreports_mapping.csv')) as f:
+    with open(op.join(os.path.dirname(__file__), 'dutchannualreports_mapping.csv')) as f:
         reader = csv.DictReader(f)
         for line in reader:
             dutchannualreports_map[line['abbr']] = line['name']

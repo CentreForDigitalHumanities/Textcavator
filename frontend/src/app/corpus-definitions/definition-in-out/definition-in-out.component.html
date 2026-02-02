@@ -32,38 +32,49 @@
 
         <h2 class="title is-4">Upload</h2>
 
-        <form>
-            <div class="block">
-                <ia-definition-json-upload [reset]="reset$" (upload)="onJSONUpload($event)">
-                </ia-definition-json-upload>
+        @if (corpus.active) {
+            <div class="message">
+                <p class="message-body">
+                    Uploading a new configuration is disabled while this corpus is active.
+                    You can deactive the corpus in the editing form.
+                </p>
             </div>
-
-            <div class="block">
-                <button class="button is-primary" [class.is-loading]="corpus.loading$ | async" type="submit"
-                    (click)="submit()">
-                    <span class="icon" aria-hidden="true">
-                        <fa-icon [icon]="formIcons.confirm"></fa-icon>
-                    </span>
-                    <span>
-                        Save changes
-                    </span>
-                </button>
-                &nbsp;
-                <button class="button" type="reset" (click)="reset()">
-                    <span class="icon" aria-hidden="true">
-                        <fa-icon [icon]="formIcons.reset"></fa-icon>
-                    </span>
-                    <span>
-                        Cancel changes
-                    </span>
-                </button>
-            </div>
-
-            <div class="message is-danger" *ngIf="error">
-                <div class="message-body">
-                    Could not save corpus: {{error.message}}
+        } @else {
+            <form>
+                <div class="block">
+                    <ia-definition-json-upload [reset]="reset$" (upload)="onJSONUpload($event)">
+                    </ia-definition-json-upload>
                 </div>
-            </div>
-        </form>
+
+                <div class="block">
+                    <button class="button is-primary" [class.is-loading]="corpus.loading$ | async" type="submit"
+                        (click)="submit()">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="formIcons.confirm"></fa-icon>
+                        </span>
+                        <span>
+                            Save changes
+                        </span>
+                    </button>
+                    &nbsp;
+                    <button class="button" type="reset" (click)="reset()">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="formIcons.reset"></fa-icon>
+                        </span>
+                        <span>
+                            Cancel changes
+                        </span>
+                    </button>
+                </div>
+
+                <div class="message is-danger" *ngIf="error">
+                    <div class="message-body">
+                        Could not save corpus. Make sure that you upload a valid JSON
+                        file. If this problem persists, please contact an administrator.
+                    </div>
+                </div>
+            </form>
+        }
+
     </div>
 </section>

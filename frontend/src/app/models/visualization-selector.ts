@@ -30,11 +30,11 @@ const DISPLAY_NAMES = {
     map: 'Map of locations',
 };
 
-export class VisualizationSelector extends StoreSync<VisualizationSelection> {
+export class VisualizationSelector extends StoreSync<VisualizationSelection | null> {
     options: VisualizationOption[];
     activeOption$: Observable<VisualizationOption>;
 
-    defaultState: VisualizationSelection;
+    defaultState: VisualizationSelection | null;
 
     protected keysInStore = ['visualize', 'visualizedField'];
 
@@ -86,20 +86,22 @@ export class VisualizationSelector extends StoreSync<VisualizationSelection> {
         }
     }
 
-    protected stateToStore(state: VisualizationSelection): Params {
+    protected stateToStore(state: VisualizationSelection | null): Params {
+        if (!state) {
+            return { visualize: null, visualizedField: null };
+        }
         return {
             visualize: state.name || null,
             visualizedField: state.field?.name || null,
         };
     }
 
-    protected storeToState(params: Params): VisualizationSelection {
+    protected storeToState(params: Params): VisualizationSelection | null {
         const name = params['visualize'];
 
         if (name) {
             const fieldName = params['visualizedField'];
             const field = findByName(this.query.corpus.fields, fieldName);
-
             return { name, field };
         } else {
             return this.defaultState;
@@ -160,10 +162,14 @@ export class VisualizationSelector extends StoreSync<VisualizationSelection> {
      */
     private getDefaultOption(
         options: VisualizationOption[], query: QueryModel
-    ): VisualizationSelection {
+    ): VisualizationSelection | null {
         const enabled = _.filter(options, option => !this.disabled(option.name, query));
         const selected = _.first(enabled);
-        return { name: selected.name, field: _.first(selected.fields) };
+        if (selected) {
+            return { name: selected.name, field: _.first(selected.fields) };
+        } else {
+            return null;
+        }
     }
 
     /**

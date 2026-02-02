@@ -11,17 +11,16 @@ describe('KeywordPipe', () => {
         expect(pipe).toBeTruthy();
     });
 
-    it('shows strings unchanged', () => {
+    it('wraps single values in an array', () => {
         const input = 'Hello world!';
         const output = pipe.transform(input);
-        expect(output).toEqual(input);
+        expect(output).toEqual([input]);
     });
 
-    it('outputs comma-separated arrays', () => {
+    it('returns arrays as-is', () => {
         const input = ['a', 'b', 'c'];
         const output = pipe.transform(input);
-        const expected = 'a, b, c';
-        expect(output).toEqual(expected);
+        expect(output).toEqual(input);
     });
 
     it('handles non-string source data', () => {
@@ -32,14 +31,14 @@ describe('KeywordPipe', () => {
 
         const input = 1;
         const output = pipe.transform(input);
-        const expected = '1';
+        const expected = ['1'];
         expect(output).toEqual(expected);
     });
 
     it('handles arrays containing non-strings', () => {
         const input = [1, 'test', true];
         const output = pipe.transform(input);
-        const expected = '1, test, true';
+        const expected = ['1', 'test', 'true'];
         expect(output).toEqual(expected);
     })
 });

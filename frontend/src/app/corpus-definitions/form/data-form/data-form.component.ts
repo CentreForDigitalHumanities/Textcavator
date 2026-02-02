@@ -37,6 +37,7 @@ export class DataFormComponent implements OnInit, OnDestroy {
 
     filesChanged$ = new Subject<void>();
 
+    corpus$ = this.corpusDefService.corpus$;
     dataFiles$ = new BehaviorSubject<CorpusDataFile[] | undefined>(undefined);
     fileState$: Observable<DataFileState>;
     unconfirmed$: Observable<CorpusDataFile>;

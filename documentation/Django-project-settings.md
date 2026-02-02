@@ -14,6 +14,8 @@ We keep different settings files to handle different environments.
 
 `settings_test.py` is used during unit tests. It imports everything configured in `settings.py`, but can add or override some settings. Note that you can also adjust settings for individual tests.
 
+`settings_saml.py` can be used used during development, to enable signing in using the CDH Development Identity Provider. It imports `settings.py` and adds extra configurations. See [SAML](./SAML.md).
+
 ### Using a different settings module
 
 Django supports using a different settings module ([more about settings in Django](https://docs.djangoproject.com/en/5.0/topics/settings/)).
@@ -71,15 +73,13 @@ Unit tests for the backend will assume that there is a default server configured
 
 A dictionary that specifies Python corpus definitions that should be imported in your project.
 
-Each key must be the name of a corpus, where the value gives the absolute path to the Python file that contains the definition. For example:
+Each key must be the import path to a corpus class (see [Django module loading](https://docs.djangoproject.com/en/5.2/ref/utils/#module-django.utils.module_loading)). For example:
 
 ```python
 CORPORA = {
-    'times': '/home/me/ianalyzer/backend/corpora/times/times.py',
+    'times': 'corpora.times.times.Times',
 }
 ```
-
-The key of the corpus must match the name of the corpus class. This match is not case-sensitive, and your key may include extra non-alphabetic characters (they will be ignored when matching). For example, `'times'` is a valid key for the `Times` class, and so is `'TIMES_1'`. It will usually match the filename as well, but this is not strictly necessary.
 
 ### `CORPUS_SERVER_NAMES`
 
