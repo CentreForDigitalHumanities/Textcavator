@@ -1,5 +1,7 @@
 <ia-corpus-header [corpus]="corpus" currentPage="search"></ia-corpus-header>
 
+<ia-back-to-top-button />
+
 <section class="section search-section" #searchSection [ngClass]="{'is-scrolled-down': isScrolledDown}">
     <div class="container">
         <form (ngSubmit)="search()" *ngIf="corpus">
