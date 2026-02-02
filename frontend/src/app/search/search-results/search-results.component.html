@@ -1,6 +1,6 @@
 <ng-container *ngIf="pageResults?.result$ | async as page; else noResult">
 
-    <section class="section results-navigation mb-4 pt-4 pb-4">
+    <section class="section results-navigation mb-4 pt-4 pb-4 pl-0 pr-0">
         <div class="columns">
             <div class="column is-narrow has-text-centered">
                 <div>
@@ -20,7 +20,6 @@
                             {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
                         </span>
                     </p>
-
                 </div>
             </div>
         </div>
@@ -42,6 +41,22 @@
     </section>
 
     <ia-document-popup [page]="page" [queryModel]="queryModel"></ia-document-popup>
+
+    <div class="columns mt-5">
+        <div class="column"></div>
+        <div class="column is-narrow has-text-centered">
+                <div>
+                    <p class="heading">Pages</p>
+                    <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
+                    <p class="pt-3 heading">
+                        <span *ngIf="page.total > resultsPerPage">
+                            Showing results
+                            {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
+                        </span>
+                    </p>
+                </div>
+        </div>
+    </div>
 </ng-container>
 
 <ng-template #noHits>
