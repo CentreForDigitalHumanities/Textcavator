@@ -23,6 +23,7 @@ Below are some publications about Textcavator corpora.
 - Ortal-Paz Saar (2021). [The PEACE portal: Revisiting the sea of stone](https://doi.org/10.5281/zenodo.4889490)
 - Haidee Kotze, Berit Janssen, Corina Koolen, Luka van der Plas, & Gys-Walt van Egdom (2021). [Norms, affect and evaluation in the reception of literary translations in multilingual online reading communities: Deriving cognitive-evaluative templates from big data](https://www.jbe-platform.com/content/journals/10.1075/tcb.00060.kot)
 - Pasi Ihalainen, Berit Janssen, Jani Marjanen, & Ville Vaara (2022). [Building and testing a comparative interface on Northwest European historical parliamentary debates : Relative term frequency analysis of British representative democracy](http://ceur-ws.org/Vol-3133/paper04.pdf)
+- Hugo Bonin, Pasi Ihalainen, Berit Janssen, Jani Marjanen, & Risto Turunen (2025). [Extension or Expansion? Quantitative Conceptual Analysis of Parliamentary Uses of “Democratic” in Sweden and Britain, 1950s–1990s](https://doi.org/10.3167/choc.2025.200204)
 
 If you used Textcavator in your research and would like to be included in this list, please get in touch!
 
