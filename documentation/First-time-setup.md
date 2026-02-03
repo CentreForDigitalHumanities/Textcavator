@@ -5,7 +5,7 @@ These are instructions to set up an Textcavator server. If you are going to deve
 ## Prerequisites
 
 * Python == 3.12
-* PostgreSQL >= 12, client, server and C libraries
+* PostgreSQL >= 14, client, server and C libraries
 * [ElasticSearch](https://www.elastic.co/) 8. To avoid a lot of errors, choose the option: install elasticsearch with .zip or .tar.gz. ES wil install everything in one folder, and not all over your machine, which happens with other options.
 * [Redis](https://www.redis.io/). Recommended installation is [installing from source](https://redis.io/docs/getting-started/installation/install-redis-from-source/)
 * [Node.js](https://nodejs.org/). See [.nvmrc](/.nvmrc) for the recommended version.
@@ -28,6 +28,16 @@ yarn postinstall
 psql -f backend/create_db.sql
 yarn django migrate
 ```
+
+> [!NOTE]
+> With Postgresql 15 later, you may need to grant privileges on the schema too. Use the `psql` command in the terminal, and run the following:
+>
+> ```
+> \c ianalyzer
+> grant all privileges on all tables in schema public to ianalyzer;
+> ```
+>
+
 5. Make a superuser account with `yarn django createsuperuser`
 
 ## Setup with Docker
