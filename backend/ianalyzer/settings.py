@@ -116,6 +116,9 @@ LOGGING = {
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
 
+INDEX_MULTIPROCESSING = True
+INDEX_BATCH_SIZE = 100
+
 # This needs to be the last line of the settings.py, so that all settings can be overridden.
 try:
     from ianalyzer.settings_local import *
