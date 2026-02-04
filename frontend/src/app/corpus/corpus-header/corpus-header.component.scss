@@ -1,10 +1,12 @@
-.hero.is-light .tabs {
-    --bulma-tabs-link-active-color: var(--bulma-link-text);
+.tabs {
+    --bulma-tabs-border-bottom-color: rgba(0, 0, 0, 0);
     --bulma-tabs-border-bottom-width: 2px;
 }
 
-.hero .tabs {
-    a {
-        margin-bottom: 0px;
-    }
+.title {
+    margin-bottom: 2rem;
+}
+
+.header-section {
+    background-color: var(--corpus-header-background);
 }

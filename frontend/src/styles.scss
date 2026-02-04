@@ -374,6 +374,9 @@ button {
     }
 }
 
+:root {
+    --corpus-header-background: var(--bulma-white-ter);
+}
 
 // dark mode
 
@@ -404,4 +407,5 @@ button {
         color: hsl(var(--bulma-message-h), var(--bulma-message-s), 85%);
     }
 
+    --corpus-header-background: hsl(var(--bulma-scheme-h), var(--bulma-scheme-s), 20%);
 }
