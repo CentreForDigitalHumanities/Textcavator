@@ -25,6 +25,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+X_FRAME_OPTIONS = 'ALLOW'
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
