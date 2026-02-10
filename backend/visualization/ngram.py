@@ -1,7 +1,7 @@
 from collections import Counter
 from typing import Tuple, Dict, List, Literal, Iterable
 from elasticsearch import Elasticsearch
-from itertools import chain
+from itertools import chain, batched, groupby
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
@@ -120,9 +120,10 @@ def tokens_by_time_interval(
         download_size=max_size_per_interval,
     )
     bin_ngrams = Counter()
-    for hit in search_results:
+    docs = _request_termvectors_batched(search_results, client, freq_compensation, [field])
+    for doc in docs:
         tokens, ttfs = _count_tokens_in_document(
-            hit, client, field, query_text,
+            doc, client, field, query_text,
             term_positions, ngram_size,
             freq_compensation=freq_compensation,
             mode=mode,
@@ -139,8 +140,31 @@ def tokens_by_time_interval(
     return results
 
 
+def _request_termvectors_batched(
+    hits: Iterable[Dict], client: Elasticsearch, term_statistics: bool,
+    fields: List[str],
+) -> Iterable[Dict]:
+    '''
+    Request term vectors for each hit in search results.
+    Uses mtermvectors endpoint to make batched requests.
+    '''
+    batched_hits = batched(hits, 100)
+    for batch in batched_hits:
+        # for index, index_hits in groupby(batch, lambda hit: hit['_index']):
+        result = client.mtermvectors(
+            docs=[
+                { '_index': doc['_index'], '_id': doc['_id'] }
+                for doc in batch
+            ],
+            term_statistics=term_statistics,
+            fields=fields,
+        )
+        for doc in result.body['docs']:
+            yield doc
+
+
 def _count_tokens_in_document(
-    hit: Dict,
+    termvector_result: Dict,
     client: Elasticsearch,
     field: str,
     query_text: str,
@@ -155,16 +179,10 @@ def _count_tokens_in_document(
     token_counts = Counter()
     ttfs = dict()
     # get the term vectors for the hit
-    result = client.termvectors(
-        index=hit['_index'],
-        id=hit['_id'],
-        term_statistics=freq_compensation,
-        fields=[field]
-    )
-    terms = termvectors.get_terms(result, field)
+    terms = termvectors.get_terms(termvector_result, field)
     if terms:
         tokens = termvectors.get_tokens(terms)
-        matches = termvectors.token_matches(tokens, query_text, hit['_index'], field, client)
+        matches = termvectors.token_matches(tokens, query_text, termvector_result['_index'], field, client)
         token_ranges = _token_ranges(
             matches, term_positions, ngram_size, len(tokens), mode=mode
         )
