@@ -152,7 +152,7 @@ def _count_tokens_in_document(
     '''
     Count token frequencies surrounding the search term from a document
     '''
-    tokens = Counter()
+    token_counts = Counter()
     ttfs = dict()
     # get the term vectors for the hit
     result = client.termvectors(
@@ -163,19 +163,21 @@ def _count_tokens_in_document(
     )
     terms = termvectors.get_terms(result, field)
     if terms:
-        sorted_tokens = termvectors.get_tokens(terms, sort=True)
-        matches = termvectors.token_matches(sorted_tokens, query_text, hit['_index'], field, client)
+        tokens = termvectors.get_tokens(terms)
+        matches = termvectors.token_matches(tokens, query_text, hit['_index'], field, client)
         token_ranges = _token_ranges(
-            matches, term_positions, ngram_size, len(sorted_tokens), mode=mode
+            matches, term_positions, ngram_size, len(tokens), mode=mode
         )
         for start, stop in token_ranges:
-            ngram = sorted_tokens[start:stop]
+            ngram = list(termvectors.token_range_from_list(
+                tokens, start, stop, sort=mode=='ngrams'
+            ))
             words = ' '.join([token['term'] for token in ngram])
             if freq_compensation:
                 ttf = sum(token['ttf'] for token in ngram) / len(ngram)
                 ttfs[words] = ttf
-            tokens.update({ words: 1})
-    return tokens, ttfs
+            token_counts.update({ words: 1})
+    return token_counts, ttfs
 
 
 def _token_ranges(
