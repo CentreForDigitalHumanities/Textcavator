@@ -530,7 +530,7 @@ export class ApiService {
         makeRequest: () => Observable<Outcome>,
         isDone: (o: Outcome) => boolean,
         stopPolling$: Observable<any>,
-        period: number = 5000
+        period: number = 1000
     ): Observable<Outcome> {
         return interval(period).pipe(
             takeUntil(stopPolling$),
