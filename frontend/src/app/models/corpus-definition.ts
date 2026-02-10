@@ -202,7 +202,7 @@ export class CorpusDefinition {
     /** refresh searchable corpora if needed */
     private refreshCorpora(): Observable<any> {
         return from(this.requireCorpusRefresh().then(
-            refresh => this.corpusService.get(refresh)
+            refresh => refresh ? this.corpusService.get(refresh) : Promise.resolve(undefined)
         ));
     }
 };
