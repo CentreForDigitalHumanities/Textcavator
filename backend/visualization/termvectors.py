@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Optional, Iterable
+from typing import List, Dict, Any, Optional
 
 from es.client import elasticsearch
 import re
@@ -19,7 +19,9 @@ def get_tokens(terms: Dict[str, Dict], sort=True) -> List[Dict[str, Any]]:
     all_tokens = [token for term in terms for token in list_tokens(term, terms[term])]
 
     if sort:
-        return _sort_tokens_list(all_tokens)
+        sorted_tokens = sorted(all_tokens, key=lambda token: token['position'])
+        return sorted_tokens
+
     return all_tokens
 
 def list_tokens(term, details):
@@ -33,16 +35,6 @@ def list_tokens(term, details):
         }
         for position in positions
     ]
-
-def _sort_tokens_list(tokens: List[Dict]) -> Iterable[Dict]:
-    return sorted(tokens, key=lambda token: token['position'])
-
-def token_range_from_list(tokens: List[Dict], start: int, stop: int, sort=True) -> Iterable[Dict]:
-    range_tokens = filter(lambda token: start <= token['position'] < stop, tokens)
-    if sort:
-        return _sort_tokens_list(range_tokens)
-    return range_tokens
-
 
 def token_matches(tokens, query_text, index, field, es_client = None):
     """
