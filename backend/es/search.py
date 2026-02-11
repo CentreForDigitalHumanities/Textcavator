@@ -1,13 +1,14 @@
 from typing import Dict
 from es.client import elasticsearch, server_for_corpus, server_config
 from addcorpus.models import Corpus
+from django.conf import settings
 
 def get_index(corpus_name: str) -> str:
     corpus = Corpus.objects.get(name=corpus_name)
     if corpus.configuration.es_index:
         return corpus.configuration.es_index
 
-    config = server_config(server_for_corpus(corpus.name))
+    config = settings.SERVERS.get(server_for_corpus(corpus.name))
     prefix = config.get('index_prefix', None)
     name = corpus.name if corpus.has_python_definition else f'custom[{corpus.pk}]'
     return f'{prefix}-{name}' if prefix else name

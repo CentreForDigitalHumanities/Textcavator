@@ -1,9 +1,9 @@
 from typing import Dict, Tuple
 
-from es.client import elasticsearch, server_for_corpus, server_config
+from es.client import elasticsearch, server_for_corpus
 from es.search import get_index, search, hits, total_hits
 import itertools
-
+from django.conf import settings
 
 def scroll(corpus: str, query_model, download_size=None, client=None, **kwargs) -> Tuple[itertools.chain[Dict], int]:
     chunks, total = scroll_chunks(corpus, query_model,
@@ -16,7 +16,7 @@ def scroll_chunks(corpus: str, query_model, download_size=None, client=None, **k
     index = get_index(corpus)
     if not client:
         client = elasticsearch(index)
-    server_conf = server_config(server_for_corpus(corpus))
+    server_conf = settings.SERVERS.get(server_for_corpus(corpus))
     scroll_timeout = server_conf['scroll_timeout']
     scroll_page_size = server_conf['scroll_page_size']
     size = min(download_size,
