@@ -4,7 +4,6 @@ Utility functions for parsing and generating versioned index names.
 
 import re
 from typing import Optional, List
-from elastic_transport import ObjectApiResponse
 from elasticsearch import Elasticsearch
 
 def indices_with_base_name(client: Elasticsearch, base_name: str) -> List[str]:

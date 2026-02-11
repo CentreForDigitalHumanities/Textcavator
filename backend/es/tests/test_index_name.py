@@ -11,5 +11,5 @@ def test_generate_index_name_python_corpus(db, small_mock_corpus):
 def test_generate_index_name_db_corpus(db, json_mock_corpus):
     json_mock_corpus.configuration.es_index = ''
     json_mock_corpus.configuration.save()
-    assert get_index(json_mock_corpus.name) == f'test-custom_{json_mock_corpus.pk}'
+    assert get_index(json_mock_corpus.name) == f'test-custom[{json_mock_corpus.pk}]'
 
