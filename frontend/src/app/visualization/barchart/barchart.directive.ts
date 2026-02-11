@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Directive, EventEmitter, Host, HostBinding, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Directive, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -29,18 +29,21 @@ import { showLoading } from '@utils/utils';
 import { takeUntil } from 'rxjs/operators';
 import { DateHistogramResult, TermsResult } from '@models/aggregation';
 import { ComparedQueries } from '@models/compared-queries';
-import { RouterStoreService } from '@app/store/router-store.service';
+import { RouterStoreService } from '../../store/router-store.service';
+import { hasPrefixTerm } from './query-utils';
 
 const hintSeenSessionStorageKey = 'hasSeenTimelineZoomingHint';
 const hintHidingMinDelay = 500;       // milliseconds
 const hintHidingDebounceTime = 1000;  // milliseconds
 const barchartID = 'barchart';
+const documentLimitBase = 10000;
+const documentLimitPrefixQueries = 1000;
+
 
 @Directive({
     selector: 'ia-barchart',
     standalone: false
 })
-
 /** The barchartComponent is used to define shared functionality between the
  * histogram and timeline components. It does not function as a stand-alone component. */
 export abstract class BarchartDirective<
@@ -69,7 +72,6 @@ export abstract class BarchartDirective<
     chartType: 'bar' | 'line' | 'scatter' = 'bar';
     comparedQueries: ComparedQueries;
 
-    documentLimit = 1000; // maximum number of documents to search through for term frequency
     documentLimitExceeded = false; // whether the results include documents than the limit
     totalTokenCountAvailable: boolean; // whether the data includes token count totals
 
@@ -176,6 +178,10 @@ export abstract class BarchartDirective<
 
     get isLoading() {
         return this.isLoading$.value;
+    }
+
+    get documentLimit(): number {
+        return hasPrefixTerm(this.queryModel.queryText) ? documentLimitPrefixQueries : documentLimitBase;
     }
 
     ngOnInit(): void {
@@ -360,14 +366,14 @@ export abstract class BarchartDirective<
         setSearchRatio = true
     ): BarchartSeries<DataPoint> {
         let data = result.map(this.aggregateResultToDataPoint);
-        const total_doc_count = this.totalDocCount(result);
+        const totalDocCount = this.totalDocCount(result);
         const searchRatio = setSearchRatio
-            ? this.documentLimit / total_doc_count
+            ? this.documentLimit / totalDocCount
             : series.searchRatio;
-        data = this.includeRelativeDocCount(data, total_doc_count);
+        data = this.includeRelativeDocCount(data, totalDocCount);
         return {
             data,
-            total_doc_count,
+            total_doc_count: totalDocCount,
             searchRatio,
             queryText: series.queryText,
         };

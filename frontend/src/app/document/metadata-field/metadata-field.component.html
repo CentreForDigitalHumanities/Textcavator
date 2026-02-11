@@ -1,10 +1,18 @@
 <ng-container *ngIf="field" [ngSwitch]="field.displayType">
-    <div *ngSwitchCase="'text'"
-        [innerHtml]="field | elasticsearchHighlight:document | paragraph">
-    </div>
-    <div *ngSwitchCase="'keyword'"
-         [innerHTML]="field | elasticsearchHighlight:document | keyword">
-    </div>
+    <ng-container *ngSwitchCase="'text'">
+        @for (item of document.fieldValue(field) | paragraph; track $index) {
+            <div ia-highlighted-content
+                [content]="item | elasticsearchHighlight:field:document">
+            </div>
+        }
+    </ng-container>
+    <ng-container *ngSwitchCase="'keyword'">
+        @for (item of document.fieldValue(field) | keyword; track $index; let last = $last) {
+            <span ia-highlighted-content
+                [content]="item | elasticsearchHighlight:field:document">
+            </span>@if (!last) {, }
+        }
+    </ng-container>
     <ng-container *ngSwitchCase="'date'">
         {{ document.fieldValue(field) | date:'mediumDate' }}
     </ng-container>

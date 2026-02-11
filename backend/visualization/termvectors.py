@@ -1,16 +1,18 @@
+from typing import List, Dict, Any, Optional
+
 from es.client import elasticsearch
 import re
 from textdistance import damerau_levenshtein
 
 from visualization.simple_query_string import collect_terms
 
-def get_terms(termvector_result, field):
+def get_terms(termvector_result, field: str) -> Optional[Dict[str, Dict]]:
     termvectors = termvector_result['term_vectors']
     if field in termvectors:
         terms = termvectors[field]['terms']
         return terms
 
-def get_tokens(terms, sort=True):
+def get_tokens(terms: Dict[str, Dict], sort=True) -> List[Dict[str, Any]]:
     if not terms:
         return []
 

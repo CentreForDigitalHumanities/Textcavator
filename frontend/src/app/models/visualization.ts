@@ -85,6 +85,7 @@ export type NGramRequestParameters = {
     max_size_per_interval?: number;
     number_of_ngrams?: number;
     date_field: string;
+    mode?: 'ngrams' | 'collocates',
 } & APIQuery;
 
 

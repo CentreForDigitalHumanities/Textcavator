@@ -1,5 +1,5 @@
 from typing import Dict
-from es.client import elasticsearch, server_for_corpus, server_config
+from es.client import elasticsearch, server_for_corpus
 from addcorpus.models import Corpus
 from django.conf import settings
 
@@ -13,8 +13,7 @@ def get_index(corpus_name: str) -> str:
     name = corpus.name if corpus.has_python_definition else f'custom[{corpus.pk}]'
     return f'{prefix}-{name}' if prefix else name
 
-
-def search(corpus: str, query_model: Dict = {}, client = None, **kwargs):
+def search(corpus_name: str, query_model: Dict = {}, client = None, **kwargs):
     """
     Make a basic search request.
 
@@ -26,10 +25,10 @@ def search(corpus: str, query_model: Dict = {}, client = None, **kwargs):
     - kwargs: any arguments that should be passed on to the `search()` function of
     the elasticsearch client
     """
-    index = get_index(corpus)
+    index = get_index(corpus_name)
 
     if not client:
-        client = elasticsearch(corpus)
+        client = elasticsearch(corpus_name)
 
     search_result = client.search(
         index=index,
