@@ -109,7 +109,7 @@ class CorpusDefinition(Reader):
     application prefix. This can be customised, e.g. to use an existing index with a
     different naming pattern.
 
-    If set, this is the name name used by search requests. It may match an index or
+    If set, this is the name used by search requests. It may match an index or
     an alias.
     '''
 
