@@ -16,7 +16,7 @@ def scroll_chunks(corpus: str, query_model, download_size=None, client=None, **k
     index = get_index(corpus)
     if not client:
         client = elasticsearch(index)
-    server_conf = settings.SERVERS.get(server_for_corpus(corpus))
+    server_conf = settings.SERVERS[server_for_corpus(corpus)]
     scroll_timeout = server_conf['scroll_timeout']
     scroll_page_size = server_conf['scroll_page_size']
     size = min(download_size,

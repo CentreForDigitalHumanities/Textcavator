@@ -9,7 +9,7 @@ def elasticsearch(corpus_name):
     selected based on the CORPUS_SERVER_NAMES setting.
     '''
     server_name = server_for_corpus(corpus_name)
-    config = settings.SERVERS.get(server_name)
+    config = settings.SERVERS[server_name]
 
     return client_from_config(config)
 

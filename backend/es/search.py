@@ -8,7 +8,7 @@ def get_index(corpus_name: str) -> str:
     if corpus.configuration.es_index:
         return corpus.configuration.es_index
 
-    config = settings.SERVERS.get(server_for_corpus(corpus.name))
+    config = settings.SERVERS[server_for_corpus(corpus.name)]
     prefix = config.get('index_prefix', None)
     name = corpus.name if corpus.has_python_definition else f'custom[{corpus.pk}]'
     return f'{prefix}-{name}' if prefix else name
