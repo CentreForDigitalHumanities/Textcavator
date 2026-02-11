@@ -47,7 +47,11 @@ def test_is_long_text():
     assert not _is_long_text('Example')
     assert _is_long_text('To be or not to be,\nThat is the question')
     assert _is_long_text(
-        'It is a truth universally acknowledged, that a single man in possession of a good fortune must be in want of a wife.',
+        'It is a truth universally acknowledged, that a single man in possession of a ' \
+        'good fortune must be in want of a wife. However little known the feelings or ' \
+        'views of such a man may be on his first entering a neighbourhood, this truth ' \
+        'is so well fixed in the minds of the surrounding families, that he is ' \
+        'considered as the rightful property of some one or other of their daughters.',
     )
     assert not _is_long_text('')
 
