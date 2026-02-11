@@ -10,7 +10,7 @@ from django.core.files import File
 from typing import Callable
 
 from es.client import client_from_config
-from addcorpus.python_corpora.save_corpus import load_and_save_all_corpora, load_and_save_single_corpus
+from addcorpus.python_corpora.save_corpus import load_and_save_single_corpus
 from es import sync
 from indexing.models import TaskStatus
 from indexing.create_job import create_indexing_job
@@ -21,6 +21,7 @@ from addcorpus.models import Corpus, CorpusDataFile
 from addcorpus.serializers import CorpusJSONDefinitionSerializer, CorpusDataFileSerializer
 from es.models import Server
 from django.core.cache import cache
+from es.search import get_index
 
 
 @pytest.fixture(autouse=True)
@@ -181,7 +182,7 @@ def test_index_cleanup(es_client: Elasticsearch):
 def _index_test_corpus(es_client: Elasticsearch, corpus_name: str):
     corpus = Corpus.objects.get(name=corpus_name)
 
-    if not es_client.indices.exists(index=corpus.configuration.es_index):
+    if not es_client.indices.exists(index=get_index(corpus_name)):
         with warnings.catch_warnings():
             job = create_indexing_job(corpus)
             perform_indexing(job)
