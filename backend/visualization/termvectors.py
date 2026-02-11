@@ -26,7 +26,7 @@ def request_termvectors_batched(
             term_statistics=term_statistics,
             fields=fields,
         )
-        yield from result.body['docs']
+        yield from zip(batch, result.body['docs'])
 
 def get_terms(termvector_result, field: str) -> Optional[Dict[str, Dict]]:
     termvectors = termvector_result['term_vectors']

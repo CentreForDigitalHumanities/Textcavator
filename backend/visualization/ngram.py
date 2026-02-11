@@ -1,7 +1,7 @@
 from collections import Counter
 from typing import Tuple, Dict, List, Literal, Iterable
 from elasticsearch import Elasticsearch
-from itertools import chain, batched, groupby
+from itertools import chain
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
@@ -123,9 +123,9 @@ def tokens_by_time_interval(
     docs = termvectors.request_termvectors_batched(
         search_results, client, freq_compensation, [field]
     )
-    for doc in docs:
+    for _, vectors in docs:
         tokens, ttfs = _count_tokens_in_document(
-            doc, client, field, query_text,
+            vectors, client, field, query_text,
             term_positions, ngram_size,
             freq_compensation=freq_compensation,
             mode=mode,
