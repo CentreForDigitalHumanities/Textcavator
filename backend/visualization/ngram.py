@@ -120,7 +120,9 @@ def tokens_by_time_interval(
         download_size=max_size_per_interval,
     )
     bin_ngrams = Counter()
-    docs = _request_termvectors_batched(search_results, client, freq_compensation, [field])
+    docs = termvectors.request_termvectors_batched(
+        search_results, client, freq_compensation, [field]
+    )
     for doc in docs:
         tokens, ttfs = _count_tokens_in_document(
             doc, client, field, query_text,
@@ -138,27 +140,6 @@ def tokens_by_time_interval(
     if freq_compensation:
         results['ngram_ttfs'] = ngram_ttfs
     return results
-
-
-def _request_termvectors_batched(
-    hits: Iterable[Dict], client: Elasticsearch, term_statistics: bool,
-    fields: List[str],
-) -> Iterable[Dict]:
-    '''
-    Request term vectors for each hit in search results.
-    Uses mtermvectors endpoint to make batched requests.
-    '''
-    batched_hits = batched(hits, 100)
-    for batch in batched_hits:
-        result = client.mtermvectors(
-            docs=[
-                { '_index': doc['_index'], '_id': doc['_id'] }
-                for doc in batch
-            ],
-            term_statistics=term_statistics,
-            fields=fields,
-        )
-        yield from result.body['docs']
 
 
 def _count_tokens_in_document(

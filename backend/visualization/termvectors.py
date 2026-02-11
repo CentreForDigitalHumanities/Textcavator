@@ -1,10 +1,32 @@
-from typing import List, Dict, Any, Optional
-
-from es.client import elasticsearch
+from typing import List, Dict, Any, Optional, Iterable
 import re
+import itertools
+
+from elasticsearch import Elasticsearch
 from textdistance import damerau_levenshtein
+from es.client import elasticsearch
 
 from visualization.simple_query_string import collect_terms
+
+def request_termvectors_batched(
+    hits: Iterable[Dict], client: Elasticsearch, term_statistics: bool,
+    fields: List[str],
+) -> Iterable[Dict]:
+    '''
+    Request term vectors for each hit in search results.
+    Uses mtermvectors endpoint to make batched requests.
+    '''
+    batched_hits = itertools.batched(hits, 100)
+    for batch in batched_hits:
+        result = client.mtermvectors(
+            docs=[
+                { '_index': doc['_index'], '_id': doc['_id'] }
+                for doc in batch
+            ],
+            term_statistics=term_statistics,
+            fields=fields,
+        )
+        yield from result.body['docs']
 
 def get_terms(termvector_result, field: str) -> Optional[Dict[str, Dict]]:
     termvectors = termvector_result['term_vectors']
