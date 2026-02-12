@@ -5,11 +5,14 @@
     what they are looking for.
 </p>
 
+<p class="block">Fields with with * are required.</p>
+
 <form (ngSubmit)="onSubmit()" class="box" [formGroup]="metaForm">
     <h2 class="title is-5">Metadata</h2>
 
+
     <div class="field" [class.is-disabled]="corpus.active">
-        <label class="label" for="title">Title</label>
+        <label class="label" for="title">Title*</label>
         <div class="control">
             <input class="input" type="text" name="title" formControlName="title" />
         </div>
@@ -17,7 +20,7 @@
     </div>
 
     <div class="field">
-        <label class="label" for="description">Description</label>
+        <label class="label" for="description">Description*</label>
         <div class="control">
             <textarea class="textarea" name="description" formControlName="description"
                 rows="2">
@@ -31,7 +34,7 @@
     </div>
 
     <div class="field">
-        <label class="label" for="category" id="label-category">Category</label>
+        <label class="label" for="category" id="label-category">Category*</label>
         <div class="control">
             <ia-dropdown formControlName="category" labelledBy="label-category">
                 <span iaDropdownLabel>{{currentCategoryLabel}}</span>
@@ -48,11 +51,11 @@
     <div class="field">
         <div class="field is-grouped" formGroupName="date_range">
             <div class="control">
-                <label class="label" for="min">Start year</label>
+                <label class="label" for="min">Start year*</label>
                 <input class="input" type="number" step="10" name="min" formControlName="min" />
             </div>
             <div class="control">
-                <label class="label" for="max">End year</label>
+                <label class="label" for="max">End year*</label>
                 <input class="input" type="number" step="10" name="max" formControlName="max" />
             </div>
         </div>
@@ -61,7 +64,7 @@
     </div>
 
     <div class="field">
-        <label class="label" for="languages">Languages</label>
+        <label class="label" for="languages">Languages*</label>
         <div class="control">
             <p-autoComplete
                 formControlName="languages"
