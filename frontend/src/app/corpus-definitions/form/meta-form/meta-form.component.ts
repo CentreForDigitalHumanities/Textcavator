@@ -4,7 +4,7 @@ import {
     OnChanges,
     OnDestroy, SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { map, Observable, Subject, takeUntil, take } from 'rxjs';
 import { CorpusDefinitionService } from '../../corpus-definition.service';
 import { APICorpusDefinition, APIEditableCorpus, CorpusDefinition } from '../../../models/corpus-definition';
@@ -39,20 +39,23 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         { value: undefined, label: 'Other' },
     ];
 
-    metaForm = this.formBuilder.group({
-        title: [''],
-        description: [''],
-        category: [''],
-        date_range: this.formBuilder.group({
-            min: [],
-            max: [],
+    metaForm = new FormGroup({
+        title: new FormControl<string>('', { nonNullable: true }),
+        description: new FormControl<string>('', { nonNullable: true }),
+        category: new FormControl<typeof this.categories[number]['value']>(
+            undefined,
+            { nonNullable: true },
+        ),
+        date_range: new FormGroup({
+            min: new FormControl<number>(null),
+            max: new FormControl<number>(null),
         }),
-        languages: [[]],
+        languages: new FormControl<Language[]>([], { nonNullable: true }),
     });
 
     destroy$ = new Subject<void>();
 
-    // languageOptions = collectLanguages();
+    languageOptions = collectLanguages();
     actionIcons = actionIcons;
     formIcons = formIcons;
 
@@ -82,7 +85,6 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
     languageSuggestions = this.languages;
 
     constructor(
-        private formBuilder: FormBuilder,
         private corpusDefService: CorpusDefinitionService,
     ) {}
 
