@@ -4,7 +4,7 @@ import {
     OnChanges,
     OnDestroy, SimpleChanges
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, Subject, takeUntil, take } from 'rxjs';
 import { CorpusDefinitionService } from '../../corpus-definition.service';
 import { APICorpusDefinition, APIEditableCorpus, CorpusDefinition } from '../../../models/corpus-definition';
@@ -40,7 +40,10 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
     ];
 
     metaForm = new FormGroup({
-        title: new FormControl<string>('', { nonNullable: true }),
+        title: new FormControl<string>('', {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
         description: new FormControl<string>('', { nonNullable: true }),
         category: new FormControl<typeof this.categories[number]['value']>(
             undefined,
@@ -63,6 +66,7 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         map(steps => steps[1]),
     );
 
+    validationFailed$ = new Subject<void>();
     changesSubmitted$ = new Subject<void>();
     changesSavedSucces$ = new Subject<void>();
     changesSavedError$ = new Subject<void>();
@@ -76,6 +80,10 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         false: [this.metaForm.valueChanges, this.changesSubmitted$],
     });
 
+    showValidationMessage$: Observable<boolean> = mergeAsBooleans({
+        true: [this.validationFailed$],
+        false: [this.metaForm.valueChanges, this.changesSubmitted$],
+    });
     showErrorMessage$: Observable<boolean> = mergeAsBooleans({
         true: [this.changesSavedError$],
         false: [this.metaForm.valueChanges, this.changesSubmitted$]
@@ -118,13 +126,17 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
     }
 
     onSubmit(): void {
-        this.changesSubmitted$.next();
-        const newMeta = this.formValueToData(this.metaForm.value);
-        this.corpus.definition.meta = newMeta;
-        this.corpus.save().subscribe({
-            next: this.onSubmitSuccess.bind(this),
-            error: this.onSubmitError.bind(this),
-        });
+        if (this.metaForm.valid) {
+            this.changesSubmitted$.next();
+            const newMeta = this.formValueToData(this.metaForm.value);
+            this.corpus.definition.meta = newMeta;
+            this.corpus.save().subscribe({
+                next: this.onSubmitSuccess.bind(this),
+                error: this.onSubmitError.bind(this),
+            });
+        } else {
+            this.onValidationFail();
+        }
     }
 
     goToNextStep() {
@@ -135,6 +147,11 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         this.languageSuggestions = this.languages.filter(lang =>
             this.languageMatchesQuery(lang, query)
         );
+    }
+
+    private onValidationFail() {
+        this.validationFailed$.next();
+        // console.log(this.metaForm.controls.title.hasError('required'));
     }
 
     private onSubmitSuccess(value: APIEditableCorpus) {
