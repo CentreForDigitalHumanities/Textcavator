@@ -4,7 +4,7 @@ import {
     OnChanges,
     OnDestroy, SimpleChanges
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, Subject, takeUntil, take } from 'rxjs';
 import { CorpusDefinitionService } from '../../corpus-definition.service';
 import { APICorpusDefinition, APIEditableCorpus, CorpusDefinition } from '../../../models/corpus-definition';
@@ -44,16 +44,26 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
             nonNullable: true,
             validators: [Validators.required],
         }),
-        description: new FormControl<string>('', { nonNullable: true }),
+        description: new FormControl<string>('', {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
         category: new FormControl<typeof this.categories[number]['value']>(
             undefined,
             { nonNullable: true },
         ),
         date_range: new FormGroup({
-            min: new FormControl<number>(null),
-            max: new FormControl<number>(null),
+            min: new FormControl<number>(null, {
+                validators: [Validators.required],
+            }),
+            max: new FormControl<number>(null, {
+                validators: [Validators.required],
+            }),
         }),
-        languages: new FormControl<Language[]>([], { nonNullable: true }),
+        languages: new FormControl<Language[]>([], {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
     });
 
     destroy$ = new Subject<void>();
@@ -150,8 +160,8 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
     }
 
     private onValidationFail() {
+        this.metaForm.markAllAsTouched();
         this.validationFailed$.next();
-        // console.log(this.metaForm.controls.title.hasError('required'));
     }
 
     private onSubmitSuccess(value: APIEditableCorpus) {
