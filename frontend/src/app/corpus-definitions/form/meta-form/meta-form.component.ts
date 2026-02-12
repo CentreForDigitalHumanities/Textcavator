@@ -149,7 +149,7 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         const value = _.clone(data) as any;
         value.languages = data.languages.map(code =>
             this.languages.find(l => l.code == code)
-        );
+        ).filter(_.negate(_.isUndefined));
         return value;
     }
 
