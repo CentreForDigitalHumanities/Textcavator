@@ -25,22 +25,26 @@ export interface DataFileInfo {
     delimiter: Delimiter;
 }
 
+export type FieldDataType =
+    | 'text_content'
+    | 'text_metadata'
+    | 'url'
+    | 'integer'
+    | 'float'
+    | 'date'
+    | 'boolean'
+    | 'geo_point';
+
+export type FieldFilterSetting = 'show' | 'hide' | 'none';
+
 export interface APICorpusDefinitionField {
     name: string;
     display_name: string;
     description: string;
-    type:
-        | 'text_content'
-        | 'text_metadata'
-        | 'url'
-        | 'integer'
-        | 'float'
-        | 'date'
-        | 'boolean'
-        | 'geo_point';
+    type: FieldDataType;
     options: {
         search: boolean;
-        filter: 'show' | 'hide' | 'none';
+        filter: FieldFilterSetting;
         preview: boolean;
         visualize: boolean;
         sort: boolean;

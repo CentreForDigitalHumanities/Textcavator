@@ -45,7 +45,6 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
             validators: [Validators.required],
         }),
         description: new FormControl<string>('', {
-            nonNullable: true,
             validators: [Validators.required],
         }),
         category: new FormControl<typeof this.categories[number]['value']>(

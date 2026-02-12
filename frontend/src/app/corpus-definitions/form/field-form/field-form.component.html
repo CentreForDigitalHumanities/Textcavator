@@ -1,12 +1,15 @@
 <h1 class="title">Fields</h1>
 
+<p class="block">Fields with with * are required.</p>
+
 <form class="container is-readable" [formGroup]="fieldsForm" (ngSubmit)="onSubmit()">
     <ng-container formArrayName="fields">
         <div class="box"
             *ngFor="let field of fields.controls;
-                index as i; first as isFirst; last as isLast;
-                trackBy: fieldControlName"
+            index as i; first as isFirst; last as isLast;
+            trackBy: fieldControlName"
             [formGroupName]="i">
+            @let fieldGroup = fieldsForm.controls.fields.controls[i];
             <div class="field is-disabled">
                 <label class="label" for="column_name">Column name</label>
                 <div class="control">
@@ -16,31 +19,47 @@
                 <p class="help">The column name in your CSV (sample) file. This cannot be changed.</p>
             </div>
             <div class="field">
-                <label class="label" for="display_name">Display name</label>
+                @let displayNameControl = fieldGroup.controls.display_name;
+                @let labelID = `label-display-name-${i}`;
+                @let feedbackID = `feedback-display-name-${i}`;
+                @let helpID = `helptext-display-name-${i}`;
+                <label [id]="labelID" class="label"
+                    for="display_name">Display name*</label>
                 <div class="control">
-                    <input class="input" type="text" name="display_name" formControlName="display_name" />
+                    <input class="input" type="text" name="display_name"
+                        [formControl]="displayNameControl"
+                        [class.is-danger]="displayNameControl.touched && displayNameControl.invalid"
+                        aria-required="true" [attr.aria-labelledby]="labelID"
+                        [attr.aria-describedby]="helpID + ' ' + feedbackID" />
                 </div>
-                <p class="help">
+                <p [id]="feedbackID" class="help is-pulled-right has-text-danger">
+                    @if (displayNameControl.touched && displayNameControl.invalid) {
+                        @if (displayNameControl.hasError('required')) {
+                            This field is required.
+                        }
+                    }
+                </p>
+                <p [id]="helpID" class="help">
                     The name that will be shown to users.
                 </p>
             </div>
 
             <div class="field">
-                <label class="label" for="description">Description (optional)</label>
+                <label class="label" for="description">Description</label>
                 <div class="control">
                     <input class="input" type="text" name="description" formControlName="description"
                         maxlength="150" />
                 </div>
                 <p class="help">
-                    A brief explanation of the field.
-                    If needed, you can include more extensive descriptions in the "corpus
-                    information" step, by adding documentation to your corpus.
+                    A brief explanation of the field (optional).
+                    If needed, you can include more extensive descriptions in step 1, by
+                    adding documentation to your corpus.
                 </p>
             </div>
 
             <div class="field" [class.is-disabled]="corpus.active">
                 <label class="label" for="input-type" >
-                    Type
+                    Type*
                 </label>
                 <div class="control">
                     <ia-dropdown formControlName="type" id="input-type">
@@ -203,6 +222,8 @@
         </div>
     </div>
 
-    <ia-form-feedback [showSuccess]="!!(showSuccesMessage$ | async)"
-        [showError]="!!(showErrorMessage$ | async)" />
+    <ia-form-feedback
+        [showSuccess]="!!(showSuccesMessage$ | async)"
+        [showError]="!!(showErrorMessage$ | async)"
+        [showInvalid]="showValidationMessage$ | async" />
 </form>
