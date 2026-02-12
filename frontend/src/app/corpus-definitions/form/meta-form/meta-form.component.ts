@@ -4,7 +4,7 @@ import {
     OnChanges,
     OnDestroy, SimpleChanges
 } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, Subject, takeUntil, take } from 'rxjs';
 import { CorpusDefinitionService } from '../../corpus-definition.service';
 import { APICorpusDefinition, APIEditableCorpus, CorpusDefinition } from '../../../models/corpus-definition';
@@ -67,7 +67,6 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
 
     destroy$ = new Subject<void>();
 
-    languageOptions = collectLanguages();
     actionIcons = actionIcons;
     formIcons = formIcons;
 
