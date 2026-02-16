@@ -20,6 +20,10 @@ import {
 import { RouterStoreService } from '@app/store/router-store.service';
 import { NgramParameters, NgramSettings } from '@models/ngram';
 
+const makeNumberOptions = (values: number[]) => values.map((n) => ({
+    label: `${n}`,
+    value: n,
+}));
 
 @Component({
     selector: 'ia-ngram',
@@ -66,11 +70,12 @@ export class NgramComponent implements OnChanges {
         { label: 'ngrams', value: 'ngrams' },
         { label: 'collocates', value: 'collocates' },
     ];
-    sizeOptions = [
+    ngramsSizeOptions = [
         { label: 'bigrams', value: 2 },
         { label: 'trigrams', value: 3 },
         { label: 'fourgrams', value: 4 },
     ];
+    collocationsSizeOptions = makeNumberOptions([1, 3, 5]);
     positionsOptions = ['any', 'first', 'second'].map((n) => ({
         label: `${n}`,
         value: n,
@@ -80,14 +85,8 @@ export class NgramComponent implements OnChanges {
         { label: 'Yes', value: true },
     ];
     analysisOptions: { label: string; value: string }[];
-    maxDocumentsOptions = [50, 100, 200, 500].map((n) => ({
-        label: `${n}`,
-        value: n,
-    }));
-    numberOfNgramsOptions = [10, 20, 50, 100].map((n) => ({
-        label: `${n}`,
-        value: n,
-    }));
+    maxDocumentsOptions = makeNumberOptions([50, 100, 200, 500]);
+    numberOfNgramsOptions = makeNumberOptions([10, 20, 50, 100]);
 
     tasksToCancel: string[];
 
@@ -114,6 +113,11 @@ export class NgramComponent implements OnChanges {
         this.currentSettings = _.clone(this.ngramParameters.state$.value);
     }
 
+    get sizeOptions() {
+        return this.currentSettings.mode == 'ngrams' ? this.ngramsSizeOptions :
+            this.collocationsSizeOptions;
+    }
+
     get currentModeOption() {
         return this.modeOptions.find(
             (item) => item.value === this.currentSettings.mode
@@ -123,7 +127,7 @@ export class NgramComponent implements OnChanges {
     get currentSizeOption() {
         return this.sizeOptions.find(
             (item) => item.value === this.currentSettings.size
-        );
+        ) || this.sizeOptions[0];
     }
 
     get currentPositionsOption() {
