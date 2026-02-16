@@ -4,9 +4,12 @@ import * as _ from 'lodash';
 import { StoreSync } from '../store/store-sync';
 import { Store } from '../store/types';
 
+export type NgramMode = 'ngrams' | 'collocates';
+
 export interface NgramSettings {
+    mode: NgramMode,
     size: number;
-    positions: string;
+    positions?: string;
     freqCompensation: boolean;
     analysis: string;
     maxDocuments: number;
@@ -23,8 +26,14 @@ export class NgramParameters extends StoreSync<NgramSettings> {
     }
 
     stringifyNgramSettings(state: NgramSettings): string {
-        return [`s:${state.size}`,`p:${state.positions}`,`c:${state.freqCompensation}`,
-            `a:${state.analysis}`,`m:${state.maxDocuments}`,`n:${state.numberOfNgrams}`].join(',')
+        return [
+            `s:${state.size}`,
+            `p:${state.positions}`,
+            `c:${state.freqCompensation}`,
+            `a:${state.analysis}`,
+            `m:${state.maxDocuments}`,
+            `n:${state.numberOfNgrams}`
+        ].join(',')
     }
 
     stateToStore(state: NgramSettings): Params {
@@ -35,6 +44,7 @@ export class NgramParameters extends StoreSync<NgramSettings> {
         if (_.has(params, 'ngramSettings')) {
             const stringComponents = params['ngramSettings'].split(',');
             return {
+                mode: 'ngrams',
                 size: parseInt(this.findSetting('s', stringComponents), 10),
                 positions: this.findSetting('p', stringComponents),
                 freqCompensation: this.findSetting('c', stringComponents) === 'true',
