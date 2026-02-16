@@ -62,6 +62,10 @@ export class NgramComponent implements OnChanges {
     currentResults: NgramResults;
 
     // options
+    modeOptions = [
+        { label: 'ngrams', value: 'ngrams' },
+        { label: 'collocates', value: 'collocates' },
+    ];
     sizeOptions = [
         { label: 'bigrams', value: 2 },
         { label: 'trigrams', value: 3 },
@@ -108,6 +112,12 @@ export class NgramComponent implements OnChanges {
             store,
         );
         this.currentSettings = _.clone(this.ngramParameters.state$.value);
+    }
+
+    get currentModeOption() {
+        return this.modeOptions.find(
+            (item) => item.value === this.currentSettings.mode
+        );
     }
 
     get currentSizeOption() {
