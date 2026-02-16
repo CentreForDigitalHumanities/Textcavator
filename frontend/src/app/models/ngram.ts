@@ -42,31 +42,25 @@ export class NgramParameters extends StoreSync<NgramSettings> {
     }
 
     storeToState(params: Params): NgramSettings {
-        if (_.has(params, 'ngramSettings')) {
-            const stringComponents = params['ngramSettings'].split(',');
-            return {
-                mode: this.findSetting('o', stringComponents) === 'c' ? 'collocates' : 'ngrams',
-                size: parseInt(this.findSetting('s', stringComponents), 10),
-                positions: this.findSetting('p', stringComponents),
-                freqCompensation: this.findSetting('c', stringComponents) === 'true',
-                analysis: this.findSetting('a', stringComponents),
-                maxDocuments: parseInt(this.findSetting('m', stringComponents), 10),
-                numberOfNgrams: parseInt(this.findSetting('n', stringComponents), 10),
-            }
-        }
+        const parsed = this.parseParamString(_.get(params, 'ngramSettings', ''));
         return {
-            mode: 'ngrams',
-            size: 2,
-            positions: 'any',
-            freqCompensation: false,
-            analysis: 'none',
-            maxDocuments: 50,
-            numberOfNgrams: 10,
-        } as NgramSettings;
+            mode: _.get(parsed, 'o') === 'c' ? 'collocates' : 'ngrams',
+            size: this.parseInt(_.get(parsed, 's'), 2),
+            positions: _.get(parsed, 'p', 'any'),
+            freqCompensation: _.get(parsed, 'c') === 'true',
+            analysis: _.get(parsed, 'a', 'none'),
+            maxDocuments: this.parseInt(_.get(parsed, 'm'), 50),
+            numberOfNgrams: this.parseInt(_.get(parsed, 'n'), 10),
+        }
     }
 
-    findSetting(abbreviation: string, stringComponents: string[]): string | undefined{
-        const setting = stringComponents.find(s => s[0] === abbreviation);
-        return setting?.split(':')[1];
+    private parseParamString(value: string): Record<string, string> {
+        const pairs = value.split(',').map(part => part.split(':', 2))
+        return _.fromPairs(pairs);
+    }
+
+    private parseInt(value: string | undefined, defaultValue: number): number {
+        const parsed = parseInt(value, 10);
+        return _.isNaN(parsed) ? defaultValue : parsed;
     }
 }
