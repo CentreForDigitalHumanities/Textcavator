@@ -23,6 +23,7 @@ import { VisualizationFooterComponent } from './visualization-footer/visualizati
 import { VisualizationComponent } from './visualization.component';
 import { WordcloudComponent } from './wordcloud/wordcloud.component';
 import { MapComponent } from './map/map.component';
+import { ThemeIndicatorDirective } from './theme-indicator.directive';
 
 
 @NgModule({ declarations: [
@@ -39,12 +40,14 @@ import { MapComponent } from './map/map.component';
         VisualizationComponent,
         PaletteSelectComponent,
         MapComponent,
+        ThemeIndicatorDirective,
     ],
     exports: [
         TermComparisonEditorComponent,
         VisualizationFooterComponent,
         FreqtableComponent,
         VisualizationComponent,
+        ThemeIndicatorDirective
     ], imports: [
         AutoCompleteModule,
         ChartModule,
