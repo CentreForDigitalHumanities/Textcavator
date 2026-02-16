@@ -32,12 +32,14 @@ class DutchAnnualReportsOldDataReader(XMLReader):
     non_xml_msg = 'Skipping non-XML file {}'
     non_match_msg = 'Skipping XML file with nonmatching name {}'
 
-    dutchannualreports_map = {}
+    def __init__(self):
+        self.dutchannualreports_map = {}
 
-    with open(op.join(os.path.dirname(__file__), 'dutchannualreports_mapping.csv')) as f:
-        reader = csv.DictReader(f)
-        for line in reader:
-            dutchannualreports_map[line['abbr']] = line['name']
+        with open(op.join(os.path.dirname(__file__), 'dutchannualreports_mapping.csv')) as f:
+            reader = csv.DictReader(f)
+            for line in reader:
+                self.dutchannualreports_map[line['abbr']] = line['name']
+
 
     def sources(self, start=min_date, end=max_date):
          # make the mapping dictionary from the csv file defined in config
