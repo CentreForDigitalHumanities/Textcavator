@@ -70,12 +70,22 @@ export class NgramComponent implements OnChanges {
         { label: 'ngrams', value: 'ngrams' },
         { label: 'collocates', value: 'collocates' },
     ];
+    /** Size options for ngrams mode */
     ngramsSizeOptions = [
         { label: 'bigrams', value: 2 },
         { label: 'trigrams', value: 3 },
         { label: 'fourgrams', value: 4 },
     ];
-    collocationsSizeOptions = makeNumberOptions([1, 3, 5]);
+    /** Size options for collocates mode.
+     * Note: for compatability with ngrams mode, values also count the search term itself,
+     * so a value of 2 (analogous to a bigram) means a maximum distance of 1.
+     */
+    collocationsSizeOptions = [
+        { label: '1', value: 2 },
+        { label: '2', value: 3 },
+        { label: '3', value: 4 },
+        { label: '5', value: 6 },
+    ];
     positionsOptions = ['any', 'first', 'second'].map((n) => ({
         label: `${n}`,
         value: n,
