@@ -27,6 +27,7 @@ export class NgramParameters extends StoreSync<NgramSettings> {
 
     stringifyNgramSettings(state: NgramSettings): string {
         return [
+            `o:${state.mode == 'collocates' ? 'c' : 'n'}`,
             `s:${state.size}`,
             `p:${state.positions}`,
             `c:${state.freqCompensation}`,
@@ -44,7 +45,7 @@ export class NgramParameters extends StoreSync<NgramSettings> {
         if (_.has(params, 'ngramSettings')) {
             const stringComponents = params['ngramSettings'].split(',');
             return {
-                mode: 'ngrams',
+                mode: this.findSetting('o', stringComponents) === 'c' ? 'collocates' : 'ngrams',
                 size: parseInt(this.findSetting('s', stringComponents), 10),
                 positions: this.findSetting('p', stringComponents),
                 freqCompensation: this.findSetting('c', stringComponents) === 'true',
@@ -54,6 +55,7 @@ export class NgramParameters extends StoreSync<NgramSettings> {
             }
         }
         return {
+            mode: 'ngrams',
             size: 2,
             positions: 'any',
             freqCompensation: false,
@@ -65,6 +67,6 @@ export class NgramParameters extends StoreSync<NgramSettings> {
 
     findSetting(abbreviation: string, stringComponents: string[]): string | undefined{
         const setting = stringComponents.find(s => s[0] === abbreviation);
-        return setting.split(':')[1];
+        return setting?.split(':')[1];
     }
 }
