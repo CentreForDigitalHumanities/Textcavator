@@ -121,12 +121,14 @@
                             </p>
                         </label>
                     </div>
-                    <div class="control">
-                        <label class="checkbox">
-                            <input type="checkbox" name="visualize" formControlName="visualize" /> Visualize
-                            <p class="help">Include visualisations for this field.</p>
-                        </label>
-                    </div>
+                    @if (field.get('type').value !== 'url') {
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="visualize" formControlName="visualize" /> Visualize
+                                <p class="help">Include visualisations for this field.</p>
+                            </label>
+                        </div>
+                    }
                 </ng-container>
             </fieldset>
             <div *ngIf="getFieldProperty(field, 'hasLanguage')" class="field"
