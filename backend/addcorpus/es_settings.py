@@ -1,5 +1,6 @@
 import os
 import warnings
+from typing import Dict
 
 from django.conf import settings
 from langcodes import Language, standardize_tag
@@ -92,6 +93,7 @@ def es_settings(languages=[], stopword_analysis=False, stemming_analysis=False):
             if stopword_analysis:
                 set_clean_analyzer(
                     settings,
+                    language,
                     add_language_string(stopword_filter_name, language),
                     add_language_string(clean_analyzer_name, language),
                 )
@@ -102,10 +104,10 @@ def es_settings(languages=[], stopword_analysis=False, stemming_analysis=False):
                     continue
                 set_stemmed_analyzer(
                     settings,
+                    language,
                     add_language_string(stopword_filter_name, language),
                     add_language_string(stemmer_filter_name, language),
                     add_language_string(stemmed_analyzer_name, language),
-                    language
                 )
 
     return settings
@@ -127,12 +129,30 @@ def make_stopword_filter(language):
     except:
         return None
 
-def make_clean_analyzer(stopword_filter_name):
-    return {
-        "tokenizer": "standard",
-        "char_filter": ["number_filter"],
-        "filter": ["lowercase", stopword_filter_name]
-    }
+def _standard_analyzer(language: str):
+    '''
+    Basic analyzer for a language.
+    '''
+    if language in ['zho', 'jpn', 'kor']:
+        return {
+            'tokenizer': 'standard',
+            'filter': [
+                'cjk_width',
+                'lowercase',
+            ]
+        }
+    else:
+        return {
+            'tokenizer': 'standard',
+            'char_filter': ['number_filter'],
+            'filter': ['lowercase']
+        }
+
+def make_clean_analyzer(language: str, stopword_filter_name: str) -> Dict:
+    analyzer = _standard_analyzer(language)
+    analyzer['filter'].append(stopword_filter_name)
+    return analyzer
+
 
 def make_stemmer_filter(language):
     stemmer_language = get_language_key(language)
@@ -141,12 +161,13 @@ def make_stemmer_filter(language):
         "language": stemmer_language
     }
 
-def make_stemmed_analyzer(stopword_filter_name, stemmer_filter_name):
-    return {
-        "tokenizer": "standard",
-        "char_filter": ["number_filter"],
-        "filter": ["lowercase", stopword_filter_name, stemmer_filter_name]
-    }
+def make_stemmed_analyzer(
+    language: str, stopword_filter_name: str, stemmer_filter_name: str
+) -> Dict:
+    analyzer = make_clean_analyzer(language, stopword_filter_name)
+    analyzer['filter'].append(stemmer_filter_name)
+    return analyzer
+
 
 def get_stopwords_from_settings(es_settings, analyzer):
     try:
@@ -158,12 +179,19 @@ def get_stopwords_from_settings(es_settings, analyzer):
     except:
         return []
 
-def set_stemmed_analyzer(settings, stopword_filter_name, stemmer_filter_name, stemmed_analyzer_name, language):
+def set_stemmed_analyzer(
+        settings: Dict,
+        language: str,
+        stopword_filter_name: str,
+        stemmer_filter_name: str,
+        stemmed_analyzer_name: str,
+) -> None:
     filters = settings['analysis'].get('filter', {})
     filters.update({stemmer_filter_name: make_stemmer_filter(language)})
     settings['analysis']['filter'] = filters
     analyzers = settings['analysis'].get('analyzer')
-    analyzers.update({stemmed_analyzer_name: make_stemmed_analyzer(stopword_filter_name, stemmer_filter_name)})
+    analyzers.update({stemmed_analyzer_name: make_stemmed_analyzer(
+        language, stopword_filter_name, stemmer_filter_name)})
     settings['analysis']['analyzer'] = analyzers
 
 def set_char_filter(settings):
@@ -182,8 +210,13 @@ def set_stopword_filter(settings, stopword_filter_name, language):
     settings['analysis']['filter'] = filters
     return True
 
-def set_clean_analyzer(settings, stopword_filter_name, clean_analyzer_name):
-    clean_analyzer = make_clean_analyzer(stopword_filter_name)
+def set_clean_analyzer(
+    settings: Dict,
+    language: str,
+    stopword_filter_name: str,
+    clean_analyzer_name: str,
+) -> None:
+    clean_analyzer = make_clean_analyzer(language, stopword_filter_name)
     analyzers = settings['analysis'].get('analyzer', {})
     analyzers.update({clean_analyzer_name: clean_analyzer})
     settings["analysis"]['analyzer'] = analyzers
