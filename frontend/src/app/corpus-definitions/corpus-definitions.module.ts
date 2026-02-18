@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { QuillModule } from 'ngx-quill';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { StepsModule } from 'primeng/steps';
 import { CreateDefinitionComponent } from './create-definition/create-definition.component';
@@ -20,6 +19,7 @@ import { FormFeedbackComponent } from './form/form-feedback/form-feedback.compon
 import { ImageUploadComponent } from './form/image-upload/image-upload.component';
 import { IndexFormComponent } from './form/index-form/index-form.component';
 import { MetaFormComponent } from './form/meta-form/meta-form.component';
+import { SelectModule } from 'primeng/select';
 
 @NgModule({
     declarations: [
@@ -50,7 +50,7 @@ import { MetaFormComponent } from './form/meta-form/meta-form.component';
         StepsModule,
         AutoCompleteModule,
         MultiSelectModule,
-        DropdownModule,
+        SelectModule,
         QuillModule.forRoot(),
     ],
 })

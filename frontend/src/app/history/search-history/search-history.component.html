@@ -26,9 +26,8 @@
                 <th>
                     <p-columnFilter field="corpus" matchMode="equals" [showMenu]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                            <p-dropdown [options]="corpusMenuItems" [style]="{'width':'100%'}" placeholder="Any"
-                                [ngModel]="value" (onChange)="filter($event.value)">
-                            </p-dropdown>
+                            <p-select [options]="corpusMenuItems" [style]="{'width':'100%'}" placeholder="Any"
+                                [ngModel]="value" (onChange)="filter($event.value)"></p-select>
                         </ng-template>
                     </p-columnFilter>
                 </th>
