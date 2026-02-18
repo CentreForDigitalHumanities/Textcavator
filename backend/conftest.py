@@ -166,6 +166,12 @@ def tag_mock_corpus(load_test_corpus) -> str:
 def annotated_mock_corpus(load_test_corpus) -> str:
     return load_test_corpus('annotated-mock-corpus')
 
+
+@pytest.fixture()
+def cjk_mock_corpus(load_test_corpus) -> str:
+    return load_test_corpus('cjk-mock-corpus')
+
+
 def _clear_test_indices(es_client: Elasticsearch):
     response = es_client.indices.get(index='test-*')
     for index in response.keys():
@@ -224,6 +230,11 @@ def index_tag_mock_corpus(db, es_client: Elasticsearch, tag_mock_corpus: str, te
 @pytest.fixture()
 def index_annotated_mock_corpus(db, es_client: Elasticsearch, annotated_mock_corpus: str, test_index_cleanup):
     _index_test_corpus(es_client, annotated_mock_corpus)
+
+
+@pytest.fixture()
+def index_cjk_mock_corpus(db, es_client: Elasticsearch, cjk_mock_corpus: str, test_index_cleanup):
+    _index_test_corpus(es_client, cjk_mock_corpus)
 
 
 @pytest.fixture()
