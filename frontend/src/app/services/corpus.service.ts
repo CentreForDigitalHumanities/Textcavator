@@ -87,7 +87,6 @@ export class CorpusService {
             data.name,
             data.title,
             data.description,
-            data.es_index,
             allFields,
             data.min_year,
             data.max_year,

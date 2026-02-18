@@ -24,7 +24,6 @@ class SmallMockCorpus(CSVCorpusDefinition):
     visualize = []
     min_date = datetime(year=1800, month=1, day=1)
     max_date = datetime(year=1899, month=12, day=31)
-    es_index = 'test-mock-corpus'
     data_directory = os.path.join(here, 'source_data')
     languages = ['en']
     category = 'book'
