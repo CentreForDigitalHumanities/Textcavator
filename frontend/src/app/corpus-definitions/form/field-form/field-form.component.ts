@@ -108,6 +108,12 @@ export class FieldFormComponent implements OnChanges {
             this.disableControls(fg);
         }
 
+        fg.controls.type.valueChanges.pipe(
+            takeUntil(this.destroy$),
+        ).subscribe(() =>
+            this.onFieldTypeChange(fg)
+        );
+
         fg.valueChanges.pipe(
             takeUntil(this.destroy$),
         ).subscribe(() => this.valueChange$.next());
@@ -214,7 +220,7 @@ export class FieldFormComponent implements OnChanges {
 
     languageLabel(field: FormGroup): string {
         const value = field.controls.language.value;
-        return this.languageOptions.find(o => o.code == value).displayName;
+        return this.languageOptions.find(o => o.code == value)?.displayName;
     }
 
     addField(name: string) {
@@ -234,6 +240,11 @@ export class FieldFormComponent implements OnChanges {
     removeField(index: number) {
         this.fieldsForm.controls.fields.removeAt(index);
         this.fieldsForm.updateValueAndValidity();
+    }
+
+    private onFieldTypeChange(fg: FormGroup) {
+        const dtype = fg.value['type'];
+        fg.controls.options.setValue(this.corpusDefService.defaultFieldOptions(dtype));
     }
 
     private onValidationFail() {

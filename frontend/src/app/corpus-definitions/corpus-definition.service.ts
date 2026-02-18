@@ -100,7 +100,7 @@ export class CorpusDefinitionService implements OnDestroy {
         };
     }
 
-    private defaultFieldOptions(dataType: FieldDataType): FieldOptions {
+    defaultFieldOptions(dataType: FieldDataType): FieldOptions {
         switch (dataType) {
             case 'boolean':
             case 'float':
