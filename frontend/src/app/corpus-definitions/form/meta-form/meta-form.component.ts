@@ -136,7 +136,7 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
     onSubmit(): void {
         if (this.metaForm.valid) {
             this.changesSubmitted$.next();
-            const newMeta = this.formValueToData(this.metaForm.value);
+            const newMeta = this.formValueToData(this.metaForm.getRawValue());
             this.corpus.definition.meta = newMeta;
             this.corpus.save().subscribe({
                 next: this.onSubmitSuccess.bind(this),
