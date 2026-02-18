@@ -7,7 +7,6 @@ import {
     DataFileFieldInfo,
     FIELD_TYPE_OPTIONS,
     FieldDataType,
-    FieldFilterSetting,
 } from '@models/corpus-definition';
 import { MenuItem } from 'primeng/api';
 import { catchError, combineLatest, map, Observable, of, shareReplay, startWith, Subject, take, takeUntil, tap } from 'rxjs';
@@ -26,13 +25,13 @@ type FieldFormGroup = FormGroup<{
     type: FormControl<FieldDataType>,
     options: FormGroup<{
         search: FormControl<boolean>,
-        filter: FormControl<FieldFilterSetting>,
+        filter: FormControl<boolean>,
         preview: FormControl<boolean>,
         visualize: FormControl<boolean>,
         sort: FormControl<boolean>,
         hidden: FormControl<boolean>,
     }>,
-    language: FormControl<string>,
+    language: FormControl<Language>,
     name: FormControl<string>,
     extract: FormGroup<{
         column: FormControl<string>,
@@ -40,6 +39,8 @@ type FieldFormGroup = FormGroup<{
 }>;
 
 const allLanguages = collectLanguages();
+
+const UNKNOWN_LANGUAGE = { code: '', displayName: 'Unknown', altNames: ''};
 
 @Component({
     selector: 'ia-field-form',
@@ -52,7 +53,7 @@ export class FieldFormComponent implements OnChanges {
     destroy$ = new Subject<void>();
 
     fieldsForm = new FormGroup({
-        fields: new FormArray([]),
+        fields: new FormArray<FieldFormGroup>([]),
     });
 
     fieldTypeOptions: MenuItem[] = FIELD_TYPE_OPTIONS;
@@ -95,35 +96,14 @@ export class FieldFormComponent implements OnChanges {
         private corpusDefService: CorpusDefinitionService,
     ) {}
 
-    get fields(): FormArray {
+    get fields(): FormArray<FieldFormGroup> {
         return this.fieldsForm.get('fields') as FormArray;
     }
 
     makeFieldFormgroup(
         field: APICorpusDefinitionField, corpusIsActive: boolean
     ): FieldFormGroup {
-        let fg: FieldFormGroup = new FormGroup({
-            display_name: new FormControl<string>(null, {
-                validators: [Validators.required],
-            }),
-            description: new FormControl<string>(null),
-            type: new FormControl<FieldDataType>(null),
-            options: new FormGroup({
-                search: new FormControl<boolean>(null),
-                filter: new FormControl<FieldFilterSetting>(null),
-                preview: new FormControl<boolean>(null),
-                visualize: new FormControl<boolean>(null),
-                sort: new FormControl<boolean>(null),
-                hidden: new FormControl<boolean>(null),
-            }),
-            language: new FormControl<string>(null),
-            // hidden in the form, but included to ease syncing model with form
-            name: new FormControl<string>(''),
-            extract: new FormGroup({
-                column: new FormControl<string>(null),
-            }),
-        });
-        fg.patchValue(field);
+        let fg = this.fieldToForm(field);
         if (corpusIsActive) {
             this.disableControls(fg);
         }
@@ -192,9 +172,8 @@ export class FieldFormComponent implements OnChanges {
     onSubmit(): void {
         if (this.fieldsForm.valid) {
             this.changesSubmitted$.next();
-            const newFields = this.fields.getRawValue() as APICorpusDefinitionField[];
-            this.corpus.definition.fields =
-                newFields as CorpusDefinition['definition']['fields'];
+            const newFields = this.fields.controls.map(fg => this.formToField(fg));
+            this.corpus.definition.fields = newFields;
             this.corpus.save().subscribe({
                 next: () => this.changesSavedSucces$.next(),
                 error: (err) => {
@@ -238,11 +217,6 @@ export class FieldFormComponent implements OnChanges {
         this.dialogService.showManualPage('types-of-fields');
     }
 
-    languageLabel(field: FieldFormGroup): string {
-        const value = field.controls.language.value;
-        return this.languageOptions.find(o => o.code == value)?.displayName;
-    }
-
     addField(name: string): void {
         const field$ = this.unusedCsvFields$.pipe(
             take(1),
@@ -262,10 +236,59 @@ export class FieldFormComponent implements OnChanges {
         this.fieldsForm.updateValueAndValidity();
     }
 
+    private fieldToForm(field: APICorpusDefinitionField): FieldFormGroup {
+        return new FormGroup({
+            display_name: new FormControl<string>(
+                field.display_name,
+                { validators: [Validators.required] }
+            ),
+            description: new FormControl<string>(field.description),
+            type: new FormControl<FieldDataType>(field.type),
+            options: new FormGroup({
+                search: new FormControl<boolean>(field.options.search),
+                filter: new FormControl<boolean>(
+                    field.options.filter == 'show'
+                ),
+                preview: new FormControl<boolean>(field.options.preview),
+                visualize: new FormControl<boolean>(field.options.visualize),
+                sort: new FormControl<boolean>(field.options.sort),
+                hidden: new FormControl<boolean>(field.options.hidden),
+            }),
+            language: new FormControl<Language>(
+                this.languageOptions.find(l => l.code == field.language) || UNKNOWN_LANGUAGE,
+                { nonNullable: true },
+            ),
+            // hidden in the form, but included to ease syncing model with form
+            name: new FormControl<string>(field.name),
+            extract: new FormGroup({
+                column: new FormControl<string>(field.extract.column),
+            }),
+        });
+    }
+
+    private formToField(fg: FieldFormGroup): APICorpusDefinitionField {
+        const value = fg.getRawValue();
+        return {
+            name: value.name,
+            description: value.description,
+            display_name: value.display_name,
+            type: value.type,
+            options: {
+                search: value.options.search,
+                filter: value.options.filter ? 'show' : 'none',
+                preview: value.options.preview,
+                visualize: value.options.visualize,
+                sort: value.options.sort,
+                hidden: value.options.hidden,
+            },
+            language: value.language.code,
+            extract: value.extract,
+        };
+    }
+
     private onFieldTypeChange(fg: FormGroup): void {
         const dtype = fg.value['type'];
         fg.controls.options.setValue(this.corpusDefService.defaultFieldOptions(dtype));
-        fg.controls.language.setValue('');
     }
 
     private onValidationFail(): void {
@@ -281,7 +304,7 @@ export class FieldFormComponent implements OnChanges {
         }
 
         const languages = allLanguages.filter(l => languageCodes.includes(l.code));
-        languages.push({ code: '', displayName: 'Unknown', altNames: ''});
+        languages.push(UNKNOWN_LANGUAGE);
         return languages;
     }
 
