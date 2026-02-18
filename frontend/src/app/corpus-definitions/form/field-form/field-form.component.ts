@@ -9,7 +9,7 @@ import {
     FieldDataType,
 } from '@models/corpus-definition';
 import { MenuItem } from 'primeng/api';
-import { catchError, combineLatest, map, Observable, of, shareReplay, startWith, Subject, take, takeUntil, tap } from 'rxjs';
+import { catchError, combineLatest, distinct, map, Observable, of, shareReplay, skip, startWith, Subject, take, takeUntil, tap } from 'rxjs';
 import * as _ from 'lodash';
 
 import { collectLanguages, Language } from '../constants';
@@ -109,6 +109,8 @@ export class FieldFormComponent implements OnChanges {
         }
 
         fg.controls.type.valueChanges.pipe(
+            skip(1), // skip initial value set
+            distinct(),
             takeUntil(this.destroy$),
         ).subscribe(() =>
             this.onFieldTypeChange(fg)
@@ -287,7 +289,7 @@ export class FieldFormComponent implements OnChanges {
     }
 
     private onFieldTypeChange(fg: FormGroup): void {
-        const dtype = fg.value['type'];
+        const dtype = fg.getRawValue()['type'];
         fg.controls.options.setValue(this.corpusDefService.defaultFieldOptions(dtype));
     }
 
