@@ -147,7 +147,7 @@ pandas==2.3.3
     #   -r requirements.in
     #   ianalyzer-readers
     #   pyreadr
-pillow==11.3.0
+pillow==12.1.1
     # via -r requirements.in
 pluggy==1.6.0
     # via pytest
@@ -233,7 +233,7 @@ smart-open==7.3.1
     # via gensim
 soupsieve==2.8
     # via beautifulsoup4
-sqlparse==0.5.3
+sqlparse==0.5.4
     # via django
 textdistance==4.6.3
     # via -r requirements.in
