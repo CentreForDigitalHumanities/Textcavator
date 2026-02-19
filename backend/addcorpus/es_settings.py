@@ -1,72 +1,9 @@
-import os
 import warnings
 from typing import Dict
 
-from django.conf import settings
-from langcodes import Language, standardize_tag
-import nltk
-
-# available Elasticsearch stemmers [https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-stemmer-tokenfilter.html]
-AVAILABLE_ES_STEMMERS = ['arabic', 'armenian', 'basque', 'bengali', 'brazilian',
-                         'bulgarian', 'catalan', 'cjk', 'czech', 'danish', 'dutch',
-                         'english', 'estonian', 'finnish', 'french', 'galician',
-                         'german', 'greek', 'hindi', 'hungarian', 'indonesian',
-                         'irish', 'italian', 'latvian', 'lithuanian', 'norwegian',
-                         'persian', 'portuguese', 'romanian', 'russian', 'sorani',
-                         'spanish', 'swedish', 'turkish', 'thai']
-
-def get_language_key(language_code):
-    '''
-    Get the nltk stopwords file / elasticsearch stemmer name for a language code
-
-    E.g. 'en' -> 'english'
-    '''
-
-    return Language.make(standardize_tag(language_code)).display_name().lower()
-
-def _stopwords_directory() -> str:
-    stopwords_dir = os.path.join(settings.NLTK_DATA_PATH, 'corpora', 'stopwords')
-    if not os.path.exists(stopwords_dir):
-        nltk.download('stopwords', settings.NLTK_DATA_PATH)
-    return stopwords_dir
-
-def _stopwords_path(language_code: str):
-    dir = _stopwords_directory()
-    language = get_language_key(language_code)
-    return os.path.join(dir, language)
-
-def stopwords_available(language_code: str) -> bool:
-    if not language_code:
-        return False
-    path = _stopwords_path(language_code)
-    return os.path.exists(path)
-
-def get_nltk_stopwords(language_code):
-    path = _stopwords_path(language_code)
-
-    if os.path.exists(path):
-        with open(path) as infile:
-            words = [line.strip() for line in infile.readlines()]
-            return words
-    else:
-        raise NotImplementedError('language {} has no nltk stopwords list'.format(language_code))
-
-def add_language_string(name, language):
-    return '{}_{}'.format(name, language) if language else name
-
-def stemming_available(language_code: str) -> bool:
-    '''
-    Check whether stemming is supported for a language.
-
-    Parameters:
-        language: an ISO-639 language code
-
-    Returns:
-        whether elasticsearch supports stemming analysis in this language.
-    '''
-    if not language_code:
-        return False
-    return get_language_key(language_code) in AVAILABLE_ES_STEMMERS
+from language_utils import (get_language_key, get_nltk_stopwords, analyzer_name,
+    stopwords_filter, stemmer_filter, number_char_filter, stemming_available)
+from langcodes import standardize_tag
 
 def es_settings(languages=[], stopword_analysis=False, stemming_analysis=False):
     '''
@@ -89,15 +26,15 @@ def es_settings(languages=[], stopword_analysis=False, stemming_analysis=False):
         tag = standardize_tag(language, macro=True)
 
         if stopword_analysis or stemming_analysis:
-            if not set_stopword_filter(settings, add_language_string(stopword_filter_name, tag), tag):
+            if not set_stopword_filter(settings, analyzer_name(stopword_filter_name, tag), tag):
                 continue # skip languages for which we do not have a stopword list
 
             if stopword_analysis:
                 set_clean_analyzer(
                     settings,
                     tag,
-                    add_language_string(stopword_filter_name, tag),
-                    add_language_string(clean_analyzer_name, tag),
+                    analyzer_name(stopword_filter_name, tag),
+                    analyzer_name(clean_analyzer_name, tag),
                 )
             if stemming_analysis:
                 if not stemming_available(tag):
@@ -107,27 +44,18 @@ def es_settings(languages=[], stopword_analysis=False, stemming_analysis=False):
                 set_stemmed_analyzer(
                     settings,
                     tag,
-                    add_language_string(stopword_filter_name, tag),
-                    add_language_string(stemmer_filter_name, tag),
-                    add_language_string(stemmed_analyzer_name, tag),
+                    analyzer_name(stopword_filter_name, tag),
+                    analyzer_name(stemmer_filter_name, tag),
+                    analyzer_name(stemmed_analyzer_name, tag),
                 )
 
     return settings
 
-def number_filter():
-    return {
-        "type":"pattern_replace",
-        "pattern":"\\d+",
-        "replacement":""
-    }
 
 def make_stopword_filter(language):
     try:
         stopwords = get_nltk_stopwords(language)
-        return {
-            "type": "stop",
-            'stopwords': stopwords
-        }
+        return stopwords_filter(stopwords)
     except:
         return None
 
@@ -158,10 +86,7 @@ def make_clean_analyzer(language: str, stopword_filter_name: str) -> Dict:
 
 def make_stemmer_filter(language):
     stemmer_language = get_language_key(language)
-    return {
-        "type": "stemmer",
-        "language": stemmer_language
-    }
+    return stemmer_filter(stemmer_language)
 
 def make_stemmed_analyzer(
     language: str, stopword_filter_name: str, stemmer_filter_name: str
@@ -198,7 +123,7 @@ def set_stemmed_analyzer(
 
 def set_char_filter(settings):
     settings["analysis"] = {
-        "char_filter": { "number_filter": number_filter() }
+        "char_filter": { "number_filter": number_char_filter() }
     }
 
 def set_stopword_filter(settings, stopword_filter_name, language):
