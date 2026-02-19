@@ -198,9 +198,8 @@ export class FieldFormComponent implements OnChanges {
         this.dialogService.showManualPage('types-of-fields');
     }
 
-    languageLabel(field: FormGroup): string {
-        const value = field.controls.language.value;
-        return this.languageOptions.find(o => o.code == value).displayName;
+    languageLabel(code: string): string {
+        return this.languageOptions.find(o => o.code == code)?.displayName || 'Unknown';
     }
 
     addField(name: string) {
