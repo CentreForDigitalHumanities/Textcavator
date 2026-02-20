@@ -97,7 +97,7 @@ def _parse_text_content_field(field_data: Dict) -> Field:
     if visualize:
         # add wordcloud, but make an exception for languages where the wordcloud's
         # tokenisation does not work.
-        if standardize_tag(language, macro=True) not in ['zh', 'ja', 'ko']:
+        if not (language and standardize_tag(language, macro=True) in ['zh', 'ja', 'ko']):
             parsed['visualizations'] = [
                 VisualizationType.WORDCLOUD.value
             ]
