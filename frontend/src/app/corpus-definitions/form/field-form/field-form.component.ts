@@ -1,11 +1,13 @@
 import { Component, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
     APICorpusDefinitionField,
     CorpusDataFile,
     CorpusDefinition,
     DataFileFieldInfo,
     FIELD_TYPE_OPTIONS,
+    FieldDataType,
+    FieldFilterSetting,
 } from '@models/corpus-definition';
 import { MenuItem } from 'primeng/api';
 import { catchError, combineLatest, map, Observable, of, shareReplay, startWith, Subject, take, takeUntil, tap } from 'rxjs';
@@ -17,6 +19,7 @@ import { mergeAsBooleans } from '@utils/observables';
 import { ApiService, DialogService } from '@services';
 import { CorpusDefinitionService } from '@app/corpus-definitions/corpus-definition.service';
 import { findByName } from '@app/utils/utils';
+
 
 const allLanguages = collectLanguages();
 
@@ -43,6 +46,7 @@ export class FieldFormComponent implements OnChanges {
     formIcons = formIcons;
 
     valueChange$ = new Subject<void>();
+    validationFailed$ = new Subject<void>();
     changesSubmitted$ = new Subject<void>();
     changesSavedSucces$ = new Subject<void>();
     changesSavedError$ = new Subject<void>();
@@ -53,6 +57,10 @@ export class FieldFormComponent implements OnChanges {
     showSuccesMessage$: Observable<boolean> = mergeAsBooleans({
         true: [this.changesSavedSucces$],
         false: [this.valueChange$, this.changesSubmitted$],
+    });
+    showValidationMessage$: Observable<boolean> = mergeAsBooleans({
+        true: [this.validationFailed$],
+        false: [this.fieldsForm.valueChanges, this.changesSubmitted$],
     });
     showErrorMessage$: Observable<boolean> = mergeAsBooleans({
         true: [this.changesSavedError$],
@@ -75,22 +83,24 @@ export class FieldFormComponent implements OnChanges {
 
     makeFieldFormgroup(field: APICorpusDefinitionField, corpusIsActive: boolean): FormGroup {
         let fg = new FormGroup({
-            display_name: new FormControl(),
-            description: new FormControl(),
-            type: new FormControl(),
-            options: new FormGroup({
-                search: new FormControl(),
-                filter: new FormControl(),
-                preview: new FormControl(),
-                visualize: new FormControl(),
-                sort: new FormControl(),
-                hidden: new FormControl(),
+            display_name: new FormControl<string>(null, {
+                validators: [Validators.required],
             }),
-            language: new FormControl(''),
+            description: new FormControl<string>(null),
+            type: new FormControl<FieldDataType>(null),
+            options: new FormGroup({
+                search: new FormControl<boolean>(null),
+                filter: new FormControl<FieldFilterSetting>(null),
+                preview: new FormControl<boolean>(null),
+                visualize: new FormControl<boolean>(null),
+                sort: new FormControl<boolean>(null),
+                hidden: new FormControl<boolean>(null),
+            }),
+            language: new FormControl<string>(null),
             // hidden in the form, but included to ease syncing model with form
-            name: new FormControl(),
+            name: new FormControl<string>(null),
             extract: new FormGroup({
-                column: new FormControl(),
+                column: new FormControl<string>(null),
             }),
         });
         fg.patchValue(field);
@@ -154,17 +164,21 @@ export class FieldFormComponent implements OnChanges {
     }
 
     onSubmit(): void {
-        const newFields = this.fields.getRawValue() as APICorpusDefinitionField[];
-        this.corpus.definition.fields =
-            newFields as CorpusDefinition['definition']['fields'];
-        this.corpus.save().subscribe({
-            next: () => this.changesSavedSucces$.next(),
-            error: (err) => {
-                this.changesSavedError$.next();
-                console.error(err);
-            }
-
-        });
+        if (this.fieldsForm.valid) {
+            this.changesSubmitted$.next();
+            const newFields = this.fields.getRawValue() as APICorpusDefinitionField[];
+            this.corpus.definition.fields =
+                newFields as CorpusDefinition['definition']['fields'];
+            this.corpus.save().subscribe({
+                next: () => this.changesSavedSucces$.next(),
+                error: (err) => {
+                    this.changesSavedError$.next();
+                    console.error(err);
+                },
+            });
+        } else {
+            this.onValidationFail();
+        }
     }
 
     /** identifier for a field control
@@ -219,6 +233,11 @@ export class FieldFormComponent implements OnChanges {
     removeField(index: number) {
         this.fieldsForm.controls.fields.removeAt(index);
         this.fieldsForm.updateValueAndValidity();
+    }
+
+    private onValidationFail() {
+        this.fieldsForm.markAllAsTouched();
+        this.validationFailed$.next();
     }
 
     private getLanguageOptions() {
