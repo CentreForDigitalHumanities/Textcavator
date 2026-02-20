@@ -29,7 +29,7 @@ def test_csv_upload(admin_user, admin_client, json_mock_corpus):
     assert info_res.data.get('csv_info') == {
         'fields': [
             {'name': 'character', 'type': 'text_metadata'},
-            {'name': 'line', 'type': 'text_metadata'},
+            {'name': 'line', 'type': 'text_content'},
             {'name': 'date-column', 'type': 'date'},
             {'name': 'FLOAT COLUMN', 'type': 'float'},
             {'name': 'int_column', 'type': 'integer'},

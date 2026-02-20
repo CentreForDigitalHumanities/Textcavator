@@ -127,7 +127,7 @@
                 [class.is-disabled]="corpus.active">
                 <label class="label" id="language-label">Language (optional)</label>
                 <ia-dropdown formControlName="language" labelledBy="language-label">
-                    <span iaDropdownLabel>{{languageLabel(field)}}</span>
+                    <span iaDropdownLabel>{{languageLabel(field.get('language').value)}}</span>
                     <div iaDropdownMenu>
                         <a iaDropdownItem *ngFor="let lang of languageOptions"
                             [value]="lang.code">
