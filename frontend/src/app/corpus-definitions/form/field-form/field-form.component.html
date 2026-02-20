@@ -121,16 +121,25 @@
                             </p>
                         </label>
                     </div>
+                    @if (field.get('type').value !== 'url') {
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="visualize" formControlName="visualize" /> Visualize
+                                <p class="help">Include visualisations for this field.</p>
+                            </label>
+                        </div>
+                    }
                 </ng-container>
             </fieldset>
             <div *ngIf="getFieldProperty(field, 'hasLanguage')" class="field"
                 [class.is-disabled]="corpus.active">
+                @let languageControl = field.controls.language;
                 <label class="label" id="language-label">Language (optional)</label>
                 <ia-dropdown formControlName="language" labelledBy="language-label">
-                    <span iaDropdownLabel>{{languageLabel(field.get('language').value)}}</span>
+                    <span iaDropdownLabel>{{languageControl.value.displayName}}</span>
                     <div iaDropdownMenu>
                         <a iaDropdownItem *ngFor="let lang of languageOptions"
-                            [value]="lang.code">
+                            [value]="lang">
                             {{lang.displayName}}
                         </a>
                     </div>

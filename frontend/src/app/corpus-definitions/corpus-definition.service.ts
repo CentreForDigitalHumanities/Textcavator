@@ -7,6 +7,8 @@ import {
     APICorpusDefinitionField,
     CorpusDefinition,
     Delimiter,
+    FieldDataType,
+    FieldOptions,
 } from '../models/corpus-definition';
 
 
@@ -86,20 +88,24 @@ export class CorpusDefinitionService implements OnDestroy {
         dtype: APICorpusDefinitionField['type'],
         colName: string,
     ): APICorpusDefinitionField {
-        let field: Partial<APICorpusDefinitionField> = {
+        return {
             name: this.slugify.transform(colName),
             display_name: colName,
             description: '',
             type: dtype,
+            options: this.defaultFieldOptions(dtype),
             extract: {
                 column: colName,
             },
         };
-        switch (dtype) {
+    }
+
+    defaultFieldOptions(dataType: FieldDataType): FieldOptions {
+        switch (dataType) {
             case 'boolean':
             case 'float':
             case 'integer': {
-                field.options = {
+                return {
                     search: false,
                     filter: 'show',
                     preview: false,
@@ -109,7 +115,7 @@ export class CorpusDefinitionService implements OnDestroy {
                 };
             }
             case 'date': {
-                field.options = {
+                return {
                     search: false,
                     filter: 'show',
                     preview: true,
@@ -119,7 +125,7 @@ export class CorpusDefinitionService implements OnDestroy {
                 };
             }
             case 'text_metadata': {
-                field.options = {
+                return {
                     search: true,
                     filter: 'show',
                     preview: false,
@@ -129,7 +135,7 @@ export class CorpusDefinitionService implements OnDestroy {
                 };
             }
             case 'text_content': {
-                field.options = {
+                return {
                     search: true,
                     filter: 'none',
                     preview: true,
@@ -139,7 +145,7 @@ export class CorpusDefinitionService implements OnDestroy {
                 };
             }
             case 'url': {
-                field.options = {
+                return {
                     search: false,
                     filter: 'none',
                     preview: false,
@@ -149,7 +155,6 @@ export class CorpusDefinitionService implements OnDestroy {
                 };
             }
         }
-        return field as APICorpusDefinitionField;
     }
 
     private updateCorpus(updatedCorpus: CorpusDefinition) {

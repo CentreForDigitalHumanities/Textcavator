@@ -35,21 +35,24 @@ export type FieldDataType =
     | 'boolean'
     | 'geo_point';
 
+
 export type FieldFilterSetting = 'show' | 'hide' | 'none';
+
+export interface FieldOptions {
+    search: boolean;
+    filter: FieldFilterSetting;
+    preview: boolean;
+    visualize: boolean;
+    sort: boolean;
+    hidden: boolean;
+};
 
 export interface APICorpusDefinitionField {
     name: string;
     display_name: string;
     description: string;
     type: FieldDataType;
-    options: {
-        search: boolean;
-        filter: FieldFilterSetting;
-        preview: boolean;
-        visualize: boolean;
-        sort: boolean;
-        hidden: boolean;
-    };
+    options: FieldOptions;
     language?: string;
     extract: {
         column: string;
