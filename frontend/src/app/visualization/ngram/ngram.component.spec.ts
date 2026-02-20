@@ -17,15 +17,17 @@ describe('NgramComponent', () => {
     let fixture: ComponentFixture<NgramComponent>;
     let apiService: ApiServiceMock;
     let visualizationService: VisualizationService;
-    let cacheKey = 's:2,p:any,c:false,a:none,m:50,n:10';
-    let defaultSettings = {
+    let cacheKey = 'o:n,s:2,p:any,c:false,a:none,m:50,n:10';
+    let defaultSettings: NgramSettings = {
+        mode: 'ngrams',
         size: 2,
         positions: 'any',
         freqCompensation: false,
         analysis: 'none',
         maxDocuments: 50,
         numberOfNgrams: 10,
-    } as NgramSettings;
+    };
+    let element: HTMLElement;
 
     beforeEach(waitForAsync(() => {
         commonTestBed().testingModule.compileComponents();
@@ -56,6 +58,7 @@ describe('NgramComponent', () => {
         component.asTable = false;
         component.palette = ['yellow', 'blue'];
         fixture.detectChanges();
+        element = fixture.nativeElement;
     });
 
     it('should create', () => {
@@ -66,11 +69,31 @@ describe('NgramComponent', () => {
         expect(component.ngramParameters.state$.value).toEqual(defaultSettings);
     });
 
+    it('should switch labels in size selection', () => {
+        const label = element.querySelector('#label-size');
+        const dropdownLabel = (label.nextSibling as HTMLElement).querySelector('[iaDropdownLabel]')
+        expect(label.textContent.trim()).toBe('Length of n-gram');
+        expect(dropdownLabel.textContent.trim()).toBe('bigrams');
+
+        component.onParameterChange('mode', 'collocates');
+        fixture.detectChanges();
+        expect(label.textContent.trim()).toBe('Maximum distance');
+        expect(dropdownLabel.textContent.trim()).toBe('1');
+
+        component.onParameterChange('size', 3);
+        fixture.detectChanges();
+        expect(dropdownLabel.textContent.trim()).toBe('2');
+
+        component.onParameterChange('mode', 'ngrams');
+        fixture.detectChanges();
+        expect(dropdownLabel.textContent.trim()).toBe('trigrams');
+    });
+
     it('should not abort tasks when `onParameterChange` is triggered during initialization', () => {
         spyOn(component.stopPolling$, 'next');
         component.onParameterChange('size', 2);
         expect(component.stopPolling$.next).not.toHaveBeenCalled();
-    })
+    });
 
     it('should stop polling and abort running tasks when changing settings', () => {
         const dropdown = fixture.debugElement.query(By.css('ia-dropdown'));
@@ -102,6 +125,6 @@ describe('NgramComponent', () => {
         component.resultsCache = { [cacheKey]: fakeNgramResult };
         component.confirmChanges();
         expect(visualizationService.getNgramTasks).not.toHaveBeenCalled();
-    })
+    });
 
 });

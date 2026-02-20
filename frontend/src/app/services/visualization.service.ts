@@ -104,6 +104,7 @@ export class VisualizationService {
             ...query,
             corpus_name: corpus.name,
             field,
+            mode: params.mode,
             ngram_size: params.size,
             term_position: params.positions,
             freq_compensation: params.freqCompensation,
