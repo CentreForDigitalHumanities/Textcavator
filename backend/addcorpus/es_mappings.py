@@ -1,5 +1,6 @@
 from typing import Dict
 from addcorpus.es_settings import add_language_string, stopwords_available, stemming_available
+from langcodes import standardize_tag
 
 def primary_mapping_type(es_mapping: Dict) -> str:
     return es_mapping.get('type', None)
@@ -26,16 +27,21 @@ def main_content_mapping(
                 "type":     "token_count",
                 "analyzer": "standard"
             }
-        if stopword_analysis and stopwords_available(language):
+
+        if not language:
+            return mapping
+        tag = standardize_tag(language, macro=True)
+
+        if stopword_analysis and stopwords_available(tag):
             multifields['clean'] = {
                 "type": "text",
-                "analyzer": add_language_string('clean', language),
+                "analyzer": add_language_string('clean', tag),
                 "term_vector": "with_positions_offsets" # include character positions for highlighting
             }
-        if stemming_analysis and stemming_available(language):
+        if stemming_analysis and stemming_available(tag):
             multifields['stemmed'] = {
                 "type": "text",
-                "analyzer": add_language_string('stemmed', language),
+                "analyzer": add_language_string('stemmed', tag),
                 "term_vector": "with_positions_offsets",
             }
         mapping['fields'] = multifields

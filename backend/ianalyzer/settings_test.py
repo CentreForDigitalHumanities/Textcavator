@@ -13,6 +13,7 @@ CORPORA = {
     'wordmodels-mock-corpus': 'corpora_test.wordmodels.wm_mock_corpus.WordmodelsMockCorpus',
     'tagging-mock-corpus': 'corpora_test.tag.tag_mock_corpus.TaggingMockCorpus',
     'annotated-mock-corpus': 'corpora_test.named_entities.annotated_mock_corpus.AnnotatedMockCorpus',
+    'cjk-mock-corpus': 'corpora_test.cjk.corpus.CJKMockCorpus'
 }
 
 TIMES_DATA = os.path.join(BASE_DIR, 'addcorpus', 'python_corpora', 'tests')
