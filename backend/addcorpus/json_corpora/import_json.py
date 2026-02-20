@@ -1,5 +1,7 @@
 from typing import List, Dict, Iterable
 
+from langcodes import standardize_tag
+
 from addcorpus.models import Field
 from addcorpus.json_corpora.utils import get_path
 from addcorpus import es_mappings
@@ -93,9 +95,12 @@ def _parse_text_content_field(field_data: Dict) -> Field:
 
     visualize = get_path(field_data, 'options', 'visualize')
     if visualize:
-        parsed['visualizations'] = [
-            VisualizationType.WORDCLOUD.value
-        ]
+        # add wordcloud, but make an exception for languages where the wordcloud's
+        # tokenisation does not work.
+        if standardize_tag(language, macro=True) not in ['zh', 'ja', 'ko']:
+            parsed['visualizations'] = [
+                VisualizationType.WORDCLOUD.value
+            ]
 
     return parsed
 
