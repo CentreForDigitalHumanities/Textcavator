@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { ApiService, CorpusService } from '@services';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, share, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import { delayWhen, filter, shareReplay, tap } from 'rxjs/operators';
 import { findByName } from '@app/utils/utils';
 
 export type Delimiter = ',' | ';' | '\t';
@@ -25,27 +25,34 @@ export interface DataFileInfo {
     delimiter: Delimiter;
 }
 
+export type FieldDataType =
+    | 'text_content'
+    | 'text_metadata'
+    | 'url'
+    | 'integer'
+    | 'float'
+    | 'date'
+    | 'boolean'
+    | 'geo_point';
+
+
+export type FieldFilterSetting = 'show' | 'hide' | 'none';
+
+export interface FieldOptions {
+    search: boolean;
+    filter: FieldFilterSetting;
+    preview: boolean;
+    visualize: boolean;
+    sort: boolean;
+    hidden: boolean;
+};
+
 export interface APICorpusDefinitionField {
     name: string;
     display_name: string;
     description: string;
-    type:
-        | 'text_content'
-        | 'text_metadata'
-        | 'url'
-        | 'integer'
-        | 'float'
-        | 'date'
-        | 'boolean'
-        | 'geo_point';
-    options: {
-        search: boolean;
-        filter: 'show' | 'hide' | 'none';
-        preview: boolean;
-        visualize: boolean;
-        sort: boolean;
-        hidden: boolean;
-    };
+    type: FieldDataType;
+    options: FieldOptions;
     language?: string;
     extract: {
         column: string;
@@ -153,15 +160,13 @@ export class CorpusDefinition {
         const request$ = this.id
             ? this.apiService.updateCorpus(this.id, data)
             : this.apiService.createCorpus(data);
-        const result$ = request$.pipe(share());
+        const result$ = request$.pipe(
+            tap(result => this.setFromAPIData(result)),
+            delayWhen(() => this.refreshCorpora()),
+            shareReplay(1),
+        );
 
-        result$.subscribe((result) => this.setFromAPIData(result));
-        // refresh corpus data if applicable
-        result$.pipe(
-            switchMap(() => this.requireCorpusRefresh()),
-            filter(_.identity)
-        ).subscribe(() => this.corpusService.get(true));
-
+        result$.subscribe(); // subscribe to execute request(s)
         return result$;
     }
 
@@ -199,6 +204,13 @@ export class CorpusDefinition {
             );
         }
         return Promise.resolve(false);
+    }
+
+    /** refresh searchable corpora if needed */
+    private refreshCorpora(): Observable<any> {
+        return from(this.requireCorpusRefresh().then(
+            refresh => refresh ? this.corpusService.get(refresh) : Promise.resolve(undefined)
+        ));
     }
 };
 
