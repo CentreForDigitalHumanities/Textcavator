@@ -167,7 +167,7 @@ pyopenssl==24.2.1
     # via pysaml2
 pyparsing==3.2.5
     # via rdflib
-pypdf==6.6.2
+pypdf==6.7.1
     # via -r requirements.in
 pyreadr==0.5.4
     # via -r requirements.in
