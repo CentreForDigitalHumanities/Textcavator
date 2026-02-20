@@ -1,5 +1,5 @@
 import math
-from typing import Callable, Dict, Any, Optional, List
+from typing import Callable, Dict, Any, Optional, List, Iterable
 import re
 from addcorpus.models import CorpusConfiguration, Field
 from datetime import datetime
@@ -90,10 +90,9 @@ def get_match_count(es_client, es_query, corpus, size, fieldnames):
     terms = simple_query_string.collect_terms(query_text)
     prefix_query = ' '.join(filter(requires_termvectors_analysis, terms))
 
-    matches = [
-        count_matches_in_document(hit, prefix_query, fieldnames, es_client)
-        for hit in found_hits
-    ]
+    matches = list(
+        count_matches_in_documents(found_hits, prefix_query, fieldnames, es_client)
+    )
 
     n_matches = sum(matches)
     skipped_docs = total_results - len(matches)
@@ -115,7 +114,9 @@ def estimate_skipped_count(matches, skipped_docs: int) -> int:
     return estimate_skipped
 
 
-def count_matches_in_document(hit, prefix_query: Optional[str], search_fields, es_client):
+def count_matches_in_documents(
+    hits: Iterable[Dict], prefix_query: Optional[str], search_fields, es_client
+) -> Iterable[int]:
     '''
     Count matches of a query in a document.
 
@@ -128,15 +129,20 @@ def count_matches_in_document(hit, prefix_query: Optional[str], search_fields, e
     if prefix_query:
         # If the query contains a prefix query, use termvectors to get matches
         # for it.
-        prefix_matches = count_matches_from_termvectors(
-            hit['_id'], hit['_index'], search_fields, prefix_query, es_client
+        docs = termvectors.request_termvectors_batched(
+            hits, es_client, False, search_fields
         )
-        # Use explanation for other terms in the query (this is faster and more
-        # accurate if the query includes certain other operators)
-        rest_matches = count_matches_from_explanation(hit)
-        return prefix_matches + rest_matches
+        for hit, vectors in docs:
+            prefix_matches = count_matches_from_termvectors(
+                vectors, search_fields, prefix_query, es_client
+            )
+            # Use explanation for other terms in the query (this is faster and more
+            # accurate if the query includes certain other operators)
+            rest_matches = count_matches_from_explanation(hit)
+            yield prefix_matches + rest_matches
 
-    return count_matches_from_explanation(hit)
+    for hit in hits:
+        yield count_matches_from_explanation(hit)
 
 
 def count_matches_from_explanation(hit) -> int:
@@ -169,19 +175,18 @@ def find_recursive(doc: Any, predicate: Callable):
                 yield match
 
 
-def count_matches_from_termvectors(id, index, fieldnames, query_text, es_client):
+def count_matches_from_termvectors(doc: Dict, fieldnames, query_text, es_client):
     '''
     Count matches of a query in a document using the termvectors API
     '''
     # get the term vectors for the hit
-    result = es_client.termvectors(index=index, id=id, fields = fieldnames)
 
     matches = 0
 
     for field in fieldnames:
-        terms = termvectors.get_terms(result, field)
+        terms = termvectors.get_terms(doc, field)
         tokens = termvectors.get_tokens(terms, sort = False)
-        matches += sum(1 for _ in termvectors.token_matches(tokens, query_text, index, field, es_client))
+        matches += sum(1 for _ in termvectors.token_matches(tokens, query_text, doc['_index'], field, es_client))
 
     return matches
 
