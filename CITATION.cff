@@ -35,5 +35,5 @@ keywords:
   - elasticsearch
   - natural language processing
 license: MIT
-version: 5.27.1
-date-released: '2026-02-02'
+version: 5.28.0
+date-released: '2026-02-20'

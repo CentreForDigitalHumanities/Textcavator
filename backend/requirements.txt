@@ -54,9 +54,9 @@ defusedxml==0.7.1
     #   djangosaml2
     #   pysaml2
     #   python3-openid
-dj-rest-auth[with-social]==4.0.1
+dj-rest-auth[with-social,with_social]==4.0.1
     # via -r requirements.in
-django==4.2.27
+django==4.2.28
     # via
     #   -r requirements.in
     #   dj-rest-auth
@@ -147,7 +147,7 @@ pandas==2.3.3
     #   -r requirements.in
     #   ianalyzer-readers
     #   pyreadr
-pillow==11.3.0
+pillow==12.1.1
     # via -r requirements.in
 pluggy==1.6.0
     # via pytest
@@ -167,7 +167,7 @@ pyopenssl==24.2.1
     # via pysaml2
 pyparsing==3.2.5
     # via rdflib
-pypdf==6.6.2
+pypdf==6.7.1
     # via -r requirements.in
 pyreadr==0.5.4
     # via -r requirements.in
@@ -233,7 +233,7 @@ smart-open==7.3.1
     # via gensim
 soupsieve==2.8
     # via beautifulsoup4
-sqlparse==0.5.3
+sqlparse==0.5.4
     # via django
 textdistance==4.6.3
     # via -r requirements.in

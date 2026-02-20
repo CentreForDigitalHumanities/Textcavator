@@ -4,6 +4,12 @@
                 Changes saved!
             </p>
         </div>
+        <div class="message is-danger" *ngIf="showInvalid">
+            <p class="message-body">
+                The form was not filled out correctly. Please correct the marked
+                fields before saving.
+            </p>
+        </div>
         <div class="message is-danger" *ngIf="showError">
             <p class="message-body">
                 Something went wrong saving your changes. Please try again.
