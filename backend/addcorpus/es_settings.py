@@ -86,28 +86,30 @@ def es_settings(languages=[], stopword_analysis=False, stemming_analysis=False):
     for language in languages:
         # do not attach language isocodes if there is just one language
 
+        tag = standardize_tag(language, macro=True)
+
         if stopword_analysis or stemming_analysis:
-            if not set_stopword_filter(settings, add_language_string(stopword_filter_name, language), language):
+            if not set_stopword_filter(settings, add_language_string(stopword_filter_name, tag), tag):
                 continue # skip languages for which we do not have a stopword list
 
             if stopword_analysis:
                 set_clean_analyzer(
                     settings,
-                    language,
-                    add_language_string(stopword_filter_name, language),
-                    add_language_string(clean_analyzer_name, language),
+                    tag,
+                    add_language_string(stopword_filter_name, tag),
+                    add_language_string(clean_analyzer_name, tag),
                 )
             if stemming_analysis:
-                if not stemming_available(language):
+                if not stemming_available(tag):
                     warnings.warn('You specified `stemming_analysis=True`, but \
                                       there is no stemmer available for this language')
                     continue
                 set_stemmed_analyzer(
                     settings,
-                    language,
-                    add_language_string(stopword_filter_name, language),
-                    add_language_string(stemmer_filter_name, language),
-                    add_language_string(stemmed_analyzer_name, language),
+                    tag,
+                    add_language_string(stopword_filter_name, tag),
+                    add_language_string(stemmer_filter_name, tag),
+                    add_language_string(stemmed_analyzer_name, tag),
                 )
 
     return settings
@@ -133,7 +135,7 @@ def _standard_analyzer(language: str):
     '''
     Basic analyzer for a language.
     '''
-    if language in ['zho', 'jpn', 'kor']:
+    if language in ['zh', 'ja', 'ko']:
         return {
             'tokenizer': 'standard',
             'filter': [
