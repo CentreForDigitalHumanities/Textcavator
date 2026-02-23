@@ -10,6 +10,34 @@ from addcorpus.language_utils import (
 )
 
 class LanguageAnalyzer(ABC):
+    '''
+    Base class for language analyzers. Create subclass to implement a specific language.
+
+    The purpose of this class is to hold the configuration for a language, mostly
+    regarding the setup of text analysis in Elasticsearch. See
+
+    https://www.elastic.co/guide/en/elasticsearch/reference/8.17/analysis.html
+
+    for documentation. In some cases, the language configuration can also be used
+    by other modules, e.g. to get the stopwords list.
+
+    Miminum required attributes:
+        code: the IETF tag for the language.
+        has_stopwords: indicates support for stopwords filtering
+        has_stemming: indiciates support for stemming in addition to stopword filtering
+
+    If you set `has_stopwords` or `has_stemming` to `True`, the class will generate
+    analyzers based on the NLTK stopwords corpus, a simple number filter, and built-in
+    stemmers from Elasticsearch. You may need to override these methods, e.g. to use a
+    custom stopwords list or specify the stemmer.
+
+    It is worth looking at the built-in language analyzers from Elasticsearch:
+
+    https://www.elastic.co/guide/en/elasticsearch/reference/8.17/analysis-lang-analyzer.html
+
+    These may include other language-specific filters that can be useful.
+    '''
+
     @property
     @abstractmethod
     def code(self) -> str:
@@ -19,18 +47,57 @@ class LanguageAnalyzer(ABC):
         pass
 
     @property
-    def standard_analyzer_name(self) -> str:
-        return 'standard'
-
-    @property
     @abstractmethod
     def has_stopwords(self) -> bool:
+        '''
+        Whether the language supports stopword filtering.
+        '''
         pass
 
     @property
     @abstractmethod
     def has_stemming(self) -> bool:
+        '''
+        Whether the language supports stemming *in addition to* stopword filtering.
+        '''
         pass
+
+
+    def char_filters(self) -> Dict:
+        '''
+        Custom char filters for the language. Will be added in ES index settings.
+        '''
+        return { 'number_filter': number_char_filter() }
+
+    def token_filters(self) -> Dict:
+        '''
+        Custom token filters for the language. Will be added in ES index settings.
+        '''
+        filters = {}
+        if self.has_stopwords:
+            filters[self._stopwords_filter_name] = stopwords_filter(self.stopwords())
+        if self.has_stemming:
+            filters[self._stemmer_filter_name] = stemmer_filter(self._stemmer_filter_language)
+        return filters
+
+
+    standard_analyzer_name = 'standard'
+    '''
+    Name of the default text analyzer for the field. This is on the base field and the
+    token count multifield.
+
+    In most cases, Elasticsearch's `standard` analyzer is appropriate here, but you
+    can use a custom analyzer here if needed. Keep in mind: this analyzer should function
+    as the "minimum" level of analysis. It should be transparent and unintrusive
+    to users. If you want more "heavy" analysis, you can always add extra multifields.
+    '''
+
+    def _standard_analyzer(self) -> Optional[Dict]:
+        '''
+        Specification for the customised "standard" analyzer for text fields, if any.
+        '''
+        return None
+
 
     def stopwords(self) -> Optional[List[str]]:
         '''
@@ -39,87 +106,74 @@ class LanguageAnalyzer(ABC):
         if self.has_stopwords:
             return read_nltk_stopwords(get_language_key(self))
 
-    def char_filters(self) -> Dict:
-        '''
-        Custom char filters for the language
-        '''
-        return { 'number_filter': number_char_filter() }
 
-    def token_filters(self) -> Dict:
+    @property
+    def _stopwords_filter_name(self) -> Optional[str]:
         '''
-        Custom token filters for the language
+        Name of the stopwords token filter.
         '''
-        filters = {}
         if self.has_stopwords:
-            filters[self.stopwords_filter_name] = stopwords_filter(self.stopwords())
-        if self.has_stemming:
-            filters[self.stemmer_filter_name] = stemmer_filter(self.stemmer_filter_key)
-        return filters
+            return analyzer_name('stopwords', self.code)
 
-    def standard_analyzer(self) -> Optional[Dict]:
-        '''
-        Standard analyzer for text fields. Fields will use the built-in 'standard'
-        analyzer by default. If you specify a custom analyzer here, it will be used
-        instead.
-        '''
-        return None
 
     @property
-    def stopwords_filter_name(self) ->str:
-        return analyzer_name('stopwords', self.code)
-
-    @property
-    def clean_analyzer_name(self) -> str:
-        return analyzer_name('clean', self.code)
-
-    def clean_analyzer(self) -> Optional[Dict]:
+    def _clean_analyzer_name(self) -> Optional[str]:
         '''
-        Analyzer that removes stopwords, if supported. Will be used in a 'clean'
-        multifield.
+        Name of the "clean" analyzer (which removes stopwords).
+        '''
+        if self.has_stopwords:
+            return analyzer_name('clean', self.code)
+
+
+    def _clean_analyzer(self) -> Optional[Dict]:
+        '''
+        Specification of the "clean" analyzer (which removes stopwords), if supported.
+
+        Will be used in a 'clean' multifield.
         '''
         if self.has_stopwords:
             return {
                 'tokenizer': 'standard',
                 'char_filter': ['number_filter'],
-                'filter': ['lowercase', self.stopwords_filter_name]
+                'filter': ['lowercase', self._stopwords_filter_name]
             }
 
     @property
-    def stemmer_filter_name(self) -> str:
-        return analyzer_name('stemmer', self.code)
+    def _stemmer_filter_name(self) -> Optional[str]:
+        '''
+        Name of the stemmer token filter, if supported.
+        '''
+        if self.has_stemming:
+            return analyzer_name('stemmer', self.code)
 
     @property
-    def stemmer_filter_key(self) -> Optional[str]:
+    def _stemmer_filter_language(self) -> Optional[str]:
+        '''
+        Value for "language" parameter for the stemmer filter, if supported.
+
+        See https://www.elastic.co/guide/en/elasticsearch/reference/8.17/analysis-stemmer-tokenfilter.html#analysis-stemmer-tokenfilter-language-parm
+        '''
         if self.has_stemming:
             return get_language_key(self.code)
 
     @property
     def stemmed_analyzer_name(self) -> Optional[str]:
+        '''
+        Name of the "stemmed" analyzer, if supported.
+        '''
         if self.has_stemming:
             return analyzer_name('stemmed', self.code)
 
-    def stemmed_analyzer(self) -> Optional[Dict]:
+    def _stemmed_analyzer(self) -> Optional[Dict]:
         '''
-        Analyzer that removes stopwords and stems tokens, if supported. Will be used
-        in a 'stemmed' multifield.
+        Specification for "stemmed" analyzer, if supported.
+
+        This removes stopwords and stems tokens. Will be used in a 'stemmed' multifield.
         '''
         if self.has_stemming:
-            analyzer = self.clean_analyzer()
-            analyzer['filter'].append(self.stemmer_filter_name)
+            analyzer = self._clean_analyzer()
+            analyzer['filter'].append(self._stemmer_filter_name)
             return analyzer
-
-
-class LegacyAnalyzer(LanguageAnalyzer):
-    def __init__(self, code: str):
-        self.code = standardize_tag(code)
-
-    @property
-    def has_stopwords(self):
-        return stopwords_available(self.code)
-
-    @property
-    def has_stemming(self):
-        return stemming_available(self.code)
 
 
 class English(LanguageAnalyzer):
@@ -151,23 +205,15 @@ class French(LanguageAnalyzer):
         },
         return filters
 
-    def standard_analyzer(self):
-        return {
-            'tokenizer': 'standard',
-            'filter': [
-                'french_elision',
-                'lowercase',
-            ]
-        }
 
-    def clean_analyzer(self):
+    def _clean_analyzer(self):
         return {
             'tokenizer': 'standard',
             'char_filter': ['number_filter'],
             'filter': [
                 'french_elision',
                 'lowercase',
-                self.stopwords_filter_name,
+                self._stopwords_filter_name,
             ]
         }
 
@@ -177,23 +223,14 @@ class German(LanguageAnalyzer):
     has_stopwords = True
     has_stemming = True
 
-    def standard_analyzer(self):
-        return {
-            'tokenizer': 'standard',
-            'filter': [
-                'lowercase',
-                'german_normalization',
-            ]
-        }
-
-    def clean_analyzer(self):
+    def _clean_analyzer(self):
         return {
             'tokenizer': 'standard',
             'char_filter': ['number_filter'],
             'filter': [
                 'lowercase',
                 'german_normalization',
-                self.stopwords_filter_name,
+                self._stopwords_filter_name,
             ]
         }
 
@@ -203,7 +240,7 @@ class Chinese(LanguageAnalyzer):
     has_stopwords = True
     has_stemming = False
 
-    def standard_analyzer(self):
+    def _standard_analyzer(self):
         return {
             'tokenizer': 'standard',
             'filter': [
