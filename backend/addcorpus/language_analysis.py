@@ -1,11 +1,12 @@
 from typing import Dict, List, Optional, Type
 from abc import ABC, abstractmethod
 
+from langcodes import closest_match
+
 from addcorpus.language_utils import (
     analyzer_name, stopwords_filter, stemmer_filter,
     number_char_filter, get_language_key, read_nltk_stopwords,
 )
-from langcodes import standardize_tag, closest_match, tag_distance
 
 class LanguageAnalyzer(ABC):
     '''
@@ -117,7 +118,7 @@ class LanguageAnalyzer(ABC):
         Fetch list of stopwords for the language
         '''
         if self.has_stopwords:
-            return read_nltk_stopwords(get_language_key(self))
+            return read_nltk_stopwords(get_language_key(self.code))
 
 
     @property
