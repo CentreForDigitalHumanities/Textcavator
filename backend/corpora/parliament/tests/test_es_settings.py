@@ -1,7 +1,7 @@
 import pytest
 import os
 import shutil
-from addcorpus import es_settings, language_utils
+from addcorpus import language_analysis
 
 def test_stopwords(clean_nltk_data_directory, settings, connected_to_internet):
     """
@@ -44,7 +44,8 @@ def test_stopwords(clean_nltk_data_directory, settings, connected_to_internet):
     ]
 
     for case in cases:
-        stopwords = language_utils.get_nltk_stopwords(case['language'])
+        analyzer = language_analysis.get_analyzer(case['language'])
+        stopwords = analyzer.stopwords()
         for word in case['stopwords']:
             assert word in stopwords
 
