@@ -22,7 +22,7 @@ class CJKMockCorpus(CSVCorpusDefinition):
     languages = ['zho']
     category = 'book'
 
-    es_settings = es_settings(['zho'], stopword_analysis=True)
+    es_settings = es_settings(['zho'])
 
     def sources(self, *args, **kwargs):
         yield os.path.join(self.data_directory, 'data.csv')

@@ -17,7 +17,7 @@ def test_cjk_macrolanguage():
     Check that Chinese settings are also aplied to Mandarin Chinese.
     '''
 
-    settings = es_settings(['cmn'], True, True)
+    settings = es_settings(['cmn'])
     analysis = settings['analysis']
     assert 'clean_zh' in analysis['analyzer']
     assert 'stopwords_zh' in analysis['filter']

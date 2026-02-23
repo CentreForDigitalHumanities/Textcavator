@@ -315,6 +315,9 @@ def get_analyzer(language_tag: str) -> LanguageAnalyzer:
     Uses `closest_match` so this may return the analyzer for a highly similar language, a
     macrolanguage, etc. Returns the Unknown analyzer if there is no (close) match.
     '''
+    if not language_tag:
+        return Unknown()
+
     supported = { cls.code : cls for cls in LANGUAGES }
     match, _distance = closest_match(
         language_tag,

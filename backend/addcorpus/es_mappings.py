@@ -1,7 +1,5 @@
 from typing import Dict
-from langcodes import standardize_tag
-from addcorpus.es_settings import stemming_available
-from addcorpus.language_utils import stopwords_available, analyzer_name
+from addcorpus.language_analysis import get_analyzer
 
 def primary_mapping_type(es_mapping: Dict) -> str:
     return es_mapping.get('type', None)
@@ -16,34 +14,35 @@ def main_content_mapping(
     - `token_counts`: enables aggregations for the total number of words. Used for relative term frequencies.
     - `stopword_analysis`: enables analysis using stopword removal, if available for the language.
     - `stemming_analysis`: enables analysis using stemming, if available for the language.
-    - `updated_highlighting`: enables the new highlighter, which only works for fields that are indexed with the term vector set to 'with_positions_offsets'.
+    - `language`: language (IETF tag) of the field contents
     '''
 
-    mapping = {"type": "text", "term_vector": "with_positions_offsets"}
+    analyzer = get_analyzer(language)
+    mapping = {
+        'type': 'text',
+        'analyzer': analyzer.standard_analyzer_name,
+        'term_vector': 'with_positions_offsets'
+    }
 
     if any([token_counts, stopword_analysis, stemming_analysis]):
         multifields = {}
         if token_counts:
             multifields['length'] = {
-                "type":     "token_count",
-                "analyzer": "standard"
+                'type':     'token_count',
+                'analyzer': analyzer.standard_analyzer_name
             }
 
-        if not language:
-            return mapping
-        tag = standardize_tag(language, macro=True)
-
-        if stopword_analysis and stopwords_available(tag):
+        if stopword_analysis and analyzer.has_stopwords:
             multifields['clean'] = {
-                "type": "text",
-                "analyzer": analyzer_name('clean', tag),
-                "term_vector": "with_positions_offsets" # include character positions for highlighting
+                'type': 'text',
+                'analyzer': analyzer.clean_analyzer_name,
+                'term_vector': 'with_positions_offsets' # include character positions for highlighting
             }
-        if stemming_analysis and stemming_available(tag):
+        if stemming_analysis and analyzer.has_stemming:
             multifields['stemmed'] = {
-                "type": "text",
-                "analyzer": analyzer_name('stemmed', tag),
-                "term_vector": "with_positions_offsets",
+                'type': 'text',
+                'analyzer': analyzer.stemmed_analyzer_name,
+                'term_vector': 'with_positions_offsets',
             }
         mapping['fields'] = multifields
 

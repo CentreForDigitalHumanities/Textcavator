@@ -1,59 +1,46 @@
 import pytest
 
-from addcorpus.es_settings import es_settings, stopwords_available, stemming_available
+from addcorpus.es_settings import es_settings
+from addcorpus.language_utils import number_char_filter
+from addcorpus.language_analysis import English, German
 
-char_filter_tokenizer = {'char_filter': ['number_filter'], 'tokenizer': 'standard'}
+_english = English()
+_german = German()
 
 test_cases = {
     'single_language': {
         'languages': ['en'],
-        'stopword': True,
-        'stemming': True,
         'expected': {
+            'char_filter': {
+                'number_filter': number_char_filter()
+            },
             'filter': {
                 'stemmer_en': {'type': 'stemmer', 'language': 'english'},
-                'stopwords_en': {'type': 'stop', 'stopwords': list()},
+                'stopwords_en': {'type': 'stop', 'stopwords': _english.stopwords()},
             },
             'analyzer': {
-                'clean_en': {
-                    'filter': ['lowercase', 'stopwords_en'],
-                    **char_filter_tokenizer
-                },
-                'stemmed_en': {
-                    'filter': ['lowercase', 'stopwords_en', 'stemmer_en'],
-                    **char_filter_tokenizer
-                }
+                'clean_en': _english._clean_analyzer(),
+                'stemmed_en': _english._stemmed_analyzer(),
             }
         }
     },
     'multiple_languages': {
         'languages': ['en', 'de'],
-        'stopword': True,
-        'stemming': True,
         'expected': {
+            'char_filter': {
+                'number_filter': number_char_filter()
+            },
             'filter': {
                 'stemmer_de': {'type': 'stemmer', 'language': 'german'},
-                'stopwords_de': {'type': 'stop', 'stopwords': list()},
+                'stopwords_de': {'type': 'stop', 'stopwords': _german.stopwords()},
                 'stemmer_en': {'type': 'stemmer', 'language': 'english'},
-                'stopwords_en': {'type': 'stop', 'stopwords': list()},
+                'stopwords_en': {'type': 'stop', 'stopwords': _english.stopwords()},
             },
             'analyzer': {
-                'clean_de': {
-                    'filter': ['lowercase', 'stopwords_de'],
-                    **char_filter_tokenizer
-                },
-                'stemmed_de': {
-                    'filter': ['lowercase', 'stopwords_de', 'stemmer_de'],
-                    **char_filter_tokenizer
-                },
-                'clean_en': {
-                    'filter': ['lowercase', 'stopwords_en'],
-                    **char_filter_tokenizer
-                },
-                'stemmed_en': {
-                    'filter': ['lowercase', 'stopwords_en', 'stemmer_en'],
-                    **char_filter_tokenizer
-                }
+                'clean_de': _german._clean_analyzer(),
+                'stemmed_de': _german._stemmed_analyzer(),
+                'clean_en': _english._clean_analyzer(),
+                'stemmed_en': _english._stemmed_analyzer()
             }
         }
     }
@@ -61,18 +48,5 @@ test_cases = {
 
 @pytest.mark.parametrize('test_config', list(test_cases.values()))
 def test_es_settings(test_config):
-    settings = es_settings(test_config['languages'], test_config['stopword'], test_config['stemming'])
-    assert settings['analysis']['filter'].keys() == test_config['expected']['filter'].keys()
-    assert settings['analysis']['analyzer'].keys() == test_config['expected']['analyzer'].keys()
-    for analyzer in settings['analysis']['analyzer'].keys():
-        assert settings['analysis']['analyzer'][analyzer]['filter'][1] in settings['analysis']['filter']
-        if analyzer.startswith('stemmed'):
-            assert settings['analysis']['analyzer'][analyzer]['filter'][2] in settings['analysis']['filter']
-
-@pytest.mark.parametrize('is_available', [stopwords_available, stemming_available])
-def test_analysis_available(is_available):
-    assert is_available('en') # ISO 639-1
-    assert is_available('eng') # ISO 639-3
-    assert not is_available('')
-    assert not is_available(None)
-    assert not is_available('enm') # enm = Middle English
+    settings = es_settings(test_config['languages'])
+    assert settings['analysis'] == test_config['expected']
