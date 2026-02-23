@@ -1,12 +1,9 @@
 from typing import Dict, List, Optional
 from abc import ABC, abstractmethod
 
-from langcodes import standardize_tag
-
 from addcorpus.language_utils import (
     analyzer_name, stopwords_filter, stemmer_filter,
     number_char_filter, get_language_key, read_nltk_stopwords,
-    stemming_available, stopwords_available
 )
 
 class LanguageAnalyzer(ABC):
@@ -81,6 +78,20 @@ class LanguageAnalyzer(ABC):
         return filters
 
 
+    def analyzers(self) -> Dict:
+        '''
+        Custom analyzers for the language. Will be added in ES index settings.
+        '''
+        analyzers = {}
+        if self.standard_analyzer_name != 'standard':
+            analyzers[self.standard_analyzer_name] = self._standard_analyzer()
+        if self.has_stopwords:
+            analyzers[self.clean_analyzer_name] = self._clean_analyzer()
+        if self.has_stemming:
+            analyzers[self.stemmed_analyzer_name] = self._stemmed_analyzer()
+        return analyzers
+
+
     standard_analyzer_name = 'standard'
     '''
     Name of the default text analyzer for the field. This is on the base field and the
@@ -117,7 +128,7 @@ class LanguageAnalyzer(ABC):
 
 
     @property
-    def _clean_analyzer_name(self) -> Optional[str]:
+    def clean_analyzer_name(self) -> Optional[str]:
         '''
         Name of the "clean" analyzer (which removes stopwords).
         '''
@@ -176,14 +187,46 @@ class LanguageAnalyzer(ABC):
             return analyzer
 
 
-class English(LanguageAnalyzer):
-    code = 'en'
+# LANGUAGE SPECS
+#========================================================================================
+
+class Chinese(LanguageAnalyzer):
+    code = 'zh'
+    has_stopwords = True
+    has_stemming = False
+
+    standard_analyzer_name = analyzer_name('standard', code)
+
+    def _standard_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'filter': [
+                'cjk_width',
+                'lowercase',
+            ]
+        }
+
+
+class Danish(LanguageAnalyzer):
+    code = 'da'
     has_stopwords = True
     has_stemming = True
 
 
 class Dutch(LanguageAnalyzer):
     code = 'nl'
+    has_stopwords = True
+    has_stemming = True
+
+
+class English(LanguageAnalyzer):
+    code = 'en'
+    has_stopwords = True
+    has_stemming = True
+
+
+class Finnish(LanguageAnalyzer):
+    code = 'fi'
     has_stopwords = True
     has_stemming = True
 
@@ -207,15 +250,13 @@ class French(LanguageAnalyzer):
 
 
     def _clean_analyzer(self):
-        return {
-            'tokenizer': 'standard',
-            'char_filter': ['number_filter'],
-            'filter': [
-                'french_elision',
-                'lowercase',
-                self._stopwords_filter_name,
-            ]
-        }
+        analyzer = super()._clean_analyzer()
+        analyzer['filter'] = [
+            'french_elision',
+            'lowercase',
+            self._stopwords_filter_name,
+        ]
+        return analyzer
 
 
 class German(LanguageAnalyzer):
@@ -224,27 +265,42 @@ class German(LanguageAnalyzer):
     has_stemming = True
 
     def _clean_analyzer(self):
-        return {
-            'tokenizer': 'standard',
-            'char_filter': ['number_filter'],
-            'filter': [
-                'lowercase',
-                'german_normalization',
-                self._stopwords_filter_name,
-            ]
-        }
+        analyzer = super()._clean_analyzer()
+        analyzer['filter'] = [
+            'lowercase',
+            'german_normalization',
+            self._stopwords_filter_name,
+        ]
+        return analyzer
 
 
-class Chinese(LanguageAnalyzer):
-    code = 'zh'
+class Norwegian(LanguageAnalyzer):
+    code = 'no'
     has_stopwords = True
+    has_stemming = True
+
+
+class Swedish(LanguageAnalyzer):
+    code = 'sv'
+    has_stopwords = True
+    has_stemming = True
+
+# Full language list, and dummy class for unknown language fields
+
+LANGUAGES = [
+    Chinese,
+    Danish,
+    Dutch,
+    English,
+    Finnish,
+    French,
+    German,
+    Norwegian,
+    Swedish,
+]
+
+class Unknown(LanguageAnalyzer):
+    code = ''
+    has_stopwords = False
     has_stemming = False
 
-    def _standard_analyzer(self):
-        return {
-            'tokenizer': 'standard',
-            'filter': [
-                'cjk_width',
-                'lowercase',
-            ]
-        }
