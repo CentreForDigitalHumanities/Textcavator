@@ -1,10 +1,11 @@
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Type
 from abc import ABC, abstractmethod
 
 from addcorpus.language_utils import (
     analyzer_name, stopwords_filter, stemmer_filter,
     number_char_filter, get_language_key, read_nltk_stopwords,
 )
+from langcodes import standardize_tag, closest_match, tag_distance
 
 class LanguageAnalyzer(ABC):
     '''
@@ -36,6 +37,7 @@ class LanguageAnalyzer(ABC):
     '''
 
     @property
+    @staticmethod
     @abstractmethod
     def code(self) -> str:
         '''
@@ -287,7 +289,7 @@ class Swedish(LanguageAnalyzer):
 
 # Full language list, and dummy class for unknown language fields
 
-LANGUAGES = [
+LANGUAGES: List[Type[LanguageAnalyzer]] = [
     Chinese,
     Danish,
     Dutch,
@@ -300,7 +302,24 @@ LANGUAGES = [
 ]
 
 class Unknown(LanguageAnalyzer):
-    code = ''
+    code = 'und'
     has_stopwords = False
     has_stemming = False
 
+
+def get_analyzer(language_tag: str) -> LanguageAnalyzer:
+    '''
+    Get the text analysis configuration for a language.
+
+    Uses `closest_match` so this may return the analyzer for a highly similar language, a
+    macrolanguage, etc. Returns the Unknown analyzer if there is no (close) match.
+    '''
+    supported = { cls.code : cls for cls in LANGUAGES }
+    match, _distance = closest_match(
+        language_tag,
+        list(supported.keys()),
+        max_distance=9
+    )
+    result_options = supported | { 'und': Unknown }
+    analyzer_class = result_options[match]
+    return analyzer_class()

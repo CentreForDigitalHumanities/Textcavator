@@ -1,9 +1,10 @@
 import warnings
 from typing import Dict
 
-from language_utils import (get_language_key, get_nltk_stopwords, analyzer_name,
-    stopwords_filter, stemmer_filter, number_char_filter, stemming_available)
 from langcodes import standardize_tag
+
+from addcorpus.language_utils import (get_language_key, get_nltk_stopwords, analyzer_name,
+    stopwords_filter, stemmer_filter, number_char_filter, stemming_available)
 
 def es_settings(languages=[], stopword_analysis=False, stemming_analysis=False):
     '''
