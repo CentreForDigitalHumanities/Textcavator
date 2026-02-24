@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 from addcorpus.language_analysis import get_analyzer
 
 def primary_mapping_type(es_mapping: Dict) -> str:
@@ -6,7 +6,8 @@ def primary_mapping_type(es_mapping: Dict) -> str:
 
 
 def main_content_mapping(
-    token_counts=True, stopword_analysis=False, stemming_analysis=False, language=None
+    token_counts=True, stopword_analysis=False, stemming_analysis=False,
+    language: Optional[str] = None
 ):
     '''
     Mapping for the main content field. Options:
@@ -49,17 +50,20 @@ def main_content_mapping(
     return mapping
 
 
-def text_mapping():
+def text_mapping(language: Optional[str] = None):
     '''
-    Mapping for text fields that are not the main content. Performs tokenisation and lowercasing for full-text
+    Mapping for text fields that are not the main content. Performs standard analysis for full-text
     search, but does not support other analysis options.
     '''
 
+    analyzer = get_analyzer(language)
+
     return {
-        'type': 'text'
+        'type': 'text',
+        'analyzer': analyzer.standard_analyzer_name,
     }
 
-def keyword_mapping(enable_full_text_search = False):
+def keyword_mapping(enable_full_text_search = False, language: Optional[str] = None):
     '''
     Mapping for keyword fields. Keyword fields allow filtering and histogram visualisations.
 
@@ -71,7 +75,7 @@ def keyword_mapping(enable_full_text_search = False):
     }
     if enable_full_text_search:
         mapping['fields'] = {
-            'text': { 'type': 'text' },
+            'text': text_mapping(language)
         }
 
     return mapping
