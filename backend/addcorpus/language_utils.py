@@ -36,7 +36,7 @@ def _stopwords_directory() -> str:
     return stopwords_dir
 
 def read_stopwords(key: str, source='nltk') -> List[str]:
-    if source == 'ntlk':
+    if source == 'nltk':
         dir = _stopwords_directory()
     else:
         dir = SUPPLEMENTARY_STOPWORDS_DIR

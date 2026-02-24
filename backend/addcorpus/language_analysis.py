@@ -118,8 +118,13 @@ class LanguageAnalyzer(ABC):
         Fetch list of stopwords for the language
         '''
         if self.has_stopwords:
-            return read_stopwords(get_language_key(self.code))
+            return read_stopwords(get_language_key(self.code), self._stopwords_source)
 
+    _stopwords_source = 'nltk'
+    '''
+    Specifies the source for the stopwords (`'nltk'` or `'supplementary'`). Used in
+    the default implementation of `stopwords()`.
+    '''
 
     @property
     def _stopwords_filter_name(self) -> Optional[str]:
@@ -243,6 +248,22 @@ class Chinese(LanguageAnalyzer):
         }
 
 
+class Croatian(LanguageAnalyzer):
+    code = 'hr'
+    has_stopwords = True
+    has_stemming = False
+
+    _stopwords_source = 'supplementary'
+
+
+class Czech(LanguageAnalyzer):
+    code = 'cs'
+    has_stopwords = True
+    has_stemming = True
+
+    _stopwords_source = 'supplementary'
+
+
 class Danish(LanguageAnalyzer):
     code = 'da'
     has_stopwords = True
@@ -259,6 +280,14 @@ class English(LanguageAnalyzer):
     code = 'en'
     has_stopwords = True
     has_stemming = True
+
+
+class Estonian(LanguageAnalyzer):
+    code = 'et'
+    has_stopwords = True
+    has_stemming = True
+
+    _stopwords_source = 'supplementary'
 
 
 class Finnish(LanguageAnalyzer):
@@ -295,6 +324,14 @@ class French(LanguageAnalyzer):
         return analyzer
 
 
+class Galician(LanguageAnalyzer):
+    code = 'gl'
+    has_stopwords = True
+    has_stemming = True
+
+    _stopwords_source = 'supplementary'
+
+
 class German(LanguageAnalyzer):
     code = 'de'
     has_stopwords = True
@@ -310,10 +347,48 @@ class German(LanguageAnalyzer):
         return analyzer
 
 
+class Icelandic(LanguageAnalyzer):
+    code = 'is'
+    has_stopwords = True
+    has_stemming = False
+
+    _stopwords_source = 'supplementary'
+
+
+class Latvian(LanguageAnalyzer):
+    code = 'lv'
+    has_stopwords = True
+    has_stemming = True
+
+    _stopwords_source = 'supplementary'
+
+
 class Norwegian(LanguageAnalyzer):
     code = 'no'
     has_stopwords = True
     has_stemming = True
+
+
+class Serbian(LanguageAnalyzer):
+    code = 'sr'
+    has_stopwords = True
+    has_stemming = True
+
+    _stopwords_source = 'supplementary'
+
+
+    def _clean_analyzer(self):
+        analyzer = super()._clean_analyzer()
+        analyzer['filter'].append('serbian_normalization')
+        return analyzer
+
+
+class Slovenian(LanguageAnalyzer):
+    code = 'sl'
+    has_stopwords = True
+    has_stemming = False
+
+    _stopwords_source = 'supplementary'
 
 
 class Swedish(LanguageAnalyzer):
@@ -321,20 +396,38 @@ class Swedish(LanguageAnalyzer):
     has_stopwords = True
     has_stemming = True
 
+
+class Ukranian(LanguageAnalyzer):
+    code = 'uk'
+    has_stopwords = True
+    has_stemming = True
+
+    _stopwords_source = 'supplementary'
+
+
 # Full language list, and dummy class for unknown language fields
 
 LANGUAGES: List[Type[LanguageAnalyzer]] = [
     Bosnian,
     Bulgarian,
     Chinese,
+    Croatian,
+    Czech,
     Danish,
     Dutch,
     English,
+    Estonian,
     Finnish,
     French,
+    Galician,
     German,
+    Icelandic,
+    Latvian,
     Norwegian,
+    Serbian,
     Swedish,
+    Slovenian,
+    Ukranian,
 ]
 
 class Unknown(LanguageAnalyzer):
