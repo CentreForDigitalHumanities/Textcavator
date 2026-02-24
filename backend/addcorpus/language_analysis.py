@@ -200,13 +200,28 @@ class Chinese(LanguageAnalyzer):
 
     standard_analyzer_name = analyzer_name('standard', code)
 
+    def char_filters(self):
+        return {}
+
     def _standard_analyzer(self):
         return {
             'tokenizer': 'standard',
+            'char_filter': [],
             'filter': [
                 'cjk_width',
                 'lowercase',
-            ]
+            ],
+        }
+
+    def _clean_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'char_filter': [],
+            'filter': [
+                'cjk_width',
+                'lowercase',
+                self._stopwords_filter_name
+            ],
         }
 
 
