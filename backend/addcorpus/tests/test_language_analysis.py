@@ -77,13 +77,27 @@ analyzer_test_cases = [
         'standard': ['μουσα', 'τραγουδα', 'το', 'θυμο', 'του', 'ξακουστου', 'αχιλεα', 'τον', 'ερμο'],
         'clean': ['μουσα', 'τραγουδα', 'θυμο', 'ξακουστου', 'αχιλεα', 'ερμο'],
         'stemmed': ['μουσ', 'τραγουδ', 'θυμ', 'ξακουστ', 'αχιλε', 'ερμ'],
+    },
+    {
+        'analyzer': la.Italian,
+        'input': 'Nel mezzo del cammin di nostra vita mi ritrovai per una selva oscura, ché la diritta via era smarrita.',
+        'standard': ['nel', 'mezzo', 'del', 'cammin', 'di', 'nostra', 'vita', 'mi', 'ritrovai', 'per', 'una', 'selva', 'oscura', 'ché', 'la', 'diritta', 'via', 'era', 'smarrita',],
+        'clean': ['mezzo', 'cammin', 'vita', 'ritrovai', 'selva', 'oscura', 'ché', 'diritta', 'via', 'smarrita',],
+        'stemmed': ['mezzo', 'cammin', 'vita', 'ritrova', 'selva', 'oscur', 'ché', 'diritt', 'via', 'smarrit',],
+    },
+    {
+        'analyzer': la.NorwegianBokmal,
+        'input': 'Det var i den Tid, jeg gik omkring og sulted i Kristiania, denne forunderlige By, som ingen forlader, før han har fået Mærker af den.',
+        'standard': ['det', 'var', 'i', 'den', 'tid', 'jeg', 'gik', 'omkring', 'og', 'sulted', 'i', 'kristiania', 'denne', 'forunderlige', 'by', 'som', 'ingen', 'forlader', 'før', 'han', 'har', 'fået', 'mærker', 'af', 'den'],
     }
 ]
 
 def tokens(analyzed_response):
     return [token['token'] for token in analyzed_response['tokens']]
 
-@pytest.mark.parametrize('data', analyzer_test_cases)
+@pytest.mark.parametrize('data', analyzer_test_cases,
+    ids=[case['analyzer'].__name__ for case in analyzer_test_cases]
+)
 def test_language_analyzer_output(es_client: Elasticsearch, test_index_cleanup, data):
     analyzer: LanguageAnalyzer = data['analyzer']()
 

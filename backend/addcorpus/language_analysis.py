@@ -198,13 +198,18 @@ class LanguageAnalyzer(ABC):
 # LANGUAGE SPECS
 #========================================================================================
 
+class Basque(LanguageAnalyzer):
+    code = 'eu'
+    has_stopwords = True
+    has_stemming = True
+
+
 class Bosnian(LanguageAnalyzer):
     code = 'bs'
     has_stopwords = True
     has_stemming = False
 
-    def stopwords(self):
-        return read_stopwords('bosnian', 'supplementary')
+    _stopwords_source = 'supplementary'
 
 
 class Bulgarian(LanguageAnalyzer):
@@ -212,8 +217,29 @@ class Bulgarian(LanguageAnalyzer):
     has_stopwords = True
     has_stemming = True
 
-    def stopwords(self):
-        return read_stopwords('bulgarian', 'supplementary')
+    _stopwords_source = 'supplementary'
+
+
+class Catalan(LanguageAnalyzer):
+    code = 'ca'
+    has_stopwords = True
+    has_stemming = True
+
+    def token_filters(self):
+        filters = super().token_filters()
+        filters['catalan_elision'] = {
+            'type': 'elision',
+            'articles': ['d', 'l', 'm', 'n', 's', 't'],
+            'articles_case': True,
+        }
+        return filters
+
+    def _clean_analyzer(self):
+        analyzer = super()._clean_analyzer()
+        analyzer['filter'] = [
+            'catalan_elision', 'lowercase', self._stopwords_filter_name,
+        ]
+        return analyzer
 
 
 class Chinese(LanguageAnalyzer):
@@ -386,7 +412,7 @@ class Greek(LanguageAnalyzer):
     def _lowercase_filter(self):
         return {'type': 'lowercase', 'language': 'greek'}
 
-    standard_analyzer_name = 'standard_el'
+    standard_analyzer_name = analyzer_name('standard', code)
 
     def _standard_analyzer(self):
         return {
@@ -449,12 +475,26 @@ class Latvian(LanguageAnalyzer):
     _stopwords_source = 'supplementary'
 
 
-class Norwegian(LanguageAnalyzer):
-    # Note: this analyzer is created for bokmål, there should be a separate analyzer
-    # class for nynorsk
-    code = 'no'
+class NorwegianBokmal(LanguageAnalyzer):
+    code = 'nb'
     has_stopwords = True
     has_stemming = True
+
+    def stopwords(self):
+        return read_stopwords('norwegian', 'nltk')
+
+    _stemmer_filter_language = 'norwegian'
+
+
+class NorwegianNynorsk(LanguageAnalyzer):
+    code = 'nn'
+    has_stopwords = True
+    has_stemming = True
+
+    def stopwords(self):
+        return read_stopwords('norwegian', 'nltk')
+
+    _stemmer_filter_language = 'light_nynorsk'
 
 
 class Portuguese(LanguageAnalyzer):
@@ -511,7 +551,7 @@ class Turkish(LanguageAnalyzer):
         filters['lowercase_tr'] = self._lowercase_filter()
         return filters
 
-    standard_analyzer_name = 'standard_tr'
+    standard_analyzer_name = analyzer_name('standard', code)
 
     def _lowercase_filter(self):
         return {'type': 'lowercase', 'language': 'turkish'}
@@ -551,8 +591,10 @@ class Ukranian(LanguageAnalyzer):
 # Full language list, and dummy class for unknown language fields
 
 LANGUAGES: List[Type[LanguageAnalyzer]] = [
+    Basque,
     Bosnian,
     Bulgarian,
+    Catalan,
     Chinese,
     Croatian,
     Czech,
@@ -569,7 +611,8 @@ LANGUAGES: List[Type[LanguageAnalyzer]] = [
     Icelandic,
     Italian,
     Latvian,
-    Norwegian,
+    NorwegianBokmal,
+    NorwegianNynorsk,
     Portuguese,
     Serbian,
     Spanish,
