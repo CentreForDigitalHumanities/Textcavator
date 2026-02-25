@@ -2,45 +2,45 @@ import pytest
 
 from addcorpus.es_settings import es_settings
 from addcorpus.language_utils import number_char_filter
-from addcorpus.language_analysis import English, German
+from addcorpus.language_analysis import Dutch, Spanish
 
-_english = English()
-_german = German()
+_dutch = Dutch()
+_spanish = Spanish()
 
 test_cases = {
     'single_language': {
-        'languages': ['en'],
+        'languages': ['nl'],
         'expected': {
             'char_filter': {
                 'number_filter': number_char_filter()
             },
             'filter': {
-                'stemmer_en': {'type': 'stemmer', 'language': 'english'},
-                'stopwords_en': {'type': 'stop', 'stopwords': _english.stopwords()},
+                'stemmer_nl': {'type': 'stemmer', 'language': 'dutch'},
+                'stopwords_nl': {'type': 'stop', 'stopwords': _dutch.stopwords()},
             },
             'analyzer': {
-                'clean_en': _english._clean_analyzer(),
-                'stemmed_en': _english._stemmed_analyzer(),
+                'clean_nl': _dutch._clean_analyzer(),
+                'stemmed_nl': _dutch._stemmed_analyzer(),
             }
         }
     },
     'multiple_languages': {
-        'languages': ['en', 'de'],
+        'languages': ['nl', 'es'],
         'expected': {
             'char_filter': {
                 'number_filter': number_char_filter()
             },
             'filter': {
-                'stemmer_de': {'type': 'stemmer', 'language': 'german'},
-                'stopwords_de': {'type': 'stop', 'stopwords': _german.stopwords()},
-                'stemmer_en': {'type': 'stemmer', 'language': 'english'},
-                'stopwords_en': {'type': 'stop', 'stopwords': _english.stopwords()},
+                'stemmer_es': {'type': 'stemmer', 'language': 'light_spanish'},
+                'stopwords_es': {'type': 'stop', 'stopwords': _spanish.stopwords()},
+                'stemmer_nl': {'type': 'stemmer', 'language': 'dutch'},
+                'stopwords_nl': {'type': 'stop', 'stopwords': _dutch.stopwords()},
             },
             'analyzer': {
-                'clean_de': _german._clean_analyzer(),
-                'stemmed_de': _german._stemmed_analyzer(),
-                'clean_en': _english._clean_analyzer(),
-                'stemmed_en': _english._stemmed_analyzer()
+                'clean_es': _spanish._clean_analyzer(),
+                'stemmed_es': _spanish._stemmed_analyzer(),
+                'clean_nl': _dutch._clean_analyzer(),
+                'stemmed_nl': _dutch._stemmed_analyzer()
             }
         }
     }
