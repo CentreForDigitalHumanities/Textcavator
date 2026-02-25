@@ -1,5 +1,6 @@
 import pytest
-from addcorpus.language_analysis import get_analyzer, LANGUAGES
+from typing import Type
+from addcorpus.language_analysis import get_analyzer, LANGUAGES, LanguageAnalyzer
 
 def test_get_analyzer():
     assert get_analyzer('nl').code == 'nl'
@@ -10,7 +11,7 @@ def test_get_analyzer():
 
 
 @pytest.mark.parametrize('analyzer_class', LANGUAGES)
-def test_language_analyzers_no_errors(analyzer_class):
+def test_language_analyzer_valid(analyzer_class: Type[LanguageAnalyzer]):
     '''
     Check that all analyzers can at least be constructed, and their public
     methods can be called without runtime errors.
@@ -27,3 +28,11 @@ def test_language_analyzers_no_errors(analyzer_class):
     analyzer.clean_analyzer_name
     analyzer.stemmed_analyzer_name
     analyzer.stopwords()
+
+    if analyzer.has_stopwords:
+        assert analyzer.clean_analyzer_name
+        assert analyzer.analyzers()[analyzer.clean_analyzer_name]
+
+    if analyzer.has_stemming:
+        assert analyzer.stemmed_analyzer_name
+        assert analyzer.analyzers()[analyzer.stemmed_analyzer_name]

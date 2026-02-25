@@ -335,7 +335,6 @@ class French(LanguageAnalyzer):
         },
         return filters
 
-
     def _clean_analyzer(self):
         analyzer = super()._clean_analyzer()
         analyzer['filter'] = [
@@ -344,6 +343,8 @@ class French(LanguageAnalyzer):
             self._stopwords_filter_name,
         ]
         return analyzer
+
+    _stemmer_filter_language = 'light_french'
 
 
 class Galician(LanguageAnalyzer):
@@ -367,6 +368,8 @@ class German(LanguageAnalyzer):
             self._stopwords_filter_name,
         ]
         return analyzer
+
+    _stemmer_filter_language = 'light_german'
 
 
 class Greek(LanguageAnalyzer):
@@ -446,6 +449,8 @@ class Latvian(LanguageAnalyzer):
 
 
 class Norwegian(LanguageAnalyzer):
+    # Note: this analyzer is created for bokmål, there should be a separate analyzer
+    # class for nynorsk
     code = 'no'
     has_stopwords = True
     has_stemming = True
@@ -455,6 +460,8 @@ class Portuguese(LanguageAnalyzer):
     code = 'pt'
     has_stopwords = True
     has_stemming = True
+
+    _stemmer_filter_language = 'light_portuguese'
 
 
 class Serbian(LanguageAnalyzer):
@@ -483,6 +490,8 @@ class Spanish(LanguageAnalyzer):
     code = 'es'
     has_stopwords = True
     has_stemming = True
+
+    _stemmer_filter_language = 'light_spanish'
 
 
 class Swedish(LanguageAnalyzer):
