@@ -102,13 +102,13 @@ class LanguageAnalyzer(ABC):
 
     In most cases, Elasticsearch's `standard` analyzer is appropriate here, but you
     can use a custom analyzer here if needed. Keep in mind: this analyzer should function
-    as the "minimum" level of analysis. It should be transparent and unintrusive
-    to users. If you want more "heavy" analysis, you can always add extra multifields.
+    as the 'minimum' level of analysis. It should be transparent and unintrusive
+    to users. If you want more 'heavy' analysis, you can always add extra multifields.
     '''
 
     def _standard_analyzer(self) -> Optional[Dict]:
         '''
-        Specification for the customised "standard" analyzer for text fields, if any.
+        Specification for the customised 'standard' analyzer for text fields, if any.
         '''
         return None
 
@@ -138,7 +138,7 @@ class LanguageAnalyzer(ABC):
     @property
     def clean_analyzer_name(self) -> Optional[str]:
         '''
-        Name of the "clean" analyzer (which removes stopwords).
+        Name of the 'clean' analyzer (which removes stopwords).
         '''
         if self.has_stopwords:
             return analyzer_name('clean', self.code)
@@ -146,7 +146,7 @@ class LanguageAnalyzer(ABC):
 
     def _clean_analyzer(self) -> Optional[Dict]:
         '''
-        Specification of the "clean" analyzer (which removes stopwords), if supported.
+        Specification of the 'clean' analyzer (which removes stopwords), if supported.
 
         Will be used in a 'clean' multifield.
         '''
@@ -168,7 +168,7 @@ class LanguageAnalyzer(ABC):
     @property
     def _stemmer_filter_language(self) -> Optional[str]:
         '''
-        Value for "language" parameter for the stemmer filter, if supported.
+        Value for 'language' parameter for the stemmer filter, if supported.
 
         See https://www.elastic.co/guide/en/elasticsearch/reference/8.17/analysis-stemmer-tokenfilter.html#analysis-stemmer-tokenfilter-language-parm
         '''
@@ -178,14 +178,14 @@ class LanguageAnalyzer(ABC):
     @property
     def stemmed_analyzer_name(self) -> Optional[str]:
         '''
-        Name of the "stemmed" analyzer, if supported.
+        Name of the 'stemmed' analyzer, if supported.
         '''
         if self.has_stemming:
             return analyzer_name('stemmed', self.code)
 
     def _stemmed_analyzer(self) -> Optional[Dict]:
         '''
-        Specification for "stemmed" analyzer, if supported.
+        Specification for 'stemmed' analyzer, if supported.
 
         This removes stopwords and stems tokens. Will be used in a 'stemmed' multifield.
         '''
@@ -281,6 +281,28 @@ class English(LanguageAnalyzer):
     has_stopwords = True
     has_stemming = True
 
+    def token_filters(self):
+        filters = super().token_filters()
+        filters['stemmer_possessive_en'] = {
+            'type': 'stemmer',
+            'language': 'possessive_english'
+        }
+
+    standard_analyzer_name = 'standard_en'
+
+    def _standard_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'filter': ['stemmer_possessive_en', 'lowercase']
+        }
+
+    def _clean_analyzer(self):
+        analyzer = super()._clean_analyzer()
+        analyzer['filter'] = [
+            'stemmer_possessive_en', 'lowercase', self._stopwords_filter_name
+        ]
+        return analyzer
+
 
 class Estonian(LanguageAnalyzer):
     code = 'et'
@@ -347,12 +369,72 @@ class German(LanguageAnalyzer):
         return analyzer
 
 
+class Greek(LanguageAnalyzer):
+    code = 'el'
+    has_stopwords = True
+    has_stemming = True
+
+    def token_filters(self):
+        filters = super().token_filters()
+        filters['lowercase_tr'] = self._lowercase_filter()
+        return filters
+
+    def _lowercase_filter(self):
+        return {'type': 'lowercase', 'language': 'turkish'}
+
+    standard_analyzer_name = 'standard_el'
+
+    def _standard_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'filter': ['lowercase_el']
+        }
+
+    def _clean_analyzer(self):
+        analyzer = super()._clean_analyzer()
+        analyzer['filter'] = ['lowercase_el', self._stopwords_filter_name]
+        return analyzer
+
+
+class Hebrew(LanguageAnalyzer):
+    code = 'he'
+    has_stopwords = True
+    has_stemming = False
+
+
 class Icelandic(LanguageAnalyzer):
     code = 'is'
     has_stopwords = True
     has_stemming = False
 
     _stopwords_source = 'supplementary'
+
+
+class Italian(LanguageAnalyzer):
+    code = 'it'
+    has_stopwords = True
+    has_stemming = True
+
+    def token_filters(self):
+        filters = super().token_filters()
+        filters['italian_elision'] = {
+            'type': 'elision',
+            'articles': [
+                'c', 'l', 'all', 'dall', 'dell', 'nell', 'sull', 'coll', 'pell', 'gl',
+                'agl', 'dagl', 'degl', 'negl', 'sugl', 'un', 'm', 't', 's', 'v', 'd',
+            ],
+            'articles_case': True,
+        }
+        return filters
+
+    def _clean_analyzer(self):
+        analyzer = super()._clean_analyzer()
+        analyzer['filter'] = [
+            'italian_elision', 'lowercase', self._stopwords_filter_name
+        ]
+        return analyzer
+
+    _stemmer_filter_language = 'light_italian'
 
 
 class Latvian(LanguageAnalyzer):
@@ -365,6 +447,12 @@ class Latvian(LanguageAnalyzer):
 
 class Norwegian(LanguageAnalyzer):
     code = 'no'
+    has_stopwords = True
+    has_stemming = True
+
+
+class Portuguese(LanguageAnalyzer):
+    code = 'pt'
     has_stopwords = True
     has_stemming = True
 
@@ -391,10 +479,55 @@ class Slovenian(LanguageAnalyzer):
     _stopwords_source = 'supplementary'
 
 
+class Spanish(LanguageAnalyzer):
+    code = 'es'
+    has_stopwords = True
+    has_stemming = True
+
+
 class Swedish(LanguageAnalyzer):
     code = 'sv'
     has_stopwords = True
     has_stemming = True
+
+
+class Turkish(LanguageAnalyzer):
+    code = 'tr'
+    has_stopwords = True
+    has_stemming = True
+
+    def token_filters(self):
+        filters = super().token_filters()
+        filters['lowercase_tr'] = self._lowercase_filter()
+        return filters
+
+    standard_analyzer_name = 'standard_tr'
+
+    def _lowercase_filter(self):
+        return {'type': 'lowercase', 'language': 'turkish'}
+
+    def _standard_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'filter': ['lowercase_tr']
+        }
+
+    def _clean_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'filter': ['lowercase_tr', self._stopwords_filter_name]
+        }
+
+    def _stemmed_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'filter': [
+                'apostrophe',
+                'lowercase_tr',
+                self._stopwords_filter_name,
+                self._stemmer_filter_name,
+            ],
+        }
 
 
 class Ukranian(LanguageAnalyzer):
@@ -421,12 +554,18 @@ LANGUAGES: List[Type[LanguageAnalyzer]] = [
     French,
     Galician,
     German,
+    Greek,
+    Hebrew,
     Icelandic,
+    Italian,
     Latvian,
     Norwegian,
+    Portuguese,
     Serbian,
+    Spanish,
     Swedish,
     Slovenian,
+    Turkish,
     Ukranian,
 ]
 

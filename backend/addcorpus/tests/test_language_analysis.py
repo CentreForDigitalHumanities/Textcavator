@@ -1,3 +1,4 @@
+import pytest
 from addcorpus.language_analysis import get_analyzer, LANGUAGES
 
 def test_get_analyzer():
@@ -8,21 +9,21 @@ def test_get_analyzer():
     assert get_analyzer('af').code != 'nl' # this match is not close enough
 
 
-def test_language_analyzers_no_errors():
+@pytest.mark.parametrize('analyzer_class', LANGUAGES)
+def test_language_analyzers_no_errors(analyzer_class):
     '''
     Check that all analyzers can at least be constructed, and their public
     methods can be called without runtime errors.
     '''
 
-    for analyzer_class in LANGUAGES:
-        analyzer = analyzer_class()
-        analyzer.code
-        analyzer.has_stopwords
-        analyzer.has_stemming
-        analyzer.char_filters()
-        analyzer.token_filters()
-        analyzer.analyzers()
-        analyzer.standard_analyzer_name
-        analyzer.clean_analyzer_name
-        analyzer.stemmed_analyzer_name
-        analyzer.stopwords()
+    analyzer = analyzer_class()
+    analyzer.code
+    analyzer.has_stopwords
+    analyzer.has_stemming
+    analyzer.char_filters()
+    analyzer.token_filters()
+    analyzer.analyzers()
+    analyzer.standard_analyzer_name
+    analyzer.clean_analyzer_name
+    analyzer.stemmed_analyzer_name
+    analyzer.stopwords()
