@@ -333,7 +333,7 @@ class French(LanguageAnalyzer):
                 'l', 'm', 't', 'qu', 'n', 's', 'j', 'd', 'c', 'jusqu', 'quoiqu',
                 'lorsqu', 'puisqu'
             ]
-        },
+        }
         return filters
 
     def _clean_analyzer(self):
@@ -380,11 +380,11 @@ class Greek(LanguageAnalyzer):
 
     def token_filters(self):
         filters = super().token_filters()
-        filters['lowercase_tr'] = self._lowercase_filter()
+        filters['lowercase_el'] = self._lowercase_filter()
         return filters
 
     def _lowercase_filter(self):
-        return {'type': 'lowercase', 'language': 'turkish'}
+        return {'type': 'lowercase', 'language': 'greek'}
 
     standard_analyzer_name = 'standard_el'
 
