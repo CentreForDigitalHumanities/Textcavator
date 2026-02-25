@@ -440,6 +440,53 @@ class Icelandic(LanguageAnalyzer):
     _stopwords_source = 'supplementary'
 
 
+class Irish(LanguageAnalyzer):
+    code = 'ga'
+    has_stopwords = True
+    has_stemming = True
+
+
+    def token_filters(self):
+        filters = super().token_filters()
+        filters.update({
+            'hyphenation_ga': {
+                'type': 'stop',
+                'stopwords': ['h', 'n', 't'],
+                'ignore_case': True,
+            },
+            'elision_ga': {
+                'type': 'elision',
+                'articles': ['d', 'm', 'b'],
+                'articles_case': True,
+            },
+            'lowercase_ga': {
+                'type': 'lowercase',
+                'language': 'irish',
+            }
+        })
+        return filters
+
+    standard_analyzer_name = 'standard_ga'
+
+    def _standard_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'filter': ['lowercase_ga']
+        }
+
+    _stopwords_source = 'supplementary'
+
+    def _clean_analyzer(self):
+        analyzer = super()._clean_analyzer()
+        analyzer['filter'] = [
+            'hyphenation_ga',
+            'elision_ga',
+            'lowercase_ga',
+            self._stopwords_filter_name
+        ]
+        return analyzer
+
+
 class Italian(LanguageAnalyzer):
     code = 'it'
     has_stopwords = True
@@ -609,6 +656,7 @@ LANGUAGES: List[Type[LanguageAnalyzer]] = [
     Greek,
     Hebrew,
     Icelandic,
+    Irish,
     Italian,
     Latvian,
     NorwegianBokmal,

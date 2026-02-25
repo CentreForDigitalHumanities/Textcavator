@@ -79,6 +79,13 @@ analyzer_test_cases = [
         'stemmed': ['μουσ', 'τραγουδ', 'θυμ', 'ξακουστ', 'αχιλε', 'ερμ'],
     },
     {
+        'analyzer': la.Irish,
+        'input': 'Feacht n-aon d\'Ailill is do Mhéabh, ar a dheargadh a ríleapa dóibh i Ráth Cruachan Chonnacht, gur tharla comhrá ceannadhairte eatarthu.',
+        'standard': ['feacht', 'n', 'aon', 'd\'ailill', 'is', 'do', 'mhéabh', 'ar', 'a', 'dheargadh', 'a', 'ríleapa', 'dóibh', 'i', 'ráth', 'cruachan', 'chonnacht', 'gur', 'tharla', 'comhrá', 'ceannadhairte', 'eatarthu'],
+        'clean': ['feacht', 'ailill', 'mhéabh', 'dheargadh', 'ríleapa', 'dóibh', 'ráth', 'cruachan', 'chonnacht', 'tharla', 'comhrá', 'ceannadhairte', 'eatarthu'],
+        'stemmed': ['feacht', 'ailill', 'méabh', 'dearg', 'ríleapa', 'dóibh', 'ráth', 'cruachan', 'connacht', 'tarla', 'comhrá', 'ceannadhairte', 'eatarthu'],
+    },
+    {
         'analyzer': la.Italian,
         'input': 'Nel mezzo del cammin di nostra vita mi ritrovai per una selva oscura, ché la diritta via era smarrita.',
         'standard': ['nel', 'mezzo', 'del', 'cammin', 'di', 'nostra', 'vita', 'mi', 'ritrovai', 'per', 'una', 'selva', 'oscura', 'ché', 'la', 'diritta', 'via', 'era', 'smarrita',],
