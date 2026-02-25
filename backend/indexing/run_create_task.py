@@ -21,9 +21,7 @@ def make_es_settings(corpus: Corpus) -> Dict:
         corpus_def = load_corpus_definition(corpus.name)
         return corpus_def.es_settings
     return es_settings(
-        languages=corpus.configuration.languages,
-        stemming_analysis=True,
-        stopword_analysis=True,
+        languages=corpus.configuration.languages
     )
 
 

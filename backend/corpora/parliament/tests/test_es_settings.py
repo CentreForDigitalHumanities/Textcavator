@@ -1,9 +1,9 @@
-import addcorpus.es_settings as es_settings
 import pytest
 import os
 import shutil
+from addcorpus import language_analysis
 
-def test_stopwords(clean_nltk_data_directory, settings, connected_to_internet):
+def test_stopwords(clean_nltk_data_directory, settings):
     """
     Check that stopwords results are valid and all languages are included
     """
@@ -44,7 +44,8 @@ def test_stopwords(clean_nltk_data_directory, settings, connected_to_internet):
     ]
 
     for case in cases:
-        stopwords = es_settings.get_nltk_stopwords(case['language'])
+        analyzer = language_analysis.get_analyzer(case['language'])
+        stopwords = analyzer.stopwords()
         for word in case['stopwords']:
             assert word in stopwords
 
