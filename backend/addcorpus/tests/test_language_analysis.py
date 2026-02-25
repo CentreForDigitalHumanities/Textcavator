@@ -1,6 +1,11 @@
-import pytest
 from typing import Type
+
+import pytest
+from elasticsearch import Elasticsearch
+
 from addcorpus.language_analysis import get_analyzer, LANGUAGES, LanguageAnalyzer
+import addcorpus.language_analysis as la
+from addcorpus.es_settings import es_settings
 
 def test_get_analyzer():
     assert get_analyzer('nl').code == 'nl'
@@ -36,3 +41,51 @@ def test_language_analyzer_valid(analyzer_class: Type[LanguageAnalyzer]):
     if analyzer.has_stemming:
         assert analyzer.stemmed_analyzer_name
         assert analyzer.analyzers()[analyzer.stemmed_analyzer_name]
+
+analyzer_test_cases = [
+    {
+        'analyzer': la.English,
+        'input': 'Shall I compare thee to a summer\'s day?',
+        'standard': ['shall', 'i', 'compare', 'thee', 'to', 'a', 'summer', 'day'],
+        'clean': ['shall', 'compare', 'thee', 'summer', 'day'],
+        'stemmed': ['shall', 'compar', 'thee', 'summer', 'dai'],
+    },
+    {
+        'analyzer': la.Dutch,
+        'input': 'Ik ben makelaar in koffie, en woon op de Lauriergracht, N° 37.',
+        'standard': ['ik', 'ben', 'makelaar', 'in', 'koffie', 'en', 'woon', 'op', 'de', 'lauriergracht', 'n', '37'],
+        'clean': ['makelaar', 'koffie', 'woon', 'lauriergracht', 'n'],
+        'stemmed': ['makelar', 'koffie', 'won', 'lauriergracht', 'n'],
+    },
+]
+
+def tokens(analyzed_response):
+    return [token['token'] for token in analyzed_response['tokens']]
+
+@pytest.mark.parametrize('data', analyzer_test_cases)
+def test_language_analyzer_output(es_client: Elasticsearch, test_index_cleanup, data):
+    analyzer: LanguageAnalyzer = data['analyzer']()
+
+    index_name = 'test-analyzers'
+    settings = es_settings([analyzer.code])
+    es_client.indices.create(index=index_name, settings=settings)
+
+    text = data['input']
+
+    def analyzer_output(analyzer_name):
+        response = es_client.indices.analyze(
+            index=index_name,
+            analyzer=analyzer_name,
+            text=text,
+        )
+        return tokens(response.body)
+
+    assert analyzer_output(analyzer.standard_analyzer_name) == data['standard']
+
+    if 'clean' in data:
+        assert analyzer_output(analyzer.clean_analyzer_name) == data['clean']
+
+    if 'stemmed' in data:
+        assert analyzer_output(analyzer.stemmed_analyzer_name) == data['stemmed']
+
+    es_client.indices.delete(index=index_name)

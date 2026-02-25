@@ -287,6 +287,7 @@ class English(LanguageAnalyzer):
             'type': 'stemmer',
             'language': 'possessive_english'
         }
+        return filters
 
     standard_analyzer_name = 'standard_en'
 
