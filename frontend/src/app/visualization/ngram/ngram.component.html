@@ -3,10 +3,35 @@
     <div class="columns is-multiline">
         <div class="column is-one-third">
             <div class="field">
+                <label class="label" iaBalloon="view ngrams (phrases) or collocates (loose words)"
+                    iaBalloonPosition="up-left" iaBalloonLength="fit"
+                    id="label-mode">
+                    Mode
+                </label>
+                <div class="control">
+                    <ia-dropdown [value]="currentModeOption" labelledBy="label-mode"
+                        (onChange)="onParameterChange('mode', $event.value)">
+                        <span iaDropdownLabel>{{currentModeOption?.label}}</span>
+                        <div iaDropdownMenu>
+                            <a *ngFor="let option of modeOptions"
+                                iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </a>
+                        </div>
+                    </ia-dropdown>
+                </div>
+            </div>
+        </div>
+        <div class="column is-one-third">
+            <div class="field">
                 <label class="label" iaBalloon="search for bigrams (2 words) or trigrams (3 words)"
                     iaBalloonPosition="up-left" iaBalloonLength="fit"
                     id="label-size">
-                    Length of n-gram
+                    @if (currentSettings.mode === 'ngrams') {
+                        Length of n-gram
+                    } @else {
+                        Maximum distance
+                    }
                 </label>
                 <div class="control">
                     <ia-dropdown [value]="currentSizeOption" labelledBy="label-size"
@@ -22,27 +47,29 @@
                 </div>
             </div>
         </div>
-        <div class="column is-one-third">
-            <div class="field">
-                <label class="label" iaBalloon="only search n-grams with the search term in the specified position"
-                iaBalloonPosition="up-left" iaBalloonLength="fit"
-                id="label-positions">
-                    Position of search term
-                </label>
-                <div class="control">
-                    <ia-dropdown [value]="currentPositionsOption" labelledBy="label-positions"
-                        (onChange)="onParameterChange('positions', $event.value)">
-                        <span iaDropdownLabel>{{currentPositionsOption?.label}}</span>
-                        <div iaDropdownMenu>
-                            <a *ngFor="let option of positionsOptions"
-                                iaDropdownItem [value]="option">
-                                {{option.label}}
-                            </a>
-                        </div>
-                    </ia-dropdown>
+        @if (currentSettings.mode === 'ngrams') {
+            <div class="column is-one-third">
+                <div class="field">
+                    <label class="label" iaBalloon="only search n-grams with the search term in the specified position"
+                    iaBalloonPosition="up-left" iaBalloonLength="fit"
+                    id="label-positions">
+                        Position of search term
+                    </label>
+                    <div class="control">
+                        <ia-dropdown [value]="currentPositionsOption" labelledBy="label-positions"
+                            (onChange)="onParameterChange('positions', $event.value)">
+                            <span iaDropdownLabel>{{currentPositionsOption?.label}}</span>
+                            <div iaDropdownMenu>
+                                <a *ngFor="let option of positionsOptions"
+                                    iaDropdownItem [value]="option">
+                                    {{option.label}}
+                                </a>
+                            </div>
+                        </ia-dropdown>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
         <div class="column is-one-third">
             <div class="field">
                 <label class="label" iaBalloon="divide by the average frequency of the words in the n-gram; favours words that are otherwise rare"
