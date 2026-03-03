@@ -1,36 +1,18 @@
 from collections import Counter
-from sklearn.feature_extraction.text import CountVectorizer
+from typing import Iterable, Dict
 
-from addcorpus.models import Corpus
-from addcorpus.es_settings import get_nltk_stopwords
+from visualization.termvectors import request_termvectors_batched, token_counts
 from es import download as download
+from es.client import elasticsearch
 
-def field_stopwords(corpus_name, field_name):
-    corpus = Corpus.objects.get(name=corpus_name)
-    field = corpus.configuration.fields.get(name=field_name)
-    if field.language and field.language != 'dynamic':
-        try:
-            return get_nltk_stopwords(field.language)
-        except:
-            return []
-    else:
-        return []
+def make_wordcloud_data(hits: Iterable[Dict], field, corpus_name):
+    counts = Counter()
 
-def make_wordcloud_data(documents, field, corpus):
-    texts = []
-    for document in documents:
-        content = document['_source'][field]
-        if isinstance(content, str) and len(content):
-            texts.append(content)
-        if isinstance(content, list) and len(content):
-            texts.append('\n'.join(content))
+    client = elasticsearch(corpus_name)
+    docs = request_termvectors_batched(hits, client, False, [field])
+    for _, doc in docs:
+        counts.update(token_counts(doc, field))
 
-    stopwords = field_stopwords(corpus, field)
-    cv = CountVectorizer(max_features=100, max_df=0.7, token_pattern=r'(?u)\b[^0-9\s]{3,30}\b', stop_words=stopwords)
-    cvtexts = cv.fit_transform(texts)
-    counts = cvtexts.sum(axis=0).A1
-    words = list(cv.get_feature_names_out())
-    freq_distribution = Counter(dict(zip(words, counts)))
-    output = [{'key': word, 'doc_count': int(freq_distribution[word])} for word in words]
+    output = [{'key': word, 'doc_count': freq} for word, freq in counts.items()]
     return output
 
