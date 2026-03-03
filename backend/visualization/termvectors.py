@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Optional, Iterable
+from typing import List, Dict, Any, Optional, Iterable, Tuple
 import re
 import itertools
 
@@ -11,7 +11,7 @@ from visualization.simple_query_string import collect_terms
 def request_termvectors_batched(
     hits: Iterable[Dict], client: Elasticsearch, term_statistics: bool,
     fields: List[str],
-) -> Iterable[Dict]:
+) -> Iterable[Tuple[Dict, Dict]]:
     '''
     Request term vectors for each hit in search results.
     Uses mtermvectors endpoint to make batched requests.
