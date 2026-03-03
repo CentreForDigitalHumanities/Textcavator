@@ -34,12 +34,9 @@ def get_terms(termvector_result, field: str) -> Optional[Dict[str, Dict]]:
         terms = termvectors[field]['terms']
         return terms
 
-def token_counts(doc: Dict, field: str) -> Dict[str, int]:
+def term_counts(doc: Dict, field: str) -> Dict[str, int]:
     terms = get_terms(doc, field)
-    return {
-        term: data['term_freq']
-        for term, data in terms.items()
-    }
+    return {term: data['term_freq'] for term, data in terms.items()}
 
 def get_tokens(terms: Dict[str, Dict], sort=True) -> List[Dict[str, Any]]:
     if not terms:
