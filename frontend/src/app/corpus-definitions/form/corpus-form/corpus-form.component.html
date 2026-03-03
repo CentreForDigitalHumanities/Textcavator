@@ -64,9 +64,17 @@
 
 <div class="section" *ngIf="nextStep$ | async as nextStep">
     <div class="container is-readable">
-        <button class="button" (click)="toNext()" [disabled]="nextStep.disabled">
-            <span class="icon"><fa-icon [icon]="actionIcons.next" aria-hidden="true" /></span>
-            <span>{{nextStep.label}}</span>
-        </button>
+        @if (nextStep.disabled) {
+            <div class="message">
+                <p class="message-body">
+                    This step is not yet complete.
+                </p>
+            </div>
+        } @else {
+            <button class="button" (click)="toNext()">
+                <span class="icon"><fa-icon [icon]="actionIcons.next" aria-hidden="true" /></span>
+                <span>{{nextStep.label}}</span>
+            </button>
+        }
     </div>
 </div>

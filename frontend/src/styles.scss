@@ -291,6 +291,14 @@ button {
     }
 }
 
+.p-steps-item.p-disabled {
+    --p-text-muted-color: var(--bulma-text-weak);
+
+    .p-steps-item-number, .p-steps-item-label {
+        color: var(--p-text-muted-color) !important;
+    }
+}
+
 // vega
 
 .vega-bindings {
