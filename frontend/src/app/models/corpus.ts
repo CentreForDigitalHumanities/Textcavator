@@ -21,7 +21,6 @@ export class Corpus {
          * Description of the corpus to show to users.
          */
         public description: string,
-        public index: string,
         public fields: CorpusField[],
         public minYear: number,
         public maxYear: number,
@@ -64,8 +63,6 @@ export interface APICorpus {
     category: string;
     description: string;
     document_context:APIDocumentContext;
-    es_alias: string;
-    es_index: string;
     languages: string[];
     min_year: number;
     max_year: number;

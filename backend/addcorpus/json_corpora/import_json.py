@@ -1,10 +1,11 @@
 from typing import List, Dict, Iterable
 
+from langcodes import standardize_tag
+
 from addcorpus.models import Field
 from addcorpus.json_corpora.utils import get_path
 from addcorpus import es_mappings
 from addcorpus.constants import VisualizationType
-from django.conf import settings
 from addcorpus.json_corpora.constants import DEFAULT_CSV_DELIMITER
 
 def import_json_corpus(data: Dict) -> Dict:
@@ -15,19 +16,12 @@ def import_json_corpus(data: Dict) -> Dict:
         'configuration': _parse_configuration(data)
     }
 
-def create_index_name(corpus_name: str) -> str:
-    prefix = settings.SERVERS['default'].get('index_prefix', None)
-    if prefix:
-        return f'{prefix}-{corpus_name}'
-    return corpus_name
-
 
 def _parse_configuration(data: Dict) -> Dict:
     return {
         'title': get_path(data, 'meta', 'title'),
         'description': get_path(data, 'meta', 'description'),
         'category': get_path(data, 'meta', 'category'),
-        'es_index': create_index_name(get_path(data, 'name')),
         'languages': get_path(data, 'meta', 'languages'),
         'min_year': get_path(data, 'meta', 'date_range', 'min'),
         'max_year': get_path(data, 'meta', 'date_range', 'max'),
@@ -101,9 +95,12 @@ def _parse_text_content_field(field_data: Dict) -> Field:
 
     visualize = get_path(field_data, 'options', 'visualize')
     if visualize:
-        parsed['visualizations'] = [
-            VisualizationType.WORDCLOUD.value
-        ]
+        # add wordcloud, but make an exception for languages where the wordcloud's
+        # tokenisation does not work.
+        if not (language and standardize_tag(language, macro=True) in ['zh', 'ja', 'ko']):
+            parsed['visualizations'] = [
+                VisualizationType.WORDCLOUD.value
+            ]
 
     return parsed
 

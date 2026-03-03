@@ -6,7 +6,7 @@ import sys
 from elastic_transport import ConnectionError
 
 from es.client import elasticsearch
-from es.search import total_hits
+from es.search import total_hits, get_index
 from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from addcorpus.models import Corpus, CorpusConfiguration, Field, CorpusDocumentationPage
 from addcorpus.python_corpora.load_corpus import (
@@ -172,7 +172,7 @@ def _save_has_named_entities(configuration: CorpusConfiguration):
         client = elasticsearch(configuration.corpus.name)
         try:
             ner_exists = client.search(
-                index=configuration.es_index,
+                index=get_index(configuration.corpus.name),
                 query={"exists": {"field": "*:ner-kw"}},
                 size=0
             )

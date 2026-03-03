@@ -73,7 +73,7 @@
 
 <ia-confirm-modal #confirmDelete
     actionText="Delete corpus" actionButtonClass="is-danger" [icon]="actionIcons.delete"
-    [handleAsync]="handleDelete" (result)="onDeleteComplete()">
+    [handleAsync]="handleDelete" (accept)="onDeleteComplete()">
     @let corpus = confirmDelete.data?.data;
     @if (corpus) {
         <p>

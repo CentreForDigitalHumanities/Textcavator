@@ -24,7 +24,6 @@ class AnnotatedMockCorpus(CSVCorpusDefinition):
     description = 'Test corpus with Named Entity annotations'
     min_date = datetime(year=1814, month=1, day=1)
     max_date = datetime(year=2000, month=12, day=31)
-    es_index = 'test-annotated-mock-corpus'
     data_directory = os.path.join(here, 'source_data')
     languages = ['nl']
     category = 'oration'

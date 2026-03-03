@@ -4,9 +4,6 @@
 export const MockCorpusResponse = [
     {
         name: 'test1',
-        server_name: 'default',
-        es_index: 'test1',
-        overview_fields: [],
         fields: [{
             displayName: 'Test Field', name: 'test_field'
         }],
@@ -15,9 +12,6 @@ export const MockCorpusResponse = [
     },
     {
         name: 'test2',
-        server_name: 'default',
-        es_index: 'test2',
-        overview_fields: [],
         fields: [],
         max_year: 2010,
         min_year: 1785,

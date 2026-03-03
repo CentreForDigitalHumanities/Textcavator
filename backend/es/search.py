@@ -1,17 +1,24 @@
 from typing import Dict
-from es.client import elasticsearch
-from addcorpus.models import CorpusConfiguration
+from es.client import elasticsearch, server_for_corpus
+from addcorpus.models import Corpus
+from django.conf import settings
 
-def get_index(corpus_name):
-    corpus_conf = CorpusConfiguration.objects.get(corpus__name=corpus_name)
-    return corpus_conf.es_index
+def get_index(corpus_name: str) -> str:
+    corpus = Corpus.objects.get(name=corpus_name)
+    if corpus.configuration.es_index:
+        return corpus.configuration.es_index
 
-def search(corpus_name, query_model: Dict = {}, client = None, **kwargs):
+    config = settings.SERVERS[server_for_corpus(corpus.name)]
+    prefix = config.get('index_prefix', None)
+    name = corpus.name if corpus.has_python_definition else f'custom[{corpus.pk}]'
+    return f'{prefix}-{name}' if prefix else name
+
+def search(corpus_name: str, query_model: Dict = {}, client = None, **kwargs):
     """
     Make a basic search request.
 
     Parameters:
-    - `corpus`: the name of the corpus in config
+    - `corpus`: name of the Corpus object
     - `query_model`: a query dict (optional)
     - `client`: an elasticsearch client (optional). Provide this if there is already
     and active client in the session. If left out, a new client will be instantiated.
