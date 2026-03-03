@@ -118,7 +118,7 @@ def count_matches_in_documents(
     hits: Iterable[Dict], prefix_query: Optional[str], search_fields, es_client
 ) -> Iterable[int]:
     '''
-    Count matches of a query in a document.
+    Count matches of a query per document.
 
     Will use the explain API if possible, which is faster.
 
@@ -140,9 +140,9 @@ def count_matches_in_documents(
             # accurate if the query includes certain other operators)
             rest_matches = count_matches_from_explanation(hit)
             yield prefix_matches + rest_matches
-
-    for hit in hits:
-        yield count_matches_from_explanation(hit)
+    else:
+        for hit in hits:
+            yield count_matches_from_explanation(hit)
 
 
 def count_matches_from_explanation(hit) -> int:
