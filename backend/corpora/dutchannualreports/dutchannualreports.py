@@ -4,22 +4,22 @@ from datetime import datetime
 from django.conf import settings
 
 from api.utils import find_media_file
+
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
 from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from media.image_processing import get_pdf_info, retrieve_pdf, pdf_pages, build_partial_pdf
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
-from addcorpus.es_settings import es_settings
-from corpora.dutchannualreports.old_data import DutchAnnualReportsOldDataReader
-
+from addcorpus.es_settings import es_settings as make_es_settings
 from media.media_url import media_url
+from corpora.dutchannualreports.combined import ConcatReader
+from corpora.dutchannualreports.old_data import DutchAnnualReportsOldDataReader
+from corpora.dutchannualreports.new_data import NewDataReader
 
-class DutchAnnualReports(CorpusDefinition):
-    """ Alto XML corpus of Dutch annual reports. """
-
+class DutchAnnualReports(CorpusDefinition, ConcatReader):
     title = "Dutch Annual Reports"
-    description = "Annual reports of Dutch financial and non-financial institutes"
+    description = "Annual reports of Dutch companies listed in the Amsterdam stock exchange"
     min_date = datetime(year=1957, month=1, day=1)
-    max_date = datetime(year=2008, month=12, day=31)
+    max_date = datetime(year=2024, month=12, day=31)
     data_directory = settings.DUTCHANNUALREPORTS_DATA
     es_index = getattr(settings, 'DUTCHANNUALREPORTS_ES_INDEX', 'dutchannualreports')
     image = 'dutchannualreports.jpg'
@@ -27,31 +27,17 @@ class DutchAnnualReports(CorpusDefinition):
     description_page = 'dutchannualreports.md'
     allow_image_download = getattr(settings, 'DUTCHANNUALREPORTS_ALLOW_IMAGE_DOWNLOAD', True)
     word_model_path = getattr(settings, 'DUTCHANNUALREPORTS_WM', None)
-    es_settings = es_settings('nl', stopword_analysis=True, stemming_analysis=True)
+    es_settings = make_es_settings()
 
-    languages = ['nl']
+    languages = ['nl', 'en']
     category = 'finance'
 
     mimetype = 'application/pdf'
 
-    readers = [
-        DutchAnnualReportsOldDataReader(),
+    reader_classes = [
+        DutchAnnualReportsOldDataReader,
+        NewDataReader,
     ]
-
-    def sources(self, **kwargs):
-        for i, reader in enumerate(self.readers):
-            for source, metadata in reader.sources(**kwargs):
-                meta = metadata & { 'reader': i }
-                yield source, meta
-
-    def source2dicts(self, source, **kwargs):
-        _, metadata = source
-
-        reader = self.readers[metadata['reader']]
-        docs = reader.source2dicts(source)
-
-        for doc in docs:
-            yield {field.name: doc.get(field.name, None) for field in self.fields}
 
     fields = [
         FieldDefinition(
@@ -110,14 +96,13 @@ class DutchAnnualReports(CorpusDefinition):
         ),
         FieldDefinition(
             name='content',
-            es_mapping=main_content_mapping(True, True, True, 'nl'),
+            es_mapping=main_content_mapping(True),
             display_name='Content',
             display_type='text_content',
             visualizations=['wordcloud'],
             description='Text content of the page.',
             results_overview=True,
             search_field_core=True,
-            language='nl',
         ),
         FieldDefinition(
             name='file_path',
