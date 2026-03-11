@@ -132,13 +132,12 @@ class DutchAnnualReports(ConcatReader, CorpusDefinition):
     def request_media(self, document, corpus_name):
         image_path = document['fieldValues']['image_path']
         pdf_info = get_pdf_info(op.join(self.data_directory, image_path))
-        pages_returned = 5 #number of pages that is displayed. must be odd number.
          #the page corresponding to the document
-        home_page = int(document['fieldValues']['page'])
-        pages, home_page_index = pdf_pages(pdf_info['all_pages'], pages_returned, home_page)
+        home_page = int(document['fieldValues']['page']) - 1 # values are 1-indexed in doc
+        pages = pdf_pages(home_page, pdf_info['num_pages'])
         pdf_info = {
             "pageNumbers": [p for p in pages], #change from 0-indexed to real page
-            "homePageIndex": home_page_index+1, #change from 0-indexed to real page
+            "homePageIndex": home_page + 1, #change from 0-indexed to real page
             "fileName": pdf_info['filename'],
             "fileSize": pdf_info['filesize']
         }

@@ -4,28 +4,19 @@ from io import BytesIO
 from os.path import getsize, split
 
 
-def pdf_pages(all_pages, pages_returned, home_page):
+def pdf_pages(page_index: int, total_pages: int, window_size: int = 2):
     '''
-    Decide which pages should be returned, and the index of the home page in the resulting list
+    Selects indices of pages surrounding the target pages.
+
+    Parameters:
+        page_index: zero-based index of the target page
+        total_pages: total number of pages in the document
+        window_size: number of pages to "pad" the target document. 2 pages (default)
+            means 2 pages on either side, if available.
     '''
-    context_radius = int((pages_returned - 1) /
-                         2)  # the number of pages before and after the initial
-    # the page is within context_radius of the beginning of the pdf:
-    if (home_page - context_radius) <= 0:
-        pages = all_pages[:home_page+context_radius+1]
-        home_page_index = pages.index(home_page)
-
-    # the page is within context_radius of the end of the pdf:
-    elif (home_page + context_radius) >= len(all_pages):
-        pages = all_pages[home_page-context_radius:]
-        home_page_index = pages.index(home_page)
-
-    # normal case:
-    else:
-        pages = all_pages[(home_page-context_radius):(home_page+context_radius+1)]
-        home_page_index = context_radius
-
-    return pages, home_page_index
+    start = max(0, page_index - window_size)
+    end = min(total_pages - 1, page_index + window_size)
+    return list(range(start, end + 1))
 
 
 def build_partial_pdf(pages, input_pdf):
@@ -63,7 +54,8 @@ def get_pdf_info(path):
     info = {
         'filename': title if title else filename,
         'filesize': sizeof_fmt(getsize(path)),
-        'all_pages': list(range(0, num_pages))
+        'all_pages': list(range(0, num_pages)),
+        'num_pages': num_pages,
     }
     return info
 
