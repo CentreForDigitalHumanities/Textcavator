@@ -1,4 +1,3 @@
-import os.path as op
 from datetime import datetime
 
 from django.conf import settings
@@ -20,7 +19,11 @@ class DutchAnnualReports(ConcatReader, CorpusDefinition):
     description = "Annual reports of Dutch companies listed in the Amsterdam stock exchange"
     min_date = datetime(year=1957, month=1, day=1)
     max_date = datetime(year=2024, month=12, day=31)
-    data_directory = settings.DUTCHANNUALREPORTS_DATA
+
+    @property
+    def data_directory(self):
+        return settings.DUTCHANNUALREPORTS_DATA
+
     es_index = getattr(settings, 'DUTCHANNUALREPORTS_ES_INDEX', 'dutchannualreports')
     image = 'dutchannualreports.jpg'
     scan_image_type = getattr(settings, 'DUTCHANNUALREPORTS_SCAN_IMAGE_TYPE', 'application/pdf')
@@ -131,7 +134,8 @@ class DutchAnnualReports(ConcatReader, CorpusDefinition):
 
     def request_media(self, document, corpus_name):
         image_path = document['fieldValues']['image_path']
-        pdf_info = get_pdf_info(op.join(self.data_directory, image_path))
+        absolute_path = find_media_file(self.data_directory, image_path, self.mimetype)
+        pdf_info = get_pdf_info(absolute_path)
          #the page corresponding to the document
         home_page = int(document['fieldValues']['page']) - 1 # values are 1-indexed in doc
         pages = pdf_pages(home_page, pdf_info['num_pages'])
