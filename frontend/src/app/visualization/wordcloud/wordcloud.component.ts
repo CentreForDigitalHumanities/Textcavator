@@ -103,7 +103,7 @@ export class WordcloudComponent implements OnChanges, OnDestroy {
             const options = this.chartOptions(result);
 
             if (this.chart) {
-                this.chart.data = data;
+                this.chart.data = data as any;
                 this.chart.update();
             } else {
                 this.chart = new WordCloudChart('wordcloud', { data, options });
