@@ -3,8 +3,6 @@ import os
 from rest_framework.exceptions import ParseError
 from django.conf import settings
 
-from addcorpus.models import Corpus
-
 def check_json_keys(request, keys):
     '''
     Check that each key in keys is present in request.data
@@ -19,7 +17,8 @@ def safe_path_join(base_path, suffix):
     """A safer alternative to os.path.join() that makes sure the resulting path is
     placed under base_path in the filesystem"""
     path = os.path.abspath(os.path.join(base_path, suffix))
-    if os.path.commonprefix([path, base_path]) != base_path:
+    abs_base = os.path.abspath(base_path)
+    if os.path.commonprefix([path, abs_base]) != abs_base:
         raise FileNotFoundError()
 
     return path
