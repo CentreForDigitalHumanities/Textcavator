@@ -23,7 +23,10 @@ class DutchAnnualReportsOldDataReader(XMLReader):
 
     min_date = datetime(year=1957, month=1, day=1)
     max_date = datetime(year=2008, month=12, day=31)
-    data_directory = settings.DUTCHANNUALREPORTS_DATA
+
+    @property
+    def data_directory(self):
+        return settings.DUTCHANNUALREPORTS_DATA
 
     tag_toplevel = Tag('alto')
     tag_entry = Tag('Page')
