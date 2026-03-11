@@ -21,7 +21,7 @@ def corpus_dir(corpus_name: str) -> str:
     return dirname(getabsfile(corpus.__class__))
 
 
-def load_corpus_definition(corpus_name) -> Type[CorpusDefinition]:
+def load_corpus_definition(corpus_name) -> CorpusDefinition:
     import_path = settings.CORPORA.get(corpus_name)
     return import_string(import_path)()
 
