@@ -4,8 +4,8 @@ Module for "meta-readers" that combine output from other readers. Currently, thi
 just the `ConcatReader`.
 '''
 
-from typing import List, Type
-from ianalyzer_readers.readers.core import Reader, Source
+from typing import List, Type, Tuple, Dict
+from ianalyzer_readers.readers.core import Reader, Source, SourceData
 
 class ConcatReader(Reader):
     '''
@@ -46,3 +46,10 @@ class ConcatReader(Reader):
 
         for doc in docs:
             yield {field.name: doc.get(field.name, None) for field in self.fields}
+
+    def _split_metadata(self, source: Source) -> Tuple[SourceData, Dict]:
+        '''Splits a source into the (unparsed) source object and metadata'''
+        if isinstance(source, tuple) and len(source) == 2:
+            return source
+        else:
+            return source, {}

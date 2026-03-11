@@ -15,7 +15,7 @@ from corpora.dutchannualreports.combined import ConcatReader
 from corpora.dutchannualreports.old_data import DutchAnnualReportsOldDataReader
 from corpora.dutchannualreports.new_data import NewDataReader
 
-class DutchAnnualReports(CorpusDefinition, ConcatReader):
+class DutchAnnualReports(ConcatReader, CorpusDefinition):
     title = "Dutch Annual Reports"
     description = "Annual reports of Dutch companies listed in the Amsterdam stock exchange"
     min_date = datetime(year=1957, month=1, day=1)
