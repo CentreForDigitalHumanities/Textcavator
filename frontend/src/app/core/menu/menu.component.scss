@@ -25,6 +25,7 @@
 
 .navbar-burger {
     color: var(--bulma-primary-invert);
+    flex-shrink: 1;
 }
 
 
@@ -32,8 +33,13 @@
     font-family: utilities.$brand-font;
     font-size: utilities.$size-4;
     margin-right: 0.5em;
+    max-width: 100%;
 }
 
+.app-title {
+    text-wrap: wrap;
+    max-width: 100%;
+}
 
 .app-subtitle {
     font-style: italic;
