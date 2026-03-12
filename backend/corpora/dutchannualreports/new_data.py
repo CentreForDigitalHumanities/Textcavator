@@ -1,7 +1,8 @@
 import os
+import re
 
 from ianalyzer_readers.readers.csv import CSVReader
-from ianalyzer_readers.extract import CSV, Metadata, Order
+from ianalyzer_readers.extract import CSV, Metadata, Order, Combined
 from ianalyzer_readers.readers.core import Field
 from django.conf import settings
 
@@ -44,8 +45,15 @@ class NewDataIndexReader(CSVReader):
             Field(
                 name='company',
                 extractor=CSV('company'),
-            )
+            ),
+            Field(
+                name='company_type',
+                extractor=CSV('sector')
+            ),
         ]
+
+def format_company_id(name: str) -> str:
+    return re.sub('\W+', '_', name).upper()
 
 class NewDataReader(PDFReader):
     def __init__(self, **kwargs):
@@ -75,7 +83,20 @@ class NewDataReader(PDFReader):
             extractor=Metadata('company')
         ),
         Field(
+            name='company_type',
+            extractor=Metadata('company_type')
+        ),
+        Field(
             name='year',
             extractor=Metadata('year')
+        ),
+        Field(
+            name='id',
+            extractor=Combined(
+                Metadata('company', transform=format_company_id),
+                Metadata('year', transform=str),
+                Order(transform=lambda i: str(i + 1)),
+                transform='_'.join,
+            )
         )
     ]

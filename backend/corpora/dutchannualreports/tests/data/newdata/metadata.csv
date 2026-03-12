@@ -1,3 +1,3 @@
-path,filename,format,year,company
-2008/ING 2008.pdf,ING 2008,pdf,2008,ING
-2023/PHILIPS 2023.pdf,PHILIPS 2023,pdf,2023,PHILIPS
+path,filename,format,year,company,sector
+2008/ING 2008.pdf,ING 2008,pdf,2008,ING,Financial
+2023/PHILIPS 2023.pdf,PHILIPS 2023,pdf,2023,PHILIPS,Non-financial

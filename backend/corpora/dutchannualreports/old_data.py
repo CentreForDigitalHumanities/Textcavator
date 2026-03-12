@@ -53,7 +53,7 @@ class DutchAnnualReportsOldDataReader(XMLReader):
             if tail == "Financials":
                 company_type = "Financial"
             elif tail == "Non-Financials":
-                company_type = "Non-Financial"
+                company_type = "Non-financial"
             for filename in filenames:
                 name, extension = op.splitext(filename)
                 full_path = op.join(directory, filename)
