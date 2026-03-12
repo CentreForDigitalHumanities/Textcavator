@@ -4802,24 +4802,24 @@ ng2-pdf-viewer@^10.2.2:
     pdfjs-dist "4.8.69"
     tslib "^2.8.1"
 
-ngx-cookie-service@19.1.0:
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/ngx-cookie-service/-/ngx-cookie-service-19.1.0.tgz#1012f12f66b42f3553605fb560aa1209260c4e94"
-  integrity sha512-EddQiinQ/EicUp4Lg/j0RwTsAJp7FCAGv+Z5dfwll/BoROb7hTnf7Suqbx2xZFNM4YqLXpZfXlAe8zig9cBfhw==
+ngx-cookie-service@^20.1.1:
+  version "20.1.1"
+  resolved "https://registry.yarnpkg.com/ngx-cookie-service/-/ngx-cookie-service-20.1.1.tgz#ea1873f56e7775f7b7a2393735cfdff4db981489"
+  integrity sha512-jGjjIqu+Kt8De6YjDqTQOaUHKB7gYs0eaDuLyXfNhfKnA78lA7D7oWcaIzjkmXhRqTnh2/ex1UHmZHN9MX0yoQ==
   dependencies:
     tslib "^2.8.0"
 
-ngx-matomo-client@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/ngx-matomo-client/-/ngx-matomo-client-7.0.1.tgz#c26647b65e52e67e148d3838ae1f80fc9a4df70a"
-  integrity sha512-xNjGcusxKb/aH2pjeMon8o5iew/rlzYNT14E8oc14tZwwR2fbQW8jBhYn7XXNbfMmsbjoBK+o4xaThmwC7oPpw==
+ngx-matomo-client@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-matomo-client/-/ngx-matomo-client-8.0.0.tgz#1f2aac28e9e0da9b42d313c29919b04b45a1aaec"
+  integrity sha512-ztZankR5dfSjMYBn4n19w5yNJUZvpvTKZot+nvzxMO+0FUHbZz97rsJVBwA2Hg2wv6YvqU2GZ6KSMS4Fz0XoVg==
   dependencies:
     tslib "^2.3.0"
 
-ngx-quill@~27.0.1:
-  version "27.0.2"
-  resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-27.0.2.tgz#d9ab81e1b8eff505dd76dadb70698d3e6e641f01"
-  integrity sha512-oIb8z0HD8JXad/rQRGIpi+YH9GT4KxTQlw2fBp//rajLrUcWvogCrSliPBUBrIxY5PZOYzDD4tCIfOAVTGt5yA==
+ngx-quill@^28.0.2:
+  version "28.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-28.0.2.tgz#f0abc6b80292d5d1455e611a2681993460787ccc"
+  integrity sha512-NL7YzZNoT8G5qWZKXHCIMQff2uVoi8cK3VwFM8RCpFXkc8nMp2moIDMJrF5k9e/xTkQkAQtGgfvbCxRc7su7EA==
   dependencies:
     tslib "^2.3.0"
 
