@@ -3,7 +3,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 from addcorpus.models import Corpus
 from es import download as download
-from addcorpus.language_analysis import get_analyzer
+from addcorpus.language_analyzers import get_analyzer
 
 def field_stopwords(corpus_name, field_name):
     corpus = Corpus.objects.get(name=corpus_name)

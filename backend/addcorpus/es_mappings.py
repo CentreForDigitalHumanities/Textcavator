@@ -1,5 +1,5 @@
 from typing import Dict, Optional
-from addcorpus.language_analysis import get_analyzer
+from addcorpus.language_analyzers import get_analyzer
 
 def primary_mapping_type(es_mapping: Dict) -> str:
     return es_mapping.get('type', None)

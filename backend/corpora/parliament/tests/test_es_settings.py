@@ -1,7 +1,7 @@
 import pytest
 import os
 import shutil
-from addcorpus import language_analysis
+from addcorpus.language_analyzers import get_analyzer
 
 def test_stopwords(clean_nltk_data_directory, settings):
     """
@@ -44,7 +44,7 @@ def test_stopwords(clean_nltk_data_directory, settings):
     ]
 
     for case in cases:
-        analyzer = language_analysis.get_analyzer(case['language'])
+        analyzer = get_analyzer(case['language'])
         stopwords = analyzer.stopwords()
         for word in case['stopwords']:
             assert word in stopwords

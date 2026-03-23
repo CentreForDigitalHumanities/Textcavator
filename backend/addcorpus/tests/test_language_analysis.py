@@ -3,8 +3,9 @@ from typing import Type
 import pytest
 from elasticsearch import Elasticsearch
 
-from addcorpus.language_analysis import get_analyzer, LANGUAGES, LanguageAnalyzer
-import addcorpus.language_analysis as la
+from addcorpus.language_analyzer_base import LanguageAnalyzer
+from addcorpus.language_analyzers import get_analyzer, LANGUAGES
+import addcorpus.language_analyzers as la
 from addcorpus.es_settings import es_settings
 
 def test_get_analyzer():

@@ -27,7 +27,7 @@ Text metadata fields may also use the standard analyzer for the language.
 
 ## Language support
 
-[language_analysis.py](../backend/addcorpus/language_analysis.py) defines text analysis settings per language. Each language configuration is a class that inherits `LanguageAnalyzer`. This means you can override properties/methods as needed to get detailed customisation.
+[language_analyzers.py](../backend/addcorpus/language_analysis.py) defines text analysis settings per language. Each language configuration is a class that inherits `LanguageAnalyzer`. This means you can override properties/methods as needed to get detailed customisation.
 
 Notes:
 - If a language is not included in this module, Textcavator will use the [standard analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/analysis-standard-analyzer.html), without stopword or stemming support.

@@ -2,7 +2,7 @@ from typing import Dict, Iterable
 import operator
 from functools import reduce
 
-from addcorpus.language_analysis import get_analyzer
+from addcorpus.language_analyzers import get_analyzer
 
 def es_settings(languages=[]):
     '''

@@ -2,7 +2,7 @@ import pytest
 
 from addcorpus.es_settings import es_settings
 from addcorpus.language_utils import number_char_filter
-from addcorpus.language_analysis import Dutch, Spanish
+from addcorpus.language_analyzers import Dutch, Spanish
 
 _dutch = Dutch()
 _spanish = Spanish()
