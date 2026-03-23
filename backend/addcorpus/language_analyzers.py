@@ -65,38 +65,6 @@ class Catalan(LanguageAnalyzer):
         return analyzer
 
 
-class Chinese(LanguageAnalyzer):
-    code = 'zh'
-    has_stopwords = True
-    has_stemming = False
-
-    standard_analyzer_name = analyzer_name('standard', code)
-
-    def char_filters(self):
-        return {}
-
-    def _standard_analyzer(self):
-        return {
-            'tokenizer': 'standard',
-            'char_filter': [],
-            'filter': [
-                'cjk_width',
-                'lowercase',
-            ],
-        }
-
-    def _clean_analyzer(self):
-        return {
-            'tokenizer': 'standard',
-            'char_filter': [],
-            'filter': [
-                'cjk_width',
-                'lowercase',
-                self._stopwords_filter_name
-            ],
-        }
-
-
 class Croatian(LanguageAnalyzer):
     code = 'hr'
     has_stopwords = True
@@ -345,6 +313,41 @@ class Latvian(LanguageAnalyzer):
     _stopwords_source = 'supplementary'
 
 
+class MandarinChinese(LanguageAnalyzer):
+    code = 'cmn'
+    has_stopwords = True
+    has_stemming = False
+
+    def stopwords(self):
+        return read_stopwords('chinese', 'nltk')
+
+    standard_analyzer_name = analyzer_name('standard', code)
+
+    def char_filters(self):
+        return {}
+
+    def _standard_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'char_filter': [],
+            'filter': [
+                'cjk_width',
+                'lowercase',
+            ],
+        }
+
+    def _clean_analyzer(self):
+        return {
+            'tokenizer': 'standard',
+            'char_filter': [],
+            'filter': [
+                'cjk_width',
+                'lowercase',
+                self._stopwords_filter_name
+            ],
+        }
+
+
 class NorwegianBokmal(LanguageAnalyzer):
     code = 'nb'
     has_stopwords = True
@@ -465,7 +468,6 @@ LANGUAGES: List[Type[LanguageAnalyzer]] = [
     Bosnian,
     Bulgarian,
     Catalan,
-    Chinese,
     Croatian,
     Czech,
     Danish,
@@ -482,6 +484,7 @@ LANGUAGES: List[Type[LanguageAnalyzer]] = [
     Irish,
     Italian,
     Latvian,
+    MandarinChinese,
     NorwegianBokmal,
     NorwegianNynorsk,
     Portuguese,
