@@ -48,8 +48,7 @@ class PeacePortal(ParentCorpusDefinition):
 
     @property
     def es_settings(self):
-        return es_settings(self.languages, stopword_analysis=True,
-                           stemming_analysis=True)
+        return es_settings(self.languages)
 
     def sources(self, start, end):
         for filename in sorted(glob('{}/**/*.xml'.format(self.data_directory),

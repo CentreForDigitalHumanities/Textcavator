@@ -28,7 +28,7 @@ class SmallMockCorpus(CSVCorpusDefinition):
     languages = ['en']
     category = 'book'
 
-    es_settings = es_settings(['en'], stopword_analysis=True)
+    es_settings = es_settings(['en'])
 
     def sources(self, *args, **kwargs):
         for csv_file in os.listdir(self.data_directory):
