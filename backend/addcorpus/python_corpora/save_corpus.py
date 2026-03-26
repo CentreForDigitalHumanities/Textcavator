@@ -87,14 +87,15 @@ def _import_corpus_data_directory(definition: CorpusDefinition, configuration: C
     Set the data directory, but if it does not exist, show a warning and leave blank.
     '''
 
-    try:
-        validate_source_data_directory(definition.data_directory)
-    except ValidationError as e:
-        message = f'Invalid directory for corpus {configuration.corpus.name}: {e.message}'
-        warnings.warn(message)
-        return
+    if definition.data_directory:
+        try:
+            validate_source_data_directory(definition.data_directory)
+        except ValidationError as e:
+            message = f'Invalid directory for corpus {configuration.corpus.name}: {e.message}'
+            warnings.warn(message)
+            return
 
-    configuration.data_directory = definition.data_directory
+        configuration.data_directory = definition.data_directory
 
 
 def _import_corpus_date_range(definition: CorpusDefinition, configuration: CorpusConfiguration):
