@@ -1,7 +1,7 @@
 import sys
 import pytest
 from django.conf import settings
-from corpora_test.basic.mock_csv_corpus import MockCSVCorpus
+from corpora_test.basic.mock_csv_corpus import ExampleCorpus
 from addcorpus.models import Corpus, CorpusConfiguration
 from addcorpus.python_corpora.save_corpus import (_save_field_in_database,
     load_and_save_all_corpora, _save_or_skip_corpus
@@ -48,7 +48,7 @@ def test_no_errors_when_saving_corpora(db, capsys):
 
 def test_saving_broken_corpus(db, basic_mock_corpus):
     corpus = Corpus.objects.get(name=basic_mock_corpus)
-    corpus_def = MockCSVCorpus()
+    corpus_def = ExampleCorpus()
 
     corpus_def.min_date = 'Not a valid date'
 
@@ -90,7 +90,7 @@ def deactivated_corpus(basic_mock_corpus):
 def test_save_field_definition(db, basic_mock_corpus, deactivated_corpus):
     corpus = Corpus.objects.get(name=basic_mock_corpus)
     corpus_conf = corpus.configuration
-    corpus_def = MockCSVCorpus()
+    corpus_def = ExampleCorpus()
 
     corpus_conf.fields.all().delete()
 
@@ -107,7 +107,7 @@ def test_save_corpus_purity(db, basic_mock_corpus):
     '''
 
     corpus = Corpus.objects.get(name=basic_mock_corpus)
-    corpus_def = MockCSVCorpus()
+    corpus_def = ExampleCorpus()
 
     corpus_def.es_alias = 'test'
     _save_or_skip_corpus(basic_mock_corpus, corpus_def)

@@ -1,11 +1,11 @@
 import os
 
-from corpora_test.basic.mock_csv_corpus import MockCSVCorpus
+from corpora_test.basic.mock_csv_corpus import ExampleCorpus
 from media.media_url import media_url
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-class MediaMockCorpus(MockCSVCorpus):
+class MediaMockCorpus(ExampleCorpus):
     '''
     Test corpus that includes image attachments to documents.
     '''

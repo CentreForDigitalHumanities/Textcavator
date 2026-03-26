@@ -1,4 +1,4 @@
-from corpora_test.basic.mock_csv_corpus import MockCSVCorpus
+from corpora_test.basic.mock_csv_corpus import ExampleCorpus
 import os
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -49,7 +49,7 @@ target_documents = [
 
 
 def test_csv():
-    corpus = MockCSVCorpus()
+    corpus = ExampleCorpus()
 
     sources = list(corpus.sources(start=corpus.min_date, end=corpus.max_date))
     assert len(sources) == 1 and sources[0][1] == {'filename': 'example.csv'}
