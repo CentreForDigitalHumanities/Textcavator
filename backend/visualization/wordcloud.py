@@ -1,10 +1,10 @@
 from collections import Counter
 from typing import Iterable, Dict
-
 from addcorpus.models import CorpusConfiguration, Field
 from visualization.termvectors import request_termvectors_batched, term_counts
 from es import download as download
 from es.client import elasticsearch
+from es import download as download
 
 def _wordcloud_search_field(corpus_name: str, field_name: str) -> bool:
     corpus_config = CorpusConfiguration.objects.get(corpus__name=corpus_name)

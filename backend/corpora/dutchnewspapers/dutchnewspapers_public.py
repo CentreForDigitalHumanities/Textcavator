@@ -43,7 +43,7 @@ class DutchNewspapersPublic(XMLCorpusDefinition):
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
     tag_toplevel = Tag('text')
     tag_entry = Tag('p')

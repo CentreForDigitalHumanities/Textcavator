@@ -16,9 +16,13 @@
                     [src]="brand.logo"
                     [alt]="brand.logoAlt"
                     [attr.aria-hidden]="!brand.logoAlt?.length">
-                <span>{{brand.title}}</span>
-                <span *ngIf="brand.subtitle">
-                    |&nbsp; <span class="app-subtitle">{{brand.subtitle}}</span>
+                <span class="app-title">
+                    <span>{{brand.title}}</span>
+                    <span *ngIf="brand.subtitle">
+                        <span class="is-hidden-touch"> | </span>
+                        <span class="is-hidden-desktop"><br></span>
+                        <span class="app-subtitle">{{brand.subtitle}}</span>
+                    </span>
                 </span>
             </a>
 

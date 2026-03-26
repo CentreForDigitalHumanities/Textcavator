@@ -28,7 +28,7 @@ class AnnotatedMockCorpus(CSVCorpusDefinition):
     languages = ['nl']
     category = 'oration'
 
-    es_settings = es_settings(['nl'], stopword_analysis=True, stemming_analysis=True)
+    es_settings = es_settings(['nl'])
 
     def sources(self, *args, **kwargs):
         for csv_file in os.listdir(self.data_directory):

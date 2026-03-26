@@ -77,7 +77,7 @@ class UBlad(HTMLCorpusDefinition):
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
     def sources(self, **kwargs):
         for directory, _, filenames in os.walk(self.data_directory):
