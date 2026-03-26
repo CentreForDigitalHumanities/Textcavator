@@ -10,6 +10,7 @@ This directory contains documentation for developers.
 
 ## Adding corpora
 
+- [Adding existing corpora](./Adding-existing-corpora.md)
 - [Corpus definitions](./Corpus-definitions.md)
 - [Corpus database models](/Corpus-database-models.md)
 - [Writing a corpus definition in Python](./Writing-a-corpus-definition-in-Python.md)
