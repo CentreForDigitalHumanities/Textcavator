@@ -207,7 +207,7 @@ referencing==0.36.2
     #   jsonschema-specifications
 regex==2025.9.18
     # via nltk
-requests==2.32.5
+requests==2.33.0
     # via
     #   django-allauth
     #   ianalyzer-readers
