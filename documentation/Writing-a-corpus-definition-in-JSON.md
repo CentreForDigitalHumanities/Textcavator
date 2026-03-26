@@ -2,7 +2,7 @@
 
 Database-only corpora support a JSON format for creating or editing corpus definitions. Like Python definitions, a JSON definition can be used to store and share a configuration for a corpus.
 
-The format is defined in [corpus.schema.json](/backend/addcorpus/schemas/corpus.schema.json). You can find an example in the [test JSON definition](../backend/corpora_test/basic/mock_corpus.json).
+The format is defined in [corpus.schema.json](/backend/addcorpus/schemas/corpus.schema.json). You can find an example in the [test JSON definition](../backend/corpora_test/basic/corpus.json).
 
 We do not (currently) have a guide to writing JSON definitions, though the JSON schema includes descriptions for each field.
 

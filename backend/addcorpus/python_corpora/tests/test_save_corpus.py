@@ -1,7 +1,7 @@
 import sys
 import pytest
 from django.conf import settings
-from corpora_test.basic.mock_csv_corpus import ExampleCorpus
+from corpora_test.basic.corpus import ExampleCorpus
 from addcorpus.models import Corpus, CorpusConfiguration
 from addcorpus.python_corpora.save_corpus import (_save_field_in_database,
     load_and_save_all_corpora, _save_or_skip_corpus

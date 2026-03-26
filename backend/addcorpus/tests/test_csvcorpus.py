@@ -1,4 +1,4 @@
-from corpora_test.basic.mock_csv_corpus import ExampleCorpus
+from corpora_test.basic.corpus import ExampleCorpus
 import os
 
 here = os.path.abspath(os.path.dirname(__file__))
