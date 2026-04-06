@@ -140,7 +140,7 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
     )
     speaker.search_filter = MultipleChoiceFilter(
             description='Search only in debates from the selected chamber(s)',
-            option_count=20,
+            option_count=9001,
         )
 
     speaker_id = field_defaults.speaker_id()
