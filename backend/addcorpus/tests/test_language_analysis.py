@@ -54,8 +54,8 @@ analyzer_test_cases = [
     {
         'analyzer': la.English,
         'input': 'Shall I compare thee to a summer\'s day?',
-        'standard': ['shall', 'i', 'compare', 'thee', 'to', 'a', 'summer', 'day'],
-        'clean': ['shall', 'compare', 'thee', 'summer', 'day'],
+        'standard': ['shall', 'i', 'compare', 'thee', 'to', 'a', 'summer\'s', 'day'],
+        'clean': ['shall', 'compare', 'thee', 'summer\'s', 'day'],
         'stemmed': ['shall', 'compar', 'thee', 'summer', 'dai'],
     },
     {
