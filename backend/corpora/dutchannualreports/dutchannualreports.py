@@ -49,7 +49,7 @@ class DutchAnnualReports(XMLCorpusDefinition):
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
     with open(op.join(os.path.dirname(__file__), 'dutchannualreports_mapping.csv')) as f:
         reader = csv.DictReader(f)
