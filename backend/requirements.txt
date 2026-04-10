@@ -7,7 +7,9 @@
 amqp==5.3.1
     # via kombu
 asgiref==3.9.2
-    # via django
+    # via
+    #   django
+    #   django-allauth
 attrs==25.3.0
     # via
     #   jsonschema
@@ -53,8 +55,7 @@ defusedxml==0.7.1
     # via
     #   djangosaml2
     #   pysaml2
-    #   python3-openid
-dj-rest-auth[with-social]==4.0.1
+dj-rest-auth[with-social]==7.2.0
     # via -r requirements.in
 django==4.2.30
     # via
@@ -65,7 +66,7 @@ django==4.2.30
     #   django-revproxy
     #   djangorestframework
     #   djangosaml2
-django-allauth==0.54.0
+django-allauth[socialaccount]==65.15.1
     # via dj-rest-auth
 django-livereload-server==0.5.1
     # via -r requirements.in
@@ -133,7 +134,7 @@ numpy==1.26.4
     #   scikit-learn
     #   scipy
 oauthlib==3.3.1
-    # via requests-oauthlib
+    # via django-allauth
 openpyxl==3.1.5
     # via
     #   -r requirements.in
@@ -190,8 +191,6 @@ python-dateutil==2.9.0.post0
     #   elasticsearch
     #   pandas
     #   pysaml2
-python3-openid==3.2.0
-    # via django-allauth
 pytz==2025.2
     # via
     #   flower
@@ -212,9 +211,6 @@ requests==2.33.0
     #   django-allauth
     #   ianalyzer-readers
     #   pysaml2
-    #   requests-oauthlib
-requests-oauthlib==2.0.0
-    # via django-allauth
 rpds-py==0.27.1
     # via
     #   jsonschema
