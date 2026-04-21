@@ -118,7 +118,7 @@ language-data==1.3.0
     # via
     #   -r requirements.in
     #   langcodes
-lxml==6.0.2
+lxml==6.1.0
     # via
     #   -r requirements.in
     #   ianalyzer-readers
