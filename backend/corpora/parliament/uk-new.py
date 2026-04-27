@@ -1,8 +1,10 @@
+import os
 from datetime import datetime
 from glob import glob
 import re
 from bs4 import BeautifulSoup
 from pathlib import Path, PurePath
+import json
 
 from django.conf import settings
 
@@ -10,11 +12,13 @@ from ianalyzer_readers.xml_tag import Tag
 from ianalyzer_readers.extract import Constant, XML, Metadata, Cache, Combined
 
 
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
+from addcorpus.es_mappings import keyword_mapping, text_mapping, date_mapping, main_content_mapping
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.constants import document_context
+
 
 
 def extract_date(path: str):
@@ -63,6 +67,18 @@ def extract_topics_and_subtopics(path):
 
     return topics, subtopics
 
+def extract_speaker_ids(path):
+    with open(path, 'r', encoding='utf-8') as file:
+        soup = BeautifulSoup(file, "lxml")
+    
+    speaker_ids = []
+    for tag in soup.find_all('speech'):
+        if tag.has_attr('person_id'):
+            if tag.attrs['person_id'].split('/')[-1] not in speaker_ids:
+                speaker_ids.append(tag.attrs['person_id'].split('/')[-1])
+
+    return speaker_ids
+
 def select_topic(input):
         full_speech_id, topic_dict = input
         speech_id = abbreviate_speech_id(full_speech_id)
@@ -73,6 +89,21 @@ def select_topic(input):
             else:
                 previous_topic = topic_dict[key]
 
+def lookup_person_attribute(lookup_tuple):
+    metadata_dict, id, name, label = lookup_tuple #name is only included for debugging purposes
+
+    id = id.split('/')[-1] if id else None # twfy ID is at the end of uri 
+    if id in metadata_dict and label in metadata_dict[id]:
+        return metadata_dict[id][label]
+    else:
+        return None
+
+def lookup_person_atttribute_date(lookup_tuple):
+    date_string = lookup_person_attribute(lookup_tuple)
+    if date_string:
+        return date_string[:10]
+    else:
+        return None
 
 class ParliamentUKNew(Parliament, XMLCorpusDefinition):
     title = 'Talking Empire (UK 2022-2025)'
@@ -93,6 +124,9 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
 
     def sources(self, start: datetime, end: datetime):
         metadata = {}
+        with open(os.path.join(self.data_directory, 'all_person_metadata_twfy_keys.json'), 'r', encoding='utf-8') as file:
+             all_person_metadata = json.load(file)
+
         for directory in [dir for dir in Path(self.data_directory).iterdir() if dir.is_dir()]:
             for xml_file in glob('*.xml', root_dir=directory):
                 full_path = self.data_directory / directory / xml_file
@@ -100,7 +134,12 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
                 metadata['chamber'] = extract_chamber(xml_file)
                 metadata['debate_title'] = generate_title(metadata['chamber'], metadata['date'])
                 metadata['debate_id'] = extract_debate_id(xml_file)
-                metadata['topics'], metadata['subtopics'] = extract_topics_and_subtopics(self.data_directory / directory / xml_file)
+                metadata['topics'], metadata['subtopics'] = extract_topics_and_subtopics(full_path)
+                metadata['speaker_ids'] = extract_speaker_ids(full_path)
+                metadata['speaker_metadata'] = {}
+                for id in metadata['speaker_ids']:
+                    if id in all_person_metadata:
+                        metadata['speaker_metadata'][id] = all_person_metadata[id]
                 yield str(full_path), metadata
         
     _speech_id_extractor = Cache(XML(attribute='id'))
@@ -148,6 +187,74 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
         attribute='person_id'
     )
 
+    speaker_gender = field_defaults.speaker_gender()
+    speaker_gender.extractor = Combined(
+        Metadata('speaker_metadata'),
+        XML(attribute='person_id'),
+        XML(attribute='speakername'),
+        Constant('genderLabel'),
+        transform=lookup_person_attribute
+    )
+    speaker_gender.search_filter = MultipleChoiceFilter(
+        description="Search only in speeches made by speakers of a certain gender",
+        option_count=10
+    )
+
+    speaker_birthdate = FieldDefinition(
+        name = 'speaker_birthdate',
+        display_name = 'Speaker birth date',
+        description= 'Date at which the speaker was born',
+        es_mapping=date_mapping(),
+    )
+    speaker_birthdate.extractor = Combined(
+        Metadata('speaker_metadata'),
+        XML(attribute='person_id'),
+        XML(attribute='speakername'),
+        Constant('birthdate'),
+        transform=lookup_person_atttribute_date
+    )
+
+    speaker_deathdate = FieldDefinition(
+        name = 'speaker_deathdate',
+        display_name = 'Speaker death date',
+        description= 'Date at which the speaker was born',
+        es_mapping=date_mapping(),
+    )
+    speaker_deathdate.extractor = Combined(
+        Metadata('speaker_metadata'),
+        XML(attribute='person_id'),
+        XML(attribute='speakername'),
+        Constant('deathdate'),
+        transform=lookup_person_atttribute_date
+    )
+
+    speaker_birthplace = FieldDefinition(
+        name = 'speaker_birthplace',
+        display_name = 'Speaker birthplace',
+        description= 'Place where the speaker was born',
+        es_mapping=keyword_mapping(),
+    )
+    speaker_birthplace.extractor = Combined(
+        Metadata('speaker_metadata'),
+        XML(attribute='person_id'),
+        XML(attribute='speakername'),
+        Constant('birthPlaceLabel'),
+        transform=lookup_person_attribute
+    )
+
+    speaker_wikidata = FieldDefinition(
+        name = 'speaker_wikidata',
+        display_name = 'Speaker Wikidata URI',
+        description= 'URI for the Wikidata page for this speaker',
+        es_mapping=keyword_mapping(),
+    )
+    speaker_wikidata.extractor = Combined(
+        Metadata('speaker_metadata'),
+        XML(attribute='person_id'),
+        XML(attribute='speakername'),
+        Constant('wikidata_uri'),
+        transform=lookup_person_attribute
+    )
     
     topic = field_defaults.topic()
     topic.extractor = Combined(
@@ -177,4 +284,7 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
             self.speech, self.speech_id, 
             self.speech_type,
             self.speaker, self.speaker_id,
+            self.speaker_gender, self.speaker_birthdate,
+            self.speaker_deathdate, self.speaker_birthplace,
+            self.speaker_wikidata,
         ]
