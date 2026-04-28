@@ -104,6 +104,64 @@ def lookup_person_atttribute_date(lookup_tuple):
         return date_string[:10]
     else:
         return None
+    
+def find_current_positions(metadata_dict, date):
+    current_positions = {}
+    for person in metadata_dict:
+        current_position_list = []
+        for position in metadata_dict[person]['positions']:
+            if 'startTime' in position and 'endTime' in position:
+                try:
+                    date_range = (datetime.strptime(position['startTime'][:10], "%Y-%m-%d"), 
+                                datetime.strptime(position['endTime'][:10], "%Y-%m-%d"))
+                except ValueError:
+                    continue #disregard missing dates
+                if date_range[0] < datetime.strptime(date, "%Y-%m-%d") < date_range[1]:
+                    current_position_list.append(position)
+            elif 'startTime' in position:
+                current_position_list.append(position)
+        current_positions[person] = current_position_list
+    return current_positions
+
+
+def lookup_current_ministerial_position(lookup_tuple):
+    positions_dict, id, name = lookup_tuple
+    id = id.split('/')[-1] if id else None
+    if id in  positions_dict:
+        for position in positions_dict[id]:
+            if position['minister']:
+                return position['positionLabel']
+    return None
+
+def get_current_positions(positions_dict, id):
+    id = id.split('/')[-1] if id else None
+    if id and id in positions_dict:
+        return positions_dict[id]
+    else:
+        return []
+
+
+def lookup_current_parliamentary_position(lookup_tuple):
+    positions_dict, id, name = lookup_tuple
+    current_positions = get_current_positions(positions_dict, id)
+    for position in current_positions:
+        if position['member_parliament']:
+            return position['positionLabel']
+    return None
+
+def lookup_current_party(lookup_tuple):
+    positions_dict, id, name = lookup_tuple
+    current_positions = get_current_positions(positions_dict, id)
+    if current_positions:
+        for position in current_positions:
+            if 'partyLabel' in position:
+                return position['partyLabel']
+            elif 'partyBackupLabel' in position:
+                return position['partyBackupLabel']
+            else:
+                continue
+    else:
+        return None
 
 class ParliamentUKNew(Parliament, XMLCorpusDefinition):
     title = 'Talking Empire (UK 2022-2025)'
@@ -124,7 +182,7 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
 
     def sources(self, start: datetime, end: datetime):
         metadata = {}
-        with open(os.path.join(self.data_directory, 'all_person_metadata_twfy_keys.json'), 'r', encoding='utf-8') as file:
+        with open(os.path.join(self.data_directory, 'merged_metadata_twfy_keys.json'), 'r', encoding='utf-8') as file:
              all_person_metadata = json.load(file)
 
         for directory in [dir for dir in Path(self.data_directory).iterdir() if dir.is_dir()]:
@@ -140,6 +198,8 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
                 for id in metadata['speaker_ids']:
                     if id in all_person_metadata:
                         metadata['speaker_metadata'][id] = all_person_metadata[id]
+                metadata['current_positions'] = find_current_positions(metadata['speaker_metadata'], metadata['date'])
+
                 yield str(full_path), metadata
         
     _speech_id_extractor = Cache(XML(attribute='id'))
@@ -255,7 +315,32 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
         Constant('wikidata_uri'),
         transform=lookup_person_attribute
     )
-    
+
+    ministerial_role = field_defaults.ministerial_role()
+    ministerial_role.extractor = Combined(
+        Metadata('current_positions'),
+        XML(attribute='person_id'),
+        XML(attribute='speakername'),
+        transform=lookup_current_ministerial_position
+    )
+    ministerial_role.search_filter.option_count = 45
+
+    parliamentary_role = field_defaults.parliamentary_role()
+    parliamentary_role.extractor = Combined(
+        Metadata('current_positions'),
+        XML(attribute='person_id'),
+        XML(attribute='speakername'),
+        transform=lookup_current_parliamentary_position
+    )
+
+    party = field_defaults.party()
+    party.extractor = Combined(
+        Metadata('current_positions'),
+        XML(attribute='person_id'),
+        XML(attribute='speakername'),
+        transform=lookup_current_party
+    )
+
     topic = field_defaults.topic()
     topic.extractor = Combined(
         _speech_id_extractor,
@@ -286,5 +371,6 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
             self.speaker, self.speaker_id,
             self.speaker_gender, self.speaker_birthdate,
             self.speaker_deathdate, self.speaker_birthplace,
-            self.speaker_wikidata,
+            self.speaker_wikidata, self.ministerial_role,
+            self.parliamentary_role, self.party
         ]
