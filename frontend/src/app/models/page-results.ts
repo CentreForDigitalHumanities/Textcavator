@@ -26,8 +26,8 @@ export type PageResultsParameters =  {
     highlight?: number;
 } & PageParameters;
 
-const resultsToPage = (results: SearchResults): DocumentPage =>
-    new DocumentPage(results.documents, results.total.value, results.fields);
+const resultsToPage = (results: SearchResults, from: number): DocumentPage =>
+    new DocumentPage(results.documents, results.total.value, results.fields, from);
 
 export class PageResults extends Results<PageResultsParameters, DocumentPage> {
     sort$: Observable<SortState>;
@@ -77,7 +77,7 @@ export class PageResults extends Results<PageResultsParameters, DocumentPage> {
         return from(this.searchService.loadResults(
             this.query, params
         )).pipe(
-            map(resultsToPage)
+            map(results => resultsToPage(results, params.from))
         );
     }
 

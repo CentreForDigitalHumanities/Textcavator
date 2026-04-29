@@ -6,6 +6,7 @@ from addcorpus.models import Corpus
 from indexing.models import TaskStatus
 from indexing.run_job import perform_indexing
 from indexing.create_job import create_indexing_job
+from es.search import get_index
 
 START = datetime.strptime('1970-01-01', '%Y-%m-%d')
 END = datetime.strptime('1970-12-31', '%Y-%m-%d')
@@ -69,7 +70,7 @@ def test_mismatch_corpus_index_names(mock_corpus, corpus_definition, es_index_cl
 
 
 def test_db_only_corpus(json_mock_corpus, es_client, index_json_mock_corpus):
-    res = es_client.count(index=json_mock_corpus.configuration.es_index)
+    res = es_client.count(index=get_index(json_mock_corpus.name))
     assert res.get('count') == 10
 
 

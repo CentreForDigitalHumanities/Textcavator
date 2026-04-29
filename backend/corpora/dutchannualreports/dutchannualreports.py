@@ -30,9 +30,13 @@ class DutchAnnualReports(ConcatReader, CorpusDefinition):
     description_page = 'dutchannualreports.md'
     allow_image_download = getattr(settings, 'DUTCHANNUALREPORTS_ALLOW_IMAGE_DOWNLOAD', True)
     word_model_path = getattr(settings, 'DUTCHANNUALREPORTS_WM', None)
-    es_settings = make_es_settings()
 
     languages = ['nl', 'en']
+
+    @property
+    def es_settings(self):
+        return make_es_settings(self.languages[:1])
+
     category = 'finance'
 
     mimetype = 'application/pdf'

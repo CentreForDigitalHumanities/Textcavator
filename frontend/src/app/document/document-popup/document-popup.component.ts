@@ -78,4 +78,8 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
     toggleNER(active: boolean): void {
         this.showNamedEntities = active;
     }
+
+    documentPosition(document: FoundDocument, page: DocumentPage) {
+        return page.from + document.position;
+    }
 }

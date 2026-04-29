@@ -1,25 +1,24 @@
 from typing import Dict, Tuple
-from django.conf import settings
 
-from es.client import elasticsearch
+from es.client import elasticsearch, server_for_corpus
 from es.search import get_index, search, hits, total_hits
 import itertools
+from django.conf import settings
 
-
-def scroll(corpus, query_model, download_size=None, client=None, **kwargs) -> Tuple[itertools.chain[Dict], int]:
+def scroll(corpus: str, query_model, download_size=None, client=None, **kwargs) -> Tuple[itertools.chain[Dict], int]:
     chunks, total = scroll_chunks(corpus, query_model,
                                   download_size, client, **kwargs)
     output = itertools.chain(*chunks)
     return output, total
 
 
-def scroll_chunks(corpus, query_model, download_size=None, client=None, **kwargs):
+def scroll_chunks(corpus: str, query_model, download_size=None, client=None, **kwargs):
     index = get_index(corpus)
     if not client:
         client = elasticsearch(index)
-    server = settings.CORPUS_SERVER_NAMES.get(corpus, 'default')
-    scroll_timeout = settings.SERVERS[server]['scroll_timeout']
-    scroll_page_size = settings.SERVERS[server]['scroll_page_size']
+    server_conf = settings.SERVERS[server_for_corpus(corpus)]
+    scroll_timeout = server_conf['scroll_timeout']
+    scroll_page_size = server_conf['scroll_page_size']
     size = min(download_size,
                scroll_page_size) if download_size else scroll_page_size
     total = get_total_hits(client, index, query_model, **kwargs)

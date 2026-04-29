@@ -4,7 +4,7 @@ import {
     OnChanges,
     OnDestroy, SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, Subject, takeUntil, take } from 'rxjs';
 import { CorpusDefinitionService } from '../../corpus-definition.service';
 import { APICorpusDefinition, APIEditableCorpus, CorpusDefinition } from '../../../models/corpus-definition';
@@ -39,20 +39,34 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         { value: undefined, label: 'Other' },
     ];
 
-    metaForm = this.formBuilder.group({
-        title: [''],
-        description: [''],
-        category: [''],
-        date_range: this.formBuilder.group({
-            min: [],
-            max: [],
+    metaForm = new FormGroup({
+        title: new FormControl<string>('', {
+            nonNullable: true,
+            validators: [Validators.required],
         }),
-        languages: [[]],
+        description: new FormControl<string>('', {
+            validators: [Validators.required],
+        }),
+        category: new FormControl<typeof this.categories[number]['value']>(
+            undefined,
+            { nonNullable: true },
+        ),
+        date_range: new FormGroup({
+            min: new FormControl<number>(null, {
+                validators: [Validators.required],
+            }),
+            max: new FormControl<number>(null, {
+                validators: [Validators.required],
+            }),
+        }),
+        languages: new FormControl<Language[]>([], {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
     });
 
     destroy$ = new Subject<void>();
 
-    // languageOptions = collectLanguages();
     actionIcons = actionIcons;
     formIcons = formIcons;
 
@@ -60,6 +74,7 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         map(steps => steps[1]),
     );
 
+    validationFailed$ = new Subject<void>();
     changesSubmitted$ = new Subject<void>();
     changesSavedSucces$ = new Subject<void>();
     changesSavedError$ = new Subject<void>();
@@ -73,6 +88,10 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         false: [this.metaForm.valueChanges, this.changesSubmitted$],
     });
 
+    showValidationMessage$: Observable<boolean> = mergeAsBooleans({
+        true: [this.validationFailed$],
+        false: [this.metaForm.valueChanges, this.changesSubmitted$],
+    });
     showErrorMessage$: Observable<boolean> = mergeAsBooleans({
         true: [this.changesSavedError$],
         false: [this.metaForm.valueChanges, this.changesSubmitted$]
@@ -82,7 +101,6 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
     languageSuggestions = this.languages;
 
     constructor(
-        private formBuilder: FormBuilder,
         private corpusDefService: CorpusDefinitionService,
     ) {}
 
@@ -116,13 +134,17 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
     }
 
     onSubmit(): void {
-        this.changesSubmitted$.next();
-        const newMeta = this.formValueToData(this.metaForm.value);
-        this.corpus.definition.meta = newMeta;
-        this.corpus.save().subscribe({
-            next: this.onSubmitSuccess.bind(this),
-            error: this.onSubmitError.bind(this),
-        });
+        if (this.metaForm.valid) {
+            this.changesSubmitted$.next();
+            const newMeta = this.formValueToData(this.metaForm.getRawValue());
+            this.corpus.definition.meta = newMeta;
+            this.corpus.save().subscribe({
+                next: this.onSubmitSuccess.bind(this),
+                error: this.onSubmitError.bind(this),
+            });
+        } else {
+            this.onValidationFail();
+        }
     }
 
     goToNextStep() {
@@ -133,6 +155,11 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         this.languageSuggestions = this.languages.filter(lang =>
             this.languageMatchesQuery(lang, query)
         );
+    }
+
+    private onValidationFail() {
+        this.metaForm.markAllAsTouched();
+        this.validationFailed$.next();
     }
 
     private onSubmitSuccess(value: APIEditableCorpus) {
@@ -149,7 +176,7 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         const value = _.clone(data) as any;
         value.languages = data.languages.map(code =>
             this.languages.find(l => l.code == code)
-        );
+        ).filter(_.negate(_.isUndefined));
         return value;
     }
 

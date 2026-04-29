@@ -80,7 +80,8 @@ class MapCentroidView(APIView):
 
 class NgramView(APIView):
     '''
-    Schedule a task to retrieve ngrams containing the search term
+    Schedule a task to retrieve ngrams containing the search term, or collocates
+    of the search term.
     '''
 
     permission_classes = [CanSearchCorpus, CanSearchTags]
