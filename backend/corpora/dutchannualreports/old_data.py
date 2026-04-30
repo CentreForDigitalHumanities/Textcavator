@@ -40,8 +40,10 @@ class DutchAnnualReportsOldDataReader(XMLReader):
 
         with open(op.join(os.path.dirname(__file__), 'dutchannualreports_mapping.csv')) as f:
             reader = csv.DictReader(f)
-            for line in reader:
-                self.dutchannualreports_map[line['abbr']] = line['name']
+            self.dutchannualreports_map = {
+                line['abbr'].upper(): line['name']
+                for line in reader
+            }
 
 
     def sources(self, start=min_date, end=max_date):
@@ -106,7 +108,7 @@ class DutchAnnualReportsOldDataReader(XMLReader):
                 name='company',
                 extractor=Metadata(
                     key='company',
-                    transform=lambda x: self.dutchannualreports_map[x],
+                    transform=lambda x: self.dutchannualreports_map[x.upper()],
                 ),
             ),
             FieldDefinition(
