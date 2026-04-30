@@ -83,7 +83,7 @@ class DutchAnnualReportsOldDataReader(XMLReader):
                     scan = information[-1]
                 # to do: what about year reports which are combined (e.g. "1969_1970" in filepath)
                 # or which cover parts of two years ("br" in filepath)?
-                if int(year) < start.year or end.year < int(year):
+                if year and year.isnumeric() and int(year) < start.year or end.year < int(year):
                     continue
                 yield full_path, {
                     'file_path': file_path,
