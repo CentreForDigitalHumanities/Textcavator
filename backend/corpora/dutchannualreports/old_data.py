@@ -72,8 +72,8 @@ class DutchAnnualReportsOldDataReader(XMLReader):
                     # second part of file name is part of company name
                     company = "_".join([company, information[1]])
                 # using first four-integer string in the file name as year
-                years = re.compile("[0-9]{4}")
-                year = next((info for info in information
+                years = re.compile(r"[0-9]{4}")
+                year = next((re.match(years, info).group(0) for info in information
                              if re.match(years, info)), None)
                 if len(information) == 3:
                     serial = information[-1]
