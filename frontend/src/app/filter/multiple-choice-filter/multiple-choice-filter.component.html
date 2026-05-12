@@ -7,10 +7,13 @@
         [options]="options" 
         [virtualScroll]="true"
         [virtualScrollItemSize]="60"
+        [lazy]="true"
         [maxSelectedLabels]=1
         placeholder="Choose" 
         [ngModel]="data" 
-        (onChange)="update($event.value)" ariaLabelledBy="legend-filter-{{filter.displayName | slugify}}" fluid>
+        (onChange)="update($event.value)" ariaLabelledBy="legend-filter-{{filter.displayName | slugify}}" fluid
+        (onPanelShow)="getAllOptionsFromES($event)">
+        
         <ng-template let-item pTemplate="item">
             <div class="select-label">{{item.label}}</div>
             <div class="select-count">{{item.doc_count}}</div>

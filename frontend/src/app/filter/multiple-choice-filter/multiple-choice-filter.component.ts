@@ -6,6 +6,7 @@ import { TermsAggregator, TermsResult } from '@models/aggregation';
 import { SearchService } from '@services';
 import { MultipleChoiceFilter, MultipleChoiceFilterOptions } from '@models';
 import { BaseFilterComponent } from '../base-filter.component';
+import { MultiSelectLazyLoadEvent } from 'primeng/multiselect';
 
 @Component({
     selector: 'ia-multiple-choice-filter',
@@ -15,6 +16,7 @@ import { BaseFilterComponent } from '../base-filter.component';
 })
 export class MultipleChoiceFilterComponent extends BaseFilterComponent<MultipleChoiceFilter> {
     options: { label: string; value: string; doc_count: number }[] = [];
+    allOptionsCalled: boolean = false;
 
     constructor(private searchService: SearchService) {
         super();
@@ -25,12 +27,22 @@ export class MultipleChoiceFilterComponent extends BaseFilterComponent<MultipleC
     }
 
     onQueryModelUpdate(): void {
-        this.getOptions();
+        if( this.allOptionsCalled ) {
+            this.getOptions(true);
+        }
+        this.getOptions(false);
     }
 
-    private async getOptions(): Promise<void> {
+    getAllOptionsFromES(event:MultiSelectLazyLoadEvent) {
+        this.getOptions(true);
+        this.allOptionsCalled = true;
+
+    }
+
+    private async getOptions(all: boolean = false): Promise<void> {
         if (this.filter && this.queryModel) {
-            const optionCount = (this.filter.corpusField.filterOptions as MultipleChoiceFilterOptions).option_count;
+            // optionCount is set to the maximum when the filter panel is shown, but not when other filters change
+            const optionCount = all ? 10000 : (this.filter.corpusField.filterOptions as MultipleChoiceFilterOptions).option_count;
             const aggregator = new TermsAggregator(this.filter.corpusField, optionCount);
             const queryModel = this.queryModel.clone();
             queryModel.filterForField(this.filter.corpusField).deactivate();
