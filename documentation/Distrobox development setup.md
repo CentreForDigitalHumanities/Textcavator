@@ -4,7 +4,7 @@ This is a guide for setting up a [distrobox](https://distrobox.it/) container wi
 
 ### Distrobox vs. Docker compose containers
 
-This repository also includes a container setup using Docker compose. The docker-compose setup is designed for maximum isolation, separating the application from the host system, as well as using separate containers for different submodules (frontend, backend, database engines).
+This repository also includes a container setup using Docker compose. The docker-compose setup is designed for maximum isolation, separating the application from the host system, as well as using separate containers for different subsystems (frontend, backend, database engines).
 
 By contrast, distrobox is a system for running privileged containers, which are tightly integrated with the host system. Also, this guide will create a single container that includes Textcavator and all its dependencies, instead of isolating subsystems.
 
@@ -14,9 +14,9 @@ Generally speaking, using distrobox offers some but not all of the benefits of c
 
 This guide will install PostgreSQL, Elasticsearch, Kibana, and Redis in the container; these will run in the background when the container is up.
 
-Because distroboxes are not isolated from the host system, you can also connect to these services if they are running in the host. If your host system already has PostgreSQL running, for instance, it's probably not necessary (or useful) to also install it in the container.
+Because distrobox are not isolated from the host system, you can also connect to services that are running in the host, instead of running them in the container. For instance, if your host system is already running PostgreSQL, it's probably not necessary (or useful) to install it in the container.
 
-(Of course, if *all* of these services are already running on the host, there really is no point in setting up a container.)
+(Of course, if *all* of these services are already running on the host, there really is no point in setting up a container at all.)
 
 ## Prerequisites
 
@@ -24,13 +24,19 @@ You need to install [distrobox](https://distrobox.it/). You may also consider in
 
 ## Container setup
 
-Create your container:
+If your container will include PostgreSQL (see below), create it with:
+
+```sh
+distrobox create --name textcavator --image ubuntu:24.04 --init --pre-init-hooks "mkdir /var/run/postgresql && chown postgres /var/run/postgresql"
+```
+
+Otherwise, you can leave out the pre-init hook:
 
 ```sh
 distrobox create --name textcavator --image ubuntu:24.04 --init
 ```
 
-This container includes an init system to start services for PostgreSQL, Elasticsearch and Redis. After creating, enter the container with
+After creating, enter the container with
 
 ```sh
 distrobox enter textcavator
@@ -40,6 +46,8 @@ First-time setup will take a while.
 
 ## Install basic libraries
 
+Run inside the container:
+
 ```sh
 sudo apt update
 sudo upgrade
@@ -48,7 +56,9 @@ sudo apt install nano git git-flow python3-pip python3-virtualenv
 
 ## PostgreSQL
 
-Note: this is the most precarious part of the setup. If you're using PostgreSQL for multiple projects in multiple boxes, I recommend against installing it like this. Instead, consider installing PostgreSQL on your host system or running it in a separate docker/podman container.
+Running PostgreSQL is the most precarious part of the setup. If you're developing other projects that use PostgreSQL, I recommend against installing it like this, as there is little benefit. Instead, run PostgreSQL on your host system, or run it inside a separate docker/podman container.
+
+If you are going to use PostgreSQL, make sure you included the pre-init hook when creating the container (see above). Enter the container to install postgresql.
 
 To prevent an error in installation, run the following:
 
@@ -64,9 +74,7 @@ Then install PostgreSQL 16 with:
 sudo apt install postgresql
 ```
 
-TODO: add fix for /var/run/postgresql ownership.
-
-For convenience, the following commands let you run `psql` as a superuser, without switching to the `postgres` user. Substitute `johndoe` with your own username.
+For convenience, the following commands let you run `psql` without switching to the `postgres` user. Substitute `johndoe` with your own username.
 
 ```sh
 sudo -u postgres createuser johndoe
@@ -80,7 +88,10 @@ In the psql prompt run:
 alter user johndoe superuser;
 ```
 
-Use `exit` to quit. To check, you should now be able to run `psql` from the command line (without `sudo -u postgres`) and enter the psql prompt.
+Use `exit` to quit.
+
+
+To check that everything it working, stop the container, restart, and type `psql` in the command line. This should open the psql prompt.
 
 The default port for PostgreSQL is 5432, but if that port is occupied (usually because PostgreSQL is already running on the host), it will use a different port. Check the port with:
 
@@ -88,11 +99,11 @@ The default port for PostgreSQL is 5432, but if that port is occupied (usually b
 cat /etc/postgresql/16/main/postgresql.conf | grep "port ="
 ```
 
-If this is not 5432, open (or create) `backend/ianalyzer/local_settings.py` to override your database configuration. Copy the `DATABASES` declaration from `backend/ianalyzer/settings.py` and change the port number.
+If this is not 5432, open (or create) `backend/ianalyzer/local_settings.py` in this repository to override your database configuration. Copy the `DATABASES` declaration from `backend/ianalyzer/settings.py` and change the port number.
 
 ## Node and yarn
 
-See https://nodejs.org/en/download for instructions. Choose the "yarn" option.
+See [nodejs.org](https://nodejs.org/en/download) for instructions. Choose Node 22 / Linux / nvm / yarn in the options, and execute the instructions.
 
 ## ElasticSearch
 
@@ -130,6 +141,8 @@ Copy-paste the following to set the size to 4GB. Save and close.
 ## Kibana (optional)
 
 Kibana provides a GUI interface for Elasticsearch. Textcavator does not depend on Kibana, but we recommended that you install this too, as it's useful for troubleshooting, testing queries, managing indices, etc.
+
+(The steps below should be done *after* the Elasticsearch installation.)
 
 ```sh
 sudo apt-get install kibana
@@ -176,10 +189,12 @@ You could use a code editor installed on your host system, but I find it more co
 
 ### VSCode
 
-To install VSCode, [VSCode installation instructions](https://code.visualstudio.com/docs/setup/linux#_install-vs-code-on-linux). Choose the option to install the `.deb` package. Then export the application:
+To install VSCode, [VSCode installation instructions](https://code.visualstudio.com/docs/setup/linux#_install-vs-code-on-linux). Choose the option to install the `.deb` package. Then export the application.
+
+For convience, I include a flag to always open on the Textcavator repository:
 
 ```sh
-distrobox-export --app code --extra-flags "--foreground"
+distrobox-export --app code --extra-flags "/path/to/this/repository/ --foreground"
 ```
 
 ### VSCodium
@@ -187,5 +202,5 @@ distrobox-export --app code --extra-flags "--foreground"
 See [VSCodium installation instructions](https://vscodium.com/#install-on-debian-ubuntu-deb-package). Then export with:
 
 ```sh
-distrobox-export --app codium --extra-flags "--foreground"
+distrobox-export --app codium --extra-flags "/path/to/this/repository/ --foreground"
 ```
