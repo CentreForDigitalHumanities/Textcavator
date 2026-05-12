@@ -18,3 +18,7 @@
     vertical-align: top;
     flex-grow: 2;
 }
+
+::ng-deep .p-multiselect-option {
+    height: auto !important;
+}
