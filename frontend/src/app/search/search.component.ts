@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
@@ -7,11 +7,10 @@ import { CorpusService, DialogService } from '@services/index';
 
 import { AuthService } from '@services/auth.service';
 import { distinct, filter } from 'rxjs/operators';
-import { actionIcons, navIcons, searchIcons } from '@shared/icons';
+import { actionIcons, searchIcons } from '@shared/icons';
 import { RouterStoreService } from '../store/router-store.service';
 import { Title } from '@angular/platform-browser';
 import { SearchTab, SearchTabs } from './search-tabs';
-import { environment } from '@environments/environment';
 import { pageTitle } from '@utils/app';
 
 @Component({

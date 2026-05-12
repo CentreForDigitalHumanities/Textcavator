@@ -1,8 +1,8 @@
 <ia-corpus-header [corpus]="corpus" currentPage="search"></ia-corpus-header>
 
-<section class="section search-section">
+<section class="section search-section pt-3">
     <div class="container">
-        <form (ngSubmit)="search()" *ngIf="corpus">
+        <form (ngSubmit)="search()">
             <div class="field has-addons">
                 <div class="control" iaBalloon="View query documentation" iaBalloonPosition="down-left">
                     <button class="button" type="button" (click)="showQueryDocumentation()"
