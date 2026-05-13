@@ -1,23 +1,23 @@
 from collections import Counter
-from typing import Tuple, Dict, List, Literal, Iterable
+from typing import Tuple, Dict, List, Literal, Iterable, Optional
 from elasticsearch import Elasticsearch
 from itertools import chain
+from math import log2, prod
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
-from es.download import scroll
+from es.download import scroll, search
 from es.client import elasticsearch
 from visualization import query, termvectors
 
 
-def get_ngrams(results, number_of_ngrams=10):
+def get_ngrams(results, number_of_ngrams=10, method='absolute'):
     """Given a query and a corpus, get the words that occurred most frequently around the query term"""
-    ngrams = []
-    ngrams = get_top_n_ngrams(results, number_of_ngrams)
+    ngrams = get_top_n_ngrams(results, number_of_ngrams, method=method)
 
     return {
         'words': ngrams,
-        'time_points': sorted([result['time_interval'] for result in results])
+        'time_points': [result['time_interval'] for result in results]
     }
 
 
@@ -77,6 +77,16 @@ def get_time_bins(es_query, corpus):
 
     return bins
 
+def get_total_term_count(corpus_name: str, es_query: Dict, field: str) -> int:
+    agg_query = {
+        **es_query,
+        'size': 0,
+        'aggs': {'word_count': {'sum': {'field': f'{field}.length'}}}
+    }
+    result = search(corpus_name, agg_query)
+    value = result.body['aggregations']['word_count']['value']
+    return int(value)
+
 
 def tokens_by_time_interval(
     corpus_name: str,
@@ -102,6 +112,7 @@ def tokens_by_time_interval(
     }
     term_positions = positions_dict[term_position]
     ngram_ttfs = dict()
+
 
     query_text = query.get_query_text(es_query)
     field = field if subfield == 'none' else '.'.join([field, subfield])
@@ -138,6 +149,8 @@ def tokens_by_time_interval(
         'ngrams': bin_ngrams
     }
     if freq_compensation:
+        total_term_count = get_total_term_count(corpus_name, es_query, field)
+        results['total_term_count'] = total_term_count
         results['ngram_ttfs'] = ngram_ttfs
     return results
 
@@ -169,8 +182,7 @@ def _count_tokens_in_document(
             ngram = sorted_tokens[start:stop]
             words = ' '.join([token['term'] for token in ngram])
             if freq_compensation:
-                ttf = sum(token['ttf'] for token in ngram) / len(ngram)
-                ttfs[words] = ttf
+                ttfs[words] = [token['ttf'] for token in ngram]
             tokens.update({ words: 1})
     return tokens, ttfs
 
@@ -183,7 +195,7 @@ def _token_ranges(
     mode: Literal['ngrams', 'collocates'] = 'ngrams',
 ) -> Iterable[Tuple[int, int]]:
     '''
-    Provides ranges for every token (n-gram or collocate) surrounding the search term.
+    Provides ranges for every token  (n-gram or collocate) surrounding the search term.
     '''
     for match_start, match_stop, _match_content in matches:
         if mode == 'ngrams':
@@ -227,17 +239,78 @@ def _collocate_token_ranges(
     for i in window:
         yield i, i + 1
 
-def get_top_n_ngrams(results, number_of_ngrams=10):
+
+
+def _absolute_frequency(
+    ngram_count: int, term_counts: List[int], total_word_count: int
+) -> float:
+    return ngram_count
+
+def _legacy_compensated_frequency(
+    ngram_count: int, term_counts: List[int], total_word_count: int
+) -> float:
+    norm = (sum(term_counts) / len(term_counts))
+    return ngram_count / norm
+
+def _pmi(
+    ngram_count: int, term_counts: List[int], total_word_count: int
+) -> float:
+    relative_frequency = ngram_count / total_word_count
+    norm = prod([
+        count / total_word_count
+        for count in term_counts
+    ])
+    return log2(relative_frequency / norm)
+
+
+def _ngram_frequency(
+    ngram: str,
+    ngram_counts: Counter,
+    ttfs: Optional[Dict],
+    total_word_count: int,
+    method='absolute',
+) -> float:
+    methods = {
+        'absolute': _absolute_frequency,
+        'legacy': _legacy_compensated_frequency,
+        'pmi': _pmi
+    }
+    func = methods[method]
+    count = ngram_counts.get(ngram, 0)
+    if method in ['legacy', 'pmi']:
+        if not ttfs:
+            raise ValueError(f'ttfs dict is required for frequency method {method}')
+        term_counts = ttfs.get(ngram)
+    else:
+        term_counts = None
+
+    return func(count, term_counts, total_word_count)
+
+
+def _select_top_ngrams(
+    counter: Counter, ttfs: Dict, total_word_count: int, method='absolute', n=10
+) -> List[str]:
+    if method == 'absolute':
+        return [ngram for ngram, _count in counter.most_common(n)]
+    else:
+        frequency = lambda ngram: _ngram_frequency(ngram, counter, ttfs, total_word_count, method)
+        sorted_ngrams = sorted(counter.keys(), reverse=True, key=frequency)
+        return [ngram for ngram, _ in zip(sorted_ngrams, range(n))]
+
+
+def get_top_n_ngrams(results, number_of_ngrams=10, method='absolute'):
     """
     Converts a list of documents with tokens into n dataseries, listing the
     frequency of the top n tokens and their frequency in each document.
 
     Input:
-    - `results`: a list of dictionaries with the following fields:
-    'ngram': Counter objects with ngram frequencies
-    'time_interval': the time intervals for which the ngrams were counted
-    (optional): 'ngram-ttf': averaged total term frequencies - only computed if freq_compensation was requested
+    - `results`: a list of dictionaries with the following keys:
+        - `'ngram'`: Counter objects with ngram frequencies
+        - `'time_interval'`: the time intervals for which the ngrams were counted
+        - `'ngram_ttfs'` (optional): total term frequencies per term
+        - `total_term_count`: total words in the dataset
     - `number_of_ngrams`: the number of top ngrams to return
+    - `method`: frequency method to use (absolute/legacy/pmi)
 
     Output:
     A list of number_of_ngrams data series. Each series is a dict with two keys: `'label'` contains the content of a token (presumably an
@@ -245,27 +318,34 @@ def get_top_n_ngrams(results, number_of_ngrams=10):
     this is absolute or relative to the total term frequencies provided.
     """
     total_counter = Counter()
+    total_frequencies = dict()
+    total_term_count = None
     for result in results:
         total_counter.update(result['ngrams'])
+        total_frequencies.update(result.get('ngram_ttfs', {}))
+        total_term_count = result.get('total_term_count')
+
+    top = _select_top_ngrams(
+        total_counter, total_frequencies, total_term_count,
+        method=method, n=number_of_ngrams,
+    )
+
     sorted_results = sorted(results, key=lambda r: r['time_interval'])
-
-    number_of_results = min(number_of_ngrams, len(total_counter))
-
-    if 'ngram_ttfs' in results[0]:
-        total_frequencies = {}
-        for result in results:
-            total_frequencies.update(result['ngram_ttfs'])
-        def frequency(ngram, counter): return counter.get(ngram, 0.0) / max(1.0, total_frequencies[ngram])
-        def overall_frequency(ngram): return frequency(ngram, total_counter)
-        top_ngrams = sorted(total_counter.keys(), key=overall_frequency, reverse=True)[:number_of_results]
-    else:
-        def frequency(ngram, counter): return counter.get(ngram, 0)
-        top_ngrams = [word for word, freq in total_counter.most_common(number_of_results)]
-    output = [{
+    output = [
+        {
             'label': ngram,
-            'data': [frequency(ngram, result['ngrams'])
-                for result in sorted_results]
+            'data': [
+                _ngram_frequency(
+                    ngram,
+                    interval['ngrams'],
+                    interval.get('ngram_ttfs'),
+                    interval.get('total_term_count'),
+                    method,
+                )
+                for interval in sorted_results
+            ]
         }
-        for ngram in top_ngrams]
+        for ngram in top
+    ]
 
     return output

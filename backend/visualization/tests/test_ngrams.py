@@ -94,7 +94,10 @@ def test_top_10_ngrams():
         'b': 200,
         'c': 150,
     }
-    test_results = [{'ngrams': Counter(doc), 'time_interval': time_intervals[i]} for i, doc in enumerate(docs)]
+    test_results = [
+        {'ngrams': Counter(doc), 'time_interval': time_intervals[i]}
+        for i, doc in enumerate(docs)
+    ]
 
     output_absolute = ngram.get_top_n_ngrams(test_results)
     for word in target_data:
