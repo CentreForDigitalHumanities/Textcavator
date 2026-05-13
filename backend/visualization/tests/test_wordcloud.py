@@ -98,32 +98,21 @@ def test_wordcloud_filtered(small_mock_corpus, es_client, index_small_mock_corpu
     for word in words_to_exclude:
         assert not occurs_in_results(word)
 
-def test_wordcloud_counts(small_mock_corpus):
-    '''
-    Each non-stopword only occurs once in the mock corpus data, so
-    this test uses some fake texts for counting.
-    '''
-
-    texts = [
-        'Some words',
-        'Even more!',
-        'Words, words, words...',
-        'More words! More!',
-        'That should be enough.',
-    ]
-    docs = [
-        {'_source': {'content': text}}
-        for text in texts
-    ]
-
-    results = wordcloud.make_wordcloud_data(docs, 'content', small_mock_corpus)
+def test_wordcloud_counts(large_mock_corpus, index_large_mock_corpus):
+    result = search.search(
+        corpus_name=large_mock_corpus,
+        query_model=query.MATCH_ALL,
+        size=10
+    )
+    documents = search.hits(result)
+    results = wordcloud.make_wordcloud_data(
+        documents, 'content', large_mock_corpus)
 
     counts = {
         item['key']: item['doc_count']
         for item in results
     }
-
-    assert counts['words'] == 5
+    assert counts['the'] == 20
 
 def test_wordcloud_filters_stopwords(small_mock_corpus, small_mock_corpus_complete_wordcloud):
     stopwords = ['the', 'and', 'of']

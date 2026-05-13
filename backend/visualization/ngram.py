@@ -120,9 +120,12 @@ def tokens_by_time_interval(
         download_size=max_size_per_interval,
     )
     bin_ngrams = Counter()
-    for hit in search_results:
+    docs = termvectors.request_termvectors_batched(
+        search_results, client, freq_compensation, [field]
+    )
+    for _, vectors in docs:
         tokens, ttfs = _count_tokens_in_document(
-            hit, client, field, query_text,
+            vectors, client, field, query_text,
             term_positions, ngram_size,
             freq_compensation=freq_compensation,
             mode=mode,
@@ -140,7 +143,7 @@ def tokens_by_time_interval(
 
 
 def _count_tokens_in_document(
-    hit: Dict,
+    termvector_result: Dict,
     client: Elasticsearch,
     field: str,
     query_text: str,
@@ -155,16 +158,10 @@ def _count_tokens_in_document(
     tokens = Counter()
     ttfs = dict()
     # get the term vectors for the hit
-    result = client.termvectors(
-        index=hit['_index'],
-        id=hit['_id'],
-        term_statistics=freq_compensation,
-        fields=[field]
-    )
-    terms = termvectors.get_terms(result, field)
+    terms = termvectors.get_terms(termvector_result, field)
     if terms:
         sorted_tokens = termvectors.get_tokens(terms, sort=True)
-        matches = termvectors.token_matches(sorted_tokens, query_text, hit['_index'], field, client)
+        matches = termvectors.token_matches(sorted_tokens, query_text, termvector_result['_index'], field, client)
         token_ranges = _token_ranges(
             matches, term_positions, ngram_size, len(sorted_tokens), mode=mode
         )
