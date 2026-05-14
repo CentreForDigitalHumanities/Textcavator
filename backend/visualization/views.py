@@ -6,7 +6,7 @@ import logging
 from django.conf import settings
 from addcorpus.permissions import CanSearchCorpus
 from tag.permissions import CanSearchTags
-from visualization.field_stats import report_coverage
+from visualization.field_stats import report_coverage, report_cardinality
 from addcorpus.permissions import corpus_name_from_request
 from api.utils import check_json_keys
 
@@ -177,4 +177,16 @@ class FieldCoverageView(APIView):
     def get(self, request, *args, **kwargs):
         corpus = corpus_name_from_request(request)
         report = report_coverage(corpus)
+        return Response(report)
+
+class FieldCardinalityView(APIView):
+    '''
+    Get the number of different values for each filed in a corpus
+    '''
+
+    permission_classes = [CanSearchCorpus]
+
+    def get(self, request, *args, **kwargs):
+        corpus = corpus_name_from_request(request)
+        report = report_cardinality(corpus)
         return Response(report)

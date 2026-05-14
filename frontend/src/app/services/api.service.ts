@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { interval, Observable } from 'rxjs';
+import { firstValueFrom, interval, Observable } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
     AggregateTermFrequencyParameters,
@@ -13,6 +13,7 @@ import {
     Download,
     DownloadOptions,
     FieldCoverage,
+    FieldCardinality,
     FoundDocument,
     GeoDocument,
     GeoLocation,
@@ -183,6 +184,11 @@ export class ApiService {
     fieldCoverage(corpusName: string): Promise<FieldCoverage> {
         const url = this.apiRoute(this.visApiURL, `coverage/${corpusName}`);
         return this.http.get<FieldCoverage>(url).toPromise();
+    }
+
+    fieldCardinality(corpusName: string): Promise<FieldCardinality> {
+        const url = this.apiRoute(this.visApiURL, `cardinality/${corpusName}`);
+        return firstValueFrom(this.http.get<FieldCardinality>(url));
     }
 
     // Download

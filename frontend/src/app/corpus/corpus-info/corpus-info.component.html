@@ -32,7 +32,8 @@
                 id="fields" title="Fields">
                 <div class="block" *ngFor="let field of corpus.fields">
                     <ia-field-info  [field]="field"
-                        [coverage]="fieldCoverage ? fieldCoverage[field.name] : undefined">
+                        [coverage]="fieldCoverage ? fieldCoverage[field.name] : undefined"
+                        [cardinality]="fieldCardinality ? fieldCardinality[field.name] : undefined">
                     </ia-field-info>
                 </div>
             </ng-template>

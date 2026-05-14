@@ -36,9 +36,21 @@
         <p *ngIf="coverage !== undefined">
             <b>{{coveragePercentage}}%</b> of the documents in this corpus have a value for this field
         </p>
-
         <p *ngIf="coverage === undefined">
             Loading coverage data...
         </p>
+
+        @switch(cardinality) {
+            @case(undefined) {
+                <p>Loading cardinality data...</p>
+            }
+            @case(0) {
+                <p>Unique values are only calculated for keyword fields, not free text fields or dates.</p>
+            }
+            @default {
+                <p>There are <b>{{cardinality}}</b> unique values for this field.</p>
+            }
+        }
+
     </div>
 </details>

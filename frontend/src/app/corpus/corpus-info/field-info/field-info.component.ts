@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 export class FieldInfoComponent implements OnInit {
     @Input() field: CorpusField;
     @Input() coverage: number;
+    @Input() cardinality: number;
 
     mappingNames = {
         text: 'text',
