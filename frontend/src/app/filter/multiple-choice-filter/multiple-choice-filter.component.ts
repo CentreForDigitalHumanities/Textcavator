@@ -33,13 +33,17 @@ export class MultipleChoiceFilterComponent extends BaseFilterComponent<MultipleC
         this.getOptions(false);
     }
 
+    /** Gets all the filter options from ES, only if there are more than 10 options for that filter */
     getAllOptionsFromES(event:MultiSelectLazyLoadEvent) {
-        this.getOptions(true);
-        this.allOptionsCalled = true;
-
+        const optionCount = (this.filter.corpusField.filterOptions as MultipleChoiceFilterOptions).option_count;
+        if (optionCount > 10) {
+            this.getOptions(true);
+            this.allOptionsCalled = true;
+        }
     }
 
     private async getOptions(all: boolean = false): Promise<void> {
+        console.log('fire');
         if (this.filter && this.queryModel) {
             // optionCount is set to the maximum when the filter panel is shown, but not when other filters change
             const optionCount = all ? 10000 : (this.filter.corpusField.filterOptions as MultipleChoiceFilterOptions).option_count;
