@@ -3,6 +3,7 @@ from addcorpus.python_corpora.save_corpus import load_corpus_definition
 
 from corpora.dutchannualreports.new_data import NewDataReader
 from corpora.dutchannualreports.old_data import DutchAnnualReportsOldDataReader
+import datetime
 
 _here = os.path.abspath(os.path.dirname(__file__))
 
@@ -46,5 +47,9 @@ def test_dutch_annual_reports(settings, db):
     }
     settings.DUTCHANNUALREPORTS_DATA = os.path.join(_here, 'data')
     corpus = load_corpus_definition('dutch-annual-reports')
-    docs = list(corpus.documents())
+    sources = corpus.sources(
+        start=datetime.datetime(1900, 1, 1),
+        end=datetime.datetime.now()
+    )
+    docs = list(corpus.documents(sources))
     assert len(docs) == 30

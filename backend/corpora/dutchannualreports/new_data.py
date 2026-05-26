@@ -61,7 +61,8 @@ class NewDataReader(PDFReader):
 
 
     def sources(self, **kwargs):
-        docs = self.index_reader.documents(**kwargs)
+        sources = self.index_reader.sources(**kwargs)
+        docs = self.index_reader.documents(sources)
         for doc in docs:
             yield doc['abs_path'], doc
 
