@@ -60,6 +60,7 @@ services:
       - cluster.name=ianalizer-es-data-cluster
       - bootstrap.memory_lock=true
       - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
       - logger.org.elasticsearch.discovery=ERROR
       - logger.org.elasticsearch.transport=ERROR
       - logger.org.elasticsearch.http=ERROR
