@@ -65,7 +65,7 @@ services:
       - logger.org.elasticsearch.http=ERROR
       - logger.org.elasticsearch.cluster=ERROR
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
-      - ELASTIC_PASSWORD=$ELASTIC_ROOT_PASSWORD
+
     ulimits:
       memlock:
         soft: -1
