@@ -20,6 +20,10 @@ import {
 import { RouterStoreService } from '@app/store/router-store.service';
 import { NgramParameters, NgramSettings } from '@models/ngram';
 
+const makeNumberOptions = (values: number[]) => values.map((n) => ({
+    label: `${n}`,
+    value: n,
+}));
 
 @Component({
     selector: 'ia-ngram',
@@ -62,10 +66,25 @@ export class NgramComponent implements OnChanges {
     currentResults: NgramResults;
 
     // options
-    sizeOptions = [
+    modeOptions = [
+        { label: 'ngrams', value: 'ngrams' },
+        { label: 'collocates', value: 'collocates' },
+    ];
+    /** Size options for ngrams mode */
+    ngramsSizeOptions = [
         { label: 'bigrams', value: 2 },
         { label: 'trigrams', value: 3 },
         { label: 'fourgrams', value: 4 },
+    ];
+    /** Size options for collocates mode.
+     * Note: for compatability with ngrams mode, values also count the search term itself,
+     * so a value of 2 (analogous to a bigram) means a maximum distance of 1.
+     */
+    collocationsSizeOptions = [
+        { label: '1', value: 2 },
+        { label: '2', value: 3 },
+        { label: '3', value: 4 },
+        { label: '5', value: 6 },
     ];
     positionsOptions = ['any', 'first', 'second'].map((n) => ({
         label: `${n}`,
@@ -76,14 +95,8 @@ export class NgramComponent implements OnChanges {
         { label: 'Yes', value: true },
     ];
     analysisOptions: { label: string; value: string }[];
-    maxDocumentsOptions = [50, 100, 200, 500].map((n) => ({
-        label: `${n}`,
-        value: n,
-    }));
-    numberOfNgramsOptions = [10, 20, 50, 100].map((n) => ({
-        label: `${n}`,
-        value: n,
-    }));
+    maxDocumentsOptions = makeNumberOptions([50, 100, 200, 500]);
+    numberOfNgramsOptions = makeNumberOptions([10, 20, 50, 100]);
 
     tasksToCancel: string[];
 
@@ -110,10 +123,21 @@ export class NgramComponent implements OnChanges {
         this.currentSettings = _.clone(this.ngramParameters.state$.value);
     }
 
+    get sizeOptions() {
+        return this.currentSettings.mode == 'ngrams' ? this.ngramsSizeOptions :
+            this.collocationsSizeOptions;
+    }
+
+    get currentModeOption() {
+        return this.modeOptions.find(
+            (item) => item.value === this.currentSettings.mode
+        );
+    }
+
     get currentSizeOption() {
         return this.sizeOptions.find(
             (item) => item.value === this.currentSettings.size
-        );
+        ) || this.sizeOptions[0];
     }
 
     get currentPositionsOption() {

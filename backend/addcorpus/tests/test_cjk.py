@@ -14,14 +14,14 @@ def test_cjk_language_analysis(cjk_mock_corpus: str, index_cjk_mock_corpus):
 
 def test_cjk_macrolanguage():
     '''
-    Check that Chinese settings are also aplied to Mandarin Chinese.
+    Check that Chinese Mandarin settings are also aplied to Chinese.
     '''
 
-    settings = es_settings(['cmn'], True, True)
+    settings = es_settings(['zh'])
     analysis = settings['analysis']
-    assert 'clean_zh' in analysis['analyzer']
-    assert 'stopwords_zh' in analysis['filter']
+    assert 'clean_cmn' in analysis['analyzer']
+    assert 'stopwords_cmn' in analysis['filter']
 
-    mapping = main_content_mapping(True, True, False, 'cmn')
+    mapping = main_content_mapping(True, True, False, 'zh')
     clean_field = mapping['fields']['clean']
-    assert clean_field['analyzer'] == 'clean_zh'
+    assert clean_field['analyzer'] == 'clean_cmn'

@@ -63,10 +63,11 @@ def test_match_count(small_mock_corpus, es_client, index_small_mock_corpus, quer
 
 @pytest.fixture()
 def fix_match_count(monkeypatch):
-    def count_matches_alt(*args, **kwargs):
-        return 10
+    def count_matches_alt(hits, *args, **kwargs):
+        for hit in hits:
+            yield 10
 
-    monkeypatch.setattr(term_frequency, 'count_matches_in_document', count_matches_alt)
+    monkeypatch.setattr(term_frequency, 'count_matches_in_documents', count_matches_alt)
 
 
 def test_match_count_estimate(small_mock_corpus, basic_query, fix_match_count):
