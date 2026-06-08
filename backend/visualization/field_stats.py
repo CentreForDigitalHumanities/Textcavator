@@ -50,3 +50,35 @@ def report_coverage(corpus_name):
     }
 
 
+def cardinality_results(search_result):
+    return search_result['aggregations']['unique_category_count']['value']
+
+def report_cardinality(corpus_name):
+    '''
+    Returns a dict with the number of unique values for each field in the corpus
+    '''
+    es_client = elasticsearch(corpus_name)
+    corpus_conf = CorpusConfiguration.objects.get(corpus__name=corpus_name)
+    cardinality_dict = {}
+
+    query = {
+        "size": 0,
+        "aggs": {
+            "unique_category_count": {
+                "cardinality": {
+                    "field": "PLACEHOLDER",
+                    "precision_threshold": 10000
+                }
+            }
+        }
+    }
+
+    for field in corpus_conf.fields.all():
+        if field.display_type != 'keyword':
+            cardinality_dict[field.name] = 0
+        else:
+            query_for_field = query
+            query_for_field['aggs']['unique_category_count']['cardinality']['field'] = field.name
+            cardinality_dict[field.name] = cardinality_results(es_client.search(index=corpus_conf.es_index, body=query_for_field))
+
+    return cardinality_dict

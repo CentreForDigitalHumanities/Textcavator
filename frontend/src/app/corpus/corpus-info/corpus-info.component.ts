@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService, CorpusService } from '@services';
-import { Corpus, CorpusDocumentationPage, FieldCoverage } from '@models';
+import { Corpus, CorpusDocumentationPage, FieldCardinality, FieldCoverage } from '@models';
 import { marked } from 'marked';
 import { Observable } from 'rxjs';
 import { Title } from '@angular/platform-browser';
@@ -18,6 +18,7 @@ export class CorpusInfoComponent implements OnInit {
     corpus: Corpus;
 
     fieldCoverage: FieldCoverage;
+    fieldCardinality: FieldCardinality;
 
     documentation$: Observable<CorpusDocumentationPage[]>;
 
@@ -39,6 +40,9 @@ export class CorpusInfoComponent implements OnInit {
         );
         this.apiService.fieldCoverage(corpus.name).then(
             result => this.fieldCoverage = result
+        );
+        this.apiService.fieldCardinality(corpus.name).then(
+            result => this.fieldCardinality = result
         );
         this.title.setTitle(pageTitle(`About ${corpus.title}`));
     }
