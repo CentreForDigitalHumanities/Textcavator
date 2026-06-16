@@ -46,9 +46,9 @@ api_router.register('corpus/documentation', CorpusDocumentationPageViewset, base
 api_router.register('indexing/jobs', IndexJobViewset, basename='index-job')
 
 if settings.PROXY_FRONTEND:
-    spa_url = re_path(r'^(?P<path>(?!api\/)(?!users\/).*)$', proxy_frontend)
+    spa_url = re_path(r'^(?P<path>(?!api\/)(?!users\/)(?!admin\/).*)$', proxy_frontend)
 else:
-    spa_url = re_path(r'^((?!api\/)(?!users\/).*)', index)
+    spa_url = re_path(r'^((?!api\/)(?!users\/)(?!admin\/).*)', index)
 
 
 urlpatterns = [
