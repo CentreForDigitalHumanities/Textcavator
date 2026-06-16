@@ -40,15 +40,16 @@
             Loading coverage data...
         </p>
 
-        @switch(cardinality) {
-            @case(undefined) {
-                <p>Loading cardinality data...</p>
-            }
-            @case(0) {
-                <p>Unique values are only calculated for keyword fields, not free text fields or dates.</p>
-            }
-            @default {
-                <p>There are <b>{{cardinality}}</b> unique values for this field.</p>
+        @if (field.mappingType === 'keyword') {
+            @switch(cardinality) {
+                @case(undefined) {
+                    <p>Loading cardinality data...</p>
+                }
+                @default {
+                    <p>This field has <b>{{cardinality}}</b> unique
+                        @if (cardinality === 1) {value} @else {values}.
+                    </p>
+                }
             }
         }
 
