@@ -1,7 +1,7 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { ApiService } from './api.service';
+import { ApiService, joinURLPath } from './api.service';
 import { HttpClient, HttpErrorResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { fakeNgramResult } from '@mock-data/api';
 import { Subject, from, throwError } from 'rxjs';
@@ -72,4 +72,24 @@ describe('ApiService', () => {
         expect(pollingCallback.complete).toHaveBeenCalled();
     }));
 
+});
+
+describe('joinURLPath', () => {
+    it('joins path segments', () => {
+        expect(joinURLPath('foo', 'bar', 'baz')).toBe('foo/bar/baz');
+    });
+
+    it('removes double slashes', () => {
+        expect(joinURLPath('foo/', 'bar')).toBe('foo/bar');
+        expect(joinURLPath('foo', '/bar')).toBe('foo/bar');
+        expect(joinURLPath('foo/', '/bar')).toBe('foo/bar');
+    });
+
+    it('does not remove leading slash', () => {
+        expect(joinURLPath('/foo', 'bar', 'baz')).toBe('/foo/bar/baz');
+    });
+
+    it('does not remove trailing slash', () => {
+        expect(joinURLPath('foo', 'bar', 'baz/')).toBe('foo/bar/baz/');
+    });
 });
