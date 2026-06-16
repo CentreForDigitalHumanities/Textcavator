@@ -96,7 +96,7 @@ humanize==4.13.0
     # via flower
 ianalyzer-readers==0.4.0
     # via -r requirements.in
-idna==3.10
+idna==3.15
     # via requests
 iniconfig==2.1.0
     # via pytest
@@ -162,13 +162,13 @@ pycparser==2.23
     # via cffi
 pygments==2.20.0
     # via pytest
-pyjwt[crypto]==2.10.1
+pyjwt[crypto]==2.13.0
     # via django-allauth
 pyopenssl==24.2.1
     # via pysaml2
 pyparsing==3.2.5
     # via rdflib
-pypdf==6.10.2
+pypdf==6.12.0
     # via -r requirements.in
 pyreadr==0.5.4
     # via -r requirements.in
@@ -235,7 +235,7 @@ textdistance==4.6.3
     # via -r requirements.in
 threadpoolctl==3.6.0
     # via scikit-learn
-tornado==6.5.5
+tornado==6.5.7
     # via
     #   django-livereload-server
     #   flower
@@ -252,7 +252,7 @@ tzdata==2025.2
     # via
     #   kombu
     #   pandas
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   django-revproxy
     #   elastic-transport

@@ -11,7 +11,7 @@ These are instructions to set up an Textcavator server. If you are going to deve
 * [Node.js](https://nodejs.org/). See [.nvmrc](/.nvmrc) for the recommended version.
 * [Yarn](https://yarnpkg.com/)
 
-The documentation includes a [recipe for installing the prerequisites on Debian 10](./documentation/Local-Debian-Textcavator-setup.md)
+The documentation includes a [recipe for installing the prerequisites in a distrobox container](./Distrobox%20development%20setup.md).
 
 ## First-time setup
 
