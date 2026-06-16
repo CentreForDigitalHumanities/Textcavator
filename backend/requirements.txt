@@ -162,7 +162,7 @@ pycparser==2.23
     # via cffi
 pygments==2.20.0
     # via pytest
-pyjwt[crypto]==2.10.1
+pyjwt[crypto]==2.13.0
     # via django-allauth
 pyopenssl==24.2.1
     # via pysaml2
