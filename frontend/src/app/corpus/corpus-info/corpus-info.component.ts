@@ -5,7 +5,7 @@ import { marked } from 'marked';
 import { Observable } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 @Component({
@@ -15,12 +15,12 @@ import * as _ from 'lodash';
     standalone: false
 })
 export class CorpusInfoComponent implements OnInit {
-    corpus: Corpus;
+    corpus?: Corpus;
 
-    fieldCoverage: FieldCoverage;
-    fieldCardinality: FieldCardinality;
+    fieldCoverage?: FieldCoverage;
+    fieldCardinality?: FieldCardinality;
 
-    documentation$: Observable<CorpusDocumentationPage[]>;
+    documentation$?: Observable<CorpusDocumentationPage[]>;
 
     constructor(
         private corpusService: CorpusService,
@@ -29,7 +29,9 @@ export class CorpusInfoComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.corpusService.currentCorpus.subscribe(this.setCorpus.bind(this));
+        this.corpusService.currentCorpus.pipe(
+            filter(corpus => !!corpus),
+        ).subscribe(this.setCorpus.bind(this));
     }
 
     setCorpus(corpus: Corpus) {

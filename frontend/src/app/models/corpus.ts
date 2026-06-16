@@ -129,8 +129,8 @@ export class CorpusField {
     downloadable: boolean;
     name: string;
     filterOptions: FieldFilterOptions;
-    mappingType: 'text' | 'keyword' | 'boolean' | 'date' | 'integer' | 'geo_point' | null;
-    language: string;
+    mappingType: 'text' | 'keyword' | 'boolean' | 'date' | 'integer' | 'geo_point';
+    language: string | undefined;
 
     constructor(data: ApiCorpusField) {
         this.description = data.description;
@@ -151,7 +151,7 @@ export class CorpusField {
         this.downloadable = data.downloadable;
         this.name = data.name;
         this.filterOptions = data['search_filter'];
-        this.mappingType = data.es_mapping?.type;
+        this.mappingType = data.es_mapping.type;
         this.language = data.language || undefined;
     }
 

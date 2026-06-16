@@ -13,7 +13,7 @@
 
         <ul>
             <li>This field {{field.searchable ? 'can' : 'cannot'}} be searched</li>
-            <li>This field {{field.searchFilter ? 'has' : 'does not have'}} a search filter</li>
+            <li>This field {{field.filterOptions ? 'has' : 'does not have'}} a search filter</li>
         </ul>
 
         <ng-container *ngIf="field.displayType === 'text_content' && field.multiFields">
