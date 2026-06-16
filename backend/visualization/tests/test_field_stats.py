@@ -24,8 +24,5 @@ def test_report(small_mock_corpus, es_client, index_small_mock_corpus, small_moc
 def test_cardinality(small_mock_corpus, es_client, index_small_mock_corpus, small_mock_corpus_specs):
     report = report_cardinality(small_mock_corpus)
     assert report == {
-        'date': 0, 
-        'title': 0, 
-        'content': 0, 
         'genre': 3
     }

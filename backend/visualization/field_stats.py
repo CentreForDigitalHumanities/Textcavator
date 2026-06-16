@@ -1,7 +1,9 @@
 from es.client import elasticsearch
 from es.search import total_hits, search
-from addcorpus.models import Corpus, CorpusConfiguration
+from addcorpus.models import CorpusConfiguration
+from addcorpus.es_mappings import primary_mapping_type
 from visualization.query import MATCH_ALL
+from copy import deepcopy
 
 def count_field(es_client, corpus_name, fieldname):
     '''
@@ -57,7 +59,6 @@ def report_cardinality(corpus_name):
     '''
     Returns a dict with the number of unique values for each field in the corpus
     '''
-    es_client = elasticsearch(corpus_name)
     corpus_conf = CorpusConfiguration.objects.get(corpus__name=corpus_name)
     cardinality_dict = {}
 
@@ -74,11 +75,10 @@ def report_cardinality(corpus_name):
     }
 
     for field in corpus_conf.fields.all():
-        if field.display_type != 'keyword':
-            cardinality_dict[field.name] = 0
-        else:
-            query_for_field = query
+        if primary_mapping_type(field.es_mapping) == 'keyword':
+            query_for_field = deepcopy(query)
             query_for_field['aggs']['unique_category_count']['cardinality']['field'] = field.name
-            cardinality_dict[field.name] = cardinality_results(es_client.search(index=corpus_conf.es_index, body=query_for_field))
+            response = search(corpus_name, query_for_field)
+            cardinality_dict[field.name] = cardinality_results(response)
 
     return cardinality_dict
