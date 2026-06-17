@@ -7,7 +7,9 @@
 amqp==5.3.1
     # via kombu
 asgiref==3.9.2
-    # via django
+    # via
+    #   django
+    #   django-allauth
 attrs==25.3.0
     # via
     #   jsonschema
@@ -53,8 +55,7 @@ defusedxml==0.7.1
     # via
     #   djangosaml2
     #   pysaml2
-    #   python3-openid
-dj-rest-auth[with-social]==4.0.1
+dj-rest-auth[with-social]==7.2.0
     # via -r requirements.in
 django==4.2.30
     # via
@@ -65,7 +66,7 @@ django==4.2.30
     #   django-revproxy
     #   djangorestframework
     #   djangosaml2
-django-allauth==0.54.0
+django-allauth[socialaccount]==65.15.1
     # via dj-rest-auth
 django-livereload-server==0.5.1
     # via -r requirements.in
@@ -95,7 +96,7 @@ humanize==4.13.0
     # via flower
 ianalyzer-readers==0.4.0
     # via -r requirements.in
-idna==3.10
+idna==3.15
     # via requests
 iniconfig==2.1.0
     # via pytest
@@ -117,7 +118,7 @@ language-data==1.3.0
     # via
     #   -r requirements.in
     #   langcodes
-lxml==6.0.2
+lxml==6.1.0
     # via
     #   -r requirements.in
     #   ianalyzer-readers
@@ -133,7 +134,7 @@ numpy==1.26.4
     #   scikit-learn
     #   scipy
 oauthlib==3.3.1
-    # via requests-oauthlib
+    # via django-allauth
 openpyxl==3.1.5
     # via
     #   -r requirements.in
@@ -147,7 +148,7 @@ pandas==2.3.3
     #   -r requirements.in
     #   ianalyzer-readers
     #   pyreadr
-pillow==12.1.1
+pillow==12.2.0
     # via -r requirements.in
 pluggy==1.6.0
     # via pytest
@@ -161,19 +162,19 @@ pycparser==2.23
     # via cffi
 pygments==2.20.0
     # via pytest
-pyjwt[crypto]==2.10.1
+pyjwt[crypto]==2.13.0
     # via django-allauth
 pyopenssl==24.2.1
     # via pysaml2
 pyparsing==3.2.5
     # via rdflib
-pypdf==6.9.2
+pypdf==6.12.0
     # via -r requirements.in
 pyreadr==0.5.4
     # via -r requirements.in
 pysaml2==7.5.2
     # via djangosaml2
-pytest==8.4.2
+pytest==9.0.3
     # via
     #   -r requirements.in
     #   pytest-django
@@ -190,8 +191,6 @@ python-dateutil==2.9.0.post0
     #   elasticsearch
     #   pandas
     #   pysaml2
-python3-openid==3.2.0
-    # via django-allauth
 pytz==2025.2
     # via
     #   flower
@@ -212,9 +211,6 @@ requests==2.33.0
     #   django-allauth
     #   ianalyzer-readers
     #   pysaml2
-    #   requests-oauthlib
-requests-oauthlib==2.0.0
-    # via django-allauth
 rpds-py==0.27.1
     # via
     #   jsonschema
@@ -239,7 +235,7 @@ textdistance==4.6.3
     # via -r requirements.in
 threadpoolctl==3.6.0
     # via scikit-learn
-tornado==6.5.5
+tornado==6.5.7
     # via
     #   django-livereload-server
     #   flower
@@ -256,7 +252,7 @@ tzdata==2025.2
     # via
     #   kombu
     #   pandas
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   django-revproxy
     #   elastic-transport
