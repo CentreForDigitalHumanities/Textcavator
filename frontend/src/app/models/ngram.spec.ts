@@ -9,12 +9,12 @@ describe('NgramParameters', ()=> {
         mode: 'ngrams',
         size: 3,
         positions: 'first',
-        freqCompensation: true,
+        freqCompensation: 'pmi',
         analysis: 'clean',
         maxDocuments: 100,
         numberOfNgrams: 20,
     } as NgramSettings;
-    const testParams = {ngramSettings: 'o:n,s:3,p:first,c:true,a:clean,m:100,n:20'}
+    const testParams = {ngramSettings: 'o:n,s:3,p:first,c:pmi,a:clean,m:100,n:20'}
 
     beforeEach(() => {
         ngramParameters = new NgramParameters(store);
@@ -35,7 +35,7 @@ describe('NgramParameters', ()=> {
             mode: 'ngrams',
             size: 2,
             positions: 'any',
-            freqCompensation: false,
+            freqCompensation: 'absolute',
             analysis: 'none',
             maxDocuments: 50,
             numberOfNgrams: 10,

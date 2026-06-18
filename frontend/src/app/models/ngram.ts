@@ -6,11 +6,13 @@ import { Store } from '../store/types';
 
 export type NgramMode = 'ngrams' | 'collocates';
 
+export type FreqMode = 'absolute' | 'legacy' | 'pmi';
+
 export interface NgramSettings {
     mode: NgramMode,
     size: number;
     positions?: string;
-    freqCompensation: boolean;
+    freqCompensation: FreqMode;
     analysis: string;
     maxDocuments: number;
     numberOfNgrams: number;
@@ -47,7 +49,7 @@ export class NgramParameters extends StoreSync<NgramSettings> {
             mode: _.get(parsed, 'o') === 'c' ? 'collocates' : 'ngrams',
             size: this.parseInt(_.get(parsed, 's'), 2),
             positions: _.get(parsed, 'p', 'any'),
-            freqCompensation: _.get(parsed, 'c') === 'true',
+            freqCompensation: this.parseFreqCompenstation(_.get(parsed, 'c', '')),
             analysis: _.get(parsed, 'a', 'none'),
             maxDocuments: this.parseInt(_.get(parsed, 'm'), 50),
             numberOfNgrams: this.parseInt(_.get(parsed, 'n'), 10),
@@ -60,7 +62,18 @@ export class NgramParameters extends StoreSync<NgramSettings> {
     }
 
     private parseInt(value: string | undefined, defaultValue: number): number {
-        const parsed = parseInt(value, 10);
+        const parsed = parseInt(value ?? '', 10);
         return _.isNaN(parsed) ? defaultValue : parsed;
+    }
+
+    private parseFreqCompenstation(value: string): FreqMode {
+        const keys: Record<string, FreqMode> = {
+            'true': 'legacy',
+            'false': 'absolute',
+            'abs': 'absolute',
+            'leg': 'legacy',
+            'pmi': 'pmi'
+        }
+        return _.get(keys, value, 'absolute')
     }
 }
