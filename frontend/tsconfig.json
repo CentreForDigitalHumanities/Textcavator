@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "strict": false,
+    "types": ["jasmine"],
     "importHelpers": true,
       "outDir": "../dist/out-tsc",
       "esModuleInterop": true,

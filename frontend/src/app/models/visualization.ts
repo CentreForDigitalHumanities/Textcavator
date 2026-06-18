@@ -81,7 +81,7 @@ export type NGramRequestParameters = {
     mode: 'ngrams' | 'collocates',
     ngram_size?: number;
     term_position?: string;
-    freq_compensation?: boolean;
+    freq_compensation?: 'absolute' | 'legacy' | 'pmi';
     subfield?: string;
     max_size_per_interval?: number;
     number_of_ngrams?: number;

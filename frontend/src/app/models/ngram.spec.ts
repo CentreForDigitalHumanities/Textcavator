@@ -45,7 +45,7 @@ describe('NgramParameters', ()=> {
     });
 
     it('should parse partial parameters', () => {
-        const partialParams = {ngramSettings: 's:3,p:first,c:true,a:clean,m:100,n:20'};
+        const partialParams = {ngramSettings: 's:3,p:first,c:pmi,a:clean,m:100,n:20'};
         expect(ngramParameters.storeToState(partialParams)).toEqual(testState);
 
     });

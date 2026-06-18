@@ -32,7 +32,7 @@ export class NgramParameters extends StoreSync<NgramSettings> {
             `o:${state.mode == 'collocates' ? 'c' : 'n'}`,
             `s:${state.size}`,
             `p:${state.positions}`,
-            `c:${state.freqCompensation}`,
+            `c:${this.formatFreqCompensation(state.freqCompensation)}`,
             `a:${state.analysis}`,
             `m:${state.maxDocuments}`,
             `n:${state.numberOfNgrams}`
@@ -64,6 +64,15 @@ export class NgramParameters extends StoreSync<NgramSettings> {
     private parseInt(value: string | undefined, defaultValue: number): number {
         const parsed = parseInt(value ?? '', 10);
         return _.isNaN(parsed) ? defaultValue : parsed;
+    }
+
+    private formatFreqCompensation(value: FreqMode): string {
+        const keys: Record<FreqMode, string> = {
+            'absolute': 'abs',
+            'legacy': 'leg',
+            'pmi': 'pmi'
+        }
+        return _.get(keys, value, 'absolute')
     }
 
     private parseFreqCompenstation(value: string): FreqMode {
