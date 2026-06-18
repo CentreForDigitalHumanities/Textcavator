@@ -269,7 +269,7 @@ def _ngram_frequency(
     ttfs: Optional[Dict],
     total_word_count: int,
     method='absolute',
-) -> float:
+) -> float | int:
     methods = {
         'absolute': _absolute_frequency,
         'legacy': _legacy_compensated_frequency,
@@ -277,6 +277,8 @@ def _ngram_frequency(
     }
     func = methods[method]
     count = ngram_counts.get(ngram, 0)
+    if not count:
+        return 0
     if method in ['legacy', 'pmi']:
         if not ttfs:
             raise ValueError(f'ttfs dict is required for frequency method {method}')
