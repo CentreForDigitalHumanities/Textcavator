@@ -90,12 +90,17 @@ def test_top_10_ngrams():
     }
 
     ttf = {
-        'a': 100,
-        'b': 200,
-        'c': 150,
+        'a': [100],
+        'b': [200],
+        'c': [150],
     }
     test_results = [
-        {'ngrams': Counter(doc), 'time_interval': time_intervals[i]}
+        {
+            'ngrams': Counter(doc),
+            'time_interval': time_intervals[i],
+            'ngram_ttfs': ttf,
+            'total_term_count': 1000,
+        }
         for i, doc in enumerate(docs)
     ]
 
@@ -104,20 +109,25 @@ def test_top_10_ngrams():
         dataset_absolute = next(series for series in output_absolute if series['label'] == word)
         assert dataset_absolute['data'] == target_data[word]
 
-    [r.update({'ngram_ttfs': ttf}) for r in test_results]
-    output_relative = ngram.get_top_n_ngrams(test_results)
+    output_relative = ngram.get_top_n_ngrams(test_results, method='pmi')
 
     for word in target_data:
-        dataset_relative = next(series for series in output_relative if series['label'] == word)
+        dataset_relative = next(
+            series for series in output_relative if series['label'] == word
+        )
         relative_frequencies = {
-            w: [c / ttf[w] for c in target_data[w]]
-            for w in target_data }
+            w: [
+                ngram._pmi(c, ttf[w], 1000) if c else 0
+                for c in target_data[w]
+            ]
+            for w in target_data
+        }
         assert dataset_relative['data'] == relative_frequencies[word]
 
-def get_binned_results(corpus_name, query, time_bins=CENTURY_BINS, ngram_size=2, term_position='any', freq_compensation=None, subfield='none', max_size_per_interval=20, date_field='date'):
+def get_binned_results(corpus_name, query, time_bins=CENTURY_BINS, ngram_size=2, term_position='any', collect_ttf=False, subfield='none', max_size_per_interval=20, date_field='date'):
     return [
         ngram.tokens_by_time_interval(
-            corpus_name, query, 'content', bin, ngram_size, term_position, freq_compensation, subfield, max_size_per_interval, date_field)
+            corpus_name, query, 'content', bin, ngram_size, term_position, collect_ttf, subfield, max_size_per_interval, date_field)
         for bin in time_bins
     ]
 
@@ -171,7 +181,10 @@ def test_absolute_bigrams(small_mock_corpus, index_small_mock_corpus, basic_quer
 
     integrated_results = ngram.get_ngrams(results)
     for bigram in bigrams:
-        data = next((item for item in integrated_results['words'] if item['label'] == bigram['label']), None)
+        data = next((
+            item for item in integrated_results['words']
+            if item['label'] == bigram['label']
+        ), None)
         assert data
 
         for bin, freq in enumerate(data['data']):
@@ -315,8 +328,8 @@ def test_number_of_ngrams(small_mock_corpus, index_small_mock_corpus, basic_quer
 
 def test_freq_compensation(small_mock_corpus, index_small_mock_corpus, basic_query):
     frequent_query = query.set_query_text(basic_query, 'to')
-    results = get_binned_results(small_mock_corpus, frequent_query, freq_compensation=True)
-    top_grams = ngram.get_top_n_ngrams(results)
+    results = get_binned_results(small_mock_corpus, frequent_query, collect_ttf=True)
+    top_grams = ngram.get_top_n_ngrams(results, method='pmi')
     assert top_grams
 
 

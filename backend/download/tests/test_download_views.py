@@ -78,7 +78,7 @@ def ngram_parameters(mock_corpus, mock_corpus_specs):
         'field': search_field,
         'ngram_size': 2,
         'term_position': 'any',
-        'freq_compensation': True,
+        'freq_compensation': 'pmi',
         'subfield': 'clean',
         'max_size_per_interval': 50,
         'number_of_ngrams': 10,

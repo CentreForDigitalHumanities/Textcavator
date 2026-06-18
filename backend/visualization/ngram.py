@@ -95,7 +95,7 @@ def tokens_by_time_interval(
     bin: Tuple[int, int],
     ngram_size: int,
     term_position: str,
-    freq_compensation: bool | None,
+    collect_ttf: Optional[bool],
     subfield: str,
     max_size_per_interval: int,
     date_field: str,
@@ -132,13 +132,13 @@ def tokens_by_time_interval(
     )
     bin_ngrams = Counter()
     docs = termvectors.request_termvectors_batched(
-        search_results, client, freq_compensation, [field]
+        search_results, client, collect_ttf, [field]
     )
     for _, vectors in docs:
         tokens, ttfs = _count_tokens_in_document(
             vectors, client, field, query_text,
             term_positions, ngram_size,
-            freq_compensation=freq_compensation,
+            collect_ttf=collect_ttf,
             mode=mode,
         )
         bin_ngrams.update(tokens)
@@ -148,7 +148,7 @@ def tokens_by_time_interval(
         'time_interval': format_time_label(bin[0], bin[1]),
         'ngrams': bin_ngrams
     }
-    if freq_compensation:
+    if collect_ttf:
         total_term_count = get_total_term_count(corpus_name, es_query, field)
         results['total_term_count'] = total_term_count
         results['ngram_ttfs'] = ngram_ttfs
@@ -162,7 +162,7 @@ def _count_tokens_in_document(
     query_text: str,
     term_positions: List[int],
     ngram_size: int,
-    freq_compensation: bool | None = None,
+    collect_ttf: bool = False,
     mode: Literal['ngrams', 'collocates'] = 'ngrams',
 ) -> Tuple[Counter, Dict]:
     '''
@@ -181,7 +181,7 @@ def _count_tokens_in_document(
         for start, stop in token_ranges:
             ngram = sorted_tokens[start:stop]
             words = ' '.join([token['term'] for token in ngram])
-            if freq_compensation:
+            if collect_ttf:
                 ttfs[words] = [token['ttf'] for token in ngram]
             tokens.update({ words: 1})
     return tokens, ttfs
