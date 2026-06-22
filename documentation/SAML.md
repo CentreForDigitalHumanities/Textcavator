@@ -18,7 +18,7 @@ The setting [SAML_GROUP_NAME](/documentation/Django-project-settings.md#saml_gro
 
 ## Developing with SAML
 
-SAML intergration depends on the [`xmlsec` Python library](https://xmlsec.readthedocs.io/en/stable/) which requires additional libraries. The Docker environment also includes these. If you are not using Docker, follow the installation instructions in the `xmlsec` documentation.
+SAML intergration depends on the [`xmlsec` Python library](https://xmlsec.readthedocs.io/) which requires additional libraries. The Docker environment also includes these. If you are not using Docker, follow the installation instructions in the `xmlsec` documentation.
 
 To use SAML login in a development environment, you can use the CDH [Development Identity Provider](https://centrefordigitalhumanities.github.io/Federated-Authentication-Docs/developmentidp/index.html).
 
