@@ -42,7 +42,7 @@ DATABASES = {
 
 
 STATICFILES_DIRS = []
-PROXY_FRONTEND = None
+PROXY_FRONTEND = 'http://localhost:4200/'
 
 # Authentication
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
