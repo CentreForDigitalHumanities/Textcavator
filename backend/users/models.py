@@ -24,6 +24,10 @@ class CustomUser(django_auth_models.AbstractUser):
             return f'{self.saml_username} [saml]'
         return super().__str__()
 
+    def name(self):
+        '''Name to address the user in interface/email/etc'''
+        return self.saml_username or self.username
+
 
 class AnoymousProfile(object):
     enable_search_history = False
@@ -61,5 +65,5 @@ class UserProfile(models.Model):
     )
 
     def __str__(self):
-        return f'Profile of {self.user.username}'
+        return f'Profile of {self.user}'
 

@@ -91,7 +91,7 @@ def download_search_results(request_json, user):
     make_chain = lambda: chain(
         make_download.s(request_json, download.id, download_limit, user),
         complete_download.s(download.id),
-        csv_data_email.s(user.email, user.username),
+        csv_data_email.s(user.email, user.name()),
     ).on_error(complete_failed_download.s(download.id))
 
     return try_download(make_chain, download)
@@ -148,14 +148,14 @@ def remove_size_limit(parameters):
     return parameters
 
 @shared_task()
-def csv_data_email(log_id, user_email, username):
+def csv_data_email(log_id, user_email, name):
     '''
     Send an email to the user that their CSV is ready
     '''
 
     logger.info('should now be sending email')
 
-    send_csv_email(user_email, username, log_id)
+    send_csv_email(user_email, name, log_id)
 
 def download_full_data(request_json, user):
     '''
@@ -181,7 +181,7 @@ def download_full_data(request_json, user):
         task,
         make_full_data_csv.s(visualization_type, parameters, download.id),
         complete_download.s(download.id),
-        csv_data_email.s(user.email, user.username),
+        csv_data_email.s(user.email, user.name()),
     ).on_error(complete_failed_download.s(download.id))
 
     return try_download(make_chain, download)

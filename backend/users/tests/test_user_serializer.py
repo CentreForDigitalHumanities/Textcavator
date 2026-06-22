@@ -1,4 +1,5 @@
-from addcorpus.models import Corpus
+from users.models import CustomUser
+from users.serializers import CustomUserDetailsSerializer
 from unittest.mock import ANY
 
 def test_user_serializer(auth_client,
@@ -59,3 +60,18 @@ def test_readonly_fields(auth_client):
     assert not is_admin()
     response = auth_client.patch(route, {'is_admin': True}, content_type='application/json')
     assert not is_admin()
+
+
+def test_saml_user_serializer(db):
+    user = CustomUser(
+        username='_',
+        saml_username='test1',
+        email='test1@example.com',
+        saml=True,
+    )
+    user.set_unusable_password()
+    user.save()
+
+    serializer = CustomUserDetailsSerializer(instance=user)
+    assert serializer.data['saml'] == True
+    assert serializer.data['username'] == 'test1'

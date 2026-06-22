@@ -24,6 +24,13 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
         fields = ('id', 'username', 'email', 'saml',
                   'download_limit', 'is_admin', 'profile')
 
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['username'] = instance.name()
+        return data
+
+
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)
 
