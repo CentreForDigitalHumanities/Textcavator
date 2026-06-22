@@ -11,6 +11,19 @@ class CustomUser(django_auth_models.AbstractUser):
         help_text='Maximum documents that this user can download per query',
         default=DEFAULT_DOWNLOAD_LIMIT)
 
+    saml_username = models.CharField(
+        max_length=256,
+        help_text='Username for SAML login',
+        unique=True,
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self):
+        if self.saml_username:
+            return f'{self.saml_username} [saml]'
+        return super().__str__()
+
 
 class AnoymousProfile(object):
     enable_search_history = False
