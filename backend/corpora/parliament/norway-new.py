@@ -1,9 +1,8 @@
 from glob import glob
 from datetime import datetime
-from django.conf import settings
 
 from ianalyzer_readers.extract import Combined, Constant, CSV
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 import corpora.utils.formatting as formatting
@@ -50,9 +49,19 @@ class ParliamentNorwayNew(Parliament, CSVCorpusDefinition):
     description = "Speeches from the Storting"
     min_date = datetime(year=1998, month=1, day=1)
     max_date = datetime(year=2016, month=12, day=31)
-    data_directory = settings.PP_NORWAY_NEW_DATA
-    es_index = getattr(settings, 'PP_NORWAY_NEW_INDEX', 'parliament-norway-new')
-    word_model_path = getattr(settings, 'PP_NORWAY_WM', None)
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_NORWAY_NEW_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_NORWAY_NEW_INDEX') or 'parliament-norway-new'
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('PP_NORWAY_WM') or super().word_model_path
+
     image = 'norway.JPG'
     languages = ['no']
     description_page = 'norway-new.md'

@@ -1,7 +1,7 @@
 from datetime import datetime
 from glob import glob
 
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
 from ianalyzer_readers.extract import CSV, Combined, Constant
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.parliament.parliament import Parliament
@@ -9,15 +9,20 @@ import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.constants import document_context
 from corpora.utils import formatting
 
-from django.conf import settings
 
 class ParliamentFinlandOld(Parliament, CSVCorpusDefinition):
     title = 'People and Parliament (Finland, 1863-1905)'
     description = 'Speeches from the early Finnish estates'
     max_date = datetime(year=1906, month=12, day=31)
     min_date = datetime(year=1863, month=1, day=1)
-    data_directory = settings.PP_FINLAND_OLD_DATA
-    es_index = getattr(settings, 'PP_FINLAND_OLD_INDEX', 'parliament-finland-old')
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_FINLAND_OLD_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_FINLAND_OLD_INDEX') or 'parliament-finland-old'
 
     def sources(self, start, end):
         for csv_file in glob('{}/**/*.csv'.format(self.data_directory), recursive=True):

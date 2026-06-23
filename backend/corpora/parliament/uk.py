@@ -2,10 +2,9 @@ from glob import glob
 import logging
 from datetime import datetime
 
-from django.conf import settings
 
 from ianalyzer_readers.extract import Constant, CSV
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.constants import document_context
@@ -34,12 +33,24 @@ def format_speaker(speaker):
 class ParliamentUK(Parliament, CSVCorpusDefinition):
     title = 'People & Parliament (UK)'
     description = "Speeches from the House of Lords and House of Commons"
-    data_directory = settings.PP_UK_DATA
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_UK_DATA') or super().data_directory
+
     min_date = datetime(year=1803, month=1, day=1)
     max_date = datetime(year=2021, month=12, day=31)
-    es_index = getattr(settings, 'PP_UK_INDEX', 'parliament-uk')
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_UK_INDEX') or 'parliament-uk'
+
     image = 'uk.jpeg'
-    word_model_path = getattr(settings, 'PP_UK_WM', None)
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('PP_UK_WM') or super().word_model_path
+
     languages = ['en']
     description_page = 'uk.md'
     field_entry = 'speech_id'

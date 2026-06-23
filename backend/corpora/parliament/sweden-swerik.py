@@ -6,7 +6,6 @@ import operator
 from typing import Optional, Iterable, Callable, Dict, List, Tuple
 from bs4.element import Tag as BS4Tag
 
-from django.conf import settings
 from ianalyzer_readers.readers.xml import XMLReader
 from ianalyzer_readers.extract import Constant, XML, Combined, Metadata, Order, Pass, Cache
 from ianalyzer_readers.xml_tag import Tag, PreviousSiblingTag, TransformTag
@@ -15,9 +14,8 @@ from tqdm import tqdm
 
 from corpora.parliament.parliament import Parliament
 from corpora.parliament.utils import field_defaults
-from addcorpus.es_mappings import date_estimate_mapping, date_mapping
-from addcorpus.python_corpora.filters import DateFilter
-from addcorpus.python_corpora.corpus import FieldDefinition
+from addcorpus.es_mappings import date_estimate_mapping
+from addcorpus.python_corpora.corpus import FieldDefinition, get_deprecated_setting
 from api.utils import document_link
 from corpora.parliament.sweden import ParliamentSweden
 
@@ -208,9 +206,12 @@ class SwerikMetadataReader(XMLReader):
     metadata.'''
 
     tag_entry = Tag('xi:include')
-    data_directory = os.path.join(
-        settings.PP_SWEDEN_SWERIK_DATA, 'records', 'data'
-    )
+    data_directory = None
+
+    def __init__(self, data_directory: str):
+        self.data_directory = os.path.join(
+            data_directory, 'records', 'data'
+        )
 
     def sources(self, **kwargs):
         for chamber in _chambers.keys():
@@ -239,6 +240,17 @@ def _extract_utterance_text(element: BS4Tag) -> str:
 
 
 class ParliamentSwedenSwerik(Parliament, XMLReader):
+    ''''
+    Corpus definition for Sweden Swerik dataset.
+
+    Uses a separate SwerikMetadataReader for XML metadata.
+
+    Recommended attributes for configuration:
+    - PP_SWEDEN_SWERIK_DATA -> data_directory
+    - PP_SWEDEN_SWERIK_INDEX -> es_index
+    - PP_SWEDEN_SWERIK_HIDE_CROSSCORPUS_LINK -> hide_cross_corpus_link
+    '''
+
     title = 'People & Parliament (Sweden, Swerik dataset)'
     description = 'Speeches from the Riksdag. This corpus is based on data published ' \
         'by the Swerik project.'
@@ -248,8 +260,13 @@ class ParliamentSwedenSwerik(Parliament, XMLReader):
     image = 'sweden.jpg'
     description_page = 'sweden-swerik.md'
 
-    data_directory = settings.PP_SWEDEN_SWERIK_DATA
-    es_index = getattr(settings, 'PP_SWEDEN_SWERIK_INDEX', 'parliament-sweden-swerik')
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_SWEDEN_SWERIK_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_SWEDEN_SWERIK_INDEX') or 'parliament-sweden-swerik'
 
     tag_toplevel = Tag('TEI')
     tag_entry = Tag('u', attrs={'prev': None})
@@ -259,7 +276,7 @@ class ParliamentSwedenSwerik(Parliament, XMLReader):
         metadata = self._collect_person_metadata()
 
         print('Extracting records...')
-        records_reader = SwerikMetadataReader()
+        records_reader = SwerikMetadataReader(self.data_directory)
         records = list(records_reader.documents())
 
         for doc in tqdm(records):
@@ -423,12 +440,15 @@ class ParliamentSwedenSwerik(Parliament, XMLReader):
         transform=lambda value: str.strip(value) if value else None,
     )
 
+    hide_cross_corpus_link = \
+        get_deprecated_setting('PP_SWEDEN_SWERIK_HIDE_CROSSCORPUS_LINK') or False
+
     url_sweden_corpus = FieldDefinition(
         name='url_sweden_corpus',
         display_name='Speech in Sweden 1920-2022 corpus',
         description='Link to the corresponding speech in the Sweden 1920-2022 corpus',
         display_type='url',
-        hidden=getattr(settings, 'PP_SWEDEN_SWERIK_HIDE_CROSSCORPUS_LINK', False),
+        hidden=hide_cross_corpus_link,
         es_mapping = {'type': 'keyword', 'index': False, 'doc_values': False},
         extractor=XML(
             attribute='xml:id',

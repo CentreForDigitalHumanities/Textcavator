@@ -2,11 +2,9 @@ from glob import glob
 import logging
 from datetime import datetime
 
-from django.conf import settings
-
 from corpora.parliament.parliament import Parliament
 from ianalyzer_readers.extract import Constant, Combined, CSV
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.formatting import underscore_to_space
 from corpora.utils.constants import document_context
@@ -15,12 +13,22 @@ class ParliamentFrance(Parliament, CSVCorpusDefinition):
     title = "People & Parliament (France 1881-2022)"
     description = "Speeches from the 3rd, 4th and 5th republic of France"
     min_date = datetime(year=1881, month=1, day=1)
-    data_directory = settings.PP_FR_DATA
-    es_index = getattr(settings, 'PP_FR_INDEX', 'parliament-france')
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_FR_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_FR_INDEX') or 'parliament-france'
+
     image = 'france.jpg'
     languages = ['fr']
     description_page = 'france.md'
-    word_model_path = getattr(settings, 'PP_FR_WM', None)
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('PP_FR_WM') or super().word_model_path
 
     field_entry = 'speech_id'
 

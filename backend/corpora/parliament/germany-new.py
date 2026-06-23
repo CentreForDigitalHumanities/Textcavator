@@ -2,11 +2,10 @@ from glob import glob
 import logging
 from datetime import datetime
 
-from django.conf import settings
 
 from corpora.parliament.parliament import Parliament
 from ianalyzer_readers.extract import Constant, Combined, CSV
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
 import corpora.utils.formatting as formatting
 import corpora.parliament.utils.field_defaults as field_defaults
 
@@ -16,11 +15,21 @@ class ParliamentGermanyNew(Parliament, CSVCorpusDefinition):
     description = "Speeches from the Bundestag"
     min_date = datetime(year=1949, month=1, day=1)
     max_date = datetime(year=2021, month=12, day=31)
-    data_directory = settings.PP_GERMANY_NEW_DATA
-    es_index = getattr(settings, 'PP_GERMANY_NEW_INDEX', 'parliament-germany-new')
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_GERMANY_NEW_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_GERMANY_NEW_INDEX') or 'parliament-germany-new'
+
     image = 'germany-new.jpeg'
     languages = ['de']
-    word_model_path = getattr(settings, 'PP_DE_WM', None)
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('PP_DE_WM') or super().word_model_path
 
     field_entry = 'id'
     required_field = 'speech_content'

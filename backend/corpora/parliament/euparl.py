@@ -8,15 +8,14 @@ import math
 import numbers
 
 from bs4 import BeautifulSoup
-from django.conf import settings
 from langcodes import standardize_tag, Language
 import requests
-from ianalyzer_readers.extract import Combined, JSON, Metadata, Pass, CSV, Constant
+from ianalyzer_readers.extract import Combined, JSON, Pass, CSV, Constant
 from ianalyzer_readers.readers.core import Field
 from ianalyzer_readers.readers.json import JSONReader
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
-from addcorpus.python_corpora.corpus import FieldDefinition
+from addcorpus.python_corpora.corpus import FieldDefinition, get_deprecated_setting
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
@@ -31,26 +30,48 @@ def language_name(lang_code: str) -> str:
 
 
 class ParliamentEurope(Parliament):
+    '''
+    Corpus definition for EU Parliament.
+
+    During data extraction, the corpus will harvest data from an API up until the present,
+    so `max_date` is `datetime.now()` by default.
+    If you are not doing periodic updates, configure `max_date` to the date of the harvest.
+    '''
     title = 'People & Parliament (European Parliament)'
     description = "Speeches from the European Parliament (EP)"
-    es_index = getattr(settings, 'PP_EUPARL_INDEX', 'parliament-euparl')
-    data_directory = settings.PP_EUPARL_DATA
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_EUPARL_INDEX') or 'parliament-euparl'
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_EUPARL_DATA') or super().data_directory
+
     languages = ['en']
     category = "parliament"
     document_context = document_context()
     description_page = 'euparl.md'
     image = 'euparl.jpeg'
     min_date = datetime(year=1999, month=7, day=20)
-    max_date = getattr(settings, 'PP_EUPARL_MAX_DATE', datetime.now())
+
+    @property
+    def max_date(self):
+        return get_deprecated_setting('PP_EUPARL_MAX_DATE') or datetime.now()
+
     language_field = 'original_language_code'
-    word_model_path = getattr(settings, 'PP_EUPARL_WM', None)
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('PP_EUPARL_WM') or super().word_model_path
+
     wordmodels_page = 'euparl.md'
 
 
     @property
     def subcorpora(self):
         return [
-            EUPDCorpReader(),
+            EUPDCorpReader(self.data_directory),
             ParliamentEuropeFromAPI(),
         ]
 
@@ -75,7 +96,11 @@ class ParliamentEurope(Parliament):
 
     debate_id = field_defaults.debate_id()
     debate_title = field_defaults.debate_title()
-    date = field_defaults.date(min_date, max_date)
+
+    @property
+    def date(self):
+        return field_defaults.date(self.min_date, self.max_date)
+
     party = field_defaults.party()
     party_full = field_defaults.party_full()
     party_id = field_defaults.party_id()
@@ -605,7 +630,10 @@ class EUPDCorpReader(RDSReader):
     Reader for the EUPDCorp dataset. Contains debates from 20/7/1999 to 8/2/2024
     '''
 
-    data_directory = settings.PP_EUPARL_DATA
+    data_directory = None
+
+    def __init__(self, data_directory: str):
+        self.data_directory = data_directory
 
     def sources(self, **kwargs):
         for filename in os.listdir(self.data_directory):

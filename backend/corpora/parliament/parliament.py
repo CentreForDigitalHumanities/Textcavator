@@ -2,9 +2,8 @@ import logging
 import os
 import os.path as op
 from typing import Optional
-from django.conf import settings
 
-from addcorpus.python_corpora.corpus import CorpusDefinition
+from addcorpus.python_corpora.corpus import CorpusDefinition, get_deprecated_setting
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 import corpora.parliament.utils.field_defaults as field_defaults
 from addcorpus.es_settings import es_settings
@@ -26,7 +25,11 @@ class Parliament(CorpusDefinition):
     description = "Minutes from European parliaments"
     # store min_year as int, since datetime does not support BCE dates
     visualize = []
-    es_index = getattr(settings, 'PP_ALIAS', 'parliament')
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_ALIAS') or 'parliament'
+
     # fields below are required by code but not actually used
     min_date = field_defaults.MIN_DATE
     max_date = field_defaults.MAX_DATE

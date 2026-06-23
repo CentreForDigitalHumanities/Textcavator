@@ -1,17 +1,12 @@
 from datetime import datetime
 from glob import glob
 import logging
-from os.path import join
 
 import bs4
-from django.conf import settings
 from ianalyzer_readers.xml_tag import Tag, FindParentTag, PreviousTag, TransformTag
 
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, get_deprecated_setting
 from ianalyzer_readers.extract import XML, Constant, Combined, Order
-from corpora.parliament.utils.parlamint import (
-    party_attribute_extractor,
-)
 from corpora.parliament.utils.parlamint_v4 import (
     current_party_id_extractor,
     extract_named_entities,
@@ -108,10 +103,15 @@ def get_sequence_recent(id):
 class ParliamentNetherlandsNew(XMLCorpusDefinition):
     min_date = datetime(year=2015, month=1, day=1)
     max_date = datetime(year=2022, month=12, day=31)
-    data_directory = settings.PP_NL_RECENT_DATA
+    data_directory = None
 
     tag_toplevel = Tag("TEI")
     tag_entry = Tag("u")
+
+
+    def __init__(self, data_directory):
+        self.data_directory = data_directory
+
 
     def sources(self, start: datetime, end: datetime):
         if not in_date_range(self, start, end):
@@ -257,7 +257,10 @@ class ParliamentNetherlandsOld(XMLCorpusDefinition):
 
     tag_toplevel = Tag("root")
     tag_entry = Tag("speech")
-    data_directory = settings.PP_NL_DATA
+    data_directory = None
+
+    def __init__(self, data_directory):
+        self.data_directory = data_directory
 
     def sources(self, start, end):
         logger = logging.getLogger(__name__)
@@ -430,10 +433,22 @@ class ParliamentNetherlands(Parliament, XMLCorpusDefinition):
     category = "parliament"
     document_context = document_context()
 
-    data_directory = settings.PP_NL_RECENT_DATA
-    word_model_path = getattr(settings, "PP_NL_WM", None)
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_NL_RECENT_DATA') or super().data_directory
 
-    es_index = getattr(settings, "PP_NL_INDEX", "parliament-netherlands")
+    @property
+    def data_directory_old(self):
+        return get_deprecated_setting('PP_NL_DATA')
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('PP_NL_WM') or super().word_model_path
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_NL_INDEX') or 'parliament-netherlands'
+
     image = "netherlands.jpg"
     description_page = "netherlands.md"
     citation_page = "netherlands.md"
@@ -441,8 +456,8 @@ class ParliamentNetherlands(Parliament, XMLCorpusDefinition):
     @property
     def subcorpora(self):
         return [
-            ParliamentNetherlandsOld(),
-            ParliamentNetherlandsNew(),
+            ParliamentNetherlandsOld(self.data_directory_old),
+            ParliamentNetherlandsNew(self.data_directory),
         ]
 
     def sources(self, start, end):

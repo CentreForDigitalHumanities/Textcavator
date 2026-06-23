@@ -1,11 +1,10 @@
 from glob import glob
 from datetime import datetime
 import re
-from django.conf import settings
 import os
 
 from ianalyzer_readers.extract import Combined, Constant, CSV
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
 from corpora.utils.constants import document_context
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
@@ -24,8 +23,15 @@ class ParliamentNorway(Parliament, CSVCorpusDefinition):
     description = "Speeches from the Storting"
     min_date = datetime(year=1814, month=1, day=1)
     max_date = datetime(year=2004, month=12, day=31)
-    data_directory = settings.PP_NORWAY_DATA
-    es_index = getattr(settings, 'PP_NORWAY_INDEX','parliament-norway')
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_NORWAY_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_NORWAY_INDEX') or 'parliament-norway'
+
     image = 'norway.JPG'
     languages = ['no']
     description_page = 'norway.md'

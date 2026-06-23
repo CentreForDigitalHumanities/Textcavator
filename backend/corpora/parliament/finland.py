@@ -2,7 +2,7 @@ from datetime import datetime
 from glob import glob
 from ianalyzer_readers.xml_tag import Tag, FindParentTag, PreviousSiblingTag, ParentTag
 
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, get_deprecated_setting
 from ianalyzer_readers.extract import XML, Combined, Constant, Metadata
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
@@ -10,7 +10,6 @@ from corpora.utils.constants import document_context
 from bs4 import BeautifulSoup
 from corpora.parliament.utils.parlamint import extract_all_party_data, extract_people_data, extract_role_data, party_attribute_extractor, person_attribute_extractor, clean_value
 
-from django.conf import settings
 
 def format_role(values):
     id, roles = values
@@ -23,9 +22,18 @@ class ParliamentFinland(Parliament, XMLCorpusDefinition):
     title = 'People and Parliament (Finland, 1907-)'
     description = 'Speeches from the eduskunta'
     min_date = datetime(year=1907, month=1, day=1)
-    data_directory = settings.PP_FINLAND_DATA
-    es_index = getattr(settings, 'PP_FINLAND_INDEX', 'parliament-finland')
-    word_model_path = getattr(settings, 'PP_FINLAND_WM', None)
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_FINLAND_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_FINLAND_INDEX') or 'parliament-finland'
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('PP_FINLAND_WM') or super().word_model_path
 
     def sources(self, start, end):
         for xml_file in glob('{}/**/*.xml'.format(self.data_directory), recursive=True):

@@ -31,24 +31,60 @@ def parliament_corpora_settings(settings):
         'parliament-europe': 'corpora.parliament.euparl.ParliamentEurope',
     }
 
-    settings.PP_CANADA_DATA = os.path.join(here, 'tests', 'data', 'canada')
-    settings.PP_DENMARK_DATA = os.path.join(here, 'tests', 'data', 'denmark')
-    settings.PP_DENMARK_NEW_DATA = os.path.join(here, 'tests', 'data', 'denmark-new')
-    settings.PP_EUPARL_DATA = os.path.join(here, 'tests', 'data', 'euparl', 'rds')
-    settings.PP_FINLAND_DATA = os.path.join(here, 'tests', 'data', 'finland')
-    settings.PP_FINLAND_OLD_DATA = os.path.join(here, 'tests', 'data', 'finland-old')
-    settings.PP_FR_DATA = os.path.join(here, 'tests', 'data', 'france')
-    settings.PP_GERMANY_NEW_DATA = os.path.join(here, 'tests', 'data', 'germany-new')
-    settings.PP_GERMANY_OLD_DATA = os.path.join(here, 'tests', 'data', 'germany-old')
-    settings.PP_IRELAND_DATA = os.path.join(here, 'tests', 'data', 'ireland')
-    settings.PP_NL_DATA = os.path.join(here, 'tests', 'data', 'netherlands')
-    settings.PP_NL_RECENT_DATA = os.path.join(here, 'tests', 'data', 'netherlands-recent')
-    settings.PP_NORWAY_DATA = os.path.join(here, 'tests', 'data', 'norway')
-    settings.PP_NORWAY_NEW_DATA = os.path.join(here, 'tests', 'data', 'norway-new')
-    settings.PP_SWEDEN_DATA = os.path.join(here, 'tests', 'data', 'sweden')
-    settings.PP_SWEDEN_OLD_DATA = os.path.join(here, 'tests', 'data', 'sweden-old')
-    settings.PP_SWEDEN_SWERIK_DATA = os.path.join(here, 'tests', 'data', 'sweden-swerik')
-    settings.PP_UK_DATA = os.path.join(here, 'tests', 'data', 'uk')
+    settings.CORPUS_SETTINGS = {
+        'parliament-canada': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'canada'),
+        },
+        'parliament-denmark': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'denmark'),
+        },
+        'parliament-denmark-new': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'denmark-new'),
+        },
+        'parliament-europe': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'euparl', 'rds'),
+        },
+        'parliament-finland': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'finland'),
+        },
+        'parliament-finland-old': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'finland-old'),
+        },
+        'parliament-france': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'france'),
+        },
+        'parliament-germany-new': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'germany-new'),
+        },
+        'parliament-germany-old': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'germany-old'),
+        },
+        'parliament-ireland': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'ireland'),
+        },
+        'parliament-netherlands': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'netherlands-recent'),
+            'data_directory_old': os.path.join(here, 'tests', 'data', 'netherlands'),
+        },
+        'parliament-norway': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'norway'),
+        },
+        'parliament-norway-new': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'norway-new'),
+        },
+        'parliament-sweden': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'sweden'),
+        },
+        'parliament-sweden-old': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'sweden-old'),
+        },
+        'parliament-sweden-swerik': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'sweden-swerik'),
+        },
+        'parliament-uk': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'uk')
+        }
+    }
 
 
 CORPUS_TEST_DATA = [

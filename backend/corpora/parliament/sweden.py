@@ -1,14 +1,13 @@
 from datetime import date
 from glob import glob
 
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
 from ianalyzer_readers.extract import CSV, Constant
 from corpora.parliament.parliament import Parliament
 import corpora.utils.formatting as formatting
 import corpora.parliament.utils.field_defaults as field_defaults
 import re
 
-from django.conf import settings
 
 full_date_pattern = r'\d{4}-\d{2}-\d{2}'
 partial_date_pattern = r'\d{4}'
@@ -45,9 +44,18 @@ class ParliamentSweden(Parliament, CSVCorpusDefinition):
     description = 'Speeches from the Riksdag'
     min_date = date(year=1920, month=1, day=1)
     max_date = date(2022, 1, 11)
-    data_directory = settings.PP_SWEDEN_DATA
-    es_index = getattr(settings, 'PP_SWEDEN_INDEX', 'parliament-sweden')
-    word_model_path = getattr(settings, 'PP_SWEDEN_WM', None)
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('PP_SWEDEN_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('PP_SWEDEN_INDEX') or 'parliament-sweden'
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('PP_SWEDEN_WM') or super().word_model_path
 
     def sources(self, start, end):
         for csv_file in glob('{}/**/*.csv'.format(self.data_directory), recursive=True):
