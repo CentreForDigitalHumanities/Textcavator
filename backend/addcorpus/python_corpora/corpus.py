@@ -8,8 +8,6 @@ from datetime import datetime, date
 from os.path import isdir
 import os
 
-from django.conf import settings
-
 from ianalyzer_readers.readers.core import Reader, Field
 from ianalyzer_readers.readers.xml import XMLReader
 from ianalyzer_readers.readers.csv import CSVReader
