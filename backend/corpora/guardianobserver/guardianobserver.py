@@ -12,14 +12,13 @@ from datetime import datetime
 from zipfile import ZipFile
 from io import BytesIO
 
-from django.conf import settings
 from ianalyzer_readers.xml_tag import Tag
 from ianalyzer_readers import extract
 
 from api.utils import find_media_file
 from indexing.run_update_task import update_document
 from addcorpus.python_corpora import filters
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition, get_deprecated_setting
 from media.image_processing import sizeof_fmt
 from media.media_url import media_url
 
@@ -37,13 +36,27 @@ class GuardianObserver(XMLCorpusDefinition):
     description_page = 'guardianobserver.md'
     min_date = datetime(year=1791, month=1, day=1)
     max_date = datetime(year=2003, month=12, day=31)
-    data_directory = settings.GO_DATA
-    es_index = getattr(settings, 'GO_ES_INDEX', 'guardianobserver')
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('GO_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('GO_ES_INDEX') or 'guardianobserver'
+
     image = 'guardianobserver.jpg'
-    scan_image_type = getattr(settings, 'GO_SCAN_IMAGE_TYPE', 'application/pdf')
+
+    @property
+    def scan_image_type(self):
+        return get_deprecated_setting('GO_SCAN_IMAGE_TYPE') or 'application/pdf'
+
     languages = ['en']
     category = 'periodical'
-    word_model_path = getattr(settings, "GO_WM", None)
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('GO_WM') or super().word_model_path
 
     @property
     def es_settings(self):

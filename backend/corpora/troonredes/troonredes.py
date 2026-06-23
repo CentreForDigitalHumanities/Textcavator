@@ -10,11 +10,9 @@ from os.path import join, splitext
 from datetime import datetime
 from ianalyzer_readers.xml_tag import Tag
 
-from django.conf import settings
-
 from ianalyzer_readers import extract
 from addcorpus.python_corpora import filters
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition, get_deprecated_setting
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from addcorpus.es_settings import es_settings
@@ -32,10 +30,20 @@ class Troonredes(XMLCorpusDefinition):
     description = "Speeches by Dutch monarchs"
     min_date = datetime(year=1814, month=1, day=1)
     max_date = datetime(year=2025, month=12, day=31)
-    data_directory = settings.TROONREDES_DATA
-    es_index = getattr(settings, 'TROONREDES_ES_INDEX', 'troonredes')
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('TROONREDES_DATA') or super().data_directory
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('TROONREDES_ES_INDEX') or 'troonredes'
+
+    @property
+    def word_model_path(self):
+        return get_deprecated_setting('TROONREDES_WM') or super().word_model_path
+
     image = 'troonrede.jpg'
-    word_model_path = getattr(settings, 'TROONREDES_WM', None)
     languages = ['nl']
     category = 'oration'
     description_page = 'troonredes.md'

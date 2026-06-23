@@ -4,8 +4,7 @@ import re
 from tqdm import tqdm
 from ianalyzer_readers.xml_tag import Tag, CurrentTag, TransformTag
 
-from django.conf import settings
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition, get_deprecated_setting
 from ianalyzer_readers.extract import Metadata, XML, Pass, Order, Backup, Combined
 import corpora.dbnl.utils as utils
 from addcorpus.es_mappings import *
@@ -15,10 +14,18 @@ from corpora.dbnl.dbnl_metadata import DBNLMetadata
 class DBNL(XMLCorpusDefinition):
     title = 'DBNL'
     description = 'Dutch literature and publications on literary or linguistic studies, from the Middle Ages to the 19th century'
-    data_directory = settings.DBNL_DATA
+
+    @property
+    def data_directory(self):
+        return get_deprecated_setting('DBNL_DATA') or super().data_directory
+
     min_date = datetime(year=1200, month=1, day=1)
     max_date = datetime(year=1890, month=12, day=31)
-    es_index = getattr(settings, 'DBNL_ES_INDEX', 'dbnl')
+
+    @property
+    def es_index(self):
+        return get_deprecated_setting('DBNL_ES_INDEX') or 'dbnl'
+
     image = 'dbnl.png'
     description_page = 'dbnl.md'
     citation_page = 'citation.md'
@@ -39,7 +46,7 @@ class DBNL(XMLCorpusDefinition):
     language_field = 'language_code'
 
     def sources(self, start = None, end = None):
-        metadata_corpus = DBNLMetadata()
+        metadata_corpus = DBNLMetadata(data_directory=self.data_directory)
         all_metadata = utils.index_by_id(metadata_corpus.documents())
 
         print('Extracting XML files...')
@@ -394,7 +401,7 @@ class DBNL(XMLCorpusDefinition):
     has_content = FieldDefinition(
         name='has_content',
         display_name='Content available',
-        description=f'Whether the contents of this book are available on {settings.SITE_NAME}',
+        description=f'Whether the contents of this book are available on Textcavator',
         extractor=Metadata('has_xml'),
         es_mapping=bool_mapping(),
         search_filter=BooleanFilter(
