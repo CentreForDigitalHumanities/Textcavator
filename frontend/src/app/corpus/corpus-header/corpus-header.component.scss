@@ -13,6 +13,9 @@
     background-color: var(--corpus-header-background);
 }
 
+.image > img {
+    border-radius: .25rem;
+}
 
 .image-column {
     @include mixins.mobile {

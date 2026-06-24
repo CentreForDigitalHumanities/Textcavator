@@ -1,11 +1,16 @@
+$radius: .25rem;
+
 .corpus-container {
     padding: 0;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
+    margin-bottom: 1.75rem;
 
     > .column {
         padding: 1rem; // slightly more generous padding
     }
+
+    border-radius: $radius;
 }
 
 
@@ -27,6 +32,8 @@
         width: 100%;
         object-fit: cover;
         object-position: center;
+        border-top-left-radius: $radius;
+        border-bottom-left-radius: $radius;
     }
 }
 
