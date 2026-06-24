@@ -330,15 +330,54 @@ button {
 
 // quill
 
-.ql-container {
+.ql-snow.ql-container {
     font-family: inherit;
     font-size: inherit;
+    border: 1px solid var(--bulma-border);
 
     .ql-editor {
         @extend .content;
 
         ol, ul {
             padding-left: 0em; // so spacing is not added in both margin AND padding
+        }
+    }
+
+}
+
+.ql-snow.ql-toolbar {
+    border: 1px solid var(--bulma-border);
+
+    .ql-stroke {
+        stroke: var(--bulma-text);
+    }
+
+    .ql-fill {
+        fill: var(--bulma-text);
+    }
+
+    .ql-picker {
+        color: var(--bulma-text);
+    }
+
+    .ql-picker-options {
+        background-color: var(--bulma-body-background-color);
+    }
+
+    button:hover, button:focus,
+    button.ql-active,
+    .ql-picker-label:hover,
+    l-toolbar a.ql-picker-label.dropdown-item:focus,
+    a.ql-picker-label.dropdown-item:focus,
+    .ql-picker-label.ql-active,
+    .ql-picker-item:hover,
+    a.ql-picker-item.dropdown-item:focus,
+    .ql-picker-item.ql-selected
+    {
+        color: var(--bulma-primary-on-scheme);
+
+        .ql-stroke {
+            stroke: var(--bulma-primary-on-scheme);
         }
     }
 }
