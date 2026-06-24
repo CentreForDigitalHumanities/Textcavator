@@ -225,6 +225,14 @@ table.spreadsheet {
     }
 }
 
+.field.is-disabled {
+    color: var(--bulma-text-weak);
+
+    label {
+        color: var(--bulma-text-weak);
+    }
+}
+
 // do not use extra-bold weight for titles
 
 .title {
@@ -288,6 +296,14 @@ button {
     .p-multiselect {
         border-start-start-radius: 0;
         border-end-start-radius: 0;
+    }
+}
+
+.p-steps-item.p-disabled {
+    --p-text-muted-color: var(--bulma-text-weak);
+
+    .p-steps-item-number, .p-steps-item-label {
+        color: var(--p-text-muted-color) !important;
     }
 }
 

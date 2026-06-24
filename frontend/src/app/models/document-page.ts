@@ -16,7 +16,8 @@ export class DocumentPage {
     constructor(
         public documents: FoundDocument[],
         public total: number,
-        public fields?: CorpusField[]
+        public fields?: CorpusField[],
+        public from: number = 0,
     ) {
         this.documents.forEach((d, i) => d.position = i + 1);
     }

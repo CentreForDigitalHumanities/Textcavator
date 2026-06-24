@@ -42,7 +42,7 @@ def test_search(small_mock_corpus, es_client, index_small_mock_corpus, basic_que
     """
     query_no_text = query.remove_query(basic_query)
     result = search(
-        corpus = small_mock_corpus,
+        corpus_name = small_mock_corpus,
         query_model=query_no_text,
         client=es_client,
     )
@@ -54,7 +54,7 @@ def test_search(small_mock_corpus, es_client, index_small_mock_corpus, basic_que
     query_no_text = query.add_filter(query_no_text, date_filter)
 
     result = search(
-        corpus = small_mock_corpus,
+        corpus_name = small_mock_corpus,
         query_model = query_no_text,
         client=es_client
     )

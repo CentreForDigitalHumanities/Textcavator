@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import bs4
 from os.path import join
 import logging
 
@@ -19,7 +20,7 @@ def transform_content(soup):
     """
     page_text = ""
     for child in soup.children:
-        if isinstance(child, Tag) and 'ocr_carea' in child.get('class', []):
+        if isinstance(child, bs4.Tag) and 'ocr_carea' in child.get('class', []):
             paragraph_text = ""
             paragraph_list = child.get_text().split('\n')
             for item in paragraph_list[1:]:
@@ -76,7 +77,7 @@ class UBlad(HTMLCorpusDefinition):
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
     def sources(self, **kwargs):
         for directory, _, filenames in os.walk(self.data_directory):

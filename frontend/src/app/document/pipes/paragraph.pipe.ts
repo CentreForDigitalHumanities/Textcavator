@@ -18,7 +18,10 @@ export const splitParagraphs = (content: string | string[], splitText = false): 
     standalone: false
 })
 export class ParagraphPipe implements PipeTransform {
-    transform(content: string | string[], split = false): string[] {
-        return splitParagraphs(content, split);
+    transform(content: string | string[] | undefined, split = false): string[] {
+        if (content) {
+            return splitParagraphs(content, split);
+        }
+        return [];
     }
 }

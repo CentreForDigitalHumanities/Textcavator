@@ -33,7 +33,7 @@ Some options that may be useful for development:
 
 ### Production
 
-See [Indexing on server](documentation/Indexing-on-server.md) for more information about production-specific settings.
+See [Indexing on server](./Indexing-on-server.md) for more information about production-specific settings.
 
 ## Scheduling and managing index jobs
 

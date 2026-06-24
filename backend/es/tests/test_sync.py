@@ -8,6 +8,7 @@ from es.sync import (
     update_server_table_from_settings, fetch_index_metadata, update_availability
 )
 from es.models import Index, Server
+from es.search import get_index
 from addcorpus.models import Corpus
 
 def test_update_server_data(settings, db):
@@ -35,7 +36,7 @@ def test_fetch_index_data(db, es_client, basic_mock_corpus, index_basic_mock_cor
     fetch_index_metadata()
 
     corpus = Corpus.objects.get(name=basic_mock_corpus)
-    index = Index.objects.get(server__name='default', name=corpus.configuration.es_index)
+    index = Index.objects.get(server__name='default', name=get_index(basic_mock_corpus))
     assert index.available
 
     es_client.indices.delete(index=index.name)

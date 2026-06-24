@@ -98,13 +98,15 @@
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button" (click)="toggleCorpusActive()"
-                        [class.is-primary]="!corpus.active">
+                        [class.is-primary]="!corpus.active"
+                        [class.is-loading]="loading$ | async">
                         {{corpus.active ? 'Deactivate' : 'Activate'}} corpus
                     </button>
                 </div>
                 <div class="control">
                     <a class="button is-primary" *ngIf="corpus.active"
-                        [routerLink]="['/search', corpus.definition.name]">
+                        [routerLink]="['/search', corpus.definition.name]"
+                        [class.is-loading]="loading$ | async">
                         <span class="icon"><fa-icon [icon]="actionIcons.search"/></span>
                         <span>Search corpus</span>
                     </a>

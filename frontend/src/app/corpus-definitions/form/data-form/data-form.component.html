@@ -1,14 +1,20 @@
+@let corpus = corpus$ | async;
+
+<h1 class="title">Upload your data</h1>
+<p class="block is-size-5">
+    Upload your data as a CSV file. Based on your data, Textcavator will set up the
+    fields for your corpus. You can configure the fields further in the next step.
+</p>
+
+<div class="block">
+    <button class="button" (click)="openDocumentation()">Manual</button>
+</div>
+
+
 @let fileState = fileState$ | async;
 @let dataFiles = dataFiles$ | async;
 @let confirmed = confirmed$ | async;
 @let unconfirmed = unconfirmed$ | async;
-
-<h1 class="title">Upload a sample of your data</h1>
-<p class="subtitle">
-    Determines sensible default values for the fields of your corpus
-</p>
-
-<button class="button" (click)="openDocumentation()">Manual</button>
 
 @switch (fileState) {
     @case ("noneUploaded") {
@@ -37,7 +43,7 @@
     }
 
     @case ("newUploaded") {
-         <ia-datafile-info
+            <ia-datafile-info
                 [currentDataFile]="confirmed"
                 [newDataFile]="unconfirmed"
                 (onCurrentSelected)="onReplaceReject()"
@@ -46,46 +52,24 @@
     }
 }
 
-@if (fileState === "firstUploaded" || fileState === "firstConfirmed") {
-    <div class="field is-grouped">
-        <button class="button" (click)="confirmReset.open(dataFiles)">
-            <span class="icon" aria-hidden="true">
-                <fa-icon [icon]="formIcons.reset"></fa-icon>
-            </span>
-            <span>Reset</span>
-        </button>
-        <div class="file mb-0">
-            <label class="file-label">
-                <input
-                    class="file-input"
-                    type="file"
-                    name="definition-upload"
-                    accept=".csv,.tsv,text/csv,text/tab-separated-values "
-                    (input)="onUpload($event)"
-                />
-                <span class="file-cta">
-                    <span class="file-icon" aria-hidden="true">
-                        <fa-icon [icon]="formIcons.replace"></fa-icon>
-                    </span>
-                    <span class="file-label">Replace file</span>
-                </span>
-            </label>
+@if (corpus.active) {
+    <div class="message mt-5">
+        <div class="message-body">
+            <p class="block">
+                Uploading data files is disabled because this corpus is currently active.
+            </p>
         </div>
-        @if (fileState === "firstUploaded") {
-            <button class="button is-primary" (click)="confirmFile()">
-                <span class="icon" aria-hidden="true">
-                    <fa-icon [icon]="formIcons.confirm"></fa-icon>
-                </span>
-                <span>Use this file</span>
-            </button>
-        }
     </div>
-}
-
-@if (fileState === "noneUploaded") {
-    <form>
-        <div class="field">
-            <div class="file">
+} @else {
+    @if (fileState === "firstUploaded" || fileState === "firstConfirmed") {
+        <div class="field is-grouped">
+            <button class="button" (click)="confirmReset.open(dataFiles)">
+                <span class="icon" aria-hidden="true">
+                    <fa-icon [icon]="formIcons.reset"></fa-icon>
+                </span>
+                <span>Reset</span>
+            </button>
+            <div class="file mb-0">
                 <label class="file-label">
                     <input
                         class="file-input"
@@ -96,43 +80,75 @@
                     />
                     <span class="file-cta">
                         <span class="file-icon" aria-hidden="true">
-                            <fa-icon [icon]="actionIcons.upload"></fa-icon>
+                            <fa-icon [icon]="formIcons.replace"></fa-icon>
                         </span>
-                        <span class="file-label">Upload CSV file...</span>
+                        <span class="file-label">Replace file</span>
                     </span>
                 </label>
             </div>
+            @if (fileState === "firstUploaded") {
+                <button class="button is-primary" (click)="confirmFile()">
+                    <span class="icon" aria-hidden="true">
+                        <fa-icon [icon]="formIcons.confirm"></fa-icon>
+                    </span>
+                    <span>Use this file</span>
+                </button>
+            }
         </div>
+    }
 
-        <div class="message is-danger" *ngIf="error$ | async as error">
-            <div class="message-header">Invalid file</div>
-            <div class="message-body">
-                An error occurred when reading the file: {{ error.message }}
+    @if (fileState === "noneUploaded") {
+        <form>
+            <div class="field">
+                <div class="file">
+                    <label class="file-label">
+                        <input
+                            class="file-input"
+                            type="file"
+                            name="definition-upload"
+                            accept=".csv,.tsv,text/csv,text/tab-separated-values "
+                            (input)="onUpload($event)"
+                        />
+                        <span class="file-cta">
+                            <span class="file-icon" aria-hidden="true">
+                                <fa-icon [icon]="actionIcons.upload"></fa-icon>
+                            </span>
+                            <span class="file-label">Upload CSV file...</span>
+                        </span>
+                    </label>
+                </div>
             </div>
-        </div>
-    </form>
-}
 
-<!-- Reset confirmation -->
-<ia-confirm-modal
-    #confirmReset
-    actionText="Remove data file"
-    [handleAsync]="handleReset"
-    (accept)="onResetComplete()"
->
-    @if (confirmed) {
-        <p>
-            This will delete the file
-            <code>{{ confirmed.original_filename }}</code> and will reset the
-            form to this step. You will need to upload a new file before you can
-            continue.
-        </p>
+            <div class="message is-danger" *ngIf="error$ | async as error">
+                <div class="message-header">Invalid file</div>
+                <div class="message-body">
+                    An error occurred when reading the file: {{ error.message }}
+                </div>
+            </div>
+        </form>
     }
-    @if (unconfirmed) {
-        <p>
-            This will delete the file
-            <code>{{ unconfirmed.original_filename }}</code
-            >.
-        </p>
-    }
-</ia-confirm-modal>
+
+    <!-- Reset confirmation -->
+    <ia-confirm-modal
+        #confirmReset
+        actionText="Remove data file"
+        [handleAsync]="handleReset"
+        (accept)="onResetComplete()"
+    >
+        @if (confirmed) {
+            <p>
+                This will delete the file
+                <code>{{ confirmed.original_filename }}</code> and will reset the
+                form to this step. You will need to upload a new file before you can
+                continue.
+            </p>
+        }
+        @if (unconfirmed) {
+            <p>
+                This will delete the file
+                <code>{{ unconfirmed.original_filename }}</code
+                >.
+            </p>
+        }
+    </ia-confirm-modal>
+}

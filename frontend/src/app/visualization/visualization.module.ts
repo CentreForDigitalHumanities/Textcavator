@@ -2,7 +2,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { NgModule } from '@angular/core';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ChartModule } from 'primeng/chart';
-import { DropdownModule } from 'primeng/dropdown';
 import {
     ApiService,
     DialogService,
@@ -24,6 +23,7 @@ import { VisualizationComponent } from './visualization.component';
 import { WordcloudComponent } from './wordcloud/wordcloud.component';
 import { MapComponent } from './map/map.component';
 import { ThemeIndicatorDirective } from './theme-indicator.directive';
+import { SelectModule } from 'primeng/select';
 
 
 @NgModule({ declarations: [
@@ -52,5 +52,14 @@ import { ThemeIndicatorDirective } from './theme-indicator.directive';
         AutoCompleteModule,
         ChartModule,
         SharedModule,
-        DropdownModule], providers: [ApiService, DialogService, SearchService, VisualizationService, provideHttpClient(withInterceptorsFromDi())] })
+        SelectModule
+    ],
+    providers: [
+        ApiService,
+        DialogService,
+        SearchService,
+        VisualizationService,
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+})
 export class VisualizationModule {}
