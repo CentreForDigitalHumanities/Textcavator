@@ -255,6 +255,15 @@ table.spreadsheet {
     border-end-start-radius: var(--bulma-modal-card-foot-radius);
     border-end-end-radius: var(--bulma-modal-card-foot-radius);
 }
+
+
+
+.image > img {
+    object-fit: cover;
+    object-position: center;
+}
+
+
 // reset focus styling for accessibility
 // bulma's customisation makes focus rings invisible on blue background
 

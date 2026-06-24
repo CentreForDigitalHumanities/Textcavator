@@ -1,17 +1,24 @@
 <section class="section header-section pb-0 mb-6">
     @if (corpus) {
         <div class="container">
-            <div class="is-pulled-right" *ngIf="corpus.editable">
-                <a class="button is-link is-outlined"
-                    [routerLink]="['/custom-corpora/edit', corpus.name]">
-                    <span class="icon" aria-hidden="true">
-                        <fa-icon [icon]="corpusIcons.edit"/>
-                    </span>
-                    <span>Edit</span>
-                </a>
+            <div class="columns">
+                <div class="column">
+                    <h1 class="title">{{corpus.title}}</h1>
+                    <div class="block">
+                        <p>{{corpus.description}}</p>
+                    </div>
+                    <div class="block metadata">
+                        <p>Language: <strong>{{corpus.displayLanguages}}</strong></p>
+                        <p>Type: <strong>{{corpus.category}}</strong></p>
+                        <p>Period: <strong>{{corpus.minYear}}-{{corpus.maxYear}}</strong></p>
+                    </div>
+                </div>
+                <div class="column is-3">
+                    <div class="image is-4by3">
+                        <img src="/api/corpus/image/{{corpus.name}}" alt="{{corpus.title}}">
+                    </div>
+                </div>
             </div>
-
-            <h1 class="title">{{corpus.title}}</h1>
 
             <nav class="tabs" aria-label="secondary navigation">
                 <ul>
@@ -44,6 +51,15 @@
                         </a>
                     </li>
                 </ul>
+                @if (corpus.editable) {
+                    <a
+                        [routerLink]="['/custom-corpora/edit', corpus.name]">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="corpusIcons.edit"/>
+                        </span>
+                        <span>Edit corpus</span>
+                    </a>
+                }
             </nav>
         </div>
     }
