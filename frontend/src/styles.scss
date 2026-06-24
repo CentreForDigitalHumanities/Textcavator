@@ -307,6 +307,13 @@ button {
     }
 }
 
+:root {
+    --p-steps-item-number-active-background: var(--bulma-primary-on-scheme) !important;
+    --p-steps-item-number-active-border-color: var(--bulma-primary-on-scheme) !important;
+    --p-steps-item-label-active-color: var(--bulma-primary-on-scheme) !important;
+}
+
+
 // vega
 
 .vega-bindings {
