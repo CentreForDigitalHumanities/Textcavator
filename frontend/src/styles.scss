@@ -406,6 +406,7 @@ button {
     --bulma-text-weak-l: 70%;
     --bulma-link-on-scheme-l: 77%;
     --bulma-link-text: hsl(var(--bulma-link-h), 80%, var(--bulma-link-on-scheme-l));
+    --bulma-hr-background-color: var(--bulma-border);
 
     .control, .input, .select {
         --bulma-input-placeholder-color: hsla(var(--bulma-text-h), var(--bulma-text-s), var(--bulma-text-strong-l), 0.5);
