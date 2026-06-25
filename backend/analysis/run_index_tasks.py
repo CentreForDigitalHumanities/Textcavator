@@ -17,14 +17,12 @@ def token_index_name(source_index_name: str):
 
 
 def token_field_name(field_name: str, multifield: Optional[str] = None,  size: int = 1):
-    if multifield:
-        return ':'.join([field_name, multifield, size])
-    return ':'.join([field_name, size])
+    return f'{field_name}:{multifield}:{size}' if multifield else f'{field_name}:{size}'
 
 
 def token_index_mapping(corpus_config: CorpusConfiguration):
     mappings = {}
-    for field in corpus_config.fields:
+    for field in corpus_config.fields.all():
         field: Field = field
         if field.display_type == FieldDisplayTypes.TEXT_CONTENT:
             name = token_field_name(field.name, 1)
