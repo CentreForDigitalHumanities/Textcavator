@@ -1,7 +1,7 @@
 from django.db import models
 from indexing.models import IndexTask, Index
 
-class CreateFrequencyIndexTask(IndexTask):
+class CreateTokenIndexTask(IndexTask):
     source_index = models.ForeignKey(
         to=Index,
         on_delete=models.CASCADE,
@@ -12,7 +12,7 @@ class CreateFrequencyIndexTask(IndexTask):
         help_text='Delete index if it exists already'
     )
 
-class PopulateFrequencyIndexTask(IndexTask):
+class PopulateTokenIndexTask(IndexTask):
     source_index = models.ForeignKey(
         to=Index,
         on_delete=models.CASCADE,

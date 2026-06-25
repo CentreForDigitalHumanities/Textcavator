@@ -6,7 +6,7 @@ from es.models import Index
 from addcorpus.models import Corpus
 from indexing.models import IndexJob
 from analysis.run_index_tasks import token_index_name
-from analysis.models import CreateFrequencyIndexTask, PopulateFrequencyIndexTask
+from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
 
 def create_token_index_job(
         corpus: Corpus,
@@ -25,14 +25,14 @@ def create_token_index_job(
         name=index_name, server=server
     )
 
-    CreateFrequencyIndexTask.objects.create(
+    CreateTokenIndexTask.objects.create(
         job=job,
         index=index,
         source_index=source_index,
         delete_existing=True
     )
 
-    PopulateFrequencyIndexTask.objects.create(
+    PopulateTokenIndexTask.objects.create(
         job=job,
         index=index,
         source_index=source_index,

@@ -5,7 +5,7 @@ from elasticsearch.helpers import streaming_bulk
 from indexing.run_create_task import make_es_settings
 from addcorpus.es_mappings import keyword_mapping
 from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
-from analysis.models import CreateFrequencyIndexTask, PopulateFrequencyIndexTask
+from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
 from analysis.collect import token_docs
 from indexing.stop_job import raise_if_aborted
 
@@ -40,7 +40,7 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
             mappings[field.name] = field.es_mapping
 
 
-def create_token_index(task: CreateFrequencyIndexTask):
+def create_token_index(task: CreateTokenIndexTask):
     client = task.client()
     corpus_config: CorpusConfiguration = task.corpus.configuration
     index_name = task.index.name
@@ -71,7 +71,7 @@ def create_token_index(task: CreateFrequencyIndexTask):
     return index_name
 
 
-def populate_frequency_index(task: PopulateFrequencyIndexTask):
+def populate_token_index(task: PopulateTokenIndexTask):
     # Obtain source documents
     docs = token_docs(task.corpus, task.source_index.name)
 
