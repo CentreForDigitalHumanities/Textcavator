@@ -2,6 +2,7 @@ from django.contrib import admin, messages
 from django.db.models import QuerySet
 
 from indexing import models, run_job, stop_job
+from analysis.admin import CreateTokenIndexAdmin, PopulateTokenIndexAdmin
 
 
 class CreateIndexAdmin(admin.StackedInline):
@@ -49,6 +50,8 @@ class IndexJobAdmin(admin.ModelAdmin):
         PopulateIndexAdmin,
         UpdateIndexAdmin,
         UpdateSettingsAdmin,
+        CreateTokenIndexAdmin,
+        PopulateTokenIndexAdmin,
         RemoveAliasAdmin,
         AddAliasAdmin,
         DeleteIndexAdmin,
