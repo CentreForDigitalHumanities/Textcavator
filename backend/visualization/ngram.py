@@ -102,6 +102,19 @@ def tokens_by_time_interval(
     mode: Literal['ngrams', 'collocates'] = 'ngrams',
     **kwargs
 ) -> Dict:
+    '''
+    Collect ngram/collocation token data in a time interval.
+
+    Returns:
+        A dictionary with
+        - `'time-interval'` (str): label for the time interval
+        - `'ngrams'` (Counter): absolute counts for all matching tokens. Either
+            ngrams or collocations, depending on `mode`.
+        If `collect_ttf` is true, this also contains
+        - `'total_term_count'` (int): total word count in the time interval
+        - `'ngram_ttfs'` (dict): the total frequency in the corpus for each token in
+            `ngrams`.
+    '''
     client = elasticsearch(corpus_name)
     positions_dict = {
         'any': list(range(ngram_size)),
