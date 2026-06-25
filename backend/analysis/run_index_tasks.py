@@ -7,17 +7,11 @@ from addcorpus.es_mappings import keyword_mapping
 from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
 from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
 from analysis.collect import token_docs
+from analysis.index_utils import token_field_name, token_index_name
 from indexing.stop_job import raise_if_aborted
 
 logger = logging.getLogger('indexing')
 
-
-def token_index_name(source_index_name: str):
-    return source_index_name + '-tokens'
-
-
-def token_field_name(field_name: str, multifield: Optional[str] = None,  size: int = 1):
-    return f'{field_name}:{multifield}:{size}' if multifield else f'{field_name}:{size}'
 
 
 def token_index_mapping(corpus_config: CorpusConfiguration):
@@ -36,6 +30,7 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
         else:
             # TODO: only include aggregation-relevant fields
             mappings[field.name] = field.es_mapping
+    return { 'properties': mappings }
 
 
 def create_token_index(task: CreateTokenIndexTask):
