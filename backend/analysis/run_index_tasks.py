@@ -73,7 +73,7 @@ def create_token_index(task: CreateFrequencyIndexTask):
 
 def populate_frequency_index(task: PopulateFrequencyIndexTask):
     # Obtain source documents
-    docs = token_docs(task.corpus, task.source_index)
+    docs = token_docs(task.corpus, task.source_index.name)
 
     actions = (
         {

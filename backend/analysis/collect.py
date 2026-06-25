@@ -9,21 +9,15 @@ from visualization.termvectors import request_termvectors_batched, term_counts
 
 
 def content_fields(corpus: Corpus):
-    return [
-        field for field in corpus.configuration.fields
-        if field.display_type == FieldDisplayTypes.TEXT_CONTENT
-    ]
+    return corpus.configuration.fields.filter(display_type=FieldDisplayTypes.TEXT_CONTENT)
 
 def metadata_fields(corpus: Corpus):
-    return [
-        field for field in corpus.configuration.fields
-        if field.display_type != FieldDisplayTypes.TEXT_CONTENT
-    ]
+    return corpus.configuration.fields.exclude(display_type=FieldDisplayTypes.TEXT_CONTENT)
 
 
-def collect_tokens(corpus: Corpus, index: Index) -> Iterable[Tuple[str, Dict[str, int], Dict[str, Any]]]:
+def collect_tokens(corpus: Corpus, index_name: str) -> Iterable[Tuple[str, Dict[str, int], Dict[str, Any]]]:
     client = elasticsearch(corpus)
-    query = MATCH_ALL | { 'index': index.name, 'allow_no_indices': False }
+    query = MATCH_ALL | { 'index': index_name, 'allow_no_indices': False }
     docs = scan(client, query)
     # TODO: handle multifields
     content_field_names = [field.name for field in content_fields(corpus)]
@@ -40,12 +34,12 @@ def collect_tokens(corpus: Corpus, index: Index) -> Iterable[Tuple[str, Dict[str
 
 def token_field_name(field_name: str, multifield: Optional[str] = None,  size: int = 1):
     if multifield:
-        return ':'.join([field_name, multifield, size])
-    return ':'.join([field_name, size])
+        return f'{field_name}:{multifield}:{size}'
+    return f'{field_name}:{size}'
 
 
-def token_docs(corpus: Corpus, index: Index):
-    iterator = collect_tokens(corpus, index)
+def token_docs(corpus: Corpus, index_name: str):
+    iterator = collect_tokens(corpus, index_name)
     for field, term_counts, metadata in iterator:
         token_field = token_field_name(field, None, 1)
         for term, count in term_counts.items():
