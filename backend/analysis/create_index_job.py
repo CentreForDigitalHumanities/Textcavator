@@ -5,7 +5,7 @@ from es.search import get_index
 from es.models import Index, Server
 from addcorpus.models import Corpus
 from indexing.models import IndexJob
-from analysis.run_index_tasks import token_index_name
+from analysis.index_utils import token_index_name
 from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
 
 def create_token_index_job(
