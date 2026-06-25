@@ -2,6 +2,7 @@ from elasticsearch.helpers import scan
 
 from addcorpus.models import Corpus, FieldDisplayTypes
 from es.client import elasticsearch
+from es.models import Index
 from visualization.query import MATCH_ALL
 from visualization.termvectors import request_termvectors_batched, term_counts
 
@@ -19,9 +20,10 @@ def metadata_fields(corpus: Corpus):
     ]
 
 
-def collect_tokens(corpus: Corpus):
+def collect_tokens(corpus: Corpus, index: Index):
     client = elasticsearch(corpus)
-    docs = scan(client, MATCH_ALL)
+    query = MATCH_ALL | { 'index': index.name, 'allow_no_indices': False }
+    docs = scan(client, query)
     # TODO: handle multifields
     content_field_names = [field.name for field in content_fields(corpus)]
     meta_field_names = [field.name for field in metadata_fields(corpus)]
