@@ -1,0 +1,20 @@
+from django.db import models
+from indexing.models import IndexTask, Index
+
+class CreateFrequencyIndexTask(IndexTask):
+    source_index = models.ForeignKey(
+        to=Index,
+        on_delete=models.CASCADE,
+        help_text='Index containing source data'
+    )
+    delete_existing = models.BooleanField(
+        default=False,
+        help_text='Delete index if it exists already'
+    )
+
+class PopulateFrequencyIndexTask(IndexTask):
+    source_index = models.ForeignKey(
+        to=Index,
+        on_delete=models.CASCADE,
+        help_text='Index containing source data'
+    )
