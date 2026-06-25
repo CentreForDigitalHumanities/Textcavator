@@ -76,9 +76,11 @@ class IndexJob(models.Model):
             self.populateindextasks.all(),
             self.updateindextasks.all(),
             self.updatesettingstasks.all(),
+            self.createtokenindextasks.all(),
+            self.populatetokenindextasks.all(),
             self.removealiastasks.all(),
             self.addaliastasks.all(),
-            self.deleteindextasks.all()
+            self.deleteindextasks.all(),
         ]
 
 
