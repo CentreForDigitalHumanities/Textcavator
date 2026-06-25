@@ -1,9 +1,13 @@
 from typing import Optional
 import logging
+from elasticsearch.helpers import streaming_bulk
 
 from indexing.run_create_task import make_es_settings
+from addcorpus.es_mappings import keyword_mapping
 from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
 from analysis.models import CreateFrequencyIndexTask, PopulateFrequencyIndexTask
+from analysis.collect import token_docs
+from indexing.stop_job import raise_if_aborted
 
 logger = logging.getLogger('indexing')
 
@@ -24,7 +28,7 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
         field: Field = field
         if field.display_type == FieldDisplayTypes.TEXT_CONTENT:
             name = token_field_name(field.name, 1)
-            mapping = field.es_mapping
+            mapping = keyword_mapping(enable_full_text_search=True)
             multifields = mappings.pop('fields', {})
             mappings[name] = mapping
             for multifield in multifields:
@@ -68,4 +72,32 @@ def create_token_index(task: CreateFrequencyIndexTask):
 
 
 def populate_frequency_index(task: PopulateFrequencyIndexTask):
-    pass
+    # Obtain source documents
+    docs = token_docs(task.corpus, task.source_index)
+
+    actions = (
+        {
+            "_op_type": "index",
+            "_index": task.index.name,
+            "_source": doc,
+        }
+        for doc in docs
+    )
+
+    server_config = task.index.server.configuration
+
+    raise_if_aborted(task)
+
+    # Do bulk operation
+    client = task.client()
+    for success, info in streaming_bulk(
+        client,
+        actions,
+        chunk_size=server_config["chunk_size"],
+        max_chunk_bytes=server_config["max_chunk_bytes"],
+        raise_on_exception=False,
+        raise_on_error=False,
+    ):
+        if not success:
+            logger.error(f"FAILED INDEX: {info}")
+        raise_if_aborted(task)
