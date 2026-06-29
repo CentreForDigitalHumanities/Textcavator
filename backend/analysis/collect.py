@@ -1,9 +1,11 @@
 from typing import Iterable, Tuple, Dict, Any, Optional
 from elasticsearch.helpers import scan
+from elasticsearch import Elasticsearch
 
 from addcorpus.models import Corpus, FieldDisplayTypes
 from es.client import elasticsearch
 from es.models import Index
+from es.search import hits
 from visualization.query import MATCH_ALL
 from visualization.termvectors import request_termvectors_batched, term_counts
 
@@ -28,10 +30,21 @@ def metadata_fields(corpus: Corpus) -> Iterable[str]:
     ]
 
 
+def custom_scan(client: Elasticsearch, index: str, query: Dict):
+    body = query | { 'index': index, 'allow_no_indices': False, 'sort': ['_doc'] }
+    result = client.search(**body)
+    docs = hits(result)
+    while len(docs):
+        yield from docs
+        last = docs[-1]
+        body = body | { 'search_after': last['sort'] }
+        result = client.search(**body)
+        docs = hits(result)
+
+
 def collect_tokens(corpus: Corpus, index_name: str) -> Iterable[Tuple[str, Optional[str], Dict[str, int], Dict[str, Any]]]:
     client = elasticsearch(corpus)
-    query = MATCH_ALL | { 'index': index_name, 'allow_no_indices': False }
-    docs = scan(client, query)
+    docs = custom_scan(client, index_name, MATCH_ALL)
     fields = list(content_fields(corpus))
     field_names = [
         content_field_name(name, multifield)
