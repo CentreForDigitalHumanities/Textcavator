@@ -19,10 +19,10 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
     for field in corpus_config.fields.all():
         field: Field = field
         if field.display_type == FieldDisplayTypes.TEXT_CONTENT:
-            name = token_field_name(field.name, 1)
-            mapping = keyword_mapping(enable_full_text_search=True)
-            multifields = mappings.pop('fields', {})
-            mappings[name] = mapping
+            field_mapping = field.es_mapping
+            multifields = field_mapping.pop('fields', {})
+            name = token_field_name(field.name, None, 1)
+            mappings[name] = field_mapping
             for multifield in multifields:
                 if multifield in ['clean', 'stemmed']:
                     name = token_field_name(field.name, multifield, 1)

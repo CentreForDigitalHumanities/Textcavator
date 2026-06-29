@@ -4,7 +4,7 @@ from addcorpus.models import Corpus
 from es.client import elasticsearch
 from es.search import get_index, total_hits
 from analysis.index_utils import token_index_name, token_field_name
-from visualization.query import MATCH_ALL, add_filter, make_term_filter
+from visualization.query import MATCH_ALL, add_filter, set_query_text, set_search_fields
 
 def term_frequency(
     corpus: Corpus,
@@ -39,7 +39,7 @@ def term_query(
     for f in metadata_filters:
         query = add_filter(query, f)
 
-    field = token_field_name(field, multifield)
-    term_filter = make_term_filter(field, term)
-    query = add_filter(query, term_filter)
+    field_name = token_field_name(field, multifield)
+    query = set_query_text(query, term)
+    query = set_search_fields(query, [field_name])
     return query
