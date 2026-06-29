@@ -29,14 +29,15 @@ def test_token_docs(small_mock_corpus, index_small_mock_corpus):
     data = list(token_docs(corpus, index))
 
     assert sum(
-        1 for token in data if token.get('content:1')
+        token[':count'] for token in data if token.get('content:1')
     ) == SPECS['total_words']
 
     singleton = [d for d in data if d.get('content:1') == 'alice']
     assert len(singleton) == 1
+    assert singleton[0][':count'] == 1
     assert singleton[0]['genre'] == 'Children'
 
-    assert sum(1 for d in data if d.get('content:clean:1') == 'alice') == 1
-    assert sum(1 for d in data if d.get('content:1') == 'to') == 3
-    assert sum(1 for d in data if d.get('content:clean:1') == 'to') == 0
+    assert sum(d[':count'] for d in data if d.get('content:clean:1') == 'alice') == 1
+    assert sum(d[':count'] for d in data if d.get('content:1') == 'to') == 3
+    assert sum(d[':count'] for d in data if d.get('content:clean:1') == 'to') == 0
 

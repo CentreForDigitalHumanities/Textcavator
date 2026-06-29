@@ -23,10 +23,9 @@ def term_frequency(
     results = client.search(
         index=index,
         size=0,
-        track_total_hits=True,
         **query,
     )
-    return total_hits(results)
+    return int(results['aggregations']['token_count']['value'])
 
 
 def term_query(
@@ -42,4 +41,9 @@ def term_query(
     field_name = token_field_name(field, multifield)
     query = set_query_text(query, term)
     query = set_search_fields(query, [field_name])
+    query['aggs'] = {
+        'token_count': {
+            'sum': { 'field': ':count' }
+        }
+    }
     return query

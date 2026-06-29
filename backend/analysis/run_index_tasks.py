@@ -3,7 +3,7 @@ import logging
 from elasticsearch.helpers import streaming_bulk
 
 from indexing.run_create_task import make_es_settings
-from addcorpus.es_mappings import keyword_mapping
+from addcorpus.es_mappings import int_mapping
 from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
 from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
 from analysis.collect import token_docs
@@ -15,7 +15,9 @@ logger = logging.getLogger('indexing')
 
 
 def token_index_mapping(corpus_config: CorpusConfiguration):
-    mappings = {}
+    mappings = {
+        ':count': int_mapping()
+    }
     for field in corpus_config.fields.all():
         field: Field = field
         if field.display_type == FieldDisplayTypes.TEXT_CONTENT:

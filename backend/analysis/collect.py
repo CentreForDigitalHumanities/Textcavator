@@ -74,5 +74,4 @@ def token_docs(corpus: Corpus, index_name: str):
     for field, multifield, term_counts, metadata in iterator:
         token_field = token_field_name(field, multifield, 1)
         for term, count in term_counts.items():
-            for count in range(count):
-                yield { token_field: term } | metadata
+            yield {token_field: term, ':count': count } | metadata
