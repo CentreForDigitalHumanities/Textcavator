@@ -26,7 +26,9 @@ def content_field_name(name: str, multifield: Optional[str] = None):
 def metadata_fields(corpus: Corpus) -> Iterable[str]:
     return [
         field.name for field in
-        corpus.configuration.fields.exclude(display_type=FieldDisplayTypes.TEXT_CONTENT)
+        corpus.configuration.fields.exclude(
+            display_type__in=[FieldDisplayTypes.TEXT_CONTENT, FieldDisplayTypes.TEXT]
+        )
     ]
 
 

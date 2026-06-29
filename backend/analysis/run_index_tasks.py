@@ -27,6 +27,8 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
                 if multifield in ['clean', 'stemmed']:
                     name = token_field_name(field.name, multifield, 1)
                     mappings[name] = multifields[multifield]
+        elif field.display_type == FieldDisplayTypes.TEXT:
+            pass
         else:
             # TODO: only include aggregation-relevant fields
             mappings[field.name] = field.es_mapping
