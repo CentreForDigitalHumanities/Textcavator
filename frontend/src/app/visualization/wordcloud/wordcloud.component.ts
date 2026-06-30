@@ -20,9 +20,7 @@ const MAX_FONT_SIZE = 48;
 const spec = (
     data: MostFrequentWordsResult[], palette: string[], width: number, height: number,
 ): VisualizationSpec => {
-    const values = data.slice(0, 100).map(datum => (
-        {count: datum.doc_count, text: datum.key}
-    ));
+    const values = data.slice(0, 100);
     return {
         '$schema': 'https://vega.github.io/schema/vega/v6.json',
         width,
@@ -32,34 +30,47 @@ const spec = (
             {
                 name: 'word_counts',
                 values,
+                transform: [
+                    {
+                        type: 'formula',
+                        as: 'label',
+                        expr: 'datum.key + ": " + toString(datum.doc_count)'
+                    }
+                ]
             }
         ],
         scales: [
             {
                 name: 'color',
                 type: 'ordinal',
-                domain: { 'data': 'word_counts', 'field': 'text' },
+                domain: { 'data': 'word_counts', field: 'key' },
                 range: palette,
             }
         ],
         marks: [
             {
                 type: 'text',
-                from: { 'data': 'word_counts' },
+                from: { data: 'word_counts' },
                 encode: {
                     enter: {
-                        text: { 'field': 'text' },
-                        align: { 'value': 'center' },
-                        baseline: { 'value': 'alphabetic' },
-                        fill: { 'scale': 'color', 'field': 'text' },
+                        text: { field: 'key' },
+                        align: { value: 'center' },
+                        baseline: { value: 'alphabetic' },
+                        tooltip: { field: 'label' },
                     },
+                    update: {
+                        fill: { scale: 'color', field: 'key' },
+                    },
+                    hover: {
+                        fill: { value: 'black' }
+                    }
                 },
                 transform: [
                     {
                         type: 'wordcloud',
                         size: [width, height],
-                        text: { 'field': 'text' },
-                        fontSize: { 'field': 'datum.count' },
+                        text: { field: 'key' },
+                        fontSize: { field: 'datum.doc_count' },
                         fontSizeRange: [MIN_FONT_SIZE, MAX_FONT_SIZE],
                         padding: 2
                     }
@@ -143,6 +154,7 @@ export class WordcloudComponent implements OnChanges, OnDestroy {
             width: width,
             height: height,
             actions: false,
+            tooltip: true,
         }).catch(error => {
             console.error(error);
         });
