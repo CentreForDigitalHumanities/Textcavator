@@ -88,6 +88,7 @@ def test_top_10_ngrams():
         'b': [1, 1, 0],
         'c': [0, 1, 1]
     }
+    search_term_freqs = [2, 3, 2]
 
     ttf = {
         'a': [100],
@@ -117,8 +118,8 @@ def test_top_10_ngrams():
         )
         relative_frequencies = {
             w: [
-                ngram._pmi(c, ttf[w], 1000) if c else 0
-                for c in target_data[w]
+                ngram._pmi(c, ttf[w], f, 1000) if c else 0
+                for c, f in zip(target_data[w], search_term_freqs)
             ]
             for w in target_data
         }

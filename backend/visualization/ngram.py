@@ -290,24 +290,23 @@ def _collocate_token_ranges(
 
 
 def _absolute_frequency(
-    ngram_count: int, term_counts: List[int], total_word_count: int
+    ngram_count: int, term_counts: List[int], total_search_term_count, total_word_count
 ) -> float:
     return ngram_count
 
 def _legacy_compensated_frequency(
-    ngram_count: int, term_counts: List[int], total_word_count: int
+    ngram_count: int, term_counts: List[int], total_search_term_count, total_word_count
 ) -> float:
-    norm = (sum(term_counts) / len(term_counts))
+    norm = (sum(term_counts) + total_search_term_count / len(term_counts) + 1)
     return ngram_count / norm
 
 def _pmi(
-    ngram_count: int, term_counts: List[int], total_word_count: int
+    ngram_count: int, term_counts: List[int], total_search_term_count: int, total_word_count: int
 ) -> float:
     relative_frequency = ngram_count / total_word_count
-    norm = prod([
-        count / total_word_count
-        for count in term_counts
-    ])
+    norm = prod(
+        count / total_word_count for count in term_counts
+    ) * total_search_term_count / total_word_count
     return log2(relative_frequency / norm)
 
 
@@ -315,6 +314,7 @@ def _ngram_frequency(
     ngram: str,
     ngram_counts: Counter,
     ttfs: Optional[Dict],
+    total_search_term_count: int,
     total_word_count: int,
     method='absolute',
 ) -> float | int:
@@ -334,11 +334,11 @@ def _ngram_frequency(
     else:
         term_counts = None
 
-    return func(count, term_counts, total_word_count)
+    return func(count, term_counts, total_search_term_count, total_word_count)
 
 
 def _select_top_ngrams(
-    counter: Counter, ttfs: Dict, total_word_count: int, method='absolute', n=10
+    counter: Counter, ttfs: Dict, total_search_term_count: int, total_word_count: int, method='absolute', n=10
 ) -> List[str]:
     if method == 'absolute':
         return [ngram for ngram, _count in counter.most_common(n)]
@@ -369,14 +369,17 @@ def get_top_n_ngrams(results, number_of_ngrams=10, method='absolute'):
     """
     total_counter = Counter()
     total_frequencies = dict()
+    total_search_term_count = 0
     total_term_count = None
     for result in results:
-        total_counter.update(result['ngrams'])
+        counter: Counter = result['ngrams']
+        total_counter.update(counter)
         total_frequencies.update(result.get('ngram_ttfs', {}))
+        total_search_term_count += counter.total()
         total_term_count = result.get('total_term_count')
 
     top = _select_top_ngrams(
-        total_counter, total_frequencies, total_term_count,
+        total_counter, total_frequencies, total_search_term_count, total_term_count,
         method=method, n=number_of_ngrams,
     )
 
@@ -389,6 +392,7 @@ def get_top_n_ngrams(results, number_of_ngrams=10, method='absolute'):
                     ngram,
                     interval['ngrams'],
                     interval.get('ngram_ttfs'),
+                    interval['ngrams'].total(),
                     interval.get('total_term_count'),
                     method,
                 )
