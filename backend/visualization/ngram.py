@@ -349,11 +349,12 @@ def _select_top_ngrams(
     counter: Counter, ttfs: Dict, total_search_term_count: int, total_word_count: int, method='absolute', n=10
 ) -> List[Tuple[str, int|float]]:
     if method == 'absolute':
-        return [ngram for ngram, _count in counter.most_common(n)]
+        return counter.most_common(n)
     else:
-        frequency = lambda ngram: _ngram_frequency(ngram, counter, ttfs, total_word_count, method)
         frequencies = {
-            ngram: frequency(ngram)
+            ngram: _ngram_frequency(
+                ngram, counter, ttfs, total_search_term_count, total_word_count, method
+            )
             for ngram in counter.keys()
         }
         sorted_ngrams = sorted(
