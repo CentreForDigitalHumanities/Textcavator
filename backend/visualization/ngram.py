@@ -177,9 +177,16 @@ def _count_tokens_in_document(
     ngram_size: int,
     collect_ttf: bool = False,
     mode: Literal['ngrams', 'collocates'] = 'ngrams',
-) -> Tuple[Counter, Dict]:
+) -> Tuple[Counter, Dict[str, List[int]]]:
     '''
     Count token frequencies surrounding the search term from a document
+
+    Returns:
+        A tuple with
+            - a Counter with tokens (ngrams or collocates) and absolute counts.
+            - a dict containing the "background" frequency of each token. This is the
+               frequency of the collocates across the entire corpus, listed per token.
+               Only specifies the surrounding terms, not the search term itself.
     '''
     tokens = Counter()
     ttfs = dict()
@@ -191,13 +198,21 @@ def _count_tokens_in_document(
         token_ranges = _token_ranges(
             matches, term_positions, ngram_size, len(sorted_tokens), mode=mode
         )
-        for start, stop, _, _ in token_ranges:
+        for start, stop, match_start, match_stop in token_ranges:
             ngram = sorted_tokens[start:stop]
             words = ' '.join([token['term'] for token in ngram])
             if collect_ttf:
-                ttfs[words] = [token['ttf'] for token in ngram]
+                collocates = [
+                    sorted_tokens[i] for i in
+                    _exclude_match(start, stop, match_start, match_stop)
+                ]
+                ttfs[words] = [token['ttf'] for token in collocates]
             tokens.update({ words: 1})
     return tokens, ttfs
+
+
+def _exclude_match(start: int, stop: int, match_start: int, match_stop: int) -> List[int]:
+    return [ i for i in range(start, stop) if i not in range(match_start, match_stop)]
 
 
 def _token_ranges(
