@@ -125,7 +125,7 @@ def tokens_by_time_interval(
     }
     term_positions = positions_dict[term_position]
     ngram_ttfs = dict()
-
+    total_matches = 0
 
     query_text = query.get_query_text(es_query)
     field = field if subfield == 'none' else '.'.join([field, subfield])
@@ -148,7 +148,7 @@ def tokens_by_time_interval(
         search_results, client, collect_ttf, [field]
     )
     for _, vectors in docs:
-        tokens, ttfs = _count_tokens_in_document(
+        tokens, ttfs, match_count = _count_tokens_in_document(
             vectors, client, field, query_text,
             term_positions, ngram_size,
             collect_ttf=collect_ttf,
@@ -156,14 +156,16 @@ def tokens_by_time_interval(
         )
         bin_ngrams.update(tokens)
         ngram_ttfs.update(ttfs)
+        total_matches += match_count
 
     results = {
         'time_interval': format_time_label(bin[0], bin[1]),
         'ngrams': bin_ngrams
     }
     if collect_ttf:
-        total_term_count = get_total_term_count(corpus_name, es_query, field)
+        total_term_count = get_total_term_count(corpus_name, query.MATCH_ALL, field)
         results['total_term_count'] = total_term_count
+        results['total_search_term_count'] = total_matches
         results['ngram_ttfs'] = ngram_ttfs
     return results
 
@@ -177,7 +179,7 @@ def _count_tokens_in_document(
     ngram_size: int,
     collect_ttf: bool = False,
     mode: Literal['ngrams', 'collocates'] = 'ngrams',
-) -> Tuple[Counter, Dict[str, List[int]]]:
+) -> Tuple[Counter, Dict[str, List[int]], int]:
     '''
     Count token frequencies surrounding the search term from a document
 
@@ -187,14 +189,19 @@ def _count_tokens_in_document(
             - a dict containing the "background" frequency of each token. This is the
                frequency of the collocates across the entire corpus, listed per token.
                Only specifies the surrounding terms, not the search term itself.
+            - the total number of matches for the search term
     '''
     tokens = Counter()
     ttfs = dict()
+    total = 0
     # get the term vectors for the hit
     terms = termvectors.get_terms(termvector_result, field)
     if terms:
         sorted_tokens = termvectors.get_tokens(terms, sort=True)
-        matches = termvectors.token_matches(sorted_tokens, query_text, termvector_result['_index'], field, client)
+        matches = list(termvectors.token_matches(
+            sorted_tokens, query_text, termvector_result['_index'], field, client
+        ))
+        total += len(matches)
         token_ranges = _token_ranges(
             matches, term_positions, ngram_size, len(sorted_tokens), mode=mode
         )
@@ -208,7 +215,7 @@ def _count_tokens_in_document(
                 ]
                 ttfs[words] = [token['ttf'] for token in collocates]
             tokens.update({ words: 1})
-    return tokens, ttfs
+    return tokens, ttfs, total
 
 
 def _exclude_match(start: int, stop: int, match_start: int, match_stop: int) -> List[int]:
@@ -375,7 +382,7 @@ def get_top_n_ngrams(results, number_of_ngrams=10, method='absolute'):
         counter: Counter = result['ngrams']
         total_counter.update(counter)
         total_frequencies.update(result.get('ngram_ttfs', {}))
-        total_search_term_count += counter.total()
+        total_search_term_count += result.get('total_search_term_count', 0)
         total_term_count = result.get('total_term_count')
 
     top = _select_top_ngrams(
@@ -392,8 +399,8 @@ def get_top_n_ngrams(results, number_of_ngrams=10, method='absolute'):
                     ngram,
                     interval['ngrams'],
                     interval.get('ngram_ttfs'),
-                    interval['ngrams'].total(),
-                    interval.get('total_term_count'),
+                    total_search_term_count,
+                    total_term_count,
                     method,
                 )
                 for interval in sorted_results

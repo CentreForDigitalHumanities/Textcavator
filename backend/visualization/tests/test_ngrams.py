@@ -88,7 +88,6 @@ def test_top_10_ngrams():
         'b': [1, 1, 0],
         'c': [0, 1, 1]
     }
-    search_term_freqs = [2, 3, 2]
 
     ttf = {
         'a': [100],
@@ -101,6 +100,7 @@ def test_top_10_ngrams():
             'time_interval': time_intervals[i],
             'ngram_ttfs': ttf,
             'total_term_count': 1000,
+            'total_search_term_count': 2,
         }
         for i, doc in enumerate(docs)
     ]
@@ -118,8 +118,8 @@ def test_top_10_ngrams():
         )
         relative_frequencies = {
             w: [
-                ngram._pmi(c, ttf[w], f, 1000) if c else 0
-                for c, f in zip(target_data[w], search_term_freqs)
+                ngram._pmi(c, ttf[w], 6, 1000) if c else 0
+                for c in target_data[w]
             ]
             for w in target_data
         }
