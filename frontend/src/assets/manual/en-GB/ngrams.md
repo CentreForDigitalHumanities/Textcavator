@@ -26,9 +26,96 @@ If *compensate for frequency* is turned off, the visualisation shows the absolut
 
 This often reflects terms that are common across the entire corpus. Alternatively, you can turn on *compensate for frequency* to get terms that are unusually common in the neighbourhood of the search term, compared to their overall frequency.
 
-In this mode, scores are based on point-wise mutual information, as defined in [Manning & Schütze (1999)](https://nlp.stanford.edu/fsnlp/promo/colloc.pdf).
+If you select "Yes", the frequency of the ngram is divided by the average frequency (across the entire corpus) of the individual terms. This score is calculated as:
 
-There is also a "legacy" option, which divides the frequency of the ngram or collocate by the average frequency (across the entire corpus) of the individual terms.
+<math display="block" class="block">
+    <mi>score</mi>
+    <mo>(</mo>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mo>)</mo>
+    <mo>=</mo>
+    <mfrac>
+        <mrow>
+            <mi>freq</mi>
+            <mo>(</mo>
+            <mi>a</mi>
+            <mi>b</mi>
+            <mo>)</mo>
+        </mrow>
+        <mrow>
+            <mi>avg</mi>
+            <mo>(</mo>
+            <mi>freq</mi>
+            <mo>(</mo>
+            <mi>a</mi>
+            <mo>)</mo>
+            <mo>,</mo>
+            <mi>freq</mi>
+            <mo>(</mo>
+            <mi>b</mi>
+            <mo>)</mo>
+            <mo>)</mo>
+        </mrow>
+    </mfrac>
+</math>
+
+The frequency of the pair is counted per interval, but the background frequency of the individual terms is always based on the entire corpus.
+
+This option can surface interesting combinations, but can also cause extreme results where collocations with rare terms are extremely high, even when the collocation is only observed a few times, so not very significant.
+
+The "Yes (experimental)" provides a different calculation that we are currently testing. This calculates scores based on point-wise mutual information, based on the definition in [Manning & Schütze (1999)](https://nlp.stanford.edu/fsnlp/promo/colloc.pdf).
+
+In this mode, if you visualise the ngrams or collocations of <math><mi>a</mi></math>, the score of the pair <math><mi>ab</mi></math> is calculated as
+
+<math display="block" class="block">
+    <mi>score</mi>
+    <mo>(</mo>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mo>)</mo>
+    <mo>=</mo>
+    <msub>
+        <mi>log</mi>
+        <mn>2</mn>
+    </msub>
+    <mfrac>
+        <mfrac>
+            <mrow>
+                <mi>freq</mi>
+                <mo>(</mo>
+                <mi>a</mi>
+                <mi>b</mi>
+                <mo>)</mo>
+            </mrow>
+            <mi>T</mi>
+        </mfrac>
+        <mrow>
+            <mfrac>
+                <mrow>
+                    <mi>freq</mi>
+                    <mo>(</mo>
+                    <mi>a</mi>
+                    <mo>)</mo>
+                </mrow>
+                <mi>T</mi>
+            </mfrac>
+            <mo>*</mo>
+            <mfrac>
+                <mrow>
+                    <mi>freq</mi>
+                    <mo>(</mo>
+                    <mi>b</mi>
+                    <mo>)</mo>
+                </mrow>
+                <mi>T</mi>
+            </mfrac>
+        </mrow>
+    </mfrac>
+</math>
+
+where <math><mi>T</mi></math> is the total number of words in the corpus. As with the original formula, the frequency of the individual terms is based on the entire corpus, not the time interval.
+
 
 ## Visualisation
 
@@ -42,21 +129,31 @@ The bar chart on the right shows the total frequency of the n-gram. This is calc
 
 ## Complex queries
 
-The most straightforward way to use the neighbouring words graph is to search for a single term. The visualisation does support some complex queries, but some options are not supported.
+The most straightforward way to use the neighbouring words graph is to search for a single term. The visualisation supports most complex queries, but some options are not supported.
 
 ### Multiple search terms
 
-You can search for multiple terms, e.g. _democratic autocratic_ or _democratic + autocratic_. Documents are only counted if they match the full query; within the document, we look for matches to any of the search terms. In collocates mode, this means you find words surrounding "democratic" or "autocratic".
+You can search for multiple terms, e.g. _democratic autocratic_ or _democratic + autocratic_. Documents are only counted if they match the full query - meaning they would also appear in your search results.
 
-In n-grams mode, you find n-grams containing either word. This still counts "democratic state" and "autocratic state" as separate n-grams.
+Within the document, we look for matches to any of the search terms. In collocates mode, this means you find words surrounding "democratic" or "autocratic". If we see 50 occurrences of "democratic state" and 50 occurrences of "autocratic state", then "state" is counted 100 times as a collocate.
+
+In n-grams mode, you find n-grams containing either word. Here, "democratic state" and "autocratic state" would be counted as *separate* ngrams.
+
+If you use the "compensate for frequency" option, the formula will use the background frequency of the collocate (e.g. "state") and the background frequency of the *query* (e.g. "autocratic democratic"), i.e. the number of matches for the query across the entire corpus.
 
 ### Phrase search
 
 You can search for phrases, e.g. _"social democrat"_. In this case, distances are always counted from the phrase as a whole, as if it's a single term. So selecting bigrams (in ngrams mode) or a distance of 1 (in collocates mode) would find a phrase like "social democrat party".
 
+### Negative search terms
+
+Negative search terms (e.g. _"-republic"_) can be used to exclude documents containing search terms. Depending on how you build your query, your results might still include these terms, for example with _"democratic -republic"_. This will find documents that contain "democratic" and/or do *not* contain "republic". (Use _"democratic + -republic"_ if you want a hard exclude.)
+
+Negative terms like this will affect what documents are returned and how they are ranked, but they are not considered query terms for the purpose of identifying neighbouring words. So in the example query, the results would include ngrams/collocates for "democratic" but not for "republic".
+
 ### Wildcard and fuzzy search
 
-You can use wildcard of fuzzy search terms, like _democrat*_ or _democracy~2_. This is handled like searching for multiple search terms. (As if you listed all matching words in a query like "democrat democratic democrats democratical democratically")
+You can use wildcard of fuzzy search terms, like _democrat*_ or _democracy~2_. This is handled like searching for multiple search terms. (As if you listed all matching words in a query like "democrat democratic democrats democratical democratically".)
 
 ### Proximity search
 

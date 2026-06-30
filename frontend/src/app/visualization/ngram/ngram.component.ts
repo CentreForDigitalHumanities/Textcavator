@@ -92,8 +92,8 @@ export class NgramComponent implements OnChanges {
     }));
     freqCompensationOptions = [
         { label: 'No', value: 'absolute' },
-        { label: 'Yes', value: 'pmi' },
-        { label: 'Yes (legacy mode)', value: 'legacy' },
+        { label: 'Yes', value: 'legacy' },
+        { label: 'Yes (experimental)', value: 'pmi' },
     ];
     analysisOptions: { label: string; value: string }[];
     maxDocumentsOptions = makeNumberOptions([50, 100, 500, 1000, 5000]);
