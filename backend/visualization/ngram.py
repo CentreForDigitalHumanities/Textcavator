@@ -191,7 +191,7 @@ def _count_tokens_in_document(
         token_ranges = _token_ranges(
             matches, term_positions, ngram_size, len(sorted_tokens), mode=mode
         )
-        for start, stop in token_ranges:
+        for start, stop, _, _ in token_ranges:
             ngram = sorted_tokens[start:stop]
             words = ' '.join([token['term'] for token in ngram])
             if collect_ttf:
@@ -206,9 +206,29 @@ def _token_ranges(
     ngram_size: int,
     document_size: int,
     mode: Literal['ngrams', 'collocates'] = 'ngrams',
-) -> Iterable[Tuple[int, int]]:
+) -> Iterable[Tuple[int, int, int, int]]:
     '''
     Provides ranges for every token  (n-gram or collocate) surrounding the search term.
+
+    Parameters:
+        matches: Identified matches for the search term in the document.
+        term_positions: For ngrams mode, specifies which position the search term can have
+            within the ngram.
+        ngram_size: Size of the ngram to consider. For collocations, this is the
+            distance + 1.
+        document_size: Number of tokens in the document. Used to filter ranges that exceed
+            the document.
+        mode: Select ngrams or collocates.
+
+    Returns:
+        A tuple with
+            - The start of the range
+            - The end of the range
+            - The start of the match
+            - The end of the match
+
+    For ngrams, the match range will be within the ngram range; for collocates, the ranges
+    are disjoint.
     '''
     for match_start, match_stop, _match_content in matches:
         if mode == 'ngrams':
@@ -219,7 +239,7 @@ def _token_ranges(
 
         for start, stop in ranges:
             if start >= 0 and stop <= document_size:
-                yield start, stop
+                yield start, stop, match_start, match_stop
 
 
 def _ngram_token_ranges(
