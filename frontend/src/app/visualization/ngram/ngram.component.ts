@@ -189,7 +189,9 @@ export class NgramComponent implements OnChanges {
                 this.analysisOptions = [
                     { label: 'None', value: 'none' },
                 ].concat(
-                    this.visualizedField.multiFields.map((subfield) => {
+                    this.visualizedField.multiFields.filter(subfield =>
+                        ['clean', 'stemmed'].includes(subfield)
+                    ).map((subfield) => {
                         const displayStrings = {
                             clean: 'Remove stopwords',
                             stemmed: 'Stem and remove stopwords',
