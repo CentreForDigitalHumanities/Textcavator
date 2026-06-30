@@ -105,12 +105,12 @@ def test_top_10_ngrams():
         for i, doc in enumerate(docs)
     ]
 
-    output_absolute = ngram.get_top_n_ngrams(test_results)
+    output_absolute, _ = ngram.get_top_n_ngrams(test_results)
     for word in target_data:
         dataset_absolute = next(series for series in output_absolute if series['label'] == word)
         assert dataset_absolute['data'] == target_data[word]
 
-    output_relative = ngram.get_top_n_ngrams(test_results, method='pmi')
+    output_relative, _ = ngram.get_top_n_ngrams(test_results, method='pmi')
 
     for word in target_data:
         dataset_relative = next(
@@ -330,7 +330,8 @@ def test_number_of_ngrams(small_mock_corpus, index_small_mock_corpus, basic_quer
 def test_freq_compensation(small_mock_corpus, index_small_mock_corpus, basic_query):
     frequent_query = query.set_query_text(basic_query, 'to')
     results = get_binned_results(small_mock_corpus, frequent_query, collect_ttf=True)
-    top_grams = ngram.get_top_n_ngrams(results, method='pmi')
+    top_grams, totals = ngram.get_top_n_ngrams(results, method='pmi')
     assert top_grams
+    assert totals
 
 

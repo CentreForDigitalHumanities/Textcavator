@@ -13,10 +13,11 @@ from visualization import query, termvectors
 
 def get_ngrams(results, number_of_ngrams=10, method='absolute'):
     """Given a query and a corpus, get the words that occurred most frequently around the query term"""
-    ngrams = get_top_n_ngrams(results, number_of_ngrams, method=method)
+    intervals, totals = get_top_n_ngrams(results, number_of_ngrams, method=method)
 
     return {
-        'words': ngrams,
+        'words': intervals,
+        'totals': totals,
         'time_points': [result['time_interval'] for result in results]
     }
 
@@ -346,34 +347,52 @@ def _ngram_frequency(
 
 def _select_top_ngrams(
     counter: Counter, ttfs: Dict, total_search_term_count: int, total_word_count: int, method='absolute', n=10
-) -> List[str]:
+) -> List[Tuple[str, int|float]]:
     if method == 'absolute':
         return [ngram for ngram, _count in counter.most_common(n)]
     else:
         frequency = lambda ngram: _ngram_frequency(ngram, counter, ttfs, total_word_count, method)
-        sorted_ngrams = sorted(counter.keys(), reverse=True, key=frequency)
-        return [ngram for ngram, _ in zip(sorted_ngrams, range(n))]
+        frequencies = {
+            ngram: frequency(ngram)
+            for ngram in counter.keys()
+        }
+        sorted_ngrams = sorted(
+            frequencies.keys(),
+            reverse=True,
+            key=lambda ngram: frequencies[ngram]
+        )
+        return [(ngram, frequencies[ngram]) for ngram, _ in zip(sorted_ngrams, range(n))]
 
 
-def get_top_n_ngrams(results, number_of_ngrams=10, method='absolute'):
+def get_top_n_ngrams(
+    results, number_of_ngrams=10, method='absolute'
+) -> Tuple[List[Dict], List[Dict]]:
     """
     Converts a list of documents with tokens into n dataseries, listing the
     frequency of the top n tokens and their frequency in each document.
 
-    Input:
-    - `results`: a list of dictionaries with the following keys:
-        - `'ngram'`: Counter objects with ngram frequencies
-        - `'time_interval'`: the time intervals for which the ngrams were counted
-        - `'ngram_ttfs'` (optional): total term frequencies per term
-        - `total_term_count`: total words in the dataset
-    - `number_of_ngrams`: the number of top ngrams to return
-    - `method`: frequency method to use (absolute/legacy/pmi)
+    Parameters:
+        results:
+            a list of dictionaries with the following keys
+            - `'ngram'`: Counter objects with ngram frequencies
+            - `'time_interval'`: the time intervals for which the ngrams were counted
+            - `'ngram_ttfs'` (optional): total term frequencies per term
+            - `total_term_count` (optional): total words in the corpus
+            - `total_search_term_count` (optional): total number of matches for the
+                search term.
+        number_of_ngrams: the number of top ngrams to return
+        method: frequency method to use (absolute/legacy/pmi)
 
-    Output:
-    A list of number_of_ngrams data series. Each series is a dict with two keys: `'label'` contains the content of a token (presumably an
-    ngram string), `'data'` contains a list of the frequency of that token in each document. Depending on `divide_by_ttf`,
-    this is absolute or relative to the total term frequencies provided.
+    Returns:
+        A tuple containing
+            - Data per interval. A list of data series. Each series is a dict with two
+                keys: `'label'` contains the content of a token (a string), `'data'`
+                contains a list of the frequency of that token in each document.
+                Depending on `divide_by_ttf`, this is absolute or relative to the total
+                term frequencies provided.
+            - Totals data. A dataseries with the data for the entire results set.
     """
+
     total_counter = Counter()
     total_frequencies = dict()
     total_search_term_count = 0
@@ -391,7 +410,7 @@ def get_top_n_ngrams(results, number_of_ngrams=10, method='absolute'):
     )
 
     sorted_results = sorted(results, key=lambda r: r['time_interval'])
-    output = [
+    intervals = [
         {
             'label': ngram,
             'data': [
@@ -406,7 +425,14 @@ def get_top_n_ngrams(results, number_of_ngrams=10, method='absolute'):
                 for interval in sorted_results
             ]
         }
-        for ngram in top
+        for ngram, _ in top
     ]
-
-    return output
+    total = [
+        {
+            'x': datapoint[1],
+            'y': index,
+            'ngram': datapoint[0],
+        }
+        for index, datapoint in enumerate(top)
+    ]
+    return intervals, total
