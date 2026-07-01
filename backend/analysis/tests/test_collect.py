@@ -10,12 +10,11 @@ def test_collect_tokens(small_mock_corpus, index_small_mock_corpus):
     assert len(data) == SPECS['total_docs']
     assert sum(
         sum(term_counts.values())
-        for _, _, term_counts, _, _ in data
+        for _, term_counts, _, _ in data
     ) == SPECS['total_words']
 
-    field, multifields, terms, metadata, doc_id = data[1]
+    field, terms, metadata, doc_id = data[1]
     assert field == SPECS['content_field']
-    assert multifields == [None, 'clean']
     assert terms['truth'] == 1
     assert terms['a'] == 4
     assert metadata['date'] == '1813-01-28'
@@ -27,16 +26,13 @@ def test_token_docs(small_mock_corpus, index_small_mock_corpus):
     index = get_index(small_mock_corpus)
     data = list(token_docs(corpus, index))
 
-    assert sum(
-        token[':count'] for token in data if token.get('content:standard')
-    ) == SPECS['total_words']
+    assert sum(token[':count'] for token in data) == SPECS['total_words']
 
-    singleton = [d for d in data if d.get('content:standard') == 'alice']
+    singleton = [d for d in data if d.get('content') == 'alice']
     assert len(singleton) == 1
+    assert singleton[0][':token'] == 'alice'
     assert singleton[0][':count'] == 1
     assert singleton[0]['genre'] == 'Children'
 
-    assert sum(d[':count'] for d in data if d.get('content:clean') == 'alice') == 1
-    assert sum(d[':count'] for d in data if d.get('content:standard') == 'to') == 3
-    assert sum(d[':count'] for d in data if d.get('content:clean') == 'to') == 3
+    assert sum(d[':count'] for d in data if d.get('content') == 'to') == 3
 

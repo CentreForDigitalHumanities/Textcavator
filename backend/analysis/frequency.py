@@ -3,7 +3,7 @@ from typing import List, Dict, Optional
 from addcorpus.models import Corpus
 from es.client import elasticsearch
 from es.search import get_index
-from analysis.index_utils import token_index_name, token_field_name
+from analysis.index_utils import token_index_name, content_field_name
 from visualization.query import MATCH_ALL, add_filter, set_query_text, set_search_fields
 
 def term_frequency(
@@ -38,7 +38,7 @@ def term_query(
     for f in metadata_filters:
         query = add_filter(query, f)
 
-    field_name = token_field_name(field, multifield)
+    field_name = content_field_name(field, multifield)
     query = set_query_text(query, term)
     query = set_search_fields(query, [field_name])
     query['aggs'] = {

@@ -6,7 +6,6 @@ from addcorpus.es_mappings import int_mapping, keyword_mapping
 from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
 from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
 from analysis.collect import token_docs
-from analysis.index_utils import token_field_name
 from indexing.stop_job import raise_if_aborted
 
 logger = logging.getLogger('indexing')
@@ -24,15 +23,17 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
         if field.display_type == FieldDisplayTypes.TEXT_CONTENT:
             field_mapping = field.es_mapping
             field_mapping.pop('term_vector', None)
-            multifields = field_mapping.pop('fields', {})
-            name = token_field_name(field.name, None)
-            mappings[name] = field_mapping
-            for multifield in multifields:
-                if multifield in ['clean', 'stemmed']:
-                    name = token_field_name(field.name, multifield)
-                    multifield_mapping = multifields[multifield]
-                    multifield_mapping.pop('term_vector', None)
-                    mappings[name] = multifield_mapping
+
+            multifields = {
+                name: conf
+                for name, conf in field_mapping.get('fields', {}).items()
+                if name in ['clean', 'stemmed']
+            }
+            for conf in multifields.values():
+                conf.pop('term_vector', None)
+            field_mapping['fields'] = multifields
+            mappings[field.name] = field_mapping
+
         elif field.display_type == FieldDisplayTypes.TEXT:
             pass
         else:

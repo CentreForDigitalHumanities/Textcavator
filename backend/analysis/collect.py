@@ -6,9 +6,8 @@ from es.client import elasticsearch
 from es.models import Index
 from es.search import hits
 from visualization.query import MATCH_ALL
-from analysis.index_utils import token_field_name
 from visualization.termvectors import request_termvectors_batched, term_counts
-
+from analysis.index_utils import content_field_name
 
 def content_fields(corpus: Corpus) -> Iterable[Tuple[str, Optional[str]]]:
     fields = corpus.configuration.fields.filter(display_type=FieldDisplayTypes.TEXT_CONTENT)
@@ -21,9 +20,6 @@ def content_fields(corpus: Corpus) -> Iterable[Tuple[str, Optional[str]]]:
             multifield_names.append('stemmed')
         yield field.name, multifield_names
 
-
-def content_field_name(name: str, multifield: Optional[str] = None):
-    return f'{name}.{multifield}' if multifield else name
 
 def metadata_fields(corpus: Corpus) -> Iterable[str]:
     return [
@@ -48,7 +44,7 @@ def custom_scan(client: Elasticsearch, index: str, query: Dict):
 
 def collect_tokens(
     corpus: Corpus, index_name: str
-) -> Iterable[Tuple[str, Optional[str], Dict[str, int], Dict[str, Any], str]]:
+) -> Iterable[Tuple[str, Dict[str, int], Dict[str, Any], str]]:
     client = elasticsearch(corpus)
     docs = custom_scan(client, index_name, MATCH_ALL)
     fields = list(content_fields(corpus))
@@ -61,16 +57,13 @@ def collect_tokens(
         }
         for name, multifields in fields:
             counts = term_counts(vectors, name)
-            yield name, multifields, counts, metadata, hit['_id']
+            yield name, counts, metadata, hit['_id']
 
 
 def token_docs(corpus: Corpus, index_name: str):
     iterator = collect_tokens(corpus, index_name)
-    for field, multifields, term_counts, metadata, doc_id in iterator:
+    for field, term_counts, metadata, doc_id in iterator:
         for term, count in term_counts.items():
-            data = { ':token': term, ':count': count, ':doc_id': doc_id }
-            tokens = {
-                token_field_name(field, multifield): term
-                for multifield in multifields
-            }
-            yield data | tokens | metadata
+            data = {':token': term, ':count': count, ':doc_id': doc_id}
+            content = {field: term}
+            yield data | content | metadata
