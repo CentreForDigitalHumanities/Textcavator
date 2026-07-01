@@ -2,7 +2,7 @@ from typing import List, Dict, Optional
 
 from addcorpus.models import Corpus
 from es.client import elasticsearch
-from es.search import get_index, total_hits
+from es.search import get_index
 from analysis.index_utils import token_index_name, token_field_name
 from visualization.query import MATCH_ALL, add_filter, set_query_text, set_search_fields
 

@@ -1,5 +1,4 @@
 from typing import Iterable, Tuple, Dict, Any, Optional
-from elasticsearch.helpers import scan
 from elasticsearch import Elasticsearch
 
 from addcorpus.models import Corpus, FieldDisplayTypes
@@ -7,6 +6,7 @@ from es.client import elasticsearch
 from es.models import Index
 from es.search import hits
 from visualization.query import MATCH_ALL
+from analysis.index_utils import token_field_name
 from visualization.termvectors import request_termvectors_batched, term_counts
 
 
@@ -62,18 +62,12 @@ def collect_tokens(corpus: Corpus, index_name: str) -> Iterable[Tuple[str, Optio
             yield name, multifields, counts, metadata
 
 
-def token_field_name(field_name: str, multifield: Optional[str] = None,  size: int = 1):
-    if multifield:
-        return f'{field_name}:{multifield}:{size}'
-    return f'{field_name}:{size}'
-
-
 def token_docs(corpus: Corpus, index_name: str):
     iterator = collect_tokens(corpus, index_name)
     for field, multifields, term_counts, metadata in iterator:
         for term, count in term_counts.items():
             tokens = {
-                token_field_name(field, multifield, 1): term
+                token_field_name(field, multifield): term
                 for multifield in multifields
             }
-            yield tokens | { ':count': count } | metadata
+            yield { ':token': term, ':count': count } | tokens | metadata

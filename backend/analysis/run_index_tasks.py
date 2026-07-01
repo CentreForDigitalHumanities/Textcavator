@@ -1,13 +1,12 @@
-from typing import Optional
 import logging
 from elasticsearch.helpers import streaming_bulk
 
 from indexing.run_create_task import make_es_settings
-from addcorpus.es_mappings import int_mapping
+from addcorpus.es_mappings import int_mapping, keyword_mapping
 from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
 from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
 from analysis.collect import token_docs
-from analysis.index_utils import token_field_name, token_index_name
+from analysis.index_utils import token_field_name
 from indexing.stop_job import raise_if_aborted
 
 logger = logging.getLogger('indexing')
@@ -16,7 +15,8 @@ logger = logging.getLogger('indexing')
 
 def token_index_mapping(corpus_config: CorpusConfiguration):
     mappings = {
-        ':count': int_mapping()
+        ':token': keyword_mapping(),
+        ':count': int_mapping(),
     }
     for field in corpus_config.fields.all():
         field: Field = field
@@ -24,11 +24,11 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
             field_mapping = field.es_mapping
             field_mapping.pop('term_vector', None)
             multifields = field_mapping.pop('fields', {})
-            name = token_field_name(field.name, None, 1)
+            name = token_field_name(field.name, None)
             mappings[name] = field_mapping
             for multifield in multifields:
                 if multifield in ['clean', 'stemmed']:
-                    name = token_field_name(field.name, multifield, 1)
+                    name = token_field_name(field.name, multifield)
                     multifield_mapping = multifields[multifield]
                     multifield_mapping.pop('term_vector', None)
                     mappings[name] = multifield_mapping
