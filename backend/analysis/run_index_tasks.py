@@ -17,6 +17,7 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
     mappings = {
         ':token': keyword_mapping(),
         ':count': int_mapping(),
+        ':doc_id': keyword_mapping(),
     }
     for field in corpus_config.fields.all():
         field: Field = field

@@ -46,7 +46,9 @@ def custom_scan(client: Elasticsearch, index: str, query: Dict):
         docs = hits(result)
 
 
-def collect_tokens(corpus: Corpus, index_name: str) -> Iterable[Tuple[str, Optional[str], Dict[str, int], Dict[str, Any]]]:
+def collect_tokens(
+    corpus: Corpus, index_name: str
+) -> Iterable[Tuple[str, Optional[str], Dict[str, int], Dict[str, Any], str]]:
     client = elasticsearch(corpus)
     docs = custom_scan(client, index_name, MATCH_ALL)
     fields = list(content_fields(corpus))
@@ -59,15 +61,16 @@ def collect_tokens(corpus: Corpus, index_name: str) -> Iterable[Tuple[str, Optio
         }
         for name, multifields in fields:
             counts = term_counts(vectors, name)
-            yield name, multifields, counts, metadata
+            yield name, multifields, counts, metadata, hit['_id']
 
 
 def token_docs(corpus: Corpus, index_name: str):
     iterator = collect_tokens(corpus, index_name)
-    for field, multifields, term_counts, metadata in iterator:
+    for field, multifields, term_counts, metadata, doc_id in iterator:
         for term, count in term_counts.items():
+            data = { ':token': term, ':count': count, ':doc_id': doc_id }
             tokens = {
                 token_field_name(field, multifield): term
                 for multifield in multifields
             }
-            yield { ':token': term, ':count': count } | tokens | metadata
+            yield data | tokens | metadata

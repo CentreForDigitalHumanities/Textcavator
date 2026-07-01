@@ -10,10 +10,10 @@ def test_collect_tokens(small_mock_corpus, index_small_mock_corpus):
     assert len(data) == SPECS['total_docs']
     assert sum(
         sum(term_counts.values())
-        for _, _, term_counts, _ in data
+        for _, _, term_counts, _, _ in data
     ) == SPECS['total_words']
 
-    field, multifields, terms, metadata = data[1]
+    field, multifields, terms, metadata, doc_id = data[1]
     assert field == SPECS['content_field']
     assert multifields == [None, 'clean']
     assert terms['truth'] == 1
