@@ -36,3 +36,10 @@ def test_token_docs(small_mock_corpus, index_small_mock_corpus):
 
     assert sum(d[':count'] for d in data if d.get('content') == 'to') == 3
 
+def test_token_threshold(small_mock_corpus, index_small_mock_corpus):
+    corpus = Corpus.objects.get(name=small_mock_corpus)
+    index = get_index(small_mock_corpus)
+    data = list(token_docs(corpus, index, threshold=2))
+
+    assert sum(d[':count'] for d in data if d.get('content') == 'alice') == 0
+    assert sum(d[':count'] for d in data if d.get('content') == 'to') == 3

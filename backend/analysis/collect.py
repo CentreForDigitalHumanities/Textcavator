@@ -6,7 +6,7 @@ from es.client import elasticsearch
 from es.models import Index
 from es.search import hits
 from visualization.query import MATCH_ALL
-from visualization.termvectors import request_termvectors_batched, term_counts
+from visualization.termvectors import request_termvectors_batched, get_terms
 from analysis.index_utils import content_field_name
 
 def content_fields(corpus: Corpus) -> Iterable[Tuple[str, Optional[str]]]:
@@ -43,25 +43,29 @@ def custom_scan(client: Elasticsearch, index: str, query: Dict):
 
 
 def collect_tokens(
-    corpus: Corpus, index_name: str
+    corpus: Corpus, index_name: str, threshold=0,
 ) -> Iterable[Tuple[str, Dict[str, int], Dict[str, Any], str]]:
     client = elasticsearch(corpus)
     docs = custom_scan(client, index_name, MATCH_ALL)
     fields = list(content_fields(corpus))
     field_names = [name for name, _ in fields]
     meta_field_names = list(metadata_fields(corpus))
-    for hit, vectors in request_termvectors_batched(docs, client, False, field_names):
+    for hit, vectors in request_termvectors_batched(docs, client, True, field_names):
         metadata = {
             field: value for field, value in hit['_source'].items()
             if field in meta_field_names
         }
         for name, multifields in fields:
-            counts = term_counts(vectors, name)
+            terms = get_terms(vectors, name)
+            counts = {
+                term: data['term_freq'] for term, data in terms.items()
+                if data['ttf'] >= threshold
+            }
             yield name, counts, metadata, hit['_id']
 
 
-def token_docs(corpus: Corpus, index_name: str):
-    iterator = collect_tokens(corpus, index_name)
+def token_docs(corpus: Corpus, index_name: str, threshold=0):
+    iterator = collect_tokens(corpus, index_name, threshold=threshold)
     for field, term_counts, metadata, doc_id in iterator:
         for term, count in term_counts.items():
             data = {':token': term, ':count': count, ':doc_id': doc_id}

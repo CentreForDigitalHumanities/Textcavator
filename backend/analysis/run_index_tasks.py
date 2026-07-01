@@ -75,7 +75,7 @@ def create_token_index(task: CreateTokenIndexTask):
 
 def populate_token_index(task: PopulateTokenIndexTask):
     # Obtain source documents
-    docs = token_docs(task.corpus, task.source_index.name)
+    docs = token_docs(task.corpus, task.source_index.name, threshold=task.threshold)
 
     actions = (
         {

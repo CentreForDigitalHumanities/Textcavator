@@ -18,3 +18,7 @@ class PopulateTokenIndexTask(IndexTask):
         on_delete=models.CASCADE,
         help_text='Index containing source data'
     )
+    threshold = models.IntegerField(
+        default=0,
+        help_text='Minimum frequency threshold (across the whole corpus) for tokens',
+    )
