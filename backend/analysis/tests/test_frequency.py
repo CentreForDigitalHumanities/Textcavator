@@ -13,7 +13,7 @@ def test_term_frequency(small_mock_corpus, index_small_mock_corpus):
     perform_indexing(job)
 
     client = elasticsearch(small_mock_corpus)
-    index = 'test-small-mock-corpus-tokens'
+    index = 'test-small-mock-corpus.tokens'
     assert client.indices.exists(index=index)
     sleep(1)
 
