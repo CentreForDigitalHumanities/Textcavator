@@ -80,48 +80,48 @@ def test_top_10_ngrams():
         ['a', 'b', 'c'],
         ['a', 'c']
     ]
-
     time_intervals = ['1820-1830','1830-1840','1840-1850']
-
-    target_data = {
+    ngram_counts = {
         'a': [1, 1, 1],
         'b': [1, 1, 0],
         'c': [0, 1, 1]
     }
-
+    search_term_count = 6
+    totals = [2, 3, 2]
     ttf = {
         'a': [100],
         'b': [200],
         'c': [150],
     }
+    total_word_count = 1000
     test_results = [
         {
             'ngrams': Counter(doc),
             'time_interval': time_intervals[i],
             'ngram_ttfs': ttf,
-            'total_term_count': 1000,
+            'total_term_count': total_word_count,
             'total_search_term_count': 2,
         }
         for i, doc in enumerate(docs)
     ]
 
     output_absolute, _ = ngram.get_top_n_ngrams(test_results)
-    for word in target_data:
+    for word in ngram_counts:
         dataset_absolute = next(series for series in output_absolute if series['label'] == word)
-        assert dataset_absolute['data'] == target_data[word]
+        assert dataset_absolute['data'] == ngram_counts[word]
 
-    output_relative, _ = ngram.get_top_n_ngrams(test_results, method='pmi')
+    output_relative, _ = ngram.get_top_n_ngrams(test_results, method='mi')
 
-    for word in target_data:
+    for word in ngram_counts:
         dataset_relative = next(
             series for series in output_relative if series['label'] == word
         )
         relative_frequencies = {
             w: [
-                ngram._pmi(c, ttf[w], 6, 1000) if c else 0
-                for c in target_data[w]
+                ngram._mi(c, ttf[w], search_term_count, totals[i], total_word_count) if c else 0
+                for i, c in enumerate(ngram_counts[w])
             ]
-            for w in target_data
+            for w in ngram_counts
         }
         assert dataset_relative['data'] == relative_frequencies[word]
 
@@ -330,7 +330,7 @@ def test_number_of_ngrams(small_mock_corpus, index_small_mock_corpus, basic_quer
 def test_freq_compensation(small_mock_corpus, index_small_mock_corpus, basic_query):
     frequent_query = query.set_query_text(basic_query, 'to')
     results = get_binned_results(small_mock_corpus, frequent_query, collect_ttf=True)
-    top_grams, totals = ngram.get_top_n_ngrams(results, method='pmi')
+    top_grams, totals = ngram.get_top_n_ngrams(results, method='mi')
     assert top_grams
     assert totals
 

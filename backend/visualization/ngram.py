@@ -2,7 +2,7 @@ from collections import Counter
 from typing import Tuple, Dict, List, Literal, Iterable, Optional
 from elasticsearch import Elasticsearch
 from itertools import chain
-from math import log2, prod
+from math import log2, prod, factorial
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
@@ -298,7 +298,11 @@ def _collocate_token_ranges(
 
 
 def _absolute_frequency(
-    ngram_count: int, term_counts: List[int], total_search_term_count, total_word_count
+    ngram_count: int,
+    term_counts: List[int],
+    total_search_term_count,
+    total_collocations,
+    total_word_count
 ) -> float:
     return ngram_count
 
@@ -308,14 +312,19 @@ def _legacy_compensated_frequency(
     norm = (sum(term_counts) + total_search_term_count / len(term_counts) + 1)
     return ngram_count / norm
 
-def _pmi(
-    ngram_count: int, term_counts: List[int], total_search_term_count: int, total_word_count: int
-) -> float:
-    relative_frequency = ngram_count / total_word_count
-    norm = prod(
-        count / total_word_count for count in term_counts
-    ) * total_search_term_count / total_word_count
-    return log2(relative_frequency / norm)
+
+def _mi(
+    ngram_count: int,
+    term_counts: List[int],
+    total_search_term_count: int,
+    total_collocations: int,
+    total_word_count: int
+):
+    expected = total_collocations * prod(
+        count / total_word_count
+        for count in term_counts
+    )
+    return log2(ngram_count / expected)
 
 
 def _ngram_frequency(
@@ -329,20 +338,21 @@ def _ngram_frequency(
     methods = {
         'absolute': _absolute_frequency,
         'legacy': _legacy_compensated_frequency,
-        'pmi': _pmi
+        'mi': _mi,
     }
     func = methods[method]
     count = ngram_counts.get(ngram, 0)
+    total_collocations = ngram_counts.total()
     if not count:
         return 0
-    if method in ['legacy', 'pmi']:
+    if method in ['legacy', 'mi']:
         if not ttfs:
             raise ValueError(f'ttfs dict is required for frequency method {method}')
         term_counts = ttfs.get(ngram)
     else:
         term_counts = None
 
-    return func(count, term_counts, total_search_term_count, total_word_count)
+    return func(count, term_counts, total_search_term_count, total_collocations, total_word_count)
 
 
 def _select_top_ngrams(
@@ -382,7 +392,7 @@ def get_top_n_ngrams(
             - `total_search_term_count` (optional): total number of matches for the
                 search term.
         number_of_ngrams: the number of top ngrams to return
-        method: frequency method to use (absolute/legacy/pmi)
+        method: frequency method to use (absolute/legacy/mi)
 
     Returns:
         A tuple containing
