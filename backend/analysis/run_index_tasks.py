@@ -22,13 +22,16 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
         field: Field = field
         if field.display_type == FieldDisplayTypes.TEXT_CONTENT:
             field_mapping = field.es_mapping
+            field_mapping.pop('term_vector', None)
             multifields = field_mapping.pop('fields', {})
             name = token_field_name(field.name, None, 1)
             mappings[name] = field_mapping
             for multifield in multifields:
                 if multifield in ['clean', 'stemmed']:
                     name = token_field_name(field.name, multifield, 1)
-                    mappings[name] = multifields[multifield]
+                    multifield_mapping = multifields[multifield]
+                    multifield_mapping.pop('term_vector', None)
+                    mappings[name] = multifield_mapping
         elif field.display_type == FieldDisplayTypes.TEXT:
             pass
         else:
