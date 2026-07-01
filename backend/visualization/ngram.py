@@ -307,7 +307,7 @@ def _absolute_frequency(
     return ngram_count
 
 def _legacy_compensated_frequency(
-    ngram_count: int, term_counts: List[int], total_search_term_count, total_word_count
+    ngram_count: int, term_counts: List[int], total_search_term_count, total_collocations, total_word_count
 ) -> float:
     norm = (sum(term_counts) + total_search_term_count / len(term_counts) + 1)
     return ngram_count / norm
