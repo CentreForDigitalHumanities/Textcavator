@@ -13,12 +13,14 @@ from visualization.termvectors import request_termvectors_batched, term_counts
 def content_fields(corpus: Corpus) -> Iterable[Tuple[str, Optional[str]]]:
     fields = corpus.configuration.fields.filter(display_type=FieldDisplayTypes.TEXT_CONTENT)
     for field in fields:
-        yield field.name, None
+        multifield_names = [None]
         multifields = field.es_mapping.get('fields')
         if 'clean' in multifields:
-            yield field.name, 'clean'
+            multifield_names.append('clean')
         if 'stemmed' in multifields:
-            yield field.name, 'stemmed'
+            multifield_names.append('stemmed')
+        yield field.name, multifield_names
+
 
 def content_field_name(name: str, multifield: Optional[str] = None):
     return f'{name}.{multifield}' if multifield else name
@@ -48,19 +50,16 @@ def collect_tokens(corpus: Corpus, index_name: str) -> Iterable[Tuple[str, Optio
     client = elasticsearch(corpus)
     docs = custom_scan(client, index_name, MATCH_ALL)
     fields = list(content_fields(corpus))
-    field_names = [
-        content_field_name(name, multifield)
-        for name, multifield in fields
-    ]
+    field_names = [name for name, _ in fields]
     meta_field_names = list(metadata_fields(corpus))
     for hit, vectors in request_termvectors_batched(docs, client, False, field_names):
         metadata = {
             field: value for field, value in hit['_source'].items()
             if field in meta_field_names
         }
-        for name, multifield in fields:
-            counts = term_counts(vectors, content_field_name(name ,multifield))
-            yield name, multifield, counts, metadata
+        for name, multifields in fields:
+            counts = term_counts(vectors, name)
+            yield name, multifields, counts, metadata
 
 
 def token_field_name(field_name: str, multifield: Optional[str] = None,  size: int = 1):
@@ -71,7 +70,10 @@ def token_field_name(field_name: str, multifield: Optional[str] = None,  size: i
 
 def token_docs(corpus: Corpus, index_name: str):
     iterator = collect_tokens(corpus, index_name)
-    for field, multifield, term_counts, metadata in iterator:
-        token_field = token_field_name(field, multifield, 1)
+    for field, multifields, term_counts, metadata in iterator:
         for term, count in term_counts.items():
-            yield {token_field: term, ':count': count } | metadata
+            tokens = {
+                token_field_name(field, multifield, 1): term
+                for multifield in multifields
+            }
+            yield tokens | { ':count': count } | metadata

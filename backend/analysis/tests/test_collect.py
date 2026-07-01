@@ -7,16 +7,15 @@ def test_collect_tokens(small_mock_corpus, index_small_mock_corpus):
     corpus = Corpus.objects.get(name=small_mock_corpus)
     index = get_index(small_mock_corpus)
     data = list(collect_tokens(corpus, index))
-    assert len(data) == SPECS['total_docs'] * 2 # 2 fields per document (standard + cleaned)
+    assert len(data) == SPECS['total_docs']
     assert sum(
         sum(term_counts.values())
-        for _, multifield, term_counts, _ in data
-        if not multifield
+        for _, _, term_counts, _ in data
     ) == SPECS['total_words']
 
-    field, multifield, terms, metadata = data[2]
+    field, multifields, terms, metadata = data[1]
     assert field == SPECS['content_field']
-    assert multifield == None
+    assert multifields == [None, 'clean']
     assert terms['truth'] == 1
     assert terms['a'] == 4
     assert metadata['date'] == '1813-01-28'
@@ -39,5 +38,5 @@ def test_token_docs(small_mock_corpus, index_small_mock_corpus):
 
     assert sum(d[':count'] for d in data if d.get('content:clean:1') == 'alice') == 1
     assert sum(d[':count'] for d in data if d.get('content:1') == 'to') == 3
-    assert sum(d[':count'] for d in data if d.get('content:clean:1') == 'to') == 0
+    assert sum(d[':count'] for d in data if d.get('content:clean:1') == 'to') == 3
 
