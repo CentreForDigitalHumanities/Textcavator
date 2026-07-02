@@ -34,7 +34,7 @@ def metadata_fields(corpus: Corpus) -> Iterable[str]:
 
 
 def custom_scan(client: Elasticsearch, index: str, query: Dict):
-    body = query | { 'index': index, 'allow_no_indices': False, 'sort': ['_doc'] }
+    body = query | { 'index': index, 'allow_no_indices': False, 'sort': ['_doc'], 'size': 1000, }
     result = client.search(**body)
     docs = hits(result)
     while len(docs):
