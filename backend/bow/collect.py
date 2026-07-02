@@ -60,11 +60,12 @@ def collect_tokens(
         }
         for name, multifields in fields:
             terms = get_terms(vectors, name)
-            counts = {
-                term: data['term_freq'] for term, data in terms.items()
-                if data['ttf'] >= threshold
-            }
-            yield name, counts, metadata, hit['_id']
+            if terms:
+                counts = {
+                    term: data['term_freq'] for term, data in terms.items()
+                    if data['ttf'] >= threshold
+                }
+                yield name, counts, metadata, hit['_id']
 
 
 def token_docs(corpus: Corpus, index_name: str, threshold=0):
