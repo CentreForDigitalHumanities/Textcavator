@@ -1,7 +1,7 @@
 from django.db import models
 from indexing.models import IndexTask, Index
 
-class CreateTokenIndexTask(IndexTask):
+class CreateBOWIndexTask(IndexTask):
     source_index = models.ForeignKey(
         to=Index,
         on_delete=models.CASCADE,
@@ -12,7 +12,7 @@ class CreateTokenIndexTask(IndexTask):
         help_text='Delete index if it exists already'
     )
 
-class PopulateTokenIndexTask(IndexTask):
+class PopulateBOWIndexTask(IndexTask):
     source_index = models.ForeignKey(
         to=Index,
         on_delete=models.CASCADE,

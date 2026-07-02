@@ -5,10 +5,10 @@ from es.search import get_index
 from es.models import Index, Server
 from addcorpus.models import Corpus
 from indexing.models import IndexJob
-from analysis.index_utils import token_index_name
-from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
+from bow.index_utils import bow_index_name
+from bow.models import CreateBOWIndexTask, PopulateBOWIndexTask
 
-def create_token_index_job(
+def create_bow_index_job(
         corpus: Corpus,
         source_index: Optional[Index] = None,
 ):
@@ -20,19 +20,19 @@ def create_token_index_job(
         )
 
     job = IndexJob.objects.create(corpus=corpus)
-    index_name = token_index_name(source_index.name)
+    index_name = bow_index_name(source_index.name)
     index, _ = Index.objects.get_or_create(
         name=index_name, server=server
     )
 
-    CreateTokenIndexTask.objects.create(
+    CreateBOWIndexTask.objects.create(
         job=job,
         index=index,
         source_index=source_index,
         delete_existing=True
     )
 
-    PopulateTokenIndexTask.objects.create(
+    PopulateBOWIndexTask.objects.create(
         job=job,
         index=index,
         source_index=source_index,

@@ -3,11 +3,10 @@ from elasticsearch import Elasticsearch
 
 from addcorpus.models import Corpus, FieldDisplayTypes
 from es.client import elasticsearch
-from es.models import Index
 from es.search import hits
 from visualization.query import MATCH_ALL
 from visualization.termvectors import request_termvectors_batched, get_terms
-from analysis.index_utils import content_field_name
+
 
 def content_fields(corpus: Corpus) -> Iterable[Tuple[str, Optional[str]]]:
     fields = corpus.configuration.fields.filter(display_type=FieldDisplayTypes.TEXT_CONTENT)

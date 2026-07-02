@@ -3,10 +3,10 @@ from typing import List, Dict, Optional
 from addcorpus.models import Corpus
 from es.client import elasticsearch
 from es.search import get_index
-from analysis.index_utils import token_index_name, content_field_name
+from bow.index_utils import bow_index_name, content_field_name
 from visualization.query import MATCH_ALL, add_filter, set_query_text, set_search_fields
 
-def term_frequency(
+def word_frequency(
     corpus: Corpus,
     metadata_filters: List[Dict],
     term: str,
@@ -14,12 +14,12 @@ def term_frequency(
     multifield: Optional[str] = None,
 ):
     client = elasticsearch(corpus.name)
-    index = token_index_name(get_index(corpus.name))
+    index = bow_index_name(get_index(corpus.name))
 
     if not client.indices.exists(index=index):
         return
 
-    query = term_query(metadata_filters, term, field, multifield)
+    query = word_query(metadata_filters, term, field, multifield)
     results = client.search(
         index=index,
         size=0,
@@ -28,7 +28,7 @@ def term_frequency(
     return int(results['aggregations']['token_count']['value'])
 
 
-def term_query(
+def word_query(
     metadata_filters: List[Dict],
     term: str,
     field: str,

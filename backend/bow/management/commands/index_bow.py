@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from addcorpus.models import Corpus
-from analysis.create_index_job import create_token_index_job
+from bow.create_index_job import create_bow_index_job
 from indexing.command_utils import run_job, add_create_only_argument, add_async_argument
 
 
@@ -33,7 +33,7 @@ class Command(BaseCommand):
         corpus_obj = Corpus.objects.get(name=corpus)
         # TODO: validate corpus state
 
-        job = create_token_index_job(corpus_obj)
+        job = create_bow_index_job(corpus_obj)
         print(f'Created IndexJob #{job.pk}')
 
         if not create_only:

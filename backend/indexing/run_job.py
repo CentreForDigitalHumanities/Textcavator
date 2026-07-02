@@ -6,15 +6,14 @@ import logging
 from typing import Callable, Type, Dict
 import celery
 from celery.result import AsyncResult
-from celery.contrib.abortable import AbortableTask
 
 from es.client import elasticsearch
 from indexing.models import (
     IndexJob, IndexTask, TaskStatus, CreateIndexTask, PopulateIndexTask,
     UpdateSettingsTask, RemoveAliasTask, AddAliasTask, DeleteIndexTask, UpdateIndexTask
 )
-from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
-from analysis.run_index_tasks import create_token_index, populate_token_index
+from bow.models import CreateBOWIndexTask, PopulateBOWIndexTask
+from bow.run_index_tasks import create_bow_index, populate_bow_index
 from indexing.run_populate_task import populate
 from indexing.run_create_task import create
 from indexing.run_management_tasks import (
@@ -22,7 +21,7 @@ from indexing.run_management_tasks import (
 )
 from indexing.run_update_task import run_update_task
 from ianalyzer.celery_utils import warn_if_no_worker
-from indexing.stop_job import mark_tasks_stopped, TaskAborted, raise_if_aborted
+from indexing.stop_job import mark_tasks_stopped, TaskAborted
 
 
 logger = logging.getLogger('indexing')
@@ -35,8 +34,8 @@ TASK_HANDLERS: Dict[Type[IndexTask], Callable[[IndexTask], None]] = {
     RemoveAliasTask: remove_alias,
     AddAliasTask: add_alias,
     DeleteIndexTask: delete_index,
-    CreateTokenIndexTask: create_token_index,
-    PopulateTokenIndexTask: populate_token_index
+    CreateBOWIndexTask: create_bow_index,
+    PopulateBOWIndexTask: populate_bow_index
 }
 
 

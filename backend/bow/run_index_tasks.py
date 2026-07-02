@@ -4,15 +4,15 @@ from elasticsearch.helpers import streaming_bulk
 from indexing.run_create_task import make_es_settings
 from addcorpus.es_mappings import int_mapping, keyword_mapping
 from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
-from analysis.models import CreateTokenIndexTask, PopulateTokenIndexTask
-from analysis.collect import token_docs
+from bow.models import CreateBOWIndexTask, PopulateBOWIndexTask
+from bow.collect import token_docs
 from indexing.stop_job import raise_if_aborted
 
 logger = logging.getLogger('indexing')
 
 
 
-def token_index_mapping(corpus_config: CorpusConfiguration):
+def bow_index_mapping(corpus_config: CorpusConfiguration):
     mappings = {
         ':token': keyword_mapping(),
         ':count': int_mapping(),
@@ -42,7 +42,7 @@ def token_index_mapping(corpus_config: CorpusConfiguration):
     return { 'properties': mappings }
 
 
-def create_token_index(task: CreateTokenIndexTask):
+def create_bow_index(task: CreateBOWIndexTask):
     client = task.client()
     corpus_config: CorpusConfiguration = task.corpus.configuration
     index_name = task.index.name
@@ -62,7 +62,7 @@ def create_token_index(task: CreateTokenIndexTask):
             raise Exception('index already exists')
 
     settings = make_es_settings(task.corpus)
-    mappings = token_index_mapping(corpus_config)
+    mappings = bow_index_mapping(corpus_config)
 
     client.indices.create(
         index=index_name,
@@ -73,7 +73,7 @@ def create_token_index(task: CreateTokenIndexTask):
     return index_name
 
 
-def populate_token_index(task: PopulateTokenIndexTask):
+def populate_bow_index(task: PopulateBOWIndexTask):
     # Obtain source documents
     docs = token_docs(task.corpus, task.source_index.name, threshold=task.threshold)
 
