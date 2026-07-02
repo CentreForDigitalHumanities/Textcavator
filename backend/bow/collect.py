@@ -9,10 +9,14 @@ from visualization.termvectors import request_termvectors_batched, get_terms
 
 
 def content_fields(corpus: Corpus) -> Iterable[Tuple[str, Optional[str]]]:
-    fields = corpus.configuration.fields.filter(display_type=FieldDisplayTypes.TEXT_CONTENT)
+    fields = corpus.configuration.fields.filter(
+        display_type=FieldDisplayTypes.TEXT_CONTENT
+    ).exclude(
+        name__contains=':', # exclude programmatically generated fields
+    )
     for field in fields:
         multifield_names = [None]
-        multifields = field.es_mapping.get('fields')
+        multifields = field.es_mapping.get('fields', {})
         if 'clean' in multifields:
             multifield_names.append('clean')
         if 'stemmed' in multifields:
