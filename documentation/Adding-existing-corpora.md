@@ -16,4 +16,4 @@ The source files of a corpus are not included in this directory; ask another dev
 
 ### Database-only corpora
 
-Database-only corpora are still in development, but we plan to support making copies of your created corpora by downloading the configuration. This feature should be documented in the user manual.
+Unlike Python corpora, database corpora are normally created and used on a single server, but the corpus form does support a JSON export/import.
