@@ -17,7 +17,6 @@ class TaggingMockCorpus(CSVCorpusDefinition):
 
     title = 'Tagging Mock Corpus'
     description = 'Mock corpus for tagging'
-    es_index = 'test-tagging-mock-corpus'
     min_date = datetime.datetime(year=1, month=1, day=1)
     max_date = datetime.datetime(year=2022, month=12, day=31)
     data_directory = os.path.join(here, 'source_data')

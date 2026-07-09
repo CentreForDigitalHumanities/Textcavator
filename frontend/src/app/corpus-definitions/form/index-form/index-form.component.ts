@@ -4,7 +4,7 @@ import { APIIndexHealth, isComplete, JobStatus } from '@models/indexing';
 import { ApiService, CorpusService } from '@services';
 import { actionIcons } from '@shared/icons';
 import * as _ from 'lodash';
-import { map, Subject, switchMap, merge, filter } from 'rxjs';
+import { map, Subject, switchMap, merge, filter, BehaviorSubject } from 'rxjs';
 
 /** Possible states for the interface of this component */
 type DisplayState = {
@@ -85,8 +85,10 @@ export class IndexFormComponent implements OnChanges, OnDestroy {
 
     state$ = new Subject<DisplayState>;
     destroy$ = new Subject<void>();
+    loading$ = new BehaviorSubject<boolean>(false);
 
     actionIcons = actionIcons;
+
 
     private jobID: number;
     private stopping$ = new Subject<boolean>();
@@ -138,7 +140,8 @@ export class IndexFormComponent implements OnChanges, OnDestroy {
 
     toggleCorpusActive() {
         this.corpus.active = !this.corpus.active;
-        this.corpus.save();
+        this.loading$.next(true);
+        this.corpus.save().subscribe(() => this.loading$.next(false));
     }
 
     stateClass(state: DisplayState) {

@@ -49,7 +49,7 @@ class TracesOfSound(CSVCorpusDefinition):
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
     def sources(self, **kwargs):
         for csv_file in glob(f"{self.data_directory}/*.csv"):

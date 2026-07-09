@@ -1,3 +1,4 @@
+from typing import Dict
 from celery import chord, group, shared_task
 from django.conf import settings
 from visualization import wordcloud, ngram, term_frequency
@@ -68,11 +69,12 @@ def get_ngram_data_bin(**kwargs):
 def integrate_ngram_results(results, **kwargs):
     return ngram.get_ngrams(results, **kwargs)
 
-def ngram_data_tasks(request_json):
+def ngram_data_tasks(request_json: Dict):
     corpus_name = request_json['corpus_name']
     es_query = api_query_to_es_query(request_json, corpus_name)
     freq_compensation = request_json['freq_compensation']
     bins = ngram.get_time_bins(es_query, corpus_name)
+    mode = request_json.get('mode', 'ngrams')
 
     return chord(group([
         get_ngram_data_bin.s(
@@ -85,7 +87,8 @@ def ngram_data_tasks(request_json):
             freq_compensation=freq_compensation,
             subfield=request_json['subfield'],
             max_size_per_interval=request_json['max_size_per_interval'],
-            date_field=request_json['date_field']
+            date_field=request_json['date_field'],
+            mode=mode,
         )
         for b in bins
     ]), integrate_ngram_results.s(

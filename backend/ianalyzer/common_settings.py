@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'djangosaml2.middleware.SamlSessionMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'ianalyzer.urls'
@@ -136,7 +137,7 @@ REST_AUTH = {
 
 LOGO_LINK = 'https://dhstatic.hum.uu.nl/logo-cdh/png/UU_CDH_logo_EN_whiteFC.png'
 
-NLTK_DATA_PATH = os.path.join(BASE_DIR, 'addcorpus', 'nltk_data')
+NLTK_DATA_PATH = os.path.join(BASE_DIR, 'addcorpus', 'stopword_data', 'nltk_data')
 
 DEFAULT_CORPUS_IMAGE = os.path.join(BASE_DIR, 'addcorpus', 'images', 'default.png')
 

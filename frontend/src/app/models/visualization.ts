@@ -78,6 +78,7 @@ export type WordcloudParameters = {
 export type NGramRequestParameters = {
     corpus_name: string;
     field: string;
+    mode: 'ngrams' | 'collocates',
     ngram_size?: number;
     term_position?: string;
     freq_compensation?: boolean;
@@ -112,3 +113,8 @@ export interface ChartParameters {
 export interface FieldCoverage {
     [field: string]: number;
 };
+
+/** number of unique values for that field */
+export interface FieldCardinality {
+    [field: string]: number;
+}

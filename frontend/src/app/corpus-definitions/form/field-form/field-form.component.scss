@@ -1,0 +1,7 @@
+@use "../../../../utilities";
+
+.has-background-light {
+    select[disabled] {
+        border: 1px solid utilities.$grey-lighter;
+    }
+}

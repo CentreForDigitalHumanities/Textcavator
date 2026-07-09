@@ -114,6 +114,10 @@ export class DropdownComponent<T> implements OnChanges, AfterViewInit, OnDestroy
         this.onTouchedSubscription = this.blur$.subscribe(fn);
     }
 
+    setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.value) {
             this.dropdownService.selection$.next(this.value);

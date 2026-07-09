@@ -64,6 +64,7 @@ export const stylePreset = definePreset(Nora, {
                     borderColor: 'var(--bulma-border)',
                     disabledBackground: 'var(--bulma-black-ter)',
                     disabledColor: 'var(--bulma-grey)',
+                    placeholderColor: 'var(--bulma-text-weak)'
                 },
                 content: {
                     borderColor: 'var(--bulma-border)',

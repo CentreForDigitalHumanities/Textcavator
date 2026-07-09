@@ -204,11 +204,12 @@ class CorpusConfiguration(models.Model):
     es_alias = models.SlugField(
         max_length=MAX_LENGTH_NAME,
         blank=True,
-        help_text='alias assigned to the corpus index in elasticsearch',
+        help_text='additional alias for the corpus index in elasticsearch',
     )
     es_index = models.SlugField(
         max_length=MAX_LENGTH_NAME,
-        help_text='name of the corpus index in elasticsearch'
+        blank=True,
+        help_text='name of the corpus index in elasticsearch; leave blank to auto-generate'
     )
     image = models.ImageField(
         upload_to='corpus_images',

@@ -107,3 +107,6 @@ def _find_group(
 
 def is_prefix(term: str) -> bool:
     return term.endswith('*')
+
+def is_negated(term: str) -> bool:
+    return term.startswith('-')
