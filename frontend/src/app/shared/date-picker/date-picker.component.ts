@@ -10,15 +10,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     standalone: false
 })
 export class DatePickerComponent {
-    @Input() value: Date;
-    @Input() minDate: Date;
-    @Input() maxDate: Date;
+    @Input() value: Date | undefined;
+    @Input() minDate: Date | undefined;
+    @Input() maxDate: Date | undefined;
     @Input({ required: true }) default!: Date;
     @Input() unit: 'year'|'date' = 'year';
-    @Input() ariaLabel: string;
+    @Input() ariaLabel: string = '';
     @Output() onChange = new EventEmitter<Date>();
 
-    control = new FormControl<Date>(null);
+    control = new FormControl<Date | null>(null);
 
     constructor(private destroyRef: DestroyRef) { }
 

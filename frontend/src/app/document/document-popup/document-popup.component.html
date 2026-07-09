@@ -2,7 +2,8 @@
     <p-dialog [(visible)]="visible" width="100%"
         [maximizable]="true"
         [dismissableMask]="true"
-        [blockScroll]="true">
+        [blockScroll]="true"
+        [modal]="true">
         <ng-template  #header>
             <span>Document {{documentPosition(document, page)}} of {{page.total}}</span>
             <ia-entity-toggle *ngIf="showNEROption" (toggleNER)="toggleNER($event)"></ia-entity-toggle>

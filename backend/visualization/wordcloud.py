@@ -1,38 +1,29 @@
 from collections import Counter
-from sklearn.feature_extraction.text import CountVectorizer
-
-from addcorpus.models import Corpus
+from typing import Iterable, Dict
+from addcorpus.models import CorpusConfiguration, Field
+from visualization.termvectors import request_termvectors_batched, term_counts
 from es import download as download
-from addcorpus.language_analyzers import get_analyzer
+from es.client import elasticsearch
+from es import download as download
 
-def field_stopwords(corpus_name, field_name):
-    corpus = Corpus.objects.get(name=corpus_name)
-    field = corpus.configuration.fields.get(name=field_name)
-
-    if field.language and field.language != 'dynamic':
-        analyzer = get_analyzer(field.language)
-    else:
-        return []
-
-    stopwords = analyzer.stopwords()
-    return stopwords or []
+def _wordcloud_search_field(corpus_name: str, field_name: str) -> bool:
+    corpus_config = CorpusConfiguration.objects.get(corpus__name=corpus_name)
+    field: Field = corpus_config.fields.get(name=field_name)
+    has_clean_field = 'clean' in field.es_mapping.get('fields', {})
+    if has_clean_field:
+        return field_name + '.clean'
+    return field_name
 
 
-def make_wordcloud_data(documents, field, corpus):
-    texts = []
-    for document in documents:
-        content = document['_source'][field]
-        if isinstance(content, str) and len(content):
-            texts.append(content)
-        if isinstance(content, list) and len(content):
-            texts.append('\n'.join(content))
+def make_wordcloud_data(hits: Iterable[Dict], field_name, corpus_name):
+    search_field = _wordcloud_search_field(corpus_name, field_name)
 
-    stopwords = field_stopwords(corpus, field)
-    cv = CountVectorizer(max_features=100, max_df=0.7, token_pattern=r'(?u)\b[^0-9\s]{3,30}\b', stop_words=stopwords)
-    cvtexts = cv.fit_transform(texts)
-    counts = cvtexts.sum(axis=0).A1
-    words = list(cv.get_feature_names_out())
-    freq_distribution = Counter(dict(zip(words, counts)))
-    output = [{'key': word, 'doc_count': int(freq_distribution[word])} for word in words]
+    counts = Counter()
+    client = elasticsearch(corpus_name)
+    docs = request_termvectors_batched(hits, client, False, [search_field])
+    for _, doc in docs:
+        counts.update(term_counts(doc, search_field))
+
+    output = [{'key': word, 'doc_count': freq} for word, freq in counts.items()]
     return output
 

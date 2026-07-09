@@ -2,7 +2,7 @@
     <div class="columns is-centered">
 
         <div *ngIf="!registrationSucceeded && !serverErrorCode">
-            <form (ngSubmit)="register(signupForm)" class="container is-readable" #signupForm="ngForm">
+            <form (ngSubmit)="register(signupForm)" class="container" #signupForm="ngForm">
                 <div class="container is-login">
                     <h1 class="title">{{appName}} sign-up</h1>
                     <div class="field">

@@ -1,4 +1,4 @@
-from visualization.field_stats import count_field, count_total, report_coverage
+from visualization.field_stats import count_field, count_total, report_coverage, report_cardinality
 
 
 def test_count(small_mock_corpus, es_client, index_small_mock_corpus, small_mock_corpus_specs):
@@ -19,4 +19,10 @@ def test_report(small_mock_corpus, es_client, index_small_mock_corpus, small_moc
         'title': 1.0,
         'content': 1.0,
         'genre': 1.0,
+    }
+
+def test_cardinality(small_mock_corpus, es_client, index_small_mock_corpus, small_mock_corpus_specs):
+    report = report_cardinality(small_mock_corpus)
+    assert report == {
+        'genre': 3
     }

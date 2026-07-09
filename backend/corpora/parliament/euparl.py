@@ -43,6 +43,9 @@ class ParliamentEurope(Parliament):
     min_date = datetime(year=1999, month=7, day=20)
     max_date = getattr(settings, 'PP_EUPARL_MAX_DATE', datetime.now())
     language_field = 'original_language_code'
+    word_model_path = getattr(settings, 'PP_EUPARL_WM', None)
+    wordmodels_page = 'euparl.md'
+
 
     @property
     def subcorpora(self):

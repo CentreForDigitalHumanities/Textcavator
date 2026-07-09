@@ -15,6 +15,8 @@ import { TagService } from './tag.service';
 import { APIQuery } from '@models/search-requests';
 import { PageResultsParameters } from '@models/page-results';
 import { resultsParamsToAPIQuery } from '@utils/es-query';
+import { joinURLPath } from './api.service';
+import { environment } from '@environments/environment';
 
 
 @Injectable()
@@ -73,7 +75,7 @@ export class ElasticSearchService {
      * Execute an ElasticSearch query and return a dictionary containing the results.
      */
     private async execute(corpus: Corpus, body: APIQuery) {
-        const url = `/api/es/${corpus.name}/_search`;
+        const url = joinURLPath(environment.apiUrl, 'es', corpus.name, '_search');
         return this.http.post<SearchResponse>(url, body).toPromise();
     }
 
