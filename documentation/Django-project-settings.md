@@ -73,7 +73,7 @@ Unit tests for the backend will assume that there is a default server configured
 
 A dictionary that specifies Python corpus definitions that should be imported in your project.
 
-Each key must be the import path to a corpus class (see [Django module loading](https://docs.djangoproject.com/en/5.2/ref/utils/#module-django.utils.module_loading)). For example:
+Each value must be the import path to a corpus class (see [Django module loading](https://docs.djangoproject.com/en/5.2/ref/utils/#module-django.utils.module_loading)). For example:
 
 ```python
 CORPORA = {

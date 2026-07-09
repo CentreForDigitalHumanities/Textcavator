@@ -244,7 +244,7 @@ def index_json_mock_corpus(db, es_client: Elasticsearch, json_mock_corpus: Corpu
 
 @pytest.fixture()
 def json_corpus_definition():
-    path = os.path.join(settings.BASE_DIR, 'corpora_test', 'basic', 'mock_corpus.json')
+    path = os.path.join(settings.BASE_DIR, 'corpora_test', 'basic', 'corpus.json')
     with open(path) as f:
         return json.load(f)
 
