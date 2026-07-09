@@ -1,27 +1,7 @@
 <ia-corpus-header [corpus]="corpus" currentPage="info"></ia-corpus-header>
 
-<section class="section">
-    <div class="container is-readable">
-        <div class="columns">
-            <div class="column">
-                <div class="block">
-                    <p>{{corpus.description}}</p>
-                </div>
-                <div class="block metadata">
-                    <p>Language: <strong>{{corpus.displayLanguages}}</strong></p>
-                    <p>Type: <strong>{{corpus.category}}</strong></p>
-                    <p>Period: <strong>{{corpus.minYear}}-{{corpus.maxYear}}</strong></p>
-                </div>
-            </div>
-            <div class="column is-3">
-                <img src="/api/corpus/image/{{corpus.name}}" alt="{{corpus.title}}">
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="section" style="padding-top: 0;">
-    <div class="container is-readable">
+<section class="section pt-0">
+    <div class="container">
         <ia-tabs *ngIf="documentation$ | async as documentation; else loading">
             <ng-template iaTabPanel *ngFor="let page of documentation"
                 [id]="page.type" [title]="page.type">
@@ -37,7 +17,6 @@
                     </ia-field-info>
                 </div>
             </ng-template>
-
         </ia-tabs>
     </div>
 </section>

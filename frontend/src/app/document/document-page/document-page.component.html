@@ -1,31 +1,36 @@
 <ia-corpus-header [corpus]="corpus" currentPage="document"></ia-corpus-header>
-<div class="section">
-    <div class="container is-readable">
-        <div *ngIf="documentFound; else notFound" [ngClass]="{'is-loading': !document}">
-            <div class="level block">
-                <div class="level-left">
-                    <ia-entity-toggle *ngIf="showNEROption" (toggleNER)="toggleNER($event)"></ia-entity-toggle>
-                </div>
-                <div class="level-right">
-                    <div class="level-item" *ngIf="document?.hasContext">
-                        <a [routerLink]="contextLink" [queryParams]="contextQueryParams" iaBalloon="view all documents from this {{contextDisplayName}}">
-                            <span class="icon"><fa-icon [icon]="documentIcons.context"></fa-icon></span>
-                            <span>View {{contextDisplayName}}</span>
-                        </a>
+<div class="section pt-3">
+    <div class="container">
+        <h2 class="title is-4">
+            Document: <span class="is-family-monospace">{{documentId}}</span>
+        </h2>
+
+        @if (documentFound) {
+            <div [ngClass]="{'is-loading': !document}">
+
+                <div class="level block">
+                    <div class="level-left">
+                        <ia-entity-toggle *ngIf="showNEROption" (toggleNER)="toggleNER($event)"></ia-entity-toggle>
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item" *ngIf="document?.hasContext">
+                            <a [routerLink]="contextLink" [queryParams]="contextQueryParams" iaBalloon="view all documents from this {{contextDisplayName}}">
+                                <span class="icon"><fa-icon [icon]="documentIcons.context"></fa-icon></span>
+                                <span>View {{contextDisplayName}}</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
+                <div class="block">
+                    <ia-document-view *ngIf="document" [document]="document" [corpus]="corpus" [showEntities]="showNamedEntities"></ia-document-view>
+                </div>
             </div>
-            <div class="block">
-                <ia-document-view *ngIf="document" [document]="document" [corpus]="corpus" [showEntities]="showNamedEntities"></ia-document-view>
+        } @else {
+            <div class="message is-danger">
+                <div class="message-body">
+                    Cannot find document "{{documentId}}" in {{corpus.title}}
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
-
-<ng-template #notFound>
-    <div class="message is-danger" *ngIf="documentNotFound">
-        <div class="message-body">
-            Cannot find document "{{documentId}}" in {{corpus.title}}
-        </div>
-    </div>
-</ng-template>
