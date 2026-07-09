@@ -1,0 +1,8 @@
+<span aria-live="polite" aria-atomic="true"
+    [attr.aria-busy]="!totalResults || (totalResults?.loading$ | async)">
+    @if (totalResults) {
+            @let total = totalResults.result$ | async;
+            {{total | number}}
+            {total, plural, =1 {result} other {results}}
+        }
+</span>

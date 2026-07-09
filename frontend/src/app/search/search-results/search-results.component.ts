@@ -27,9 +27,6 @@ const MAXIMUM_DISPLAYED = 10000;
     standalone: false
 })
 export class SearchResultsComponent implements OnChanges, OnDestroy {
-    @ViewChild('resultsNavigation')
-    public resultsNavigation: ElementRef;
-
     /**
      * The search queryModel to use
      */
@@ -40,10 +37,7 @@ export class SearchResultsComponent implements OnChanges, OnDestroy {
     public user: User;
 
     public pageResults: PageResults;
-
     public isLoading = false;
-    public isScrolledDown: boolean;
-
     public results: SearchResults;
 
     public resultsPerPage = 20;
@@ -87,17 +81,6 @@ export class SearchResultsComponent implements OnChanges, OnDestroy {
 
     totalDisplayed(totalResults: number) {
         return Math.min(totalResults, MAXIMUM_DISPLAYED);
-    }
-
-    @HostListener('window:scroll', [])
-    onWindowScroll() {
-        // mark that the search results were scrolled down beyond 68 pixels from top (position underneath sticky search bar)
-        // this introduces a box shadow
-        if (this.resultsNavigation !== undefined) {
-            this.isScrolledDown =
-                this.resultsNavigation.nativeElement.getBoundingClientRect()
-                    .y === 68;
-        }
     }
 
     private parseError(error): ShowError {

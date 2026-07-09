@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
@@ -7,11 +7,10 @@ import { CorpusService, DialogService } from '@services/index';
 
 import { AuthService } from '@services/auth.service';
 import { distinct, filter } from 'rxjs/operators';
-import { actionIcons, navIcons, searchIcons } from '@shared/icons';
+import { actionIcons, searchIcons } from '@shared/icons';
 import { RouterStoreService } from '../store/router-store.service';
 import { Title } from '@angular/platform-browser';
 import { SearchTab, SearchTabs } from './search-tabs';
-import { environment } from '@environments/environment';
 import { pageTitle } from '@utils/app';
 
 @Component({
@@ -21,11 +20,6 @@ import { pageTitle } from '@utils/app';
     standalone: false
 })
 export class SearchComponent implements OnInit, OnDestroy {
-    @ViewChild('searchSection', { static: false })
-    public searchSection: ElementRef;
-
-    public isScrolledDown: boolean;
-
     public corpus: Corpus;
 
     public user: User;
@@ -61,13 +55,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         private title: Title,
     ) {
         this.tabs = new SearchTabs(this.routerStoreService);
-    }
-
-    @HostListener('window:scroll', [])
-    onWindowScroll() {
-        // mark that the search results have been scrolled down and we should some border
-        this.isScrolledDown =
-            this.searchSection.nativeElement.getBoundingClientRect().y === 0;
     }
 
     ngOnInit() {

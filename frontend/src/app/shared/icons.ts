@@ -62,6 +62,7 @@ import {
     faCircleHalfStroke,
     faMoon,
     faSun,
+    faAngleDoubleUp,
 } from '@fortawesome/free-solid-svg-icons';
 
 type IconDefinition = SolidIconDefinition | RegularIconDefinition;
@@ -187,4 +188,8 @@ export const themeIcons: Icons = {
     system: faCircleHalfStroke,
     light: faSun,
     dark: faMoon,
+}
+
+export const scrollIcons: Icons = {
+    top: faAngleDoubleUp,
 }
