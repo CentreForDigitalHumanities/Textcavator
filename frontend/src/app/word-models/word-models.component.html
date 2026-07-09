@@ -1,7 +1,7 @@
 <ia-corpus-header [corpus]="corpus" currentPage="word-models"></ia-corpus-header>
 
-<section class="section search-section" #searchSection [ngClass]="{'is-scrolled-down': isScrolledDown}">
-    <div class="container is-readable">
+<section class="section search-section">
+    <div class="container">
         <form class="block">
             <div class="field has-addons">
                 <div class="control is-expanded">
@@ -18,7 +18,7 @@
 </section>
 
 <section class="section">
-    <div class="container is-readable">
+    <div class="container">
         <ia-query-feedback *ngIf="activeQuery || queryFeedback" [query]="activeQuery" [queryFeedback]="queryFeedback" (selectedSuggestion)="queryText = $event; submitQuery()"></ia-query-feedback>
 
         <ng-container *ngIf="activeQuery && queryFeedback && queryFeedback.status === 'success'">
@@ -68,7 +68,7 @@
                                 (wordSimilarityError)="setErrorMessage($event)">
                             </ia-word-similarity>
 
-                            <ia-neighbor-network *ngIf="tab=='neighbornetwork'"
+                            <ia-neighbor-network *ngIf="tab==='neighbornetwork'"
                                 [corpus]="corpus" [queryText]="activeQuery"
                                 [asTable]="asTable"
                                 />
@@ -95,3 +95,5 @@
         </ng-container>
     </div>
 </section>
+
+<ia-back-to-top-button />

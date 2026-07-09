@@ -13,7 +13,7 @@
 
         <ul>
             <li>This field {{field.searchable ? 'can' : 'cannot'}} be searched</li>
-            <li>This field {{field.searchFilter ? 'has' : 'does not have'}} a search filter</li>
+            <li>This field {{field.filterOptions ? 'has' : 'does not have'}} a search filter</li>
         </ul>
 
         <ng-container *ngIf="field.displayType === 'text_content' && field.multiFields">
@@ -36,9 +36,22 @@
         <p *ngIf="coverage !== undefined">
             <b>{{coveragePercentage}}%</b> of the documents in this corpus have a value for this field
         </p>
-
         <p *ngIf="coverage === undefined">
             Loading coverage data...
         </p>
+
+        @if (field.mappingType === 'keyword') {
+            @switch(cardinality) {
+                @case(undefined) {
+                    <p>Loading cardinality data...</p>
+                }
+                @default {
+                    <p>This field has <b>{{cardinality}}</b> unique
+                        @if (cardinality === 1) {value} @else {values}.
+                    </p>
+                }
+            }
+        }
+
     </div>
 </details>

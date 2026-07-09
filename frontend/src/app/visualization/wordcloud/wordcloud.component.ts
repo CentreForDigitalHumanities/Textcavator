@@ -103,7 +103,7 @@ export class WordcloudComponent implements OnChanges, OnDestroy {
             const options = this.chartOptions(result);
 
             if (this.chart) {
-                this.chart.data = data as any;
+                this.chart.data = data as unknown as any;
                 this.chart.update();
             } else {
                 this.chart = new WordCloudChart('wordcloud', { data, options });
@@ -127,7 +127,7 @@ export class WordcloudComponent implements OnChanges, OnDestroy {
     private chartDataset(result: MostFrequentWordsResult[]): ChartDataset<'wordCloud'> {
         const frequencies = result.map((item) => item.doc_count);
         const scale = sizeScale(_.min(frequencies), _.max(frequencies));
-        const sizes: any[] = frequencies.map(scale);
+        const sizes: number[] = frequencies.map(scale);
 
         return {
             label: 'Frequency',

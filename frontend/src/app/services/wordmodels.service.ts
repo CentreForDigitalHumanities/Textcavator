@@ -6,6 +6,8 @@ import {
     WordInModelResult,
     WordSimilarity,
 } from '@models';
+import { joinURLPath } from './api.service';
+import { environment } from '@environments/environment';
 
 @Injectable()
 export class WordmodelsService {
@@ -91,5 +93,6 @@ export class WordmodelsService {
         });
     }
 
-    private wmApiRoute = (route: string): string => `/api/wordmodels/${route}`;
+    private wmApiRoute = (route: string): string =>
+        joinURLPath(environment.apiUrl, 'wordmodels', route);
 }

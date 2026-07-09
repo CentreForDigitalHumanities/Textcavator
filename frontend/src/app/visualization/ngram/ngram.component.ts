@@ -95,7 +95,7 @@ export class NgramComponent implements OnChanges {
         { label: 'Yes', value: true },
     ];
     analysisOptions: { label: string; value: string }[];
-    maxDocumentsOptions = makeNumberOptions([50, 100, 200, 500]);
+    maxDocumentsOptions = makeNumberOptions([50, 100, 500, 1000, 5000]);
     numberOfNgramsOptions = makeNumberOptions([10, 20, 50, 100]);
 
     tasksToCancel: string[];

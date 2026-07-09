@@ -113,3 +113,8 @@ export interface ChartParameters {
 export interface FieldCoverage {
     [field: string]: number;
 };
+
+/** number of unique values for that field */
+export interface FieldCardinality {
+    [field: string]: number;
+}

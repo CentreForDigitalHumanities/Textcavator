@@ -106,18 +106,13 @@ class English(LanguageAnalyzer):
         }
         return filters
 
-    standard_analyzer_name = 'standard_en'
-
-    def _standard_analyzer(self):
-        return {
-            'tokenizer': 'standard',
-            'filter': ['stemmer_possessive_en', 'lowercase']
-        }
-
-    def _clean_analyzer(self):
+    def _stemmed_analyzer(self):
         analyzer = super()._clean_analyzer()
         analyzer['filter'] = [
-            'stemmer_possessive_en', 'lowercase', self._stopwords_filter_name
+            'stemmer_possessive_en',
+            'lowercase',
+            self._stopwords_filter_name,
+            self._stemmer_filter_name,
         ]
         return analyzer
 

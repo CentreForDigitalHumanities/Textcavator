@@ -9,10 +9,11 @@ import * as _ from 'lodash';
     standalone: false
 })
 export class FieldInfoComponent implements OnInit {
-    @Input() field: CorpusField;
-    @Input() coverage: number;
+    @Input({ required: true }) field!: CorpusField;
+    @Input() coverage?: number;
+    @Input() cardinality?: number;
 
-    mappingNames = {
+    mappingNames: Record<string, string> = {
         text: 'text',
         keyword: 'categorical',
         integer: 'numeric',

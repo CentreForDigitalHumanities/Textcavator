@@ -40,6 +40,10 @@ When you provide a bit of text to search for, we call this a query. Your query c
 
 A kind of text processing where the words in a text are stripped of all inflection. For instance, *walk*, *walks*, and *walking* are all reduced to *walk*. This can be used to ignore irrevelant variation between words. See [stemming (wikipedia)](/https://en.wikipedia.org/wiki/Stemming) for more information.
 
+## Stopword
+
+Stopwords are very common words in a language. For example, some English stopwords are "the", "in", and "are". These are typically not interesting when searching, or in quantitative analysis; they do not convey what the text is about. For some text analysis, it makes sense to remove stopwords.
+
 ## Tag
 
 On Textcavator, tags are labels that you can assign to documents. See [tags](/manual/tagging-documents) for more information.
