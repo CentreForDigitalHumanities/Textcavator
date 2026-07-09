@@ -26,6 +26,13 @@ const spec = (
         width,
         height,
         padding: 0,
+        signals: [
+            {
+                name: 'theme',
+                description: 'Current site theme (light/dark)',
+                bind: { element: '#current-theme' }
+            }
+        ],
         data: [
             {
                 name: 'word_counts',
@@ -62,7 +69,7 @@ const spec = (
                         fill: { scale: 'color', field: 'key' },
                     },
                     hover: {
-                        fill: { value: 'black' }
+                        fill:  {signal: 'theme === "dark" ? "white" : "black"'}
                     }
                 },
                 transform: [
