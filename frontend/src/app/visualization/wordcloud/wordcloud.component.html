@@ -1,7 +1,6 @@
 <div *ngIf="results" [class.is-loading]="results.loading$ | async">
-    <div id="wordcloud_div" class="block" [ngClass]="{ 'is-hidden': asTable }">
-        <canvas id="wordcloud" width="100%" height="500px"></canvas>
-    </div>
+    <div #chart id="chart" [class.is-hidden]="asTable" [attr.aria-hidden]="asTable"></div>
+    <input iaThemeIndicator >
 
     <div class="block" *ngIf="asTable">
         <ia-freqtable [headers]="tableHeaders" [data]="results.result$ | async" [defaultSort]="'doc_count'" [name]="(results.state$ | async).field?.name">

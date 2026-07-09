@@ -40,7 +40,6 @@
     "bulma": "^1.0.4",
     "chart.js": "^4.5.1",
     "chartjs-adapter-moment": "^1.0.1",
-    "chartjs-chart-wordcloud": "^4.4.5",
     "chartjs-plugin-zoom": "^2.2.0",
     "colors": "^1.4.0",
     "core-js": "^2.6.11",
