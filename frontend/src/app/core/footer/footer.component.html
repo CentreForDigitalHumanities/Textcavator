@@ -6,7 +6,12 @@
                     <strong>Textcavator is developed by </strong>
                 </p>
                 <a href="https://cdh.uu.nl/centre-for-digital-humanities/research-software-lab/" target="_blank">
-                    <img src="assets/UU-CDH_logo_EN_def_UU_CDH_logo_EN_yellowwhite.jpg" alt="Centre for Digital Humanities, Utrecht University" width="400">
+                    <img [src]="
+                        (theme$ | async) == 'dark' ?
+                        'assets/UU-CDH_logo_EN_def_UU_CDH_logo_EN_white.png' :
+                        'assets/UU-CDH_logo_EN_def_UU_CDH_logo_EN_yellowwhite.jpg'"
+                    alt="Centre for Digital Humanities, Utrecht University"
+                    width="400">
                 </a>
             </div>
         <div *ngIf="environment.logos?.length" class="column">

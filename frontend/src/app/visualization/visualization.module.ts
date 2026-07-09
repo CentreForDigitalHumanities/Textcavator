@@ -22,6 +22,7 @@ import { VisualizationFooterComponent } from './visualization-footer/visualizati
 import { VisualizationComponent } from './visualization.component';
 import { WordcloudComponent } from './wordcloud/wordcloud.component';
 import { MapComponent } from './map/map.component';
+import { ThemeIndicatorDirective } from './theme-indicator.directive';
 import { SelectModule } from 'primeng/select';
 
 
@@ -39,14 +40,15 @@ import { SelectModule } from 'primeng/select';
         VisualizationComponent,
         PaletteSelectComponent,
         MapComponent,
+        ThemeIndicatorDirective,
     ],
     exports: [
         TermComparisonEditorComponent,
         VisualizationFooterComponent,
         FreqtableComponent,
         VisualizationComponent,
-    ],
-    imports: [
+        ThemeIndicatorDirective
+    ], imports: [
         AutoCompleteModule,
         ChartModule,
         SharedModule,
