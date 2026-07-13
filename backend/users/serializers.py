@@ -27,7 +27,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['username'] = instance.name()
+        data['username'] = instance.get_short_name()
         return data
 
 

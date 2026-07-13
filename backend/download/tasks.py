@@ -91,7 +91,7 @@ def download_search_results(request_json, user):
     make_chain = lambda: chain(
         make_download.s(request_json, download.id, download_limit, user),
         complete_download.s(download.id),
-        csv_data_email.s(user.email, user.name()),
+        csv_data_email.s(user.email, user.get_short_name()),
     ).on_error(complete_failed_download.s(download.id))
 
     return try_download(make_chain, download)
@@ -181,7 +181,7 @@ def download_full_data(request_json, user):
         task,
         make_full_data_csv.s(visualization_type, parameters, download.id),
         complete_download.s(download.id),
-        csv_data_email.s(user.email, user.name()),
+        csv_data_email.s(user.email, user.get_short_name()),
     ).on_error(complete_failed_download.s(download.id))
 
     return try_download(make_chain, download)

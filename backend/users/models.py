@@ -24,8 +24,7 @@ class CustomUser(django_auth_models.AbstractUser):
             return f'{self.saml_username} [saml]'
         return super().__str__()
 
-    def name(self):
-        '''Name to address the user in interface/email/etc'''
+    def get_short_name(self):
         return self.saml_username or self.username
 
 
