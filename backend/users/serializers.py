@@ -19,16 +19,11 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     saml = serializers.BooleanField(read_only=True)
     download_limit = serializers.IntegerField(read_only=True)
     profile = UserProfileSerializer()
+    name = serializers.CharField(source='get_short_name', read_only=True)
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = ('id', 'username', 'email', 'saml',
+        fields = ('id', 'name', 'username', 'email', 'saml',
                   'download_limit', 'is_admin', 'profile')
-
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['username'] = instance.get_short_name()
-        return data
 
 
     def update(self, instance, validated_data):

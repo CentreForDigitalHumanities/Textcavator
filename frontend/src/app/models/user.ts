@@ -7,6 +7,7 @@ interface UserProfileResponse {
 
 export interface UserResponse {
     id: number;
+    name: string;
     username: string;
     email: string;
     download_limit: number;
