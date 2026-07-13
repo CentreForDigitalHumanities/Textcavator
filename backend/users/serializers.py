@@ -26,6 +26,12 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
                   'download_limit', 'is_admin', 'profile')
 
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.saml:
+            self.fields.pop('username')
+
+
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)
 
