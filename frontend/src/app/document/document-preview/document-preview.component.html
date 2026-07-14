@@ -1,60 +1,64 @@
 @if (page && document) {
-  <table class="table is-fullwidth">
+<table class="table table-borderless">
     @for (field of page.fields; track field) {
-      <colgroup>
-      <col style="width: 20%;" />
-      <col style="width: 80%;" />
+    <colgroup>
+        <col style="width: 20%;" />
+        <col style="width: 80%;" />
     </colgroup>
     @if (document.hasValue(field)) {
-      <tr>
+    <tr>
         <th>
-          <span [iaBalloon]="field.description" iaBalloonPosition="left" iaBalloonLength="medium">
-            {{field.displayName}}:
-          </span>
+            <span [iaBalloon]="field.description" iaBalloonPosition="left" iaBalloonLength="medium">
+                {{field.displayName}}:
+            </span>
         </th>
         <td [attr.lang]="document.language(field)">
-          @if (field.displayType === 'text_content') {
+            @if (field.displayType === 'text_content') {
             <ia-content-field-preview [field]="field" [document]="document" />
-          } @else {
+            } @else {
             <ia-metadata-field [field]="field" [document]="document" />
-          }
+            }
         </td>
-      </tr>
+    </tr>
     }
-  }
+    }
 </table>
-<div class="row is-vcentered">
-  @if (document.relevance) {
-    <div class="col-md is-narrow heading">
-      Relevance: <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
+<div class="row g-2 align-items-center">
+    @if (document.relevance) {
+    <div class="col-md-auto heading">
+        Relevance: <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
     </div>
-  }
-  <div class="col-md" role="presentation"></div>
-  <div class="col-md field is-grouped is-narrow">
-    <div class="control">
-      <button class="btn btn-primary" (click)="page.focus(document)">
-        <span  aria-hidden="true"><fa-icon [icon]="actionIcons.view"></fa-icon></span>
-        <span>
-          View
-        </span>
-      </button>
+    }
+    <div class="col-md" role="presentation"></div>
+    <div class="col-md-auto">
+        <div class="control">
+            <button class="btn btn-primary" (click)="page.focus(document)">
+                <span aria-hidden="true"><fa-icon [icon]="actionIcons.view"></fa-icon></span>
+                <span>
+                    View
+                </span>
+            </button>
+        </div>
     </div>
     @if (document.fieldValues.image_path) {
-      <div class="control">
-        <button class="btn" (click)="goToScan(page, document, $event)" aria-label="view scan">
-          <span  aria-hidden="true"><fa-icon [icon]="documentIcons.scanAlt"></fa-icon></span>
-          <span>View scan</span>
-        </button>
-      </div>
+        <div class="col-md-auto">
+            <div class="control">
+                <button class="btn" (click)="goToScan(page, document, $event)" aria-label="view scan">
+                    <span aria-hidden="true"><fa-icon [icon]="documentIcons.scanAlt"></fa-icon></span>
+                    <span>View scan</span>
+                </button>
+            </div>
+        </div>
     }
-    <div class="control">
-      <a class="btn" [routerLink]="documentUrl">
-        <span  aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
-        <span>
-          Link
-        </span>
-      </a>
+    <div class="col-md-auto">
+        <div class="control">
+            <a class="btn btn-outline-secondary" [routerLink]="documentUrl">
+                <span aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
+                <span>
+                    Link
+                </span>
+            </a>
+        </div>
     </div>
-  </div>
 </div>
 }

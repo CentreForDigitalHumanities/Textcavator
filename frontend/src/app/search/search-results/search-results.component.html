@@ -1,7 +1,7 @@
 @if (pageResults?.result$ | async; as page) {
   <section class="py-5 results-navigation mb-4 pt-4 pb-4 pl-0 pr-0">
     <div class="row">
-      <div class="col-md is-narrow has-text-centered">
+      <div class="col-md-auto text-center">
         <div>
           <label class="heading" id="sort-by-label">Sort By</label>
           <ia-search-sorting [pageResults]="pageResults" labelledBy="sort-by-label" />
@@ -9,12 +9,12 @@
       </div>
       <div class="col-md"></div> <!-- empty column for spacing/alignment -->
       @if (page.total > resultsPerPage) {
-        <div class="col-md is-narrow has-text-centered" >
+        <div class="col-md-auto text-center" >
           <div>
             <p class="heading">Pages</p>
             <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
             <p aria-live="polite" [attr.aria-busy]="pageResults.loading$ | async"
-              aria-atomic="true" class="pt-3 heading">
+              aria-atomic="true" class="heading">
               @if (page.total > resultsPerPage) {
                 <span>
                   Showing results
@@ -38,7 +38,7 @@
     <section aria-label="search results">
       <div class="hits" [ngClass]="{'is-loading': pageResults.loading$ | async }">
         @for (document of page.documents; track document) {
-          <article class="document box block">
+          <article class="document border rounded my-3 p-3">
             <ia-document-preview [document]="document" [page]="page"></ia-document-preview>
           </article>
         }
@@ -52,11 +52,11 @@
   <ia-document-popup [page]="page" [queryModel]="queryModel"></ia-document-popup>
   <div class="row mt-5">
     <div class="col-md"></div>
-    <div class="col-md is-narrow has-text-centered">
+    <div class="col-md-auto text-center">
       <div>
         <p class="heading">Pages</p>
         <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
-        <p class="pt-3 heading">
+        <p class="heading">
           @if (page.total > resultsPerPage) {
             <span>
               Showing results
