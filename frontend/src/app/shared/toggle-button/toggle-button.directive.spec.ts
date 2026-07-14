@@ -1,18 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ToggleButtonDirective } from './toggle-button.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 
 @Component({
     template: `
-    <button class="button" iaToggleButton [active]="active" [activeClass]="class">
+    <button class="button" iaToggleButton [active]="active()" [activeClass]="class">
         Test
     </button>
     `,
     standalone: false
 })
 class ToggleButtonTestComponent {
-    active = false;
+    active = signal(false);
     class = 'is-primary';
 }
 
@@ -38,7 +38,7 @@ describe('ToggleButtonDirective', () => {
         expect(button.className).toEqual('button');
         expect(button.getAttribute('aria-pressed')).toBe('false');
 
-        component.active = true;
+        component.active.set(true);
         fixture.detectChanges();
 
         expect(button.className).toEqual('button is-primary');
@@ -47,7 +47,7 @@ describe('ToggleButtonDirective', () => {
 
     it('should set the CSS class through input', () => {
         component.class = 'is-danger';
-        component.active = true;
+        component.active.set(true)
         fixture.detectChanges();
 
         expect(button.className).toEqual('button is-danger');
