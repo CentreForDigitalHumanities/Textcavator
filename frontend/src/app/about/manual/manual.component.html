@@ -3,8 +3,8 @@
         <div class="row">
             <ia-manual-navigation class="col-md-3"></ia-manual-navigation>
             <div class="col-md-9">
-                <h1 class="title">{{title}}</h1>
-                <div class="content" [ngClass]="{'is-loading':isLoading}" [innerHTML]="manualHtml"></div>
+                <h1>{{title}}</h1>
+                <div class="py-4" [ngClass]="{'is-loading':isLoading}" [innerHTML]="manualHtml"></div>
             </div>
         </div>
     </div>
