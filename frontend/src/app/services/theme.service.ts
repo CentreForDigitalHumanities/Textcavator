@@ -48,7 +48,7 @@ export class ThemeService {
     /** set theme in the site layout */
     private applyTheme(theme: Theme) {
         const root = (document.getRootNode() as Document).documentElement;
-        root.setAttribute('data-theme', theme);
+        root.setAttribute('data-bs-theme', theme);
         this.applyChartJSTheme();
     }
 

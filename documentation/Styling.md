@@ -10,7 +10,7 @@ Initial and derived variables from bulma are customised in [_utilities.css](/fro
 
 Dark mode is managed by the [ThemeService](/frontend/src/app/services/theme.service.ts).
 
-The service sets `data-theme="dark"` / `data-theme="light"` on the HTML root node, which is used by CSS selectors. If you need to observe the theme in a component, you can also use `ThemeService.theme$`.
+The service sets `data-bs-theme="dark"` / `data-bs-theme="light"` on the HTML root node, which is used by Bootstrap. If you need to observe the theme in a component, you can also use `ThemeService.theme$`.
 
 ## Other libraries
 

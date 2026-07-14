@@ -198,7 +198,7 @@ export const providers: any[] = [
         theme: {
             preset: stylePreset,
             options: {
-                darkModeSelector: '[data-theme="dark"]'
+                darkModeSelector: '[data-bs-theme="dark"]'
             },
         }
     }),
