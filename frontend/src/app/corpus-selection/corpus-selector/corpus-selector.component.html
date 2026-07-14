@@ -1,64 +1,63 @@
-<div class="columns corpus-container has-background-primary has-text-primary-invert">
-  <div class="column is-3 image-column">
-    <div class=corpus-image>
-      <img src="/api/corpus/image/{{corpus.name}}" alt="{{corpus.title}}">
-    </div>
-  </div>
-  <div class="card-content column">
-    <div class="columns is-vcentered title-row is-mobile">
-      <h2 class="title-content column is-size-4">
-        <a [routerLink]="['/search', corpus.name]" class="has-text-primary-invert">
-          {{corpus.title}}
-        </a>
-      </h2>
-      @if (corpus.editable) {
-        <div class="column is-narrow"
-          >
-          <a class="has-text-primary-invert is-size-5"
-            iaBalloon="Edit corpus" iaBalloonPosition="down-left"
-            [routerLink]="['/custom-corpora/edit', corpus.id]"
-            aria-label="edit corpus">
-            <span>
-              <fa-icon [icon]="corpusIcons.edit" aria-hidden="true"></fa-icon>
-            </span>
-          </a>
+<div class="card bg-primary text-bg-primary">
+    <div class="row g-0">
+        <div class="col-md-3 image-column">
+              <img src="/api/corpus/image/{{corpus.name}}" alt="{{corpus.title}}"
+                class="rounded-start corpus-image">
         </div>
-      }
-      <div class="column is-narrow">
-        <a class="has-text-primary-invert is-size-5"
-          iaBalloon="More information" iaBalloonPosition="down-left"
-          [routerLink]="['/info', corpus.name]"
-          aria-label="more information">
-          <span>
-            <fa-icon [icon]="corpusIcons.infoAlt" aria-hidden="true"></fa-icon>
-          </span>
-        </a>
-      </div>
-    </div>
+        <div class="col-md-9 py-3 px-4">
+            <div class="row">
+                <h2 class="col title-content card-title h4">
+                  <a [routerLink]="['/search', corpus.name]"
+                    class="stretched-link text-bg-primary">
+                    {{corpus.title}}
+                  </a>
+                </h2>
+                @if (corpus.editable) {
+                  <div class="col-auto"
+                    >
+                    <a class="text-bg-primary fs-5"
+                      iaBalloon="Edit corpus" iaBalloonPosition="down-left"
+                      [routerLink]="['/custom-corpora/edit', corpus.id]"
+                      aria-label="edit corpus">
+                      <span>
+                        <fa-icon [icon]="corpusIcons.edit" aria-hidden="true"></fa-icon>
+                      </span>
+                    </a>
+                  </div>
+                }
+                <div class="col-auto">
+                  <a class="text-bg-primary fs-5"
+                    iaBalloon="More information" iaBalloonPosition="down-left"
+                    [routerLink]="['/info', corpus.name]"
+                    aria-label="more information">
+                    <fa-icon [icon]="corpusIcons.infoAlt" aria-hidden="true"></fa-icon>
+                  </a>
+                </div>
+            </div>
+            <hr class="mt-1">
 
-    <hr class="title-divider">
+            <div class="content">
+              {{corpus.description}}
+            </div>
 
-    <div class="content">
-      {{corpus.description}}
-    </div>
-
-    <div class="columns align-bottom">
-      <div class="column">
-        <div class="block">
-          <p class="heading">Language: <strong>{{corpus.displayLanguages}}</strong></p>
-          <p class="heading">Type: <strong>{{corpus.category}}</strong></p>
-          <p class="heading">Period: <strong>{{corpus.minYear}}-{{corpus. maxYear}}</strong></p>
+            <div class="row align-items-end">
+              <div class="col-md">
+                <div>
+                  <p class="heading">Language: <strong>{{corpus.displayLanguages}}</strong></p>
+                  <p class="heading">Type: <strong>{{corpus.category}}</strong></p>
+                  <p class="heading">Period: <strong>{{corpus.minYear}}-{{corpus. maxYear}}</strong></p>
+                </div>
+              </div>
+              <div class="col-md-auto explore-column">
+                <a class="btn btn-primary has-background-primary-soft has-text-primary-soft-invert"
+                  [routerLink]="['/search', corpus.name]">
+                  <span aria-hidden="true">
+                    <fa-icon [icon]="corpusIcons.search"></fa-icon>
+                  </span>
+                  <span>Explore</span>
+                </a>
+              </div>
+            </div>
         </div>
-      </div>
-      <div class="column is-narrow explore-column">
-        <a class="button is-primary has-background-primary-soft has-text-primary-soft-invert"
-          [routerLink]="['/search', corpus.name]">
-          <span aria-hidden="true">
-            <fa-icon [icon]="corpusIcons.search"></fa-icon>
-          </span>
-          <span>Explore</span>
-        </a>
-      </div>
     </div>
-  </div>
 </div>

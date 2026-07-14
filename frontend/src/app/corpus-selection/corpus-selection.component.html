@@ -2,14 +2,14 @@
   <div class="container" [class.is-loading]="isLoading | async">
     @if (items) {
       @if (showCorpusFilters) {
-        <div class="block">
+        <div class="my-3">
           <ia-corpus-filter [corpora]="items" (filtered)="filteredItems = $event"></ia-corpus-filter>
         </div>
       } @else {
         <div style="margin-bottom: 3rem;"></div>
       }
       @for (item of displayItems; track item) {
-        <div class="block">
+        <div class="my-3">
           <ia-corpus-selector [corpus]="item"></ia-corpus-selector>
         </div>
       }
