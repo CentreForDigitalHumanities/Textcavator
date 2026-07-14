@@ -50,7 +50,7 @@ describe('decreaseHeaderLevels', () => {
 @Component({
     standalone: false,
     template: `
-    <ia-markdown-editor [formControl]="control">
+    <ia-markdown-editor [formControl]="control"/>
     `
 })
 class EditorTestComponent {
@@ -62,11 +62,10 @@ describe('MarkdownEditorComponent', () => {
     let fixture: ComponentFixture<EditorTestComponent>;
 
     beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [MarkdownEditorComponent, EditorTestComponent],
+        TestBed.configureTestingModule({
+            declarations: [MarkdownEditorComponent, ],
             imports: [SharedModule, ReactiveFormsModule, QuillModule],
-        })
-            .compileComponents();
+        });
 
         fixture = TestBed.createComponent(EditorTestComponent);
         component = fixture.componentInstance;
