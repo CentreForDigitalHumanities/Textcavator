@@ -1,5 +1,5 @@
 <!-- inform the user about a failed search -->
-<p-dialog [(visible)]="showError" width="600" *ngIf="showError">
+<p-dialog [(visible)]="showError" width="600" *ngIf="showError" [modal]="true">
     <ng-template #header>Unfortunately, we couldn&rsquo;t complete your request</ng-template>
     <div class="content">
         <p>Please try again later, or seek support if the problem persists. In order to help us help you, please provide the

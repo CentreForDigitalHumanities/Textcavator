@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService, CorpusService } from '@services';
-import { Corpus, CorpusDocumentationPage, FieldCoverage } from '@models';
+import { Corpus, CorpusDocumentationPage, FieldCardinality, FieldCoverage } from '@models';
 import { marked } from 'marked';
 import { Observable } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 @Component({
@@ -15,11 +15,12 @@ import * as _ from 'lodash';
     standalone: false
 })
 export class CorpusInfoComponent implements OnInit {
-    corpus: Corpus;
+    corpus?: Corpus;
 
-    fieldCoverage: FieldCoverage;
+    fieldCoverage?: FieldCoverage;
+    fieldCardinality?: FieldCardinality;
 
-    documentation$: Observable<CorpusDocumentationPage[]>;
+    documentation$?: Observable<CorpusDocumentationPage[]>;
 
     constructor(
         private corpusService: CorpusService,
@@ -28,7 +29,9 @@ export class CorpusInfoComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.corpusService.currentCorpus.subscribe(this.setCorpus.bind(this));
+        this.corpusService.currentCorpus.pipe(
+            filter(corpus => !!corpus),
+        ).subscribe(this.setCorpus.bind(this));
     }
 
     setCorpus(corpus: Corpus) {
@@ -39,6 +42,9 @@ export class CorpusInfoComponent implements OnInit {
         );
         this.apiService.fieldCoverage(corpus.name).then(
             result => this.fieldCoverage = result
+        );
+        this.apiService.fieldCardinality(corpus.name).then(
+            result => this.fieldCardinality = result
         );
         this.title.setTitle(pageTitle(`About ${corpus.title}`));
     }

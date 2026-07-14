@@ -23,7 +23,6 @@ class MultilingualMockCorpus(CSVCorpusDefinition):
     visualize = []
     min_date = datetime(year=2000, month=1, day=1)
     max_date = datetime(year=2022, month=12, day=31)
-    es_index = 'test-mixed-language-mock-corpus'
     data_directory = os.path.join(here, 'source_data')
     languages = ['sv', 'de']
     category = 'book'

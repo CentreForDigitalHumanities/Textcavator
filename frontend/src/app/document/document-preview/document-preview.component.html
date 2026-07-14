@@ -1,6 +1,10 @@
 <ng-container *ngIf="page && document">
     <table class="table is-fullwidth">
         <ng-container *ngFor="let field of page.fields">
+            <colgroup>
+                <col style="width: 20%;" />
+                <col style="width: 80%;" />
+            </colgroup>
             <tr *ngIf="document.hasValue(field)">
                 <th>
                     <span [iaBalloon]="field.description" iaBalloonPosition="left" iaBalloonLength="medium">

@@ -1,5 +1,5 @@
 <ng-container *ngIf="selector; else loading">
-    <ng-container *ngIf="selector.options; else noVisualizations">
+    <ng-container *ngIf="selector.options.length; else noVisualizations">
         <div class="columns">
             <div class="column">
                 <div class="field">

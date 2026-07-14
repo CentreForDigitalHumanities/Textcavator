@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { WordcloudComponent, sizeScale } from './wordcloud.component';
+import { WordcloudComponent } from './wordcloud.component';
 import { commonTestBed } from '@app/common-test-bed';
 
 describe('WordcloudComponent', () => {
@@ -21,11 +21,3 @@ describe('WordcloudComponent', () => {
   });
 });
 
-describe('sizeScale', () => {
-    it('should scale sizes', () => {
-        const scale = sizeScale(100, 1000);
-        expect(scale(100)).toBeCloseTo(10);
-        expect(scale(1000)).toBeCloseTo(48);
-    }
-    );
-});

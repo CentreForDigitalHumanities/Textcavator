@@ -61,10 +61,10 @@ export class DefinitionInOutComponent {
     }
 
     submit() {
-        this.corpus.save().subscribe(
-            () => this.reset(),
-            (err: HttpErrorResponse) => (this.error = err)
-        );
+        this.corpus.save().subscribe({
+            next: () => this.reset(),
+            error: (err: HttpErrorResponse) => {this.error = err; this.reset()}
+        });
     }
 
     reset() {

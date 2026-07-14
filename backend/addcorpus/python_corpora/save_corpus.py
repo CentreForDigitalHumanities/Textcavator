@@ -4,15 +4,17 @@ from django.core.files.images import ImageFile
 import warnings
 import sys
 from elastic_transport import ConnectionError
+from django.core.exceptions import ValidationError
 
 from es.client import elasticsearch
-from es.search import total_hits
+from es.search import total_hits, get_index
 from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from addcorpus.models import Corpus, CorpusConfiguration, Field, CorpusDocumentationPage
 from addcorpus.python_corpora.load_corpus import (
     load_all_corpus_definitions, corpus_dir, load_corpus_definition
 )
 from addcorpus.utils import normalize_date_to_year, clear_corpus_image
+from addcorpus.validation.creation import validate_source_data_directory
 
 def _save_corpus_configuration(corpus: Corpus, corpus_definition: CorpusDefinition):
     '''
@@ -35,6 +37,7 @@ def _save_corpus_configuration(corpus: Corpus, corpus_definition: CorpusDefiniti
     pk = corpus.configuration_obj.pk if corpus.configuration_obj else None
     configuration = CorpusConfiguration(pk=pk, corpus=corpus)
     _copy_corpus_attributes(corpus_definition, configuration)
+    _import_corpus_data_directory(corpus_definition, configuration)
     _import_corpus_date_range(corpus_definition, configuration)
     configuration.save()
     configuration.full_clean()
@@ -68,7 +71,6 @@ def _copy_corpus_attributes(corpus_definition: CorpusDefinition, configuration: 
         'word_models_present',
         'default_sort',
         'language_field',
-        'data_directory',
     ]
 
     try:
@@ -78,6 +80,23 @@ def _copy_corpus_attributes(corpus_definition: CorpusDefinition, configuration: 
 
     for attr, value in defined.items():
         configuration.__setattr__(attr, value)
+
+
+def _import_corpus_data_directory(definition: CorpusDefinition, configuration: CorpusConfiguration):
+    '''
+    Set the data directory, but if it does not exist, show a warning and leave blank.
+    '''
+
+    if definition.data_directory:
+        try:
+            validate_source_data_directory(definition.data_directory)
+        except ValidationError as e:
+            message = f'Invalid directory for corpus {configuration.corpus.name}: {e.message}'
+            warnings.warn(message)
+            return
+
+        configuration.data_directory = definition.data_directory
+
 
 def _import_corpus_date_range(definition: CorpusDefinition, configuration: CorpusConfiguration):
     '''
@@ -172,7 +191,7 @@ def _save_has_named_entities(configuration: CorpusConfiguration):
         client = elasticsearch(configuration.corpus.name)
         try:
             ner_exists = client.search(
-                index=configuration.es_index,
+                index=get_index(configuration.corpus.name),
                 query={"exists": {"field": "*:ner-kw"}},
                 size=0
             )

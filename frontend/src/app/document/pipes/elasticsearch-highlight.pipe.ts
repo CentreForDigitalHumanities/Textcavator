@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
 
 import { CorpusField, FoundDocument } from '@models';
+import { highlightPostTag, highlightPreTag } from '@app/utils/es-query';
 
 @Pipe({
     name: 'elasticsearchHighlight',
@@ -14,31 +15,28 @@ export class ElasticsearchHighlightPipe implements PipeTransform {
      *
      * @param document a FoundDocument, containing the fetched highlights
      */
-    transform(field: CorpusField, document: FoundDocument) {
-        const fieldValue = document.fieldValues[field.name];
-
-        if (_.isEmpty(fieldValue)) {
+    transform(content: string | string[], field: CorpusField, document: FoundDocument) {
+        if (_.isEmpty(content)) {
             return;
         }
-
-        const highlighted = this.highlightedInnerHtml(field, document);
-        return highlighted;
+        if (_.isArray(content)) {
+            return content.map(item => this.highlightedInnerHtml(item, field, document));
+        }
+        return this.highlightedInnerHtml(content, field, document);
     }
 
-    highlightedInnerHtml(field: CorpusField, document: FoundDocument) {
-        let highlighted = document.fieldValues[field.name];
+    highlightedInnerHtml(content: string, field: CorpusField, document: FoundDocument) {;
         if (document.highlight && document.highlight.hasOwnProperty(field.name)) {
                 for (const highlight of document.highlight[field.name]) {
                     const strippedHighlight = this.stripTags(highlight);
-                    highlighted = highlighted.replace(strippedHighlight, highlight);
+                    content = content.replace(strippedHighlight, highlight);
                 }
             }
-        return highlighted;
+        return content;
     }
 
-    stripTags(htmlString: string){
-        const parseHTML= new DOMParser().parseFromString(htmlString, 'text/html');
-        return parseHTML.body.textContent || '';
+    stripTags(snippet: string){
+        return snippet.replaceAll(highlightPreTag, '').replaceAll(highlightPostTag, '');
     }
 
 }

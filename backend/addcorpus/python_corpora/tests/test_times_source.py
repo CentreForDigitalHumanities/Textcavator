@@ -9,7 +9,7 @@ from addcorpus.python_corpora import load_corpus
 @pytest.fixture()
 def times_test_settings(settings):
     settings.CORPORA = {
-        'times': join(settings.BASE_DIR, 'corpora/times/times.py')
+        'times': 'corpora.times.times.Times',
     }
     settings.TIMES_DATA = join(settings.BASE_DIR, 'addcorpus/python_corpora/tests')
     settings.TIMES_ES_INDEX = 'test-times'

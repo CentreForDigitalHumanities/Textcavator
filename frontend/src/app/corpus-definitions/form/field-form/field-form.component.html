@@ -1,12 +1,16 @@
 <h1 class="title">Fields</h1>
-<form class="container is-readable" [formGroup]="fieldsForm" (ngSubmit)="onSubmit()">
+
+<p class="block">Fields with * are required.</p>
+
+<form [formGroup]="fieldsForm" (ngSubmit)="onSubmit()">
     <ng-container formArrayName="fields">
         <div class="box"
             *ngFor="let field of fields.controls;
-                index as i; first as isFirst; last as isLast;
-                trackBy: fieldControlName"
+            index as i; first as isFirst; last as isLast;
+            trackBy: fieldControlName"
             [formGroupName]="i">
-            <div class="field">
+            @let fieldGroup = fieldsForm.controls.fields.controls[i];
+            <div class="field is-disabled">
                 <label class="label" for="column_name">Column name</label>
                 <div class="control">
                     <input class="input" type="text" name="column_name"
@@ -15,30 +19,48 @@
                 <p class="help">The column name in your CSV (sample) file. This cannot be changed.</p>
             </div>
             <div class="field">
-                <label class="label" for="display_name">Display name</label>
+                @let displayNameControl = fieldGroup.controls.display_name;
+                @let labelID = `label-display-name-${i}`;
+                @let feedbackID = `feedback-display-name-${i}`;
+                @let helpID = `helptext-display-name-${i}`;
+                <label [id]="labelID" class="label"
+                    for="display_name">Display name*</label>
                 <div class="control">
-                    <input class="input" type="text" name="display_name" formControlName="display_name" />
+                    <input class="input" type="text" name="display_name"
+                        [formControl]="displayNameControl"
+                        [class.is-danger]="displayNameControl.touched && displayNameControl.invalid"
+                        aria-required="true" [attr.aria-labelledby]="labelID"
+                        [attr.aria-describedby]="helpID + ' ' + feedbackID" />
                 </div>
-                <p class="help">
+                <p [id]="feedbackID" class="help is-pulled-right has-text-danger">
+                    @if (displayNameControl.touched && displayNameControl.invalid) {
+                        @if (displayNameControl.hasError('required')) {
+                            This field is required.
+                        }
+                    }
+                </p>
+                <p [id]="helpID" class="help">
                     The name that will be shown to users.
                 </p>
             </div>
 
             <div class="field">
-                <label class="label" for="description">Description (optional)</label>
+                <label class="label" for="description">Description</label>
                 <div class="control">
                     <input class="input" type="text" name="description" formControlName="description"
                         maxlength="150" />
                 </div>
                 <p class="help">
-                    A brief explanation of the field.
-                    If needed, you can include more extensive descriptions in the "corpus
-                    information" step, by adding documentation to your corpus.
+                    A brief explanation of the field (optional).
+                    If needed, you can include more extensive descriptions in step 1, by
+                    adding documentation to your corpus.
                 </p>
             </div>
 
-            <div class="field">
-                <label class="label" for="input-type">Type</label>
+            <div class="field" [class.is-disabled]="corpus.active">
+                <label class="label" for="input-type" >
+                    Type*
+                </label>
                 <div class="control">
                     <ia-dropdown formControlName="type" id="input-type">
                         <span iaDropdownLabel>{{getFieldProperty(field, 'label')}}</span>
@@ -62,18 +84,18 @@
                 </p>
             </div>
 
-            <div class="field">
-                <label class="label" for="options">Options</label>
+            <fieldset class="field">
+                <legend class="label">Options</legend>
                 <ng-container formGroupName="options">
                     <div *ngIf="field.get('type').value === 'text_content' || field.get('type').value === 'text_metadata' "
                         class="control">
-                        <label class="checkbox">
+                        <label class="checkbox" [class.is-disabled]="corpus.active">
                             <input type="checkbox" name="search" formControlName="search" /> Search
                             <p class="help">Enable text searching within this field.</p>
                         </label>
                     </div>
                     <div *ngIf="field.get('type').value !== 'text_content' && field.get('type').value !== 'url' " class="control">
-                        <label class="checkbox">
+                        <label class="checkbox" [class.is-disabled]="corpus.active">
                             <input type="checkbox" name="filter" formControlName="filter" /> Filter
                             <p class="help">Add a filter widget for this field.</p>
                         </label>
@@ -99,15 +121,25 @@
                             </p>
                         </label>
                     </div>
+                    @if (field.get('type').value !== 'url') {
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="visualize" formControlName="visualize" /> Visualize
+                                <p class="help">Include visualisations for this field.</p>
+                            </label>
+                        </div>
+                    }
                 </ng-container>
-            </div>
-            <div *ngIf="getFieldProperty(field, 'hasLanguage')" class="field">
+            </fieldset>
+            <div *ngIf="getFieldProperty(field, 'hasLanguage')" class="field"
+                [class.is-disabled]="corpus.active">
+                @let languageControl = field.controls.language;
                 <label class="label" id="language-label">Language (optional)</label>
                 <ia-dropdown formControlName="language" labelledBy="language-label">
-                    <span iaDropdownLabel>{{languageLabel(field)}}</span>
+                    <span iaDropdownLabel>{{languageControl.value.displayName}}</span>
                     <div iaDropdownMenu>
                         <a iaDropdownItem *ngFor="let lang of languageOptions"
-                            [value]="lang.code">
+                            [value]="lang">
                             {{lang.displayName}}
                         </a>
                     </div>
@@ -144,11 +176,51 @@
                         <fa-icon [icon]="directionIcons.down" aria-hidden="true" />
                     </button>
                 </div>
+                <div class="control">
+                    <button class="button" type="button" aria-label="remove"
+                        iaBalloon="remove field" (click)="removeField(i)"
+                        [disabled]="corpus.active">
+                        <fa-icon [icon]="actionIcons.remove" aria-hidden="true" />
+                    </button>
+                </div>
             </div>
         </div>
     </ng-container>
 
-
+    @let unusedFields = unusedCsvFields$ | async;
+    @if (unusedFields?.length) {
+        <div class="box has-background-light ">
+            <h2 class="title is-5">Add field</h2>
+            <p class="block">
+                Some of the columns in your data file are not used as fields. You can add
+                a new field based on a data column.
+            </p>
+            <div class="field">
+                <label class="label" for="column_name">Column name</label>
+                <div class="field is-grouped">
+                    <div class="control is-expanded">
+                        <div class="select is-fullwidth">
+                            <select #fieldSelect [disabled]="corpus.active">
+                                @for (field of unusedFields; track field.name; let index = $index) {
+                                    <option [value]="field.name">{{field.name}}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <button class="button" type="button" aria-label="add"
+                            (click)="addField(fieldSelect.value)"
+                            [disabled]="corpus.active">
+                            <span class="icon">
+                                <fa-icon [icon]="actionIcons.add" aria-hidden="true" />
+                            </span>
+                            <span>Add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
     <div class="field">
         <div class="control">
@@ -159,6 +231,8 @@
         </div>
     </div>
 
-    <ia-form-feedback [showSuccess]="!!(showSuccesMessage$ | async)"
-        [showError]="!!(showErrorMessage$ | async)" />
+    <ia-form-feedback
+        [showSuccess]="!!(showSuccesMessage$ | async)"
+        [showError]="!!(showErrorMessage$ | async)"
+        [showInvalid]="showValidationMessage$ | async" />
 </form>

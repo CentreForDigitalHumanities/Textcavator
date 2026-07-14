@@ -1,8 +1,8 @@
 <ia-corpus-header [corpus]="corpus" currentPage="search"></ia-corpus-header>
 
-<section class="section search-section" #searchSection [ngClass]="{'is-scrolled-down': isScrolledDown}">
-    <div class="container is-readable">
-        <form (ngSubmit)="search()" *ngIf="corpus">
+<section class="section search-section pt-3">
+    <div class="container">
+        <form (ngSubmit)="search()">
             <div class="field has-addons">
                 <div class="control" iaBalloon="View query documentation" iaBalloonPosition="down-left">
                     <button class="button" type="button" (click)="showQueryDocumentation()"
@@ -32,7 +32,7 @@
     </div>
 </section>
 <section class="section search-results">
-    <div class="container is-readable">
+    <div class="container">
         <!-- filters and search results -->
         <div class="columns">
             <!-- Filters, on left -->
@@ -41,6 +41,8 @@
             </div>
             <!-- search results, on right -->
             <div class="column is-9" *ngIf="queryModel">
+                <p ia-results-count [queryModel]="queryModel" class="block has-text-right"></p>
+
                 <ia-tabs [activeTab]="tabs.state$.value.tab" (tabChange)="onTabChange($event)">
                     <ng-template iaTabPanel id="search-results" title="Search results" [icon]="searchIcons.documents">
                         <ia-search-results [queryModel]="queryModel" [user]="user">
@@ -60,3 +62,5 @@
         </div>
     </div>
 </section>
+
+<ia-back-to-top-button />

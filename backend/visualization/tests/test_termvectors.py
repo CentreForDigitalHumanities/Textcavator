@@ -43,11 +43,9 @@ def test_find_matches(es_client, termvectors_result, small_mock_corpus):
         ('fronkenstien~2 modern', 2),
     ]
 
-    corpus_conf = CorpusConfiguration.objects.get(corpus__name=small_mock_corpus)
-
     for query_text, expected_matches in cases:
         matches = list(termvectors.token_matches(
-            title_tokens, query_text, corpus_conf.es_index, 'title', es_client
+            title_tokens, query_text, search.get_index(small_mock_corpus), 'title', es_client
         ))
         assert len(matches) == expected_matches
 
@@ -88,8 +86,7 @@ QUERY_ANALYSIS_CASES = [
 ]
 
 def test_query_analysis(es_client, small_mock_corpus, index_small_mock_corpus):
-    corpus_conf = CorpusConfiguration.objects.get(corpus__name=small_mock_corpus)
-    es_index = corpus_conf.es_index
+    es_index = search.get_index(small_mock_corpus)
 
     for case in QUERY_ANALYSIS_CASES:
         analyzed = termvectors.analyze_query(case['query_text'], es_index, 'content.clean', es_client)
@@ -98,9 +95,6 @@ def test_query_analysis(es_client, small_mock_corpus, index_small_mock_corpus):
 
 @pytest.fixture
 def termvectors_result(es_client, small_mock_corpus, index_small_mock_corpus):
-    corpus_conf = CorpusConfiguration.objects.get(corpus__name=small_mock_corpus)
-    es_index = corpus_conf.es_index
-
     frankenstein_query = {
         'query': {
             'match': {
@@ -110,11 +104,10 @@ def termvectors_result(es_client, small_mock_corpus, index_small_mock_corpus):
     }
     result = search.search(small_mock_corpus, frankenstein_query, es_client)
     hit = search.hits(result)[0]
-    id = hit['_id']
 
     termvectors_result = es_client.termvectors(
-        index=es_index,
-        id=id,
+        index=hit['_index'],
+        id=hit['_id'],
         term_statistics=True,
         fields = ['title', 'content']
 

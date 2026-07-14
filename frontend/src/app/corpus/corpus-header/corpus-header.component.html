@@ -1,58 +1,66 @@
-<section class="section title-section">
-    <div class="container is-readable">
-        <div class="level" *ngIf="corpus">
-            <div class="level-left">
-                <div class="level-item">
-                    <h1 class="title">
-                        <span *ngIf="currentPage === 'search'">Search</span>
-                        <span *ngIf="currentPage === 'word-models'">Word models of</span>
-                        <span *ngIf="currentPage === 'document'">Document in</span>
-                        <span *ngIf="currentPage === 'info'">About </span>
-                        <a class="corpus-name" [routerLink]="['/home']">&ldquo;{{corpus.title}}&rdquo;</a>
-                    </h1>
+<section class="section header-section pb-0 mb-6">
+    @if (corpus) {
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <h1 class="title">{{corpus.title}}</h1>
+                    <div class="block">
+                        <p>{{corpus.description}}</p>
+                    </div>
+                    <div class="block metadata">
+                        <p>Language: <strong>{{corpus.displayLanguages}}</strong></p>
+                        <p>Type: <strong>{{corpus.category}}</strong></p>
+                        <p>Period: <strong>{{corpus.minYear}}-{{corpus.maxYear}}</strong></p>
+                    </div>
+                </div>
+                <div class="column is-3 image-column">
+                    <div class="image is-4by3">
+                        <img src="/api/corpus/image/{{corpus.name}}" alt="{{corpus.title}}">
+                    </div>
                 </div>
             </div>
-            <nav class="level-right" aria-label="secondary navigation">
-                <div class="field has-addons">
-                    <div class="control">
-                        <a class="button is-medium" [routerLink]="['/search', corpus.name]"
-                            [class.is-primary]="currentPage === 'search'"
-                            iaBalloon="Search documents in this corpus" iaBalloonPosition="up-right">
+
+            <nav class="tabs" aria-label="secondary navigation">
+                <ul>
+                    <li [class.is-active]="currentPage === 'search'">
+                        <a [routerLink]="['/search', corpus.name]"
+                        routerLinkActive ariaCurrentWhenActive="page">
                             <span class="icon">
                                 <fa-icon [icon]="corpusIcons.search" />
                             </span>
+                            <span>Search</span>
                         </a>
-                    </div>
-                    <div class="control" *ngIf="wordModelsPresent">
-                        <a class="button is-medium" [routerLink]="['/word-models', corpus.name]"
-                            [class.is-primary]="currentPage === 'word-models'"
-                            iaBalloon="Explore word models of this corpus" iaBalloonPosition="up-right">
+                    </li>
+                    <li *ngIf="wordModelsPresent"
+                        [class.is-active]="currentPage === 'word-models'">
+                        <a [routerLink]="['/word-models', corpus.name]"
+                            routerLinkActive ariaCurrentWhenActive="page">
                             <span class="icon">
                                 <fa-icon [icon]="corpusIcons.wordModels" />
                             </span>
+                            <span>Word models</span>
                         </a>
-                    </div>
-                    <div class="control">
-                        <a class="button is-medium" [routerLink]="['/info', corpus.name]"
-                            [class.is-primary]="currentPage === 'info'"
-                            iaBalloon="Read more about this corpus" iaBalloonPosition="up-right">
+                    </li>
+                    <li [class.is-active]="currentPage === 'info'">
+                        <a [routerLink]="['/info', corpus.name]"
+                            routerLinkActive ariaCurrentWhenActive="page">
                             <span class="icon">
                                 <fa-icon [icon]="corpusIcons.info" />
                             </span>
+                            <span>About</span>
                         </a>
-                    </div>
-                    <div class="control" *ngIf="corpus.editable">
-                        <a class="button is-medium"
-                            [routerLink]="['/custom-corpora/edit', corpus.id]"
-                            iaBalloon="Edit corpus"
-                            iaBalloonPosition="up-right">
-                            <span class="icon" aria-hidden="true">
-                                <fa-icon [icon]="corpusIcons.edit"/>
-                            </span>
-                        </a>
-                    </div>
-                </div>
+                    </li>
+                </ul>
+                @if (corpus.editable) {
+                    <a
+                        [routerLink]="['/custom-corpora/edit', corpus.name]">
+                        <span class="icon" aria-hidden="true">
+                            <fa-icon [icon]="corpusIcons.edit"/>
+                        </span>
+                        <span>Edit corpus</span>
+                    </a>
+                }
             </nav>
         </div>
-    </div>
+    }
 </section>

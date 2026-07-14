@@ -16,9 +16,13 @@
                     [src]="brand.logo"
                     [alt]="brand.logoAlt"
                     [attr.aria-hidden]="!brand.logoAlt?.length">
-                <span>{{brand.title}}</span>
-                <span *ngIf="brand.subtitle">
-                    |&nbsp; <span class="app-subtitle">{{brand.subtitle}}</span>
+                <span class="app-title">
+                    <span>{{brand.title}}</span>
+                    <span *ngIf="brand.subtitle">
+                        <span class="is-hidden-touch"> | </span>
+                        <span class="is-hidden-desktop"><br></span>
+                        <span class="app-subtitle">{{brand.subtitle}}</span>
+                    </span>
                 </span>
             </a>
 
@@ -58,6 +62,21 @@
                 </a>
             </div>
             <div class="navbar-end">
+                <!-- theme dropdown -->
+                <ia-menu-dropdown>
+                    <span iaMenuDropdownLabel>
+                        <fa-icon [icon]="currentThemeOption.icon" aria-label="theme selector" />
+                    </span>
+                    @for (option of themeOptions; track option.value) {
+                        <a class="navbar-item" [class.is-selected]="option.value === currentThemeOption?.value" role="button"
+                            (click)="setTheme(option.value)">
+                            <span class="icon" aria-hidden><fa-icon [icon]="option.icon" /></span>
+                            <span>{{option.label}}</span>
+                        </a>
+                    }
+                </ia-menu-dropdown>
+
+                <!-- user dropdown -->
                 <ia-menu-dropdown *ngIf="user$ | async as user; else notLoggedIn">
                     <div iaMenuDropdownLabel>
                         <span class="icon" aria-hidden="true">

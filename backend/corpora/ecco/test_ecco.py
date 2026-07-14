@@ -5,7 +5,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 def test_ecco(settings, db, admin_client):
     settings.CORPORA = {
-        'ecco': os.path.join(here, 'ecco.py')
+        'ecco': 'corpora.ecco.ecco.Ecco',
     }
     settings.ECCO_DATA = ''
 

@@ -9,4 +9,5 @@ import { Component, Input } from '@angular/core';
 export class FormFeedbackComponent {
     @Input() showSuccess: boolean;
     @Input() showError: boolean;
+    @Input() showInvalid: boolean;
 }

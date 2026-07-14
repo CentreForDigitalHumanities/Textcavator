@@ -55,9 +55,9 @@ Database-only corpora do not support some advanced functionality. Notably:
 
 Python-based corpora are written as Python classes. Each definition should be a subclass of `CorpusDefinition`.
 
-The [corpora](/backend/corpora/) directory contains definitions for all corpora we create. (On top of that, [corpora_test](/backend/corpora_test/) defines corpora for for unit tests. Corpora *can* be saved anywhere.) This directory is not a Django app, but just a collection of scripts and metadata.
+The [corpora](/backend/corpora/) directory contains definitions for all corpora we create. On top of that, [corpora_test](/backend/corpora_test/) defines corpora for for unit tests. This directory is not a Django app, but just a collection of scripts and metadata. (The directory has no special status; you can import corpora from elsewhere.)
 
-To be imported into the application, a definition needs to be added in the Django project settings. The `CORPORA` setting defines a mapping of names and python files, which declares what definitions should be loaded.
+To be imported into the application, a definition needs to be added in the Django project settings. The `CORPORA` setting defines a mapping of names and import paths, which declares what definitions should be loaded.
 
 When you start up a server, all configured corpus definitions will be imported into the database. During much of the runtime, the backend will refer to the database model rather than the Python class. However, this class can be loaded for more advanced features where custom functions may be used. The most common situation where this happens is when you index the source data.
 

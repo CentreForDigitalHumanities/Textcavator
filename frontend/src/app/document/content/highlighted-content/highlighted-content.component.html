@@ -1,0 +1,7 @@
+@let segments = content | highlightSnippet;
+@for (segment of segments; track $index) {
+    @if (segment.highlight)
+    {<mark class="highlight" ngPreserveWhitespaces>{{segment.content}}</mark>}
+    @else
+    {<ng-container ngPreserveWhitespaces>{{segment.content}}</ng-container>}
+}

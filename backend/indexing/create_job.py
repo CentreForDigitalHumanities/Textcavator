@@ -4,17 +4,18 @@ from django.db import transaction
 
 from addcorpus.models import Corpus
 from es.client import elasticsearch, server_for_corpus
-from es.es_alias import (
-    get_current_index_name,
-    indices_with_alias
+from es.es_alias import get_current_index_names, indices_with_alias
+from es.versioning import (
+    indices_with_base_name, next_version_number, highest_version_in_result,
+    version_from_name, index_with_highest_version
 )
-from es.versioning import next_version_number, highest_version_in_result, version_from_name
 from indexing.models import (
     IndexJob, CreateIndexTask, PopulateIndexTask, UpdateIndexTask,
     RemoveAliasTask, AddAliasTask, UpdateSettingsTask, DeleteIndexTask,
 )
 from es.sync import update_server_table_from_settings
 from es.models import Server, Index
+from es.search import get_index
 
 
 @transaction.atomic
@@ -42,7 +43,7 @@ def create_indexing_job(
 
     job = IndexJob.objects.create(corpus=corpus)
     server = _server_for_job(job)
-    index, alias = _index_and_alias_for_job(job, prod, create_new)
+    index, base_name = _index_and_base_name_for_job(job, prod, create_new)
 
     if create_new:
         CreateIndexTask.objects.create(
@@ -76,19 +77,42 @@ def create_indexing_job(
         )
 
     if prod and rollover:
-        for aliased_index in indices_with_alias(server, alias):
-            RemoveAliasTask.objects.create(
-                job=job,
-                index=aliased_index,
-                alias=alias,
+        _add_alias_rollover_tasks(job, server, base_name, index)
+
+    if not prod:
+        if alias := _extra_alias(job):
+            AddAliasTask.objects.create(
+                job=job, index=index, alias=alias
             )
-        AddAliasTask.objects.create(
-            job=job,
-            index=index,
-            alias=alias,
-        )
 
     return job
+
+
+def _add_alias_rollover_tasks(job: IndexJob, server: Server, base_name: str, new_index: Index) -> None:
+    if base_name in indices_with_base_name(server.client(), base_name):
+        raise Exception(f'Cannot rollover: existing index uses {base_name} as a name instead of an alias')
+
+    AddAliasTask.objects.create(
+        job=job,
+        index=new_index,
+        alias=base_name,
+    )
+    for aliased_index in indices_with_alias(server, base_name):
+        RemoveAliasTask.objects.create(
+            job=job,
+            index=aliased_index,
+            alias=base_name,
+        )
+
+    if alias := _extra_alias(job):
+        AddAliasTask.objects.create(
+            job=job, index=new_index, alias=alias
+        )
+
+        for aliased_index in indices_with_alias(server, alias, base_name):
+            RemoveAliasTask.objects.create(
+                job=job, index=aliased_index, alias=alias
+            )
 
 
 def _server_for_job(job: IndexJob):
@@ -97,32 +121,35 @@ def _server_for_job(job: IndexJob):
     return server
 
 
-def _index_and_alias_for_job(job: IndexJob, prod: bool, create_new: bool) -> Tuple[Index, str]:
+def _index_and_base_name_for_job(job: IndexJob, prod: bool, create_new: bool) -> Tuple[Index, str]:
     corpus = job.corpus
     server = _server_for_job(job)
     client = elasticsearch(corpus.name)
-    base_name = corpus.configuration.es_index
+    base_name = get_index(corpus.name)
 
     if prod:
-        alias = corpus.configuration.es_alias or corpus.configuration.es_index
         if create_new:
-            next_version = next_version_number(client, alias, base_name)
+            next_version = next_version_number(client, base_name)
             versioned_name = f'{base_name}-{next_version}'
         else:
-            versioned_name = get_current_index_name(
+            versioned_name = index_with_highest_version(get_current_index_names(
                 corpus.configuration, client
-            )
+            ))
 
         index, _ = Index.objects.get_or_create(
             server=server, name=versioned_name
         )
     else:
-        alias = None
         index, _ = Index.objects.get_or_create(
             server=server, name=base_name
         )
 
-    return index, alias
+    return index, base_name
+
+
+def _extra_alias(job: IndexJob) -> Optional[str]:
+    if alias := job.corpus.configuration.es_alias:
+        return alias
 
 
 @transaction.atomic
@@ -133,30 +160,28 @@ def create_alias_job(corpus: Corpus, clean=False) -> IndexJob:
 
     job = IndexJob.objects.create(corpus=corpus)
 
-    corpus_config = corpus.configuration
     corpus_name = corpus.name
     update_server_table_from_settings()
     server = Server.objects.get(name=server_for_corpus(corpus_name))
-    index_name = corpus_config.es_index
-    index_alias = corpus_config.es_alias
+    base_name = get_index(corpus.name)
     client = elasticsearch(corpus_name)
 
-    alias = index_alias if index_alias else index_name
-    indices = client.indices.get(index='{}-*'.format(index_name))
-    highest_version = highest_version_in_result(indices, alias)
+    indices = indices_with_base_name(client, base_name)
+    if not len(indices):
+        raise Exception('No matching index found')
 
-    for index_name, properties in indices.items():
-        is_aliased = alias in properties['aliases'].keys()
-        is_highest_version = version_from_name(index_name, alias) == highest_version
-        index, _ = Index.objects.get_or_create(server=server, name=index_name)
+    highest_version_name = index_with_highest_version(indices, base_name)
+    latest, _ = Index.objects.get_or_create(
+        server=server,
+        name=highest_version_name
+    )
 
-        if not is_highest_version and clean:
-            DeleteIndexTask.objects.create(job=job, index=index)
+    _add_alias_rollover_tasks(job, server, base_name, latest)
 
-        if not is_highest_version and is_aliased and not clean:
-            RemoveAliasTask.objects.create(job=job, index=index, alias=alias)
-
-        if is_highest_version and not is_aliased:
-            AddAliasTask.objects.create(job=job, index=index, alias=alias)
+    if clean:
+        for index_name in indices:
+            if index_name != highest_version_name:
+                index, _ = Index.objects.get_or_create(server=server, name=index_name)
+                DeleteIndexTask.objects.create(job=job, index=index)
 
     return job

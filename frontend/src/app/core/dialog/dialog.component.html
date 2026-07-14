@@ -1,5 +1,5 @@
 <p-dialog [(visible)]="showDialog" *ngIf="showDialog" positionTop="50" width="800"
-    [header]="title">
+    [header]="title" [modal]="true">
   <div class="content" style="max-width: 90vw;" [ngClass]="{'is-loading':isLoading}" [innerHTML]="innerHtml"></div>
   <ng-template #footer *ngIf="!isLoading && footerButtonLabel">
       <a [routerLink]="footerRouterLink" autofocus tabindex="0">

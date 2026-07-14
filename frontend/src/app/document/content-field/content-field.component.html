@@ -1,23 +1,16 @@
 <div class="content" [attr.lang]="document.language(field)">
     @if (showEntities) {
         @let value = document.namedEntityAnnotatedValue(field) || document.fieldValue(field);
-        @for (p of splitParagraphs(value); track p) {
-            <p>
-                @for (segment of p | annotationSegments; track segment) {
-                    @let annotation = annotationName(segment.annotation);
-                    @if (annotation) {
-                        <mark class="entity-{{annotation}}">
-                            {{segment.content}}
-                            <fa-icon [icon]="entityIcons[annotation]"  class="entity-icon"/>
-                        </mark>
-                    } @else {
-                        {{segment.content}}
-                    }
-                }
-            </p>
+        @for (p of value | paragraph:true; track $index) {
+            <p ia-annotated-content [content]="p"></p>
         }
         <ia-entity-legend [annotatedContent]="value" />
     } @else {
-        <div [innerHtml]="field | elasticsearchHighlight:document | paragraph"></div>
+        @let paragraphs = document.fieldValue(field) | elasticsearchHighlight:field:document | paragraph:true;
+        @for (par of paragraphs; track $index) {
+            <p ia-highlighted-content
+                [content]="par">
+            </p>
+        }
     }
 </div>

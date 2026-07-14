@@ -1,12 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 @Pipe({
     name: 'snippet',
     standalone: false
 })
 export class SnippetPipe implements PipeTransform {
-    constructor(private sanitizer: DomSanitizer) {
-    }
 
     /**
      * Transforms a text to only show its leading characters with an ellipsis
@@ -15,14 +12,19 @@ export class SnippetPipe implements PipeTransform {
      */
     transform(text: string | string[], nCharacters=100) {
         if (Array.isArray(text)) {
-            text = text.join('\n\n');
+            if (!text.length) {
+                return text;
+            }
+            if (text[0].length >= nCharacters) {
+                return [this.transform(text[0], nCharacters)];
+            }
+            return [text[0], ...this.transform(text.slice(1), nCharacters - text[0].length)];
         }
 
         if (text.length > nCharacters) {
-            const snippedText = text.slice(0, nCharacters).concat('...');
-            return this.sanitizer.bypassSecurityTrustHtml(snippedText);
+            return text.slice(0, nCharacters).trimEnd().concat('...');
         } else {
-            return this.sanitizer.bypassSecurityTrustHtml(text);
+            return text;
         }
     }
 

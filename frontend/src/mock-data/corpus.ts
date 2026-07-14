@@ -150,7 +150,6 @@ export const corpusFactory = () =>
         'test',
         'Test corpus',
         'A basic corpus for testing',
-        'test',
         [
             keywordFieldFactory(),
             contentFieldFactory(),

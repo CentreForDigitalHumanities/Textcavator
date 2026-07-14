@@ -8,7 +8,7 @@ If you downloaded a document from Textcavator, or read it online in the Textcava
 
 For example, a citation might look something like the following:
 
-> Doe, J. (1900). A very interesting article. *Fascinating Periodical*, *10*(2), 10-13. http://ianalyzer.hum.uu.nl/document/fascinating-periodical/12345678
+> Doe, J. (1900). A very interesting article. *Fascinating Periodical*, *10*(2), 10-13. http://textcavator.hum.uu.nl/document/fascinating-periodical/12345678
 
 The specifics will depend on the citation style you are using and the type of data in the corpus.
 
@@ -20,7 +20,7 @@ Note that not all data on Textcavator is public. For instance, some corpora are 
 
 For distant reading research, you may want to cite a large collection of documents, rather than a few specific ones. In this case, it is usually most appropriate to cite the corpus as a whole. This may look something like the following:
 
-> Research Software Lab, Centre for Digital Humanities, Utrecht University (2023). *Troonredes* [data set]. http://ianalyzer.hum.uu.nl/search/troonredes
+> Research Software Lab, Centre for Digital Humanities, Utrecht University (2023). *Troonredes* [data set]. http://textcavator.hum.uu.nl/search/troonredes
 
 Be aware that some corpora may have other contributors who collected, digitised or processed the data. Many corpora provide citation guidelines on their information page. Feel free to contact us if you want to make sure you are referencing a corpus correctly.
 

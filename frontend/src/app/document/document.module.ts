@@ -22,6 +22,10 @@ import { KeywordPipe } from './pipes/keyword.pipe';
 import { ParagraphPipe } from './pipes/paragraph.pipe';
 import { SnippetPipe } from './pipes/snippet.pipe';
 import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
+import { HighlightSnippetPipe } from './pipes/highlight-snippet.pipe';
+import { HighlightedContentComponent } from './content/highlighted-content/highlighted-content.component';
+import { DatePipe } from '@angular/common';
+import { AnnotatedContentComponent } from './content/annotated-content/annotated-content.component';
 
 @NgModule({
     declarations: [
@@ -42,6 +46,9 @@ import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
         ContentFieldComponent,
         DateRangePipe,
         AnnotationSegmentsPipe,
+        HighlightedContentComponent,
+        AnnotatedContentComponent,
+        HighlightSnippetPipe,
     ],
     imports: [
         DialogModule,
@@ -56,6 +63,7 @@ import { AnnotationSegmentsPipe } from './pipes/annotation-segments.pipe';
     ],
     providers: [
         ElasticSearchService,
+        DatePipe,
     ]
 })
 export class DocumentModule { }

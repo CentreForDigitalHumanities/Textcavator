@@ -1,5 +1,5 @@
 <div class="section">
-    <div class="container is-readable">
+    <div class="container">
         <nav aria-label="secondary navigation" class="breadcrumb block">
             <ul>
                 <li><a [routerLink]="['/']">{{appName}}</a></li>
@@ -9,8 +9,9 @@
             </ul>
         </nav>
 
+        @let corpus = corpus$ | async;
+
         <div class="columns">
-            @let corpus = corpus$ | async;
             <div class="column">
                 <h1 class="title">Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
             </div>
@@ -25,6 +26,17 @@
             </div>
         </div>
 
+        @if (corpus.active) {
+            <div class="message">
+                <div class="message-body">
+                    <p class="block">
+                        This corpus is currently active and available for searching. Some
+                        editing options are locked. To enable them, deactive the corpus in
+                        step 4.
+                    </p>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
@@ -36,7 +48,7 @@
 </div>
 <ng-container [ngSwitch]="activeStep$ | async">
     <div class="section">
-        <div class="container is-readable" *ngIf="corpus$ | async as corpus">
+        <div class="container" *ngIf="corpus$ | async as corpus">
             <ng-container *ngSwitchCase="0"><ia-meta-form
                     [corpus]="corpus" /></ng-container>
             <ia-data-form *ngSwitchCase="1" />
@@ -51,10 +63,18 @@
 </ng-container>
 
 <div class="section" *ngIf="nextStep$ | async as nextStep">
-    <div class="container is-readable">
-        <button class="button" (click)="toNext()" [disabled]="nextStep.disabled">
-            <span class="icon"><fa-icon [icon]="actionIcons.next" aria-hidden="true" /></span>
-            <span>{{nextStep.label}}</span>
-        </button>
+    <div class="container">
+        @if (nextStep.disabled) {
+            <div class="message">
+                <p class="message-body">
+                    This step is not yet complete.
+                </p>
+            </div>
+        } @else {
+            <button class="button" (click)="toNext()">
+                <span class="icon"><fa-icon [icon]="actionIcons.next" aria-hidden="true" /></span>
+                <span>{{nextStep.label}}</span>
+            </button>
+        }
     </div>
 </div>
