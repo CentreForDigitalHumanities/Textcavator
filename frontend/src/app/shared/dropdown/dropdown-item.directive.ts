@@ -5,11 +5,11 @@ import * as _ from 'lodash';
 
 @Directive({
     selector: '[iaDropdownItem]',
-    standalone: false
+    standalone: false,
 })
 export class DropdownItemDirective {
     @HostBinding('class') class = 'dropdown-item';
-    @HostBinding('role') role = 'option';
+    @HostBinding('attr.role') role = 'option';
     @HostBinding('attr.tabIndex') tabIndex = 0;
 
     @Input() value;
