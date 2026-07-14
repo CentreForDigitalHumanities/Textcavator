@@ -4814,10 +4814,10 @@ ngx-cookie-service@^21.3.1:
   dependencies:
     tslib "^2.8.1"
 
-ngx-matomo-client@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-matomo-client/-/ngx-matomo-client-8.0.0.tgz#1f2aac28e9e0da9b42d313c29919b04b45a1aaec"
-  integrity sha512-ztZankR5dfSjMYBn4n19w5yNJUZvpvTKZot+nvzxMO+0FUHbZz97rsJVBwA2Hg2wv6YvqU2GZ6KSMS4Fz0XoVg==
+ngx-matomo-client@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/ngx-matomo-client/-/ngx-matomo-client-9.1.0.tgz#19b9b39bfb85e20feefb0d6e126b244f78911ae8"
+  integrity sha512-1kdht0kpqWe6NJl/zvtAMReXWe8cmLweArcAv9rgYrx2EQANrsg5NphrIbpTlOJFwMz98S27zJp/ZxXzc+vXEQ==
   dependencies:
     tslib "^2.3.0"
 
