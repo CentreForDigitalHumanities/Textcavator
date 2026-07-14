@@ -14,7 +14,6 @@ class DutchNewsPapersAll(DutchNewspapersPublic):
 
     title = "Dutch Newspapers (full)"
     description = "Full collection of Dutch newspapers digitised by the Koninklijke Bibliotheek."
-    data_directory = settings.DUTCHNEWSPAPERS_ALL_DATA
     es_index = 'dutchnewspapers-all'
     max_date = datetime(year=1995, month=12, day=31)
 

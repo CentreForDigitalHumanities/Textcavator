@@ -31,7 +31,6 @@ class Ecco(XMLCorpusDefinition):
     min_date = datetime(year=1700, month=1, day=1)
     max_date = datetime(year=1800, month=12, day=31)
 
-    data_directory = settings.ECCO_DATA
     es_index = 'ecco'
     image = 'ecco.jpg'
     scan_image_type = 'application/pdf'

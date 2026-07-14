@@ -166,7 +166,6 @@ def lookup_current_party(lookup_tuple):
 class ParliamentUKNew(Parliament, XMLCorpusDefinition):
     title = 'Talking Empire (UK 2022-2025)'
     description = "Speeches from the House of Lords and House of Commons (2022-2025)"
-    data_directory = settings.TE_UK_NEW_DATA
     min_date = datetime(year=2022, month=1, day=1)
     max_date = datetime(year=2025, month=12, day=31)
     es_index = 'parliament-uk-new'

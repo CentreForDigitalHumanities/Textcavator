@@ -25,7 +25,6 @@ class DutchAnnualReports(XMLCorpusDefinition):
     description = "Annual reports of Dutch financial and non-financial institutes"
     min_date = datetime(year=1957, month=1, day=1)
     max_date = datetime(year=2008, month=12, day=31)
-    data_directory = settings.DUTCHANNUALREPORTS_DATA
     es_index = 'dutchannualreports'
     image = 'dutchannualreports.jpg'
     scan_image_type = 'application/pdf'
