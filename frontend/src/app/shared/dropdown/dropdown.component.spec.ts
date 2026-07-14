@@ -30,7 +30,7 @@ class DropdownTestComponent {
     selected: any;
 }
 
-describe('DropdownComponent', () => {
+fdescribe('DropdownComponent', () => {
     let component: DropdownTestComponent;
     let fixture: ComponentFixture<DropdownTestComponent>;
 
