@@ -1,76 +1,84 @@
 <section class="section">
 
-    <form (ngSubmit)="login()" class="container">
-        <div class="container is-login">
-            <h1 class="title">Sign in</h1>
-            <div class="field">
-                <label class="label" for="username">Username</label>
-                <p class="control has-icons-left has-icons-right">
-                    <input class="input" type="text" [(ngModel)]="username" name="username" />
-                    <span class="icon is-left">
-                        <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
-                    </span>
-                </p>
-            </div>
-            <div class="field">
-                <label class="label" for="password">Password</label>
-                <p class="control has-icons-left">
-                    <input class="input" type="password" [(ngModel)]="password" name="password" />
-                    <span class="icon is-left">
-                        <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
-                    </span>
-                </p>
-            </div>
-            <div class="level">
-                <div class="level-left">
-                <div class="level-item">
-                <p class="control">
-                    <button class="button is-primary" [ngClass]="{'is-loading':isLoading}">Login</button>
-                </p>
-                </div>
-                </div>
-                <div class=level-right>
-                <div class="level-item">
-                <a [routerLinkActive]="'is-active'" [routerLink]="['/reset']">
-                    Forgot password?
-                </a>
-                </div>
-                <div class="level-item">
-                <a [routerLinkActive]="'is-active'" [routerLink]="['/registration']">
-                    <span class="icon">
-                        <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
-                    </span>
-                    Sign Up
-                </a>
-                </div>
-                </div>
-            </div>
-            <div *ngIf="showSolis">
-                <div class="field">
-                    <p class="control">
-                        Or login with:
-                    </p>
-                </div>
-                <div>
-                    <a class="box" href='/users/saml2/login/'>
-                        <img src="/assets/solis.png" width="40" height="40">
-                        <span><strong>Solis ID</strong></span>
-                    </a>
-                </div>
-            </div>
+  <form (ngSubmit)="login()" class="container">
+    <div class="container is-login">
+      <h1 class="title">Sign in</h1>
+      <div class="field">
+        <label class="label" for="username">Username</label>
+        <p class="control has-icons-left has-icons-right">
+          <input class="input" type="text" [(ngModel)]="username" name="username" />
+          <span class="icon is-left">
+            <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
+          </span>
+        </p>
+      </div>
+      <div class="field">
+        <label class="label" for="password">Password</label>
+        <p class="control has-icons-left">
+          <input class="input" type="password" [(ngModel)]="password" name="password" />
+          <span class="icon is-left">
+            <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
+          </span>
+        </p>
+      </div>
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <p class="control">
+              <button class="button is-primary" [ngClass]="{'is-loading':isLoading}">Login</button>
+            </p>
+          </div>
         </div>
-    </form>
+        <div class=level-right>
+          <div class="level-item">
+            <a [routerLinkActive]="'is-active'" [routerLink]="['/reset']">
+              Forgot password?
+            </a>
+          </div>
+          <div class="level-item">
+            <a [routerLinkActive]="'is-active'" [routerLink]="['/registration']">
+              <span class="icon">
+                <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
+              </span>
+              Sign Up
+            </a>
+          </div>
+        </div>
+      </div>
+      @if (showSolis) {
+        <div>
+          <div class="field">
+            <p class="control">
+              Or login with:
+            </p>
+          </div>
+          <div>
+            <a class="box" href='/users/saml2/login/'>
+              <img src="/assets/solis.png" width="40" height="40">
+              <span><strong>Solis ID</strong></span>
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  </form>
 </section>
 <section class="section">
-    <div class="container">
-        <div class="notification is-danger" *ngIf="isWrong" [ngClass]="{'is-loading':isLoading}">
-            <strong>Invalid username or password</strong>. Please try again.
-        </div>
-        <div class="notification is-danger" *ngIf="isNotVerified" [ngClass]="{'is-loading':isLoading}">
-            <strong>Your email address has not been verified.</strong> See email for instructions.
-        </div>
-        <div class="notification is-danger" *ngIf="hasError" [ngClass]="{'is-loading':isLoading}">
-            <strong>Something went wrong while logging you in</strong>. Please try again.
-        </div>
-    </div>
+  <div class="container">
+    @if (isWrong) {
+      <div class="notification is-danger" [ngClass]="{'is-loading':isLoading}">
+        <strong>Invalid username or password</strong>. Please try again.
+      </div>
+    }
+    @if (isNotVerified) {
+      <div class="notification is-danger" [ngClass]="{'is-loading':isLoading}">
+        <strong>Your email address has not been verified.</strong> See email for instructions.
+      </div>
+    }
+    @if (hasError) {
+      <div class="notification is-danger" [ngClass]="{'is-loading':isLoading}">
+        <strong>Something went wrong while logging you in</strong>. Please try again.
+      </div>
+    }
+  </div>
 </section>

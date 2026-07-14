@@ -7,13 +7,15 @@ import { By } from '@angular/platform-browser';
 @Component({
     template: `
     <ia-dropdown [value]="selected" (onChange)="selected = $event">
-        <span iaDropdownLabel>{{selected?.label || 'Select option'}}</span>
-        <div iaDropdownMenu>
-            <a *ngFor="let option of options"
-                iaDropdownItem [value]="option">
-                {{option.label}}
-            </a>
-        </div>
+      <span iaDropdownLabel>{{selected?.label || 'Select option'}}</span>
+      <div iaDropdownMenu>
+        @for (option of options; track option) {
+          <a
+            iaDropdownItem [value]="option">
+            {{option.label}}
+          </a>
+        }
+      </div>
     </ia-dropdown>
     `,
     standalone: false

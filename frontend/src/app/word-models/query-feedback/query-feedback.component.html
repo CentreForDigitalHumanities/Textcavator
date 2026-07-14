@@ -1,34 +1,47 @@
-<div class="block message" *ngIf="queryFeedback && queryFeedback.status !== 'success'">
+@if (queryFeedback && queryFeedback.status !== 'success') {
+  <div class="block message">
     <div class="message-header">
-        <h2>{{titles[queryFeedback.status]}}</h2>
+      <h2>{{titles[queryFeedback.status]}}</h2>
     </div>
     <div class="message-body content">
-        <p *ngIf="queryFeedback.status === 'multiple words'">
-            Your query consists of multiple words or contains spaces. Queries for words models must consist of a single word.
+      @if (queryFeedback.status === 'multiple words') {
+        <p>
+          Your query consists of multiple words or contains spaces. Queries for words models must consist of a single word.
         </p>
-
-        <p *ngIf="queryFeedback.status === 'empty'">
-            Enter a query term to explore the word models.
+      }
+      @if (queryFeedback.status === 'empty') {
+        <p>
+          Enter a query term to explore the word models.
         </p>
-
-        <p *ngIf="queryFeedback.status === 'error'">
-            The server encountered an error and the word models could not be loaded.
+      }
+      @if (queryFeedback.status === 'error') {
+        <p>
+          The server encountered an error and the word models could not be loaded.
         </p>
-
-        <p *ngIf="queryFeedback.status === 'not in model'">
-            The query term '{{query}}' is not in the model's vocabulary.
-            If you meant to search for this term, it may be a stopword or have a very low frequency.
+      }
+      @if (queryFeedback.status === 'not in model') {
+        <p>
+          The query term '{{query}}' is not in the model's vocabulary.
+          If you meant to search for this term, it may be a stopword or have a very low frequency.
         </p>
-
-        <p *ngIf="queryFeedback?.similarTerms && queryFeedback?.similarTerms.length">
-            The following words <i>are</i> in the model's vocabulary:
-            <span *ngFor="let term of queryFeedback.similarTerms">
-                <a role="button" tabindex="0" (click)="submitNewQuery(term)" (keyboard.enter)="submitNewQuery(term)"
-                    iaBalloon="search for {{term}}">{{term}}</a><span *ngIf="!isFinalTerm(term)">, </span>
-            </span>
-        </p>
-    </div>
-
+      }
+      @if (queryFeedback?.similarTerms && queryFeedback?.similarTerms.length) {
+        <p>
+          The following words <i>are</i> in the model's vocabulary:
+          @for (term of queryFeedback.similarTerms; track term) {
+            <span>
+              <a role="button" tabindex="0" (click)="submitNewQuery(term)" (keyboard.enter)="submitNewQuery(term)"
+              iaBalloon="search for {{term}}">{{term}}</a>@if (!isFinalTerm(term)) {
+              <span>, </span>
+            }
+          </span>
+        }
+      </p>
+    }
+  </div>
 </div>
+}
 
-<div class="block is-loading" *ngIf="queryFeedback === undefined" style="height: 5rem;"></div>
+@if (queryFeedback === undefined) {
+  <div class="block is-loading" style="height: 5rem;"></div>
+}

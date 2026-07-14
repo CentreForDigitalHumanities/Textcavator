@@ -1,113 +1,114 @@
-<ng-container *ngIf="totalResults.result$ | async as total">
-    <p class="block">
-        You can download your search results as a CSV file. View the
-        <a [routerLink]="['/manual', 'download']">manual</a>
-        for more information.
-    </p>
-
-    <div class="message" *ngIf="downloadLimit < total">
-        <p class="message-body">
-            Only the first {{downloadLimit}} results will be included in the file.
-        </p>
+@if (totalResults.result$ | async; as total) {
+  <p class="block">
+    You can download your search results as a CSV file. View the
+    <a [routerLink]="['/manual', 'download']">manual</a>
+    for more information.
+  </p>
+  @if (downloadLimit < total) {
+    <div class="message">
+      <p class="message-body">
+        Only the first {{downloadLimit}} results will be included in the file.
+      </p>
     </div>
-    <form>
-        <div class="field">
-            <label class="label" id="fields-select-label">Fields</label>
-            <div class="control">
-                <p-multiSelect [options]="fieldOptions"
-                    [(ngModel)]="fieldSelection"
-                    placeholder="select fields"
-                    name="searchFields"
-                    ariaLabelledBy="fields-select-label">
-                </p-multiSelect>
-            </div>
-            <p class="help">
-                Select which fields should be included as columns in the CSV file.
-            </p>
-        </div>
-
-        <div class="field">
-            <label class="label" id="sort-by-label">
-                Sort results
+  }
+  <form>
+    <div class="field">
+      <label class="label" id="fields-select-label">Fields</label>
+      <div class="control">
+        <p-multiSelect [options]="fieldOptions"
+          [(ngModel)]="fieldSelection"
+          placeholder="select fields"
+          name="searchFields"
+          ariaLabelledBy="fields-select-label">
+        </p-multiSelect>
+      </div>
+      <p class="help">
+        Select which fields should be included as columns in the CSV file.
+      </p>
+    </div>
+    <div class="field">
+      <label class="label" id="sort-by-label">
+        Sort results
+      </label>
+      <ia-search-sorting [pageResults]="resultsConfig" labelledBy="sort-by-label" />
+    </div>
+    <div class="field">
+      <div role="group" class="control">
+        <legend class="label">
+          Additional columns
+        </legend>
+        <!-- checkbox: include query? -->
+        <ul>
+          <li>
+            <label>
+              <input name="tags" type="checkbox"
+                [(ngModel)]="tagsSelected">
+              Your tags
             </label>
-            <ia-search-sorting [pageResults]="resultsConfig" labelledBy="sort-by-label" />
+          </li>
+          <li>
+            <label>
+              <input name="documentLink" type="checkbox"
+                [checked]="documentLinkSelected"
+                (change)="documentLinkSelected = !documentLinkSelected">
+              Document URL
+            </label>
+          </li>
+          <li>
+            @if (queryModel.queryText) {
+              <label>
+                <input  type="checkbox"
+                  [checked]="(resultsConfig.highlight$ | async) !== undefined"
+                  (change)="onHighlightChange($event)">
+                "Query in context" snippets
+              </label>
+            }
+          </li>
+        </ul>
+      </div>
+    </div>
+    @if ((canDownloadDirectly$ | async)) {
+      <div class="field" role="group">
+        <legend class="label">File encoding</legend>
+        <div class="control radios">
+          @for (encodingOption of encodingOptions; track encodingOption) {
+            <label class="radio">
+              <input type="radio" name="encoding" (click)="encoding=encodingOption" [checked]="encoding===encodingOption">
+              {{encodingOption}}
+            </label>
+          }
         </div>
-
-        <div class="field">
-            <div role="group" class="control">
-                <legend class="label">
-                    Additional columns
-                </legend>
-                <!-- checkbox: include query? -->
-                <ul>
-                    <li>
-                        <label>
-                            <input name="tags" type="checkbox"
-                                [(ngModel)]="tagsSelected">
-                            Your tags
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <input name="documentLink" type="checkbox"
-                                [checked]="documentLinkSelected"
-                                (change)="documentLinkSelected = !documentLinkSelected">
-                            Document URL
-                        </label>
-                    </li>
-                    <li>
-                        <label *ngIf="queryModel.queryText">
-                            <input  type="checkbox"
-                                [checked]="(resultsConfig.highlight$ | async) !== undefined"
-                                (change)="onHighlightChange($event)">
-                            "Query in context" snippets
-                        </label>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <ng-container *ngIf="(canDownloadDirectly$ | async); else longDownloadSubmit">
-            <div class="field" role="group">
-                <legend class="label">File encoding</legend>
-                <div class="control radios">
-                    <label class="radio" *ngFor="let encodingOption of encodingOptions">
-                        <input type="radio" name="encoding" (click)="encoding=encodingOption" [checked]="encoding===encodingOption">
-                        {{encodingOption}}
-                    </label>
-                </div>
-                <p class="help">
-                    We recommend using utf-8 encoding for most applications, including Python and R.
-                    For importing files in Microsoft Excel, we recommend utf-16.
-                </p>
-            </div>
-            <div class="block">
-                <button class="button is-primary" [ngClass]="{'is-loading':isDownloading}"
-                    type="submit"
-                    (click)="confirmDirectDownload()" [disabled]="total === 0">
-                    <span class="icon">
-                        <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
-                    </span>
-                    <span>Download</span>
-                </button>
-            </div>
-        </ng-container>
-        <ng-template #longDownloadSubmit>
-            <div class="message">
-                <p class="message-body">
-                    Your download contains too many documents to be immediately available.
-                    You can request the download now, and receive an email when it's
-                    ready.
-                </p>
-            </div>
-            <div class="block">
-                <button class="button is-primary" type="submit" (click)="longDownload()">
-                    <span class="icon">
-                        <fa-icon [icon]="actionIcons.wait"></fa-icon>
-                    </span>
-                    <span>Request download</span>
-                </button>
-            </div>
-        </ng-template>
-    </form>
-</ng-container>
+        <p class="help">
+          We recommend using utf-8 encoding for most applications, including Python and R.
+          For importing files in Microsoft Excel, we recommend utf-16.
+        </p>
+      </div>
+      <div class="block">
+        <button class="button is-primary" [ngClass]="{'is-loading':isDownloading}"
+          type="submit"
+          (click)="confirmDirectDownload()" [disabled]="total === 0">
+          <span class="icon">
+            <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
+          </span>
+          <span>Download</span>
+        </button>
+      </div>
+    } @else {
+      <div class="message">
+        <p class="message-body">
+          Your download contains too many documents to be immediately available.
+          You can request the download now, and receive an email when it's
+          ready.
+        </p>
+      </div>
+      <div class="block">
+        <button class="button is-primary" type="submit" (click)="longDownload()">
+          <span class="icon">
+            <fa-icon [icon]="actionIcons.wait"></fa-icon>
+          </span>
+          <span>Request download</span>
+        </button>
+      </div>
+    }
+  </form>
+}

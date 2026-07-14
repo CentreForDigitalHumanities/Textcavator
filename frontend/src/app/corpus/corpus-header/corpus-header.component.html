@@ -1,66 +1,68 @@
 <section class="section header-section pb-0 mb-6">
-    @if (corpus) {
-        <div class="container">
-            <div class="columns">
-                <div class="column">
-                    <h1 class="title">{{corpus.title}}</h1>
-                    <div class="block">
-                        <p>{{corpus.description}}</p>
-                    </div>
-                    <div class="block metadata">
-                        <p>Language: <strong>{{corpus.displayLanguages}}</strong></p>
-                        <p>Type: <strong>{{corpus.category}}</strong></p>
-                        <p>Period: <strong>{{corpus.minYear}}-{{corpus.maxYear}}</strong></p>
-                    </div>
-                </div>
-                <div class="column is-3 image-column">
-                    <div class="image is-4by3">
-                        <img src="/api/corpus/image/{{corpus.name}}" alt="{{corpus.title}}">
-                    </div>
-                </div>
-            </div>
-
-            <nav class="tabs" aria-label="secondary navigation">
-                <ul>
-                    <li [class.is-active]="currentPage === 'search'">
-                        <a [routerLink]="['/search', corpus.name]"
-                        routerLinkActive ariaCurrentWhenActive="page">
-                            <span class="icon">
-                                <fa-icon [icon]="corpusIcons.search" />
-                            </span>
-                            <span>Search</span>
-                        </a>
-                    </li>
-                    <li *ngIf="wordModelsPresent"
-                        [class.is-active]="currentPage === 'word-models'">
-                        <a [routerLink]="['/word-models', corpus.name]"
-                            routerLinkActive ariaCurrentWhenActive="page">
-                            <span class="icon">
-                                <fa-icon [icon]="corpusIcons.wordModels" />
-                            </span>
-                            <span>Word models</span>
-                        </a>
-                    </li>
-                    <li [class.is-active]="currentPage === 'info'">
-                        <a [routerLink]="['/info', corpus.name]"
-                            routerLinkActive ariaCurrentWhenActive="page">
-                            <span class="icon">
-                                <fa-icon [icon]="corpusIcons.info" />
-                            </span>
-                            <span>About</span>
-                        </a>
-                    </li>
-                </ul>
-                @if (corpus.editable) {
-                    <a
-                        [routerLink]="['/custom-corpora/edit', corpus.name]">
-                        <span class="icon" aria-hidden="true">
-                            <fa-icon [icon]="corpusIcons.edit"/>
-                        </span>
-                        <span>Edit corpus</span>
-                    </a>
-                }
-            </nav>
+  @if (corpus) {
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <h1 class="title">{{corpus.title}}</h1>
+          <div class="block">
+            <p>{{corpus.description}}</p>
+          </div>
+          <div class="block metadata">
+            <p>Language: <strong>{{corpus.displayLanguages}}</strong></p>
+            <p>Type: <strong>{{corpus.category}}</strong></p>
+            <p>Period: <strong>{{corpus.minYear}}-{{corpus.maxYear}}</strong></p>
+          </div>
         </div>
-    }
+        <div class="column is-3 image-column">
+          <div class="image is-4by3">
+            <img src="/api/corpus/image/{{corpus.name}}" alt="{{corpus.title}}">
+          </div>
+        </div>
+      </div>
+
+      <nav class="tabs" aria-label="secondary navigation">
+        <ul>
+          <li [class.is-active]="currentPage === 'search'">
+            <a [routerLink]="['/search', corpus.name]"
+              routerLinkActive ariaCurrentWhenActive="page">
+              <span class="icon">
+                <fa-icon [icon]="corpusIcons.search" />
+              </span>
+              <span>Search</span>
+            </a>
+          </li>
+          @if (wordModelsPresent) {
+            <li
+              [class.is-active]="currentPage === 'word-models'">
+              <a [routerLink]="['/word-models', corpus.name]"
+                routerLinkActive ariaCurrentWhenActive="page">
+                <span class="icon">
+                  <fa-icon [icon]="corpusIcons.wordModels" />
+                </span>
+                <span>Word models</span>
+              </a>
+            </li>
+          }
+          <li [class.is-active]="currentPage === 'info'">
+            <a [routerLink]="['/info', corpus.name]"
+              routerLinkActive ariaCurrentWhenActive="page">
+              <span class="icon">
+                <fa-icon [icon]="corpusIcons.info" />
+              </span>
+              <span>About</span>
+            </a>
+          </li>
+        </ul>
+        @if (corpus.editable) {
+          <a
+            [routerLink]="['/custom-corpora/edit', corpus.name]">
+            <span class="icon" aria-hidden="true">
+              <fa-icon [icon]="corpusIcons.edit"/>
+            </span>
+            <span>Edit corpus</span>
+          </a>
+        }
+      </nav>
+    </div>
+  }
 </section>

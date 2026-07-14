@@ -1,10 +1,12 @@
-<div class="bool" *ngIf="filter">
+@if (filter) {
+  <div class="bool">
     <ia-dropdown [value]="data" (onChange)="update($event)"
-        labelledBy="legend-filter-{{filter.displayName | slugify}}">
-        <span iaDropdownLabel>{{data !== undefined ? (data | json) : 'Choose'}}</span>
-        <div iaDropdownMenu>
-            <a iaDropdownItem [value]="true">True</a>
-            <a iaDropdownItem [value]="false">False</a>
-        </div>
+      labelledBy="legend-filter-{{filter.displayName | slugify}}">
+      <span iaDropdownLabel>{{data !== undefined ? (data | json) : 'Choose'}}</span>
+      <div iaDropdownMenu>
+        <a iaDropdownItem [value]="true">True</a>
+        <a iaDropdownItem [value]="false">False</a>
+      </div>
     </ia-dropdown>
-</div>
+  </div>
+}

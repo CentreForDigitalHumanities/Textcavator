@@ -1,99 +1,103 @@
 <ia-corpus-header [corpus]="corpus" currentPage="word-models"></ia-corpus-header>
 
 <section class="section search-section">
-    <div class="container">
-        <form class="block">
-            <div class="field has-addons">
-                <div class="control is-expanded">
-                    <input class="input" name="query" placeholder="Query" [(ngModel)]="queryText">
-                </div>
-                <div class="control">
-                    <button type="submit" class="button is-primary" (click)="submitQuery()">
-                        Search
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
+  <div class="container">
+    <form class="block">
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input class="input" name="query" placeholder="Query" [(ngModel)]="queryText">
+        </div>
+        <div class="control">
+          <button type="submit" class="button is-primary" (click)="submitQuery()">
+            Search
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </section>
 
 <section class="section">
-    <div class="container">
-        <ia-query-feedback *ngIf="activeQuery || queryFeedback" [query]="activeQuery" [queryFeedback]="queryFeedback" (selectedSuggestion)="queryText = $event; submitQuery()"></ia-query-feedback>
+  <div class="container">
+    @if (activeQuery || queryFeedback) {
+      <ia-query-feedback [query]="activeQuery" [queryFeedback]="queryFeedback" (selectedSuggestion)="queryText = $event; submitQuery()"></ia-query-feedback>
+    }
 
-        <ng-container *ngIf="activeQuery && queryFeedback && queryFeedback.status === 'success'">
-
-            <ia-tabs [activeTab]="currentTab" (tabChange)="onTabChange($event)">
-                <ng-template iaTabPanel *ngFor="let tab of tabNames"
-                    [id]="tab" [title]="tabs[tab].title">
-
-                    <ng-container *ngIf="!errorMessage; else noVisualsMessage">
-                        <div class="columns">
-                            <div class="column"></div>
-                            <div class="column is-narrow">
-                                <div class="field has-addons">
-                                    <!-- Buttons for switching between table and graphical representation -->
-                                    <div class="control">
-                                        <button class="button" iaToggleButton
-                                            [active]="!asTable"
-                                            (click)="asTable = false"
-                                            aria-label="view chart">
-                                            <fa-icon [icon]="visualizationIcons.chart"
-                                                aria-hidden="true" />
-                                        </button>
-                                    </div>
-                                    <div class="control">
-                                        <button class="button" iaToggleButton
-                                            [active]="asTable"
-                                            (click)="asTable = true"
-                                            aria-label="view table">
-                                            <fa-icon [icon]="visualizationIcons.table"
-                                                aria-hidden="true" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="block" [ngClass]="{'is-loading':isLoading}">
-                            <ia-related-words *ngIf="tab === 'relatedwords'"
-                                [corpus]="corpus" [queryText]="activeQuery"
-                                [asTable]="asTable" [palette]="palette"
-                                (relatedWordsError)="setErrorMessage($event)">
-                            </ia-related-words>
-
-                            <ia-word-similarity *ngIf="tab === 'wordsimilarity'"
-                                [corpus]="corpus"
-                                [asTable]="asTable" [palette]="palette"
-                                (wordSimilarityError)="setErrorMessage($event)">
-                            </ia-word-similarity>
-
-                            <ia-neighbor-network *ngIf="tab==='neighbornetwork'"
-                                [corpus]="corpus" [queryText]="activeQuery"
-                                [asTable]="asTable"
-                                />
-                        </div>
-
-                        <div class="block">
-                            <ia-visualization-footer [tableView]="asTable" [manualPage]="tabs[tab].manual"
-                                [chartElementID]="tabs[tab].chartID" [imageFileName]="imageFileName"
-                                (palette)="palette = $event">
-                            </ia-visualization-footer>
-                        </div>
-                    </ng-container>
-
-                    <ng-template #noVisualsMessage>
-                        <b> Did not find data to visualize.</b>
-                        <div class="container" *ngIf="errorMessage && errorMessage.length > 0">
-                            <div class="notification is-warning">
-                                {{errorMessage}}
-                            </div>
-                        </div>
-                    </ng-template>
-                </ng-template>
-            </ia-tabs>
-        </ng-container>
-    </div>
+    @if (activeQuery && queryFeedback && queryFeedback.status === 'success') {
+      <ia-tabs [activeTab]="currentTab" (tabChange)="onTabChange($event)">
+        @for (tab of tabNames; track tab) {
+          <ng-template iaTabPanel
+            [id]="tab" [title]="tabs[tab].title">
+            @if (!errorMessage) {
+              <div class="columns">
+                <div class="column"></div>
+                <div class="column is-narrow">
+                  <div class="field has-addons">
+                    <!-- Buttons for switching between table and graphical representation -->
+                    <div class="control">
+                      <button class="button" iaToggleButton
+                        [active]="!asTable"
+                        (click)="asTable = false"
+                        aria-label="view chart">
+                        <fa-icon [icon]="visualizationIcons.chart"
+                          aria-hidden="true" />
+                      </button>
+                    </div>
+                    <div class="control">
+                      <button class="button" iaToggleButton
+                        [active]="asTable"
+                        (click)="asTable = true"
+                        aria-label="view table">
+                        <fa-icon [icon]="visualizationIcons.table"
+                          aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="block" [ngClass]="{'is-loading':isLoading}">
+                @if (tab === 'relatedwords') {
+                  <ia-related-words
+                    [corpus]="corpus" [queryText]="activeQuery"
+                    [asTable]="asTable" [palette]="palette"
+                    (relatedWordsError)="setErrorMessage($event)">
+                  </ia-related-words>
+                }
+                @if (tab === 'wordsimilarity') {
+                  <ia-word-similarity
+                    [corpus]="corpus"
+                    [asTable]="asTable" [palette]="palette"
+                    (wordSimilarityError)="setErrorMessage($event)">
+                  </ia-word-similarity>
+                }
+                @if (tab==='neighbornetwork') {
+                  <ia-neighbor-network
+                    [corpus]="corpus" [queryText]="activeQuery"
+                    [asTable]="asTable"
+                    />
+                }
+              </div>
+              <div class="block">
+                <ia-visualization-footer [tableView]="asTable" [manualPage]="tabs[tab].manual"
+                  [chartElementID]="tabs[tab].chartID" [imageFileName]="imageFileName"
+                  (palette)="palette = $event">
+                </ia-visualization-footer>
+              </div>
+            } @else {
+              <b> Did not find data to visualize.</b>
+              @if (errorMessage && errorMessage.length > 0) {
+                <div class="container">
+                  <div class="notification is-warning">
+                    {{errorMessage}}
+                  </div>
+                </div>
+              }
+            }
+          </ng-template>
+        }
+      </ia-tabs>
+    }
+  </div>
 </section>
 
 <ia-back-to-top-button />

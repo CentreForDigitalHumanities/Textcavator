@@ -1,26 +1,36 @@
 <div class="level">
-    <div class="level-left">
-        <div class="level-item" *ngIf="manualPage">
-            <button class="button" (click)="showHelp()">
-                <span class="icon">
-                    <fa-icon [icon]="actionIcons.helpAlt" aria-label="help"></fa-icon>
-                </span>
+  <div class="level-left">
+    @if (manualPage) {
+      <div class="level-item">
+        <button class="button" (click)="showHelp()">
+          <span class="icon">
+            <fa-icon [icon]="actionIcons.helpAlt" aria-label="help"></fa-icon>
+          </span>
+        </button>
+      </div>
+    }
+  </div>
+  @if (!tableView) {
+    <div class="level-right">
+      @if (!freqtable) {
+        <div class="level-item">
+          <ia-palette-select (paletteChanged)="palette.next($event)"></ia-palette-select>
+        </div>
+      }
+      @if (!tableView && chartElementID) {
+        <div class="level-item">
+          @if (!freqtable) {
+            <button class="button download-button" (click)="onRequestImage()">
+              <span class="icon">
+                <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
+              </span>
+              <span>Download visualization</span>
             </button>
+          }
         </div>
+      }
     </div>
-    <div class="level-right" *ngIf="!tableView">
-        <div class="level-item" *ngIf="!freqtable">
-            <ia-palette-select (paletteChanged)="palette.next($event)"></ia-palette-select>
-        </div>
-        <div class="level-item" *ngIf="!tableView && chartElementID">
-            <button class="button download-button" *ngIf="!freqtable" (click)="onRequestImage()">
-                <span class="icon">
-                    <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
-                </span>
-                <span>Download visualization</span>
-            </button>
-        </div>
-    </div>
+  }
 </div>
 
 

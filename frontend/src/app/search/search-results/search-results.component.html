@@ -1,74 +1,79 @@
-<ng-container *ngIf="pageResults?.result$ | async as page; else noResult">
-
-    <section class="section results-navigation mb-4 pt-4 pb-4 pl-0 pr-0">
-        <div class="columns">
-            <div class="column is-narrow has-text-centered">
-                <div>
-                    <label class="heading" id="sort-by-label">Sort By</label>
-                    <ia-search-sorting [pageResults]="pageResults" labelledBy="sort-by-label" />
-                </div>
-            </div>
-            <div class="column"></div> <!-- empty column for spacing/alignment -->
-            <div class="column is-narrow has-text-centered" *ngIf="page.total > resultsPerPage" >
-                <div>
-                    <p class="heading">Pages</p>
-                    <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
-                    <p aria-live="polite" [attr.aria-busy]="pageResults.loading$ | async"
-                        aria-atomic="true" class="pt-3 heading">
-                        <span *ngIf="page.total > resultsPerPage">
-                            Showing results
-                            {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+@if (pageResults?.result$ | async; as page) {
+  <section class="section results-navigation mb-4 pt-4 pb-4 pl-0 pr-0">
     <div class="columns">
-        <div class="column" *ngIf="!pageResults.highlightDisabled">
-            <ia-highlight-selector  [pageResults]="pageResults" />
+      <div class="column is-narrow has-text-centered">
+        <div>
+          <label class="heading" id="sort-by-label">Sort By</label>
+          <ia-search-sorting [pageResults]="pageResults" labelledBy="sort-by-label" />
         </div>
+      </div>
+      <div class="column"></div> <!-- empty column for spacing/alignment -->
+      @if (page.total > resultsPerPage) {
+        <div class="column is-narrow has-text-centered" >
+          <div>
+            <p class="heading">Pages</p>
+            <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
+            <p aria-live="polite" [attr.aria-busy]="pageResults.loading$ | async"
+              aria-atomic="true" class="pt-3 heading">
+              @if (page.total > resultsPerPage) {
+                <span>
+                  Showing results
+                  {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
+                </span>
+              }
+            </p>
+          </div>
+        </div>
+      }
     </div>
-
-
-    <section *ngIf="page.documents.length; else noHits" aria-label="search results">
-        <div class="hits" [ngClass]="{'is-loading': pageResults.loading$ | async }">
-            <article *ngFor="let document of page.documents" class="document box block">
-                <ia-document-preview [document]="document" [page]="page"></ia-document-preview>
-            </article>
-        </div>
-    </section>
-
-    <ia-document-popup [page]="page" [queryModel]="queryModel"></ia-document-popup>
-
-    <div class="columns mt-5">
-        <div class="column"></div>
-        <div class="column is-narrow has-text-centered">
-                <div>
-                    <p class="heading">Pages</p>
-                    <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
-                    <p class="pt-3 heading">
-                        <span *ngIf="page.total > resultsPerPage">
-                            Showing results
-                            {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
-                        </span>
-                    </p>
-                </div>
-        </div>
-    </div>
-</ng-container>
-
-<ng-template #noHits>
+  </section>
+  <div class="columns">
+    @if (!pageResults.highlightDisabled) {
+      <div class="column">
+        <ia-highlight-selector  [pageResults]="pageResults" />
+      </div>
+    }
+  </div>
+  @if (page.documents.length) {
     <section aria-label="search results">
-        No results
+      <div class="hits" [ngClass]="{'is-loading': pageResults.loading$ | async }">
+        @for (document of page.documents; track document) {
+          <article class="document box block">
+            <ia-document-preview [document]="document" [page]="page"></ia-document-preview>
+          </article>
+        }
+      </div>
     </section>
-</ng-template>
-
-<ng-template #noResult>
-    <ia-error *ngIf="error$ | async as error; else loading" [showError]="error"></ia-error>
-</ng-template>
-
-<ng-template #loading>
+  } @else {
+    <section aria-label="search results">
+      No results
+    </section>
+  }
+  <ia-document-popup [page]="page" [queryModel]="queryModel"></ia-document-popup>
+  <div class="columns mt-5">
+    <div class="column"></div>
+    <div class="column is-narrow has-text-centered">
+      <div>
+        <p class="heading">Pages</p>
+        <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
+        <p class="pt-3 heading">
+          @if (page.total > resultsPerPage) {
+            <span>
+              Showing results
+              {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
+            </span>
+          }
+        </p>
+      </div>
+    </div>
+  </div>
+} @else {
+  @if (error$ | async; as error) {
+    <ia-error [showError]="error"></ia-error>
+  } @else {
     <div class="is-loading" aria-label="loading results"></div>
-</ng-template>
+  }
+}
+
+
+

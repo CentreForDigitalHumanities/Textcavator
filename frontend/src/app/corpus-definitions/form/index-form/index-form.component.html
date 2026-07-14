@@ -1,132 +1,134 @@
 <h1 class="title">Index data</h1>
 
 <p class="subtitle">
-    Create a search index and activate your corpus
+  Create a search index and activate your corpus
 </p>
 
-<ng-container *ngIf="state$ | async as state">
-    <div class="message" [class]="stateClass(state)">
-        <div class="message-body" role="status">
-            <p class="subtitle" style="text-align: center;">
-                <span [ngSwitch]="state.status">
-                    <ng-container *ngSwitchCase="'no connection'">
-                        No connection
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'index required'">
-                        Ready to index
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'working'">
-                        Indexing in progress...
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'index ready'">
-                        Index ready!
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'indexing failed'">
-                        Indexing failed
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'corpus invalid'">
-                        Corpus not complete
-                    </ng-container>
-                </span>
-            </p>
-        </div>
+@if (state$ | async; as state) {
+  <div class="message" [class]="stateClass(state)">
+    <div class="message-body" role="status">
+      <p class="subtitle" style="text-align: center;">
+        <span>
+          @switch (state.status) {
+            @case ('no connection') {
+              No connection
+            }
+            @case ('index required') {
+              Ready to index
+            }
+            @case ('working') {
+              Indexing in progress...
+            }
+            @case ('index ready') {
+              Index ready!
+            }
+            @case ('indexing failed') {
+              Indexing failed
+            }
+            @case ('corpus invalid') {
+              Corpus not complete
+            }
+          }
+        </span>
+      </p>
     </div>
-
-    <div [ngSwitch]="state.status" class="content">
-        <ng-container *ngSwitchCase="'no connection'">
-            <p>
-                Cannot fetch status due to a connection issue. Please try again later,
-                or contact an administrator if you keep seeing this message.
-            </p>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'index required'">
-            <p [ngSwitch]="state.reason">
-                <ng-container *ngSwitchCase="'no index'">
-                    Your corpus has not yet been indexed.
-                </ng-container>
-                <ng-container *ngSwitchCase="'outdated data'">
-                    The latest data file for your corpus has not yet been indexed.
-                </ng-container>
-                <ng-container *ngSwitchCase="'outdated configuration'">
-                    Your corpus must be re-indexed to reflect your latest changes.
-                </ng-container>
-                <ng-container *ngSwitchCase="'job cancelled'">
-                    The indexing process was aborted, and needs to be restarted.
-                </ng-container>
-            </p>
-            <p>
-                To make your corpus searchable, start the indexing proccess below.
-                Depending on the amount of data, this can take a while.
-            </p>
-            <button class="button" (click)="startIndex()">Start indexing</button>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'working'">
-            <p>
-                Your data is being indexed. Depending on the amount of data, this can
-                take a while. Feel free to close this screen and check back later.
-            </p>
-
-            <p>
-                If you want to cancel indexing and edit the form further, you can use the
-                button below to abort the indexing process.
-            </p>
-
-            <button class="button" (click)="stopIndex()"
-                [class.is-loading]="stopping$ | async">
-                <span class="icon"><fa-icon [icon]="actionIcons.remove"/></span>
-                <span>Abort indexing</span>
+  </div>
+  <div class="content">
+    @switch (state.status) {
+      @case ('no connection') {
+        <p>
+          Cannot fetch status due to a connection issue. Please try again later,
+          or contact an administrator if you keep seeing this message.
+        </p>
+      }
+      @case ('index required') {
+        <p>
+          @switch (state.reason) {
+            @case ('no index') {
+              Your corpus has not yet been indexed.
+            }
+            @case ('outdated data') {
+              The latest data file for your corpus has not yet been indexed.
+            }
+            @case ('outdated configuration') {
+              Your corpus must be re-indexed to reflect your latest changes.
+            }
+            @case ('job cancelled') {
+              The indexing process was aborted, and needs to be restarted.
+            }
+          }
+        </p>
+        <p>
+          To make your corpus searchable, start the indexing proccess below.
+          Depending on the amount of data, this can take a while.
+        </p>
+        <button class="button" (click)="startIndex()">Start indexing</button>
+      }
+      @case ('working') {
+        <p>
+          Your data is being indexed. Depending on the amount of data, this can
+          take a while. Feel free to close this screen and check back later.
+        </p>
+        <p>
+          If you want to cancel indexing and edit the form further, you can use the
+          button below to abort the indexing process.
+        </p>
+        <button class="button" (click)="stopIndex()"
+          [class.is-loading]="stopping$ | async">
+          <span class="icon"><fa-icon [icon]="actionIcons.remove"/></span>
+          <span>Abort indexing</span>
+        </button>
+      }
+      @case ('index ready') {
+        <p>
+          Your data data is indexed and ready to be searched!
+        </p>
+        @if (!corpus.active) {
+          <p>
+            You can activate your corpus now to start searching. Once the corpus is
+            active, most of the fields in this form will be locked; you can
+            deactivate the corpus to start editing again.
+          </p>
+        }
+        @if (corpus.active) {
+          <p>
+            Your corpus is now active and available for searching. While the corpus
+            is active, most of the fields in this form are locked; you can deactivate
+            the corpus to start editing again.
+          </p>
+        }
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button" (click)="toggleCorpusActive()"
+              [class.is-primary]="!corpus.active"
+              [class.is-loading]="loading$ | async">
+              {{corpus.active ? 'Deactivate' : 'Activate'}} corpus
             </button>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'index ready'">
-            <p>
-                Your data data is indexed and ready to be searched!
-            </p>
-            <p *ngIf="!corpus.active">
-                You can activate your corpus now to start searching. Once the corpus is
-                active, most of the fields in this form will be locked; you can
-                deactivate the corpus to start editing again.
-            </p>
-            <p *ngIf="corpus.active">
-                Your corpus is now active and available for searching. While the corpus
-                is active, most of the fields in this form are locked; you can deactivate
-                the corpus to start editing again.
-            </p>
-
-            <div class="field is-grouped">
-                <div class="control">
-                    <button class="button" (click)="toggleCorpusActive()"
-                        [class.is-primary]="!corpus.active"
-                        [class.is-loading]="loading$ | async">
-                        {{corpus.active ? 'Deactivate' : 'Activate'}} corpus
-                    </button>
-                </div>
-                <div class="control">
-                    <a class="button is-primary" *ngIf="corpus.active"
-                        [routerLink]="['/search', corpus.definition.name]"
-                        [class.is-loading]="loading$ | async">
-                        <span class="icon"><fa-icon [icon]="actionIcons.search"/></span>
-                        <span>Search corpus</span>
-                    </a>
-                </div>
-            </div>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'indexing failed'">
-            <p>
-                Something went wrong while indexing your data. Please contact an
-                administrator.
-            </p>
-        </ng-container>
-
-        <ng-container *ngSwitchCase="'corpus invalid'">
-            <p>
-                Your corpus is not yet ready for indexing.
-            </p>
-
-            <p><b>Reason:</b> {{state.reason}}</p>
-        </ng-container>
-    </div>
-</ng-container>
+          </div>
+          <div class="control">
+            @if (corpus.active) {
+              <a class="button is-primary"
+                [routerLink]="['/search', corpus.definition.name]"
+                [class.is-loading]="loading$ | async">
+                <span class="icon"><fa-icon [icon]="actionIcons.search"/></span>
+                <span>Search corpus</span>
+              </a>
+            }
+          </div>
+        </div>
+      }
+      @case ('indexing failed') {
+        <p>
+          Something went wrong while indexing your data. Please contact an
+          administrator.
+        </p>
+      }
+      @case ('corpus invalid') {
+        <p>
+          Your corpus is not yet ready for indexing.
+        </p>
+        <p><b>Reason:</b> {{state.reason}}</p>
+      }
+    }
+  </div>
+}
