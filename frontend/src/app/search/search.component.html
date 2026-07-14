@@ -1,49 +1,40 @@
 <ia-corpus-header [corpus]="corpus" currentPage="search"></ia-corpus-header>
 
-<section class="py-5 search-section pt-3">
+<section class="py-4 search-section pt-3">
   <div class="container">
     <form (ngSubmit)="search()">
       <div class="input-group mb-3">
-        <div class="control" iaBalloon="View query documentation" iaBalloonPosition="down-left">
-          <button class="btn" type="button" (click)="showQueryDocumentation()"
-            aria-label="help">
+          <button class="btn btn-secondary" type="button" (click)="showQueryDocumentation()"
+            aria-label="View query documentation" ngbTooltip="View query documentation"
+            placement="bottom">
             <span >
               <fa-icon [icon]="actionIcons.manual" aria-hidden="true" />
             </span>
           </button>
-        </div>
-        <div class="control is-expanded">
           <input class="form-control" id="query" [(ngModel)]="queryText" name="queryText" type="text"
             placeholder="Query" />
-        </div>
-        <div class="control">
-          <button class="btn btn-primary" type="submit" id="search">
-            <span >
-              <fa-icon [icon]="actionIcons.search" aria-hidden="true"></fa-icon>
-            </span>
-            <span>Search</span>
-          </button>
-        </div>
-        <div class="control">
-          <ia-select-field [queryModel]="queryModel" />
-        </div>
+        <button class="btn btn-primary" type="submit" id="search">
+            <fa-icon [icon]="actionIcons.search" aria-hidden="true"></fa-icon>
+            Search
+        </button>
+        <ia-select-field [queryModel]="queryModel" />
       </div>
     </form>
   </div>
 </section>
-<section class="py-5 search-results">
+<section class="py-4 search-results">
   <div class="container">
     <!-- filters and search results -->
     <div class="row">
       <!-- Filters, on left -->
-      <div class="col-md is-3">
+      <div class="col-md-3">
         @if (queryModel) {
           <ia-filter-manager [queryModel]="queryModel"></ia-filter-manager>
         }
       </div>
       <!-- search results, on right -->
       @if (queryModel) {
-        <div class="col-md is-9">
+        <div class="col-md-9">
           <p ia-results-count [queryModel]="queryModel" class="my-3 has-text-right"></p>
           <ia-tabs [activeTab]="tabs.state$.value.tab" (tabChange)="onTabChange($event)">
             <ng-template iaTabPanel id="search-results" title="Search results" [icon]="searchIcons.documents">
