@@ -59,15 +59,6 @@ defusedxml==0.7.1
 django==5.2.7
 dj-rest-auth[with-social]==7.2.0
     # via -r requirements.in
-django==4.2.30
-    # via
-    #   -r requirements.in
-    #   dj-rest-auth
-    #   django-allauth
-    #   django-livereload-server
-    #   django-revproxy
-    #   djangorestframework
-    #   djangosaml2
 django-allauth[socialaccount]==65.15.1
     # via dj-rest-auth
 django-livereload-server==0.5.1
