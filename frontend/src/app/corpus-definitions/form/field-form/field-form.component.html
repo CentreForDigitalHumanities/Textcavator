@@ -1,248 +1,211 @@
-<h1 class="mb-4">Fields</h1>
+<h1 class="mb-5">Fields</h1>
 
 <p class="my-3">Fields with * are required.</p>
 
 <form [formGroup]="fieldsForm" (ngSubmit)="onSubmit()">
-  <ng-container formArrayName="fields">
-    @for (field of fields.controls; track fieldControlName(i, field); let i = $index; let isFirst = $first; let isLast = $last) {
-      <div class="box"
-        [formGroupName]="i">
-        @let fieldGroup = fieldsForm.controls.fields.controls[i];
-        <div class="field is-disabled">
-          <label class="form-label" for="column_name">Column name</label>
-          <div class="control">
-            <input class="form-control" type="text" name="column_name"
-              [value]="field.get('extract').get('column').value" disabled>
-          </div>
-          <p class="help">The column name in your CSV (sample) file. This cannot be changed.</p>
-        </div>
-        <div class="field">
-          @let displayNameControl = fieldGroup.controls.display_name;
-          @let labelID = `label-display-name-${i}`;
-          @let feedbackID = `feedback-display-name-${i}`;
-          @let helpID = `helptext-display-name-${i}`;
-          <label [id]="labelID" class="form-label"
-          for="display_name">Display name*</label>
-          <div class="control">
-            <input class="form-control" type="text" name="display_name"
-              [formControl]="displayNameControl"
-              [class.is-danger]="displayNameControl.touched && displayNameControl.invalid"
-              aria-required="true" [attr.aria-labelledby]="labelID"
-              [attr.aria-describedby]="helpID + ' ' + feedbackID" />
-          </div>
-          <p [id]="feedbackID" class="help is-pulled-right has-text-danger">
-            @if (displayNameControl.touched && displayNameControl.invalid) {
-              @if (displayNameControl.hasError('required')) {
-                This field is required.
-              }
-            }
-          </p>
-          <p [id]="helpID" class="help">
-            The name that will be shown to users.
-          </p>
-        </div>
-        <div class="field">
-          <label class="form-label" for="description">Description</label>
-          <div class="control">
-            <input class="form-control" type="text" name="description" formControlName="description"
-              maxlength="150" />
-          </div>
-          <p class="help">
-            A brief explanation of the field (optional).
-            If needed, you can include more extensive descriptions in step 1, by
-            adding documentation to your corpus.
-          </p>
-        </div>
-        <div class="field" [class.is-disabled]="corpus.active">
-          <label class="form-label" for="input-type" >
-            Type*
-          </label>
-          <div class="control">
-            <ia-dropdown formControlName="type" id="input-type">
-              <span iaDropdownLabel>{{getFieldProperty(field, 'label')}}</span>
-              <div iaDropdownMenu>
-                @for (option of fieldTypeOptions; track option) {
-                  <a iaDropdownItem
-                    [value]="option.value">
-                    {{option.label}}
-                    <span class="help">{{option.helpText}}</span>
-                  </a>
-                }
-              </div>
-            </ia-dropdown>
-          </div>
-          <p class="help content">
-            What type of data is this? See the
-            <a role="button" tabindex="0"
-              (click)="showFieldDocumentation()"
-              (keydown.enter)="showFieldDocumentation()"
-              (keydown.space)="showFieldDocumentation()">
-            documentation of field types</a>
-            for more information.
-          </p>
-        </div>
-        <fieldset class="field">
-          <legend class="form-label">Options</legend>
-          <ng-container formGroupName="options">
-            @if (field.get('type').value === 'text_content' || field.get('type').value === 'text_metadata' ) {
-              <div
-                class="control">
-                <label class="checkbox" [class.is-disabled]="corpus.active">
-                  <input type="checkbox" name="search" formControlName="search" /> Search
-                  <p class="help">Enable text searching within this field.</p>
-                </label>
-              </div>
-            }
-            @if (field.get('type').value !== 'text_content' && field.get('type').value !== 'url' ) {
-              <div class="control">
-                <label class="checkbox" [class.is-disabled]="corpus.active">
-                  <input type="checkbox" name="filter" formControlName="filter" /> Filter
-                  <p class="help">Add a filter widget for this field.</p>
-                </label>
-              </div>
-            }
-            <div class="control">
-              <label class="checkbox">
-                <input type="checkbox" name="preview" formControlName="preview" /> Preview
-                <p class="help">Show this field in the results overview.</p>
-              </label>
+    <ng-container formArrayName="fields">
+        @for (field of fields.controls; track fieldControlName(i, field); let i = $index; let isFirst = $first; let
+        isLast = $last) {
+        <fieldset class="border rounded p-3 my-3" [formGroupName]="i">
+            @let fieldGroup = fieldsForm.controls.fields.controls[i];
+            <div class="mb-3">
+                <label class="form-label" for="column_name">Column name</label>
+                <div class="control">
+                    <input class="form-control" type="text" name="column_name"
+                        [value]="field.get('extract').get('column').value" disabled>
+                </div>
+                <p class="form-text">The column name in your CSV (sample) file. This cannot be changed.</p>
             </div>
-            @if (field.get('type').value !== 'text_content' && field.get('type').value !== 'boolean' && field.get('type').value !== 'url') {
-              <div
-                class="control">
-                <label class="checkbox">
-                  <input type="checkbox" name="sort" formControlName="sort" /> Sort
-                  <p class="help">
-                    Enable sorting on values of this field
-                    @switch (field.get('type').value) {
-                      @case ('text_metadata') {
-                        (alphabetically)
-                      }
-                      @case ('date') {
-                        (chronologically)
-                      }
+            <div class="mb-3">
+                @let displayNameControl = fieldGroup.controls.display_name;
+                @let labelID = `label-display-name-${i}`;
+                @let feedbackID = `feedback-display-name-${i}`;
+                @let helpID = `helptext-display-name-${i}`;
+                <label [id]="labelID" class="form-label" for="display_name">Display name*</label>
+                    <input class="form-control" type="text" name="display_name" [formControl]="displayNameControl"
+                        [class.is-danger]="displayNameControl.touched && displayNameControl.invalid"
+                        aria-required="true" [attr.aria-labelledby]="labelID"
+                        [attr.aria-describedby]="helpID + ' ' + feedbackID" />
+                <p [id]="helpID" class="form-text">
+                    The name that will be shown to users.
+                </p>
+                <p [id]="feedbackID" class="form-text text-danger-emphasis">
+                    @if (displayNameControl.touched && displayNameControl.invalid) {
+                        @if (displayNameControl.hasError('required')) {
+                            This field is required.
+                        }
                     }
-                    .
-                  </p>
-                </label>
-              </div>
-            }
-            @if (field.get('type').value !== 'url') {
-              <div class="control">
-                <label class="checkbox">
-                  <input type="checkbox" name="visualize" formControlName="visualize" /> Visualize
-                  <p class="help">Include visualisations for this field.</p>
-                </label>
-              </div>
-            }
-          </ng-container>
-        </fieldset>
-        @if (getFieldProperty(field, 'hasLanguage')) {
-          <div class="field"
-            [class.is-disabled]="corpus.active">
-            @let languageControl = field.controls.language;
-            <label class="form-label" id="language-label">Language (optional)</label>
-            <ia-dropdown formControlName="language" labelledBy="language-label">
-              <span iaDropdownLabel>{{languageControl.value.displayName}}</span>
-              <div iaDropdownMenu>
-                @for (lang of languageOptions; track lang) {
-                  <a iaDropdownItem
-                    [value]="lang">
-                    {{lang.displayName}}
-                  </a>
-                }
-              </div>
-            </ia-dropdown>
-            <p class="help">
-              What language is the text in this field? (If the field
-              contains multiple languages, select "unknown".)
-            </p>
-          </div>
-        }
-        <div class="field is-grouped" style="justify-content: end;">
-          <div class="control">
-            <!-- the first "move down" and the last "move up" button are disabled;
-            this is done with CSS/ARIA/javascript rather than the "disabled"
-            attribute, so the control can stay focused when the user moves
-            the field to the first/last position.
-            -->
-            <button class="btn" type="button" aria-label="move up"
-              [id]="moveControlID(i, field, -1)"
-              iaBalloon="move field up"
-              [attr.aria-disabled]="isFirst"
-              [class.is-disabled]="isFirst"
-              (click)="isFirst || moveField(i, field, -1)">
-              <fa-icon [icon]="directionIcons.up" aria-hidden="true" />
-            </button>
-          </div>
-          <div class="control">
-            <button class="btn" type="button" aria-label="move down"
-              [id]="moveControlID(i, field, +1)"
-              iaBalloon="move field down"
-              [attr.aria-disabled]="isLast"
-              [class.is-disabled]="isLast"
-              (click)="isLast || moveField(i, field, +1)">
-              <fa-icon [icon]="directionIcons.down" aria-hidden="true" />
-            </button>
-          </div>
-          <div class="control">
-            <button class="btn" type="button" aria-label="remove"
-              iaBalloon="remove field" (click)="removeField(i)"
-              [disabled]="corpus.active">
-              <fa-icon [icon]="actionIcons.remove" aria-hidden="true" />
-            </button>
-          </div>
-        </div>
-      </div>
-    }
-  </ng-container>
-
-  @let unusedFields = unusedCsvFields$ | async;
-  @if (unusedFields?.length) {
-    <div class="box has-background-light ">
-      <h2 class="mb-4 is-5">Add field</h2>
-      <p class="my-3">
-        Some of the columns in your data file are not used as fields. You can add
-        a new field based on a data column.
-      </p>
-      <div class="field">
-        <label class="form-label" for="column_name">Column name</label>
-        <div class="field is-grouped">
-          <div class="control is-expanded">
-            <div class="select is-fullwidth">
-              <select #fieldSelect [disabled]="corpus.active">
-                @for (field of unusedFields; track field.name; let index = $index) {
-                  <option [value]="field.name">{{field.name}}</option>
-                }
-              </select>
+                </p>
             </div>
-          </div>
-          <div class="control">
-            <button class="btn" type="button" aria-label="add"
-              (click)="addField(fieldSelect.value)"
-              [disabled]="corpus.active">
-              <span >
-                <fa-icon [icon]="actionIcons.add" aria-hidden="true" />
-              </span>
-              <span>Add</span>
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <input class="form-control" type="text" name="description" formControlName="description"
+                    maxlength="150" />
+                <p class="form-text">
+                    A brief explanation of the field (optional).
+                    If needed, you can include more extensive descriptions in step 1, by
+                    adding documentation to your corpus.
+                </p>
+            </div>
+            <div class="mb-3" [class.is-disabled]="corpus.active">
+                <label class="form-label" for="input-type">
+                    Type*
+                </label>
+                <div class="control">
+                    <ia-dropdown formControlName="type" id="input-type">
+                        <span iaDropdownLabel>{{getFieldProperty(field, 'label')}}</span>
+                        <div iaDropdownMenu>
+                            @for (option of fieldTypeOptions; track option) {
+                            <a iaDropdownItem [value]="option.value">
+                                {{option.label}}
+                                <span class="form-text">{{option.helpText}}</span>
+                            </a>
+                            }
+                        </div>
+                    </ia-dropdown>
+                </div>
+                <p class="form-text content">
+                    What type of data is this? See the
+                    <a role="button" tabindex="0" (click)="showFieldDocumentation()"
+                        (keydown.enter)="showFieldDocumentation()" (keydown.space)="showFieldDocumentation()">
+                        documentation of field types</a>
+                    for more information.
+                </p>
+            </div>
+            <fieldset>
+                <legend class="form-label">Options</legend>
+                <ng-container formGroupName="options">
+                    @if (field.get('type').value === 'text_content' || field.get('type').value === 'text_metadata' ) {
+                    <div class="control">
+                        <label class="checkbox" [class.is-disabled]="corpus.active">
+                            <input type="checkbox" name="search" formControlName="search" /> Search
+                            <p class="form-text">Enable text searching within this field.</p>
+                        </label>
+                    </div>
+                    }
+                    @if (field.get('type').value !== 'text_content' && field.get('type').value !== 'url' ) {
+                    <div class="control">
+                        <label class="checkbox" [class.is-disabled]="corpus.active">
+                            <input type="checkbox" name="filter" formControlName="filter" /> Filter
+                            <p class="form-text">Add a filter widget for this field.</p>
+                        </label>
+                    </div>
+                    }
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" name="preview" formControlName="preview" /> Preview
+                            <p class="form-text">Show this field in the results overview.</p>
+                        </label>
+                    </div>
+                    @if (field.get('type').value !== 'text_content' && field.get('type').value !== 'boolean' &&
+                    field.get('type').value !== 'url') {
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" name="sort" formControlName="sort" /> Sort
+                            <p class="form-text">
+                                Enable sorting on values of this field
+                                @switch (field.get('type').value) {
+                                @case ('text_metadata') {
+                                (alphabetically)
+                                }
+                                @case ('date') {
+                                (chronologically)
+                                }
+                                }
+                                .
+                            </p>
+                        </label>
+                    </div>
+                    }
+                    @if (field.get('type').value !== 'url') {
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" name="visualize" formControlName="visualize" /> Visualize
+                            <p class="form-text">Include visualisations for this field.</p>
+                        </label>
+                    </div>
+                    }
+                </ng-container>
+            </fieldset>
+            @if (getFieldProperty(field, 'hasLanguage')) {
+            <div class="field" [class.is-disabled]="corpus.active">
+                @let languageControl = field.controls.language;
+                <label class="form-label" id="language-label">Language (optional)</label>
+                <ia-dropdown formControlName="language" labelledBy="language-label">
+                    <span iaDropdownLabel>{{languageControl.value.displayName}}</span>
+                    <div iaDropdownMenu>
+                        @for (lang of languageOptions; track lang) {
+                        <a iaDropdownItem [value]="lang">
+                            {{lang.displayName}}
+                        </a>
+                        }
+                    </div>
+                </ia-dropdown>
+                <p class="form-text">
+                    What language is the text in this field? (If the field
+                    contains multiple languages, select "unknown".)
+                </p>
+            </div>
+            }
+            <div class="hstack gap-2">
+                <!-- the first "move down" and the last "move up" button are disabled;
+        this is done with CSS/ARIA/javascript rather than the "disabled"
+        attribute, so the control can stay focused when the user moves
+        the field to the first/last position.
+        -->
+                <button class="btn ms-auto" type="button" aria-label="move up" [id]="moveControlID(i, field, -1)"
+                    ngbTooltip="move field up"
+                    [attr.aria-disabled]="isFirst" [class.is-disabled]="isFirst"
+                    (click)="isFirst || moveField(i, field, -1)">
+                    <fa-icon [icon]="directionIcons.up" aria-hidden="true" />
+                </button>
+                <button class="btn" type="button" aria-label="move down" [id]="moveControlID(i, field, +1)"
+                    ngbTooltip="move field down"
+                    [attr.aria-disabled]="isLast" [class.is-disabled]="isLast"
+                    (click)="isLast || moveField(i, field, +1)">
+                    <fa-icon [icon]="directionIcons.down" aria-hidden="true" />
+                </button>
+                <button class="btn" type="button" aria-label="remove"
+                    ngbTooltip="remove field"
+                    (click)="removeField(i)" [disabled]="corpus.active">
+                    <fa-icon [icon]="actionIcons.remove" aria-hidden="true" />
+                </button>
+            </div>
+        </fieldset>
+        }
+    </ng-container>
+
+    @let unusedFields = unusedCsvFields$ | async;
+    @if (unusedFields?.length) {
+    <div class="border rounded p-3 my-5 bg-body-tertiary">
+        <h2 class="title is-5">Add field</h2>
+        <p class="my-3">
+            Some of the columns in your data file are not used as fields. You can add
+            a new field based on a data column.
+        </p>
+        <label class="form-label" for="column_name">Column name</label>
+        <div class="input-group">
+            <select class="form-select" #fieldSelect [disabled]="corpus.active">
+                @for (field of unusedFields; track field.name; let index = $index) {
+                <option [value]="field.name">{{field.name}}</option>
+                }
+            </select>
+            <button class="btn btn-primary" type="button" aria-label="add" (click)="addField(fieldSelect.value)"
+                [disabled]="corpus.active">
+                <span>
+                    <fa-icon [icon]="actionIcons.add" aria-hidden="true" />
+                </span>
+                <span>Add</span>
             </button>
-          </div>
         </div>
-      </div>
     </div>
-  }
+    }
 
-  <div class="field">
-    <div class="control">
-      <button class="btn btn-primary" type="submit">
-        <span ><fa-icon [icon]="formIcons.confirm" /></span>
+    <button class="btn btn-primary" type="submit">
+        <span><fa-icon [icon]="formIcons.confirm" /></span>
         <span>Save changes</span>
-      </button>
-    </div>
-  </div>
+    </button>
 
-  <ia-form-feedback
-    [showSuccess]="!!(showSuccesMessage$ | async)"
-    [showError]="!!(showErrorMessage$ | async)"
-    [showInvalid]="showValidationMessage$ | async" />
+    <ia-form-feedback [showSuccess]="!!(showSuccesMessage$ | async)" [showError]="!!(showErrorMessage$ | async)"
+        [showInvalid]="showValidationMessage$ | async" />
 </form>
