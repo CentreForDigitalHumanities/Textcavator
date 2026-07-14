@@ -1,18 +1,4 @@
-@use "../../../_utilities";
-
-// .filter-container{
-//     &:hover{
-//         box-shadow: 0 0 0 1px utilities.$primary;
-//     }
-//     margin-bottom: 5px;
-// }
-
-.filter-container.on{
-    box-shadow: 0 0 0 2px utilities.$primary;
-}
-
 fieldset {
-    border: none;
     min-inline-size: inherit;
     margin-bottom: 5px;
 

@@ -1,11 +1,10 @@
 @if (filter) {
-  <fieldset class="box filter-container"
-    [class.on]="filter.state$.value.active">
+  <fieldset class="border filter-container rounded p-3"
+    [class.border-primary]="filter.state$.value.active">
     <legend class="form-label" id="legend-filter-{{filter.displayName | slugify}}">
       {{ filter.displayName }}
     </legend>
-    <div class="input-group mb-3" style="float:right">
-      <div class="control">
+    <div class="hstack">
         @if (filter.description?.length) {
           <span
             iaBalloon="{{ filter.description }}"
@@ -16,7 +15,7 @@
         }
         @if ((filter.isDefault$ | async) === false) {
           <button
-            class="btn icon is-ghost"
+            class="btn is-ghost"
             type="button"
             (click)="filter.reset()" iaBalloon="Reset this filter to its default values"
             iaBalloonPosition="down-left">
@@ -25,7 +24,7 @@
         }
         @if ((filter.isDefault$ | async) === false) {
           <button
-            class="btn is-ghost icon"
+            class="btn is-ghost"
             type="button"
             (click)="filter.toggle()"
             iaBalloon="{{filter.state$.value.active ? 'Disable this filter' : 'Enable this filter'}}"
@@ -33,7 +32,6 @@
             <fa-icon [icon]="filterIcons.toggle" aria-hidden="true"></fa-icon>
           </button>
         }
-      </div>
     </div>
     <div class="my-3" class="filter-control">
       @if (filter.adHoc) {
