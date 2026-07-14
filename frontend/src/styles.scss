@@ -2,6 +2,9 @@
 @use "quill/dist/quill.snow";
 @use "utilities";
 @use "bulma/bulma";
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
 
 
 @font-face {
@@ -418,3 +421,4 @@ button {
 
     --corpus-header-background: hsl(var(--bulma-scheme-h), var(--bulma-scheme-s), 20%);
 }
+

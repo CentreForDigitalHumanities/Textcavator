@@ -20,6 +20,7 @@ import { SlugifyPipe } from './pipes/slugify.pipe';
 import { ToggleButtonDirective } from './toggle-button/toggle-button.directive';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { BackToTopButton } from './back-to-top-button/back-to-top-button.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 /** this should be imported by all other modules; provides basic building blocks
  * for the whole application
@@ -56,6 +57,7 @@ import { BackToTopButton } from './back-to-top-button/back-to-top-button.compone
         TableModule,
         ToggleComponent,
         BackToTopButton,
+        NgbModule,
         // Shared pipes
         SlugifyPipe,
     ], imports: [
@@ -72,6 +74,7 @@ import { BackToTopButton } from './back-to-top-button/back-to-top-button.compone
         FontAwesomeModule,
         RouterModule,
         ReactiveFormsModule,
+        NgbModule,
     ], providers: [
         SlugifyPipe,
         provideHttpClient(withInterceptorsFromDi(), withXsrfConfiguration({

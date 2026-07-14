@@ -50,6 +50,7 @@ import { WordModelsModule } from './word-models/word-models.module';
 import { MatomoConfig, matomoImports } from './routing/matomo';
 import { stylePreset } from './primeng-theme';
 import { CoreModule } from './core/core.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 export const appRoutes: Routes = [

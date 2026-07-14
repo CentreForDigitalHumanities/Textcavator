@@ -19,7 +19,8 @@
                   "index": "src/index.html",
                   "tsConfig": "tsconfig.json",
                   "polyfills": [
-                    "src/polyfills.ts"
+                    "src/polyfills.ts",
+                    "@angular/localize/init"
                   ],
                   "assets": ["src/assets"],
                 "styles": [
@@ -101,7 +102,10 @@
               "builder": "@angular/build:karma",
               "options": {
                   "main": "src/test.ts",
-                  "polyfills": ["src/polyfills.ts"],
+                  "polyfills": [
+                    "src/polyfills.ts",
+                    "@angular/localize/init"
+                  ],
                   "tsConfig": "tsconfig.json",
                   "karmaConfig": "karma.conf.js",
                   "assets": ["src/favicon.ico", "src/assets"],
