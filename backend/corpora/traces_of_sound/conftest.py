@@ -8,4 +8,6 @@ def traces_corpora_settings(settings):
     settings.CORPORA = {
         'traces-of-sound': 'corpora.traces_of_sound.traces_of_sound.TracesOfSound',
     }
-    settings.TRACES_OF_SOUND_DATA = join(here, 'tests', 'data')
+    settings.CORPUS_SETTINGS['traces-of-sound'] = {
+        'data_directory': join(here, 'tests', 'data')
+    }

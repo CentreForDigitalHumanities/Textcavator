@@ -76,7 +76,9 @@ def teacher_extractor(role):
     )
 
 class CourseStaffMetadata(XLSXCorpusDefinition):
-    data_directory = settings.HUM_COURSE_DESCRIPTIONS_DATA
+
+    def __init__(self, data_directory: str):
+        self.data_directory = data_directory
 
     def sources(self, **kwargs):
         path = os.path.join(self.data_directory, 'docenten_cursussen2023GW.xlsx')
@@ -123,7 +125,7 @@ class HumCourseDescriptions(XLSXCorpusDefinition):
         yield path, { 'teacher_roles': teacher_roles }
 
     def _extract_teacher_data(self):
-        reader = CourseStaffMetadata()
+        reader = CourseStaffMetadata(data_directory=self.data_directory)
         roles = reader.documents()
         return list(roles)
 
