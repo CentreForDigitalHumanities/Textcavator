@@ -6,7 +6,7 @@ import re
 from corpora.parliament.parliament import Parliament
 from corpora.utils.constants import document_context
 from ianalyzer_readers.extract import Constant, CSV
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.parliament.uk import format_house
 
@@ -14,18 +14,7 @@ class ParliamentCanada(Parliament, CSVCorpusDefinition):
     title = 'People & Parliament (Canada)'
     description = "Speeches from House of Commons"
     min_date = datetime(year=1901, month=1, day=1)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_CANADA_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_CANADA_INDEX') or 'parliament-canada'
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('PP_CANADA_WM') or super().word_model_path
+    es_index = 'parliament-canada'
 
     image = 'canada.jpeg'
     languages = ['en']

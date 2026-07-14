@@ -3,6 +3,7 @@ Collect corpus-specific information, that is, data structures and file
 locations.
 '''
 
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 import logging
 logger = logging.getLogger(__name__)
 import os
@@ -12,7 +13,6 @@ from ianalyzer_readers.xml_tag import Tag
 
 from ianalyzer_readers import extract
 from addcorpus.python_corpora import filters
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition, get_deprecated_setting
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from addcorpus.es_settings import es_settings
@@ -30,18 +30,7 @@ class Troonredes(XMLCorpusDefinition):
     description = "Speeches by Dutch monarchs"
     min_date = datetime(year=1814, month=1, day=1)
     max_date = datetime(year=2025, month=12, day=31)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('TROONREDES_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('TROONREDES_ES_INDEX') or 'troonredes'
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('TROONREDES_WM') or super().word_model_path
+    es_index = 'troonredes'
 
     image = 'troonrede.jpg'
     languages = ['nl']

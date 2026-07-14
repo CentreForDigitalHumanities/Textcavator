@@ -115,9 +115,7 @@ class HumCourseDescriptions(XLSXCorpusDefinition):
     max_date = datetime(2023, 8, 31)
     image = 'uu_gw.jpg'
     languages = ['nl', 'en', 'de', 'fr', 'es', 'it']
-    es_index =  getattr(settings, 'HUM_COURSE_DESCRIPTIONS_INDEX', 'hum_course_descriptions')
-
-    data_directory = settings.HUM_COURSE_DESCRIPTIONS_DATA
+    es_index = 'hum_course_descriptions'
 
     def sources(self, *args, **kwargs):
         teacher_roles = self._extract_teacher_data()

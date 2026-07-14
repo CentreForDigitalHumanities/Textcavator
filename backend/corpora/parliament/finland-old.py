@@ -1,7 +1,7 @@
 from datetime import datetime
 from glob import glob
 
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 from ianalyzer_readers.extract import CSV, Combined, Constant
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.parliament.parliament import Parliament
@@ -15,14 +15,7 @@ class ParliamentFinlandOld(Parliament, CSVCorpusDefinition):
     description = 'Speeches from the early Finnish estates'
     max_date = datetime(year=1906, month=12, day=31)
     min_date = datetime(year=1863, month=1, day=1)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_FINLAND_OLD_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_FINLAND_OLD_INDEX') or 'parliament-finland-old'
+    es_index = 'parliament-finland-old'
 
     def sources(self, start, end):
         for csv_file in glob('{}/**/*.csv'.format(self.data_directory), recursive=True):

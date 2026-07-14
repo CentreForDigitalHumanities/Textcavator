@@ -4,7 +4,7 @@ from datetime import datetime
 
 from corpora.parliament.parliament import Parliament
 from ianalyzer_readers.extract import Constant, Combined, CSV
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.formatting import underscore_to_space
 from corpora.utils.constants import document_context
@@ -13,22 +13,11 @@ class ParliamentFrance(Parliament, CSVCorpusDefinition):
     title = "People & Parliament (France 1881-2022)"
     description = "Speeches from the 3rd, 4th and 5th republic of France"
     min_date = datetime(year=1881, month=1, day=1)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_FR_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_FR_INDEX') or 'parliament-france'
+    es_index = 'parliament-france'
 
     image = 'france.jpg'
     languages = ['fr']
     description_page = 'france.md'
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('PP_FR_WM') or super().word_model_path
 
     field_entry = 'speech_id'
 
