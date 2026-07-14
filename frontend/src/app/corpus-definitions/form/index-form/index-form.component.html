@@ -1,13 +1,13 @@
 <h1 class="mb-4">Index data</h1>
 
-<p class="subtitle">
+<p class="lead">
   Create a search index and activate your corpus
 </p>
 
 @if (state$ | async; as state) {
   <div class="message" [class]="stateClass(state)">
     <div class="message-body" role="status">
-      <p class="subtitle" style="text-align: center;">
+      <p class="lead" style="text-align: center;">
         <span>
           @switch (state.status) {
             @case ('no connection') {

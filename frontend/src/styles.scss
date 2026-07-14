@@ -297,17 +297,17 @@ button {
 }
 
 .p-steps-item.p-disabled {
-    --p-text-muted-color: var(--bulma-text-weak);
+    --p-text-muted-color: var(--bs-secondary-color);
 
     .p-steps-item-number, .p-steps-item-label {
-        color: var(--p-text-muted-color) !important;
+        color: var(--bs-secondary-color) !important;
     }
 }
 
 :root {
-    --p-steps-item-number-active-background: var(--bulma-primary-on-scheme) !important;
-    --p-steps-item-number-active-border-color: var(--bulma-primary-on-scheme) !important;
-    --p-steps-item-label-active-color: var(--bulma-primary-on-scheme) !important;
+    --p-steps-item-number-active-background: var(--bs-primary-text-emphasis) !important;
+    --p-steps-item-number-active-border-color: var(--bs-primary-text-emphasis) !important;
+    --p-steps-item-label-active-color: var(--bs-primary-text-emphasis) !important;
 }
 
 
@@ -338,35 +338,26 @@ button {
 .ql-snow.ql-container {
     font-family: inherit;
     font-size: inherit;
-    border: 1px solid var(--bulma-border);
-
-    .ql-editor {
-        @extend .content;
-
-        ol, ul {
-            padding-left: 0em; // so spacing is not added in both margin AND padding
-        }
-    }
-
+    border: 1px solid var(--bs-border-color);
 }
 
 .ql-snow.ql-toolbar {
-    border: 1px solid var(--bulma-border);
+    border: 1px solid var(--bs-border-color);
 
     .ql-stroke {
-        stroke: var(--bulma-text);
+        stroke: var(--bs-body-color);
     }
 
     .ql-fill {
-        fill: var(--bulma-text);
+        fill: var(--bs-body-color);
     }
 
     .ql-picker {
-        color: var(--bulma-text);
+        color: var(--bs-body-color);
     }
 
     .ql-picker-options {
-        background-color: var(--bulma-body-background-color);
+        background-color: var(--bs-body-bg);
     }
 
     button:hover, button:focus,
@@ -379,16 +370,12 @@ button {
     a.ql-picker-item.dropdown-item:focus,
     .ql-picker-item.ql-selected
     {
-        color: var(--bulma-primary-on-scheme);
+        color: var(--bs-primary);
 
         .ql-stroke {
-            stroke: var(--bulma-primary-on-scheme);
+            stroke: var(--bs-primary);
         }
     }
-}
-
-:root {
-    --corpus-header-background: var(--bulma-white-ter);
 }
 
 // dark mode
