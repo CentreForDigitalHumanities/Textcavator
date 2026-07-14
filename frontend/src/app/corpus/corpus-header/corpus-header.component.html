@@ -25,7 +25,7 @@
           <li [class.is-active]="currentPage === 'search'">
             <a [routerLink]="['/search', corpus.name]"
               routerLinkActive ariaCurrentWhenActive="page">
-              <span class="icon">
+              <span >
                 <fa-icon [icon]="corpusIcons.search" />
               </span>
               <span>Search</span>
@@ -36,7 +36,7 @@
               [class.is-active]="currentPage === 'word-models'">
               <a [routerLink]="['/word-models', corpus.name]"
                 routerLinkActive ariaCurrentWhenActive="page">
-                <span class="icon">
+                <span >
                   <fa-icon [icon]="corpusIcons.wordModels" />
                 </span>
                 <span>Word models</span>
@@ -46,7 +46,7 @@
           <li [class.is-active]="currentPage === 'info'">
             <a [routerLink]="['/info', corpus.name]"
               routerLinkActive ariaCurrentWhenActive="page">
-              <span class="icon">
+              <span >
                 <fa-icon [icon]="corpusIcons.info" />
               </span>
               <span>About</span>
@@ -56,7 +56,7 @@
         @if (corpus.editable) {
           <a
             [routerLink]="['/custom-corpora/edit', corpus.name]">
-            <span class="icon" aria-hidden="true">
+            <span  aria-hidden="true">
               <fa-icon [icon]="corpusIcons.edit"/>
             </span>
             <span>Edit corpus</span>

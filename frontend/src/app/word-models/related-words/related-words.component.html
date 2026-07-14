@@ -1,14 +1,14 @@
-<form class="block">
+<form class="my-3">
     <div class="field">
-        <label class="label">Nearest neighbours to include:</label>
-        <div class="field has-addons">
+        <label class="form-label">Nearest neighbours to include:</label>
+        <div class="input-group mb-3">
             <div class="control">
-                <input class="input" type="number" value="5" min="0" name="neighbours"
+                <input class="form-control" type="number" value="5" min="0" name="neighbours"
                     [(ngModel)]="neighbours">
             </div>
             <div class="control">
-                <button class="button is-primary" type="submit" (click)="getData()">
-                    <span class="icon">
+                <button class="btn btn-primary" type="submit" (click)="getData()">
+                    <span >
                         <fa-icon [icon]="formIcons.confirm"></fa-icon>
                     </span>
                     <span>Confirm</span>
@@ -18,7 +18,7 @@
     </div>
 </form>
 
-<div class="block">
+<div class="my-3">
     <ia-similarity-chart [timeIntervals]="timeIntervals" [totalData]="totalData" [zoomedInData]="zoomedInData"
         [palette]="palette" [asTable]="asTable"></ia-similarity-chart>
 </div>

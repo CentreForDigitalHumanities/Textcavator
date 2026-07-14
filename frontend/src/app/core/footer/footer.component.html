@@ -1,7 +1,7 @@
 <div class="footer">
   <div class="container">
-    <div class="columns">
-      <div class="column">
+    <div class="row">
+      <div class="col-md">
         <p>
           <strong>Textcavator is developed by </strong>
         </p>
@@ -15,13 +15,13 @@
         </a>
       </div>
       @if (environment.logos?.length) {
-        <div class="column">
+        <div class="col-md">
           <p>
             <strong> With support from </strong>
           </p>
-          <div class="columns">
+          <div class="row">
             @for (logo of environment.logos; track logo) {
-              <div class="column">
+              <div class="col-md">
                 <a [href]="logo.url" target="_blank">
                   <img [src]="logo.path" [alt]="logo.alt" [width]="logo.width">
                 </a>
@@ -31,7 +31,7 @@
         </div>
       }
     </div>
-    <div class="block">
+    <div class="my-3">
       <p>
         Version: {{environment.version}}
         <a [href]="environment.sourceUrl" target="_blank" i18n>(source code)</a>

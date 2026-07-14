@@ -23,17 +23,17 @@
     }
   }
 </table>
-<div class="columns is-vcentered">
+<div class="row is-vcentered">
   @if (document.relevance) {
-    <div class="column is-narrow heading">
+    <div class="col-md is-narrow heading">
       Relevance: <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
     </div>
   }
-  <div class="column" role="presentation"></div>
-  <div class="column field is-grouped is-narrow">
+  <div class="col-md" role="presentation"></div>
+  <div class="col-md field is-grouped is-narrow">
     <div class="control">
-      <button class="button is-primary" (click)="page.focus(document)">
-        <span class="icon" aria-hidden="true"><fa-icon [icon]="actionIcons.view"></fa-icon></span>
+      <button class="btn btn-primary" (click)="page.focus(document)">
+        <span  aria-hidden="true"><fa-icon [icon]="actionIcons.view"></fa-icon></span>
         <span>
           View
         </span>
@@ -41,15 +41,15 @@
     </div>
     @if (document.fieldValues.image_path) {
       <div class="control">
-        <button class="button" (click)="goToScan(page, document, $event)" aria-label="view scan">
-          <span class="icon" aria-hidden="true"><fa-icon [icon]="documentIcons.scanAlt"></fa-icon></span>
+        <button class="btn" (click)="goToScan(page, document, $event)" aria-label="view scan">
+          <span  aria-hidden="true"><fa-icon [icon]="documentIcons.scanAlt"></fa-icon></span>
           <span>View scan</span>
         </button>
       </div>
     }
     <div class="control">
-      <a class="button" [routerLink]="documentUrl">
-        <span class="icon" aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
+      <a class="btn" [routerLink]="documentUrl">
+        <span  aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
         <span>
           Link
         </span>

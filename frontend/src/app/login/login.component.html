@@ -1,21 +1,21 @@
-<section class="section">
+<section class="py-5">
 
   <form (ngSubmit)="login()" class="container">
     <div class="container is-login">
       <h1 class="title">Sign in</h1>
       <div class="field">
-        <label class="label" for="username">Username</label>
+        <label class="form-label" for="username">Username</label>
         <p class="control has-icons-left has-icons-right">
-          <input class="input" type="text" [(ngModel)]="username" name="username" />
+          <input class="form-control" type="text" [(ngModel)]="username" name="username" />
           <span class="icon is-left">
             <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
           </span>
         </p>
       </div>
       <div class="field">
-        <label class="label" for="password">Password</label>
+        <label class="form-label" for="password">Password</label>
         <p class="control has-icons-left">
-          <input class="input" type="password" [(ngModel)]="password" name="password" />
+          <input class="form-control" type="password" [(ngModel)]="password" name="password" />
           <span class="icon is-left">
             <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
           </span>
@@ -25,7 +25,7 @@
         <div class="level-left">
           <div class="level-item">
             <p class="control">
-              <button class="button is-primary" [ngClass]="{'is-loading':isLoading}">Login</button>
+              <button class="btn btn-primary" [ngClass]="{'is-loading':isLoading}">Login</button>
             </p>
           </div>
         </div>
@@ -37,7 +37,7 @@
           </div>
           <div class="level-item">
             <a [routerLinkActive]="'is-active'" [routerLink]="['/registration']">
-              <span class="icon">
+              <span >
                 <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
               </span>
               Sign Up
@@ -63,7 +63,7 @@
     </div>
   </form>
 </section>
-<section class="section">
+<section class="py-5">
   <div class="container">
     @if (isWrong) {
       <div class="notification is-danger" [ngClass]="{'is-loading':isLoading}">

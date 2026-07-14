@@ -1,9 +1,9 @@
 @if (selector) {
   @if (selector.options.length) {
-    <div class="columns">
-      <div class="column">
+    <div class="row">
+      <div class="col-md">
         <div class="field">
-          <label class="label" id="label-visualization-type">
+          <label class="form-label" id="label-visualization-type">
             What do you want to visualise?
           </label>
           <div class="control">
@@ -19,7 +19,7 @@
                     {{option.label}}
                     @if (option.disabled$ | async) {
                       <span
-                        class="icon" iaBalloon="this visualisation requires a search term">
+                         iaBalloon="this visualisation requires a search term">
                         <fa-icon [icon]="actionIcons.help"></fa-icon>
                       </span>
                     }
@@ -31,10 +31,10 @@
         </div>
       </div>
       @if ((selector.activeOption$ | async).fields; as fields) {
-        <div class="column">
+        <div class="col-md">
           <div class="field">
             @if (selector.state$ | async; as state) {
-              <label class="label"
+              <label class="form-label"
                 id="label-visualized-field">
                 @if (state.name === 'resultscount' || state.name === 'termfrequency') {
                   <span>
@@ -71,23 +71,23 @@
                 </ia-dropdown>
               }
               @if (fields.length === 1) {
-                <input class="input is-static" type="text" [value]="fields[0].displayName">
+                <input class="form-control is-static" type="text" [value]="fields[0].displayName">
               }
             </div>
           </div>
         </div>
       }
-      <div class="column is-narrow">
-        <div class="field has-addons">
+      <div class="col-md is-narrow">
+        <div class="input-group mb-3">
           <!-- Buttons for switching between table and graphical representation -->
           <div class="control">
-            <button class="button" iaToggleButton [active]="!freqtable"
+            <button class="btn" iaToggleButton [active]="!freqtable"
               (click)="freqtable = false" aria-label="view chart">
               <fa-icon [icon]="visualizationIcons.chart" aria-hidden="true" />
             </button>
           </div>
           <div class="control">
-            <button class="button" iaToggleButton [active]="freqtable"
+            <button class="btn" iaToggleButton [active]="freqtable"
               (click)="freqtable = true" aria-label="view table">
               <fa-icon [icon]="visualizationIcons.table" aria-hidden="true"/>
             </button>
@@ -105,7 +105,7 @@
         </div>
       </div>
     }
-    <div class="block">
+    <div class="my-3">
       @switch (visualizationType) {
         @case ('resultscount') {
           @if (visualizedField.displayType === 'date') {
@@ -160,7 +160,7 @@
       (palette)="palette = $event">
     </ia-visualization-footer>
   } @else {
-    <div class="block message">
+    <div class="my-3 message">
       This corpus has no fields with associated visualizations.
     </div>
   }

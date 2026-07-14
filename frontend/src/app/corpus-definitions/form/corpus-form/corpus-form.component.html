@@ -1,4 +1,4 @@
-<div class="section">
+<div class="py-5">
     <div class="container">
         <nav aria-label="secondary navigation" class="breadcrumb block">
             <ul>
@@ -11,14 +11,14 @@
 
         @let corpus = corpus$ | async;
 
-        <div class="columns">
-            <div class="column">
-                <h1 class="title">Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
+        <div class="row">
+            <div class="col-md">
+                <h1 class="mb-4">Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
             </div>
-            <div class="column is-narrow">
+            <div class="col-md is-narrow">
                 @if (corpus.active) {
-                    <a class="button is-medium" [routerLink]="['/search', corpus.definition.name]">
-                        <span class="icon">
+                    <a class="btn is-medium" [routerLink]="['/search', corpus.definition.name]">
+                        <span >
                             <fa-icon [icon]="corpusIcons.search" aria-hidden="true" />
                         </span>
                     </a>
@@ -29,7 +29,7 @@
         @if (corpus.active) {
             <div class="message">
                 <div class="message-body">
-                    <p class="block">
+                    <p class="my-3">
                         This corpus is currently active and available for searching. Some
                         editing options are locked. To enable them, deactive the corpus in
                         step 4.
@@ -40,14 +40,14 @@
     </div>
 </div>
 
-<div class="section">
+<div class="py-5">
     <div class="container">
         <p-steps [model]="steps$ | async" [readonly]="false" [activeIndex]="activeStep$ | async"
             (activeIndexChange)="onActiveIndexChange($event)" />
     </div>
 </div>
 <ng-container [ngSwitch]="activeStep$ | async">
-    <div class="section">
+    <div class="py-5">
         <div class="container" *ngIf="corpus$ | async as corpus">
             <ng-container *ngSwitchCase="0"><ia-meta-form
                     [corpus]="corpus" /></ng-container>
@@ -62,7 +62,7 @@
     </div>
 </ng-container>
 
-<div class="section" *ngIf="nextStep$ | async as nextStep">
+<div class="py-5" *ngIf="nextStep$ | async as nextStep">
     <div class="container">
         @if (nextStep.disabled) {
             <div class="message">
@@ -71,8 +71,8 @@
                 </p>
             </div>
         } @else {
-            <button class="button" (click)="toNext()">
-                <span class="icon"><fa-icon [icon]="actionIcons.next" aria-hidden="true" /></span>
+            <button class="btn" (click)="toNext()">
+                <span ><fa-icon [icon]="actionIcons.next" aria-hidden="true" /></span>
                 <span>{{nextStep.label}}</span>
             </button>
         }

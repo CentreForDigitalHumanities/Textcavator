@@ -1,14 +1,14 @@
 <ia-corpus-header [corpus]="corpus" currentPage="word-models"></ia-corpus-header>
 
-<section class="section search-section">
+<section class="py-5 search-section">
   <div class="container">
-    <form class="block">
-      <div class="field has-addons">
+    <form class="my-3">
+      <div class="input-group mb-3">
         <div class="control is-expanded">
-          <input class="input" name="query" placeholder="Query" [(ngModel)]="queryText">
+          <input class="form-control" name="query" placeholder="Query" [(ngModel)]="queryText">
         </div>
         <div class="control">
-          <button type="submit" class="button is-primary" (click)="submitQuery()">
+          <button type="submit" class="btn btn-primary" (click)="submitQuery()">
             Search
           </button>
         </div>
@@ -17,7 +17,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="py-5">
   <div class="container">
     @if (activeQuery || queryFeedback) {
       <ia-query-feedback [query]="activeQuery" [queryFeedback]="queryFeedback" (selectedSuggestion)="queryText = $event; submitQuery()"></ia-query-feedback>
@@ -29,13 +29,13 @@
           <ng-template iaTabPanel
             [id]="tab" [title]="tabs[tab].title">
             @if (!errorMessage) {
-              <div class="columns">
-                <div class="column"></div>
-                <div class="column is-narrow">
-                  <div class="field has-addons">
+              <div class="row">
+                <div class="col-md"></div>
+                <div class="col-md is-narrow">
+                  <div class="input-group mb-3">
                     <!-- Buttons for switching between table and graphical representation -->
                     <div class="control">
-                      <button class="button" iaToggleButton
+                      <button class="btn" iaToggleButton
                         [active]="!asTable"
                         (click)="asTable = false"
                         aria-label="view chart">
@@ -44,7 +44,7 @@
                       </button>
                     </div>
                     <div class="control">
-                      <button class="button" iaToggleButton
+                      <button class="btn" iaToggleButton
                         [active]="asTable"
                         (click)="asTable = true"
                         aria-label="view table">
@@ -55,7 +55,7 @@
                   </div>
                 </div>
               </div>
-              <div class="block" [ngClass]="{'is-loading':isLoading}">
+              <div class="my-3" [ngClass]="{'is-loading':isLoading}">
                 @if (tab === 'relatedwords') {
                   <ia-related-words
                     [corpus]="corpus" [queryText]="activeQuery"
@@ -77,7 +77,7 @@
                     />
                 }
               </div>
-              <div class="block">
+              <div class="my-3">
                 <ia-visualization-footer [tableView]="asTable" [manualPage]="tabs[tab].manual"
                   [chartElementID]="tabs[tab].chartID" [imageFileName]="imageFileName"
                   (palette)="palette = $event">

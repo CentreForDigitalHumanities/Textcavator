@@ -1,17 +1,17 @@
-<section class="section">
-  <h1 class="title block">Your tags</h1>
-  <div class="block">
-    <button class="button is-primary" aria-label="create tag" (click)="startCreate()">
-      <span class="icon">
+<section class="py-5">
+  <h1 class="mb-4 block">Your tags</h1>
+  <div class="my-3">
+    <button class="btn btn-primary" aria-label="create tag" (click)="startCreate()">
+      <span >
         <fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon>
       </span>
       <span>New</span>
     </button>
   </div>
 
-  <div class="columns is-multiline">
+  <div class="row is-multiline">
     @for (tag of tags$ | async; track tag) {
-      <div class="column is-one-third">
+      <div class="col-md is-one-third">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
@@ -38,7 +38,7 @@
                         <td>
                           <a [routerLink]="['/search', entry.corpus]" [queryParams]="makeQueryParams(entry.corpus, tag)"
                             aria-label="Open search results for this tag" iaBalloon="open search results for this tag">
-                            <span class="icon"><fa-icon [icon]="actionIcons.search"></fa-icon></span>
+                            <span ><fa-icon [icon]="actionIcons.search"></fa-icon></span>
                           </a>
                         </td>
                       </tr>
@@ -82,34 +82,34 @@
         <div class="content">
           <form>
             <div class="field">
-              <label class="label">Name</label>
+              <label class="form-label">Name</label>
               <div class="control">
-                <input class="input" type="text" [(ngModel)]="editedTag.name" name="name">
+                <input class="form-control" type="text" [(ngModel)]="editedTag.name" name="name">
                 @if (!tagValid()) {
-                  <p class="help is-danger">
+                  <p class="form-text is-danger">
                     This field is required
                   </p>
                 }
               </div>
             </div>
             <div class="field">
-              <label class="label">Description</label>
+              <label class="form-label">Description</label>
               <div class="control">
-                <input class="input" type="text" [(ngModel)]="editedTag.description" name="description">
+                <input class="form-control" type="text" [(ngModel)]="editedTag.description" name="description">
               </div>
             </div>
           </form>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <div class="buttons is-right">
-          <button class="button is-primary" (click)="modalType === 'edit' ?  finishEdit() : finishCreate()"
+        <div class="btns is-right">
+          <button class="btn btn-primary" (click)="modalType === 'edit' ?  finishEdit() : finishCreate()"
             [disabled]="!tagValid()">
-            <span class="icon"><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
+            <span ><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
             <span>Save</span>
           </button>
-          <button class="button" (click)="cancelEdit()">
-            <span class="icon"><fa-icon [icon]="formIcons.reset"></fa-icon></span>
+          <button class="btn" (click)="cancelEdit()">
+            <span ><fa-icon [icon]="formIcons.reset"></fa-icon></span>
             <span>Cancel</span></button>
           </div>
         </footer>

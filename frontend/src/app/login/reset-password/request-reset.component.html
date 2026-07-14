@@ -1,19 +1,19 @@
-<section class="section">
-  <div class="columns is-centered">
+<section class="py-5">
+  <div class="row is-centered">
     <div>
       <form (ngSubmit)="requestReset(requestResetForm)" class="container" #requestResetForm="ngForm">
         <div class="container is-login">
-          <h1 class="title">Reset password</h1>
+          <h1 class="mb-4">Reset password</h1>
           <div class="field">
-            <label class="label" for="email">Email</label>
+            <label class="form-label" for="email">Email</label>
             <div class="control has-icons-left">
-              <input class="input" type="email" name="email" ngModel #email="ngModel" required email
+              <input class="form-control" type="email" name="email" ngModel #email="ngModel" required email
                 (input)="disableNotification()" />
               <span class="icon is-left">
                 <fa-icon [icon]="userIcons.email" aria-hidden="true"></fa-icon>
               </span>
             </div>
-            <p class="help">Enter the e-mail address with which you registered for {{appName}}.</p>
+            <p class="form-text">Enter the e-mail address with which you registered for {{appName}}.</p>
             @if (email.errors?.required && (email.dirty || email.touched)) {
               <div class="notification is-warning">
                 Email is required.
@@ -31,7 +31,7 @@
 
           <div class="field">
             <p class="control">
-              <button class="button is-primary" [disabled]="!requestResetForm.form.valid">Request password reset<link rel="stylesheet" href=""></button>
+              <button class="btn btn-primary" [disabled]="!requestResetForm.form.valid">Request password reset<link rel="stylesheet" href=""></button>
             </p>
           </div>
         </div>

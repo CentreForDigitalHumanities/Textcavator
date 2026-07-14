@@ -1,7 +1,7 @@
 @if (palettes) {
   <ia-dropdown [value]="palette" (onChange)="palette = $event"
     labelledBy="palette-icon">
-    <span iaDropdownLabel class="icon" id="palette-icon">
+    <span iaDropdownLabel  id="palette-icon">
       <fa-icon [icon]="visualizationIcons.palette" role="img"
         aria-label="palette" />
     </span>
@@ -11,7 +11,7 @@
           iaDropdownItem [value]="palette">
           <span role="img" aria-label="colour swatches">
             @for (color of palette; track color) {
-              <span class="icon" [style.color]="color">
+              <span  [style.color]="color">
                 <fa-icon [icon]="visualizationIcons.swatch"></fa-icon>
               </span>
             }

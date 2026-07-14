@@ -1,13 +1,13 @@
-<h2 class="title is-5">Image</h2>
+<h2 class="mb-4 is-5">Image</h2>
 
-<p class="label">
+<p class="form-label">
   Current image @if (!corpus.hasImage) {
   <span>(default)</span>
   }:
 </p>
 
 @if (imageURL$ | async; as url) {
-  <div class="block image-container">
+  <div class="my-3 image-container">
     <div class="image is-5by4">
       <img  [src]="url" />
     </div>
@@ -35,8 +35,8 @@
     </div>
   </div>
   <div class="control">
-    <button class="button" type="button" (click)="deleteImage()">
-      <span class="icon">
+    <button class="btn" type="button" (click)="deleteImage()">
+      <span >
         <fa-icon [icon]="actionIcons.remove" />
       </span>
       <span>Remove image</span>

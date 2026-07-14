@@ -18,7 +18,7 @@
             iaBalloon="Edit corpus" iaBalloonPosition="down-left"
             [routerLink]="['/custom-corpora/edit', corpus.id]"
             aria-label="edit corpus">
-            <span class="icon">
+            <span>
               <fa-icon [icon]="corpusIcons.edit" aria-hidden="true"></fa-icon>
             </span>
           </a>
@@ -29,7 +29,7 @@
           iaBalloon="More information" iaBalloonPosition="down-left"
           [routerLink]="['/info', corpus.name]"
           aria-label="more information">
-          <span class="icon">
+          <span>
             <fa-icon [icon]="corpusIcons.infoAlt" aria-hidden="true"></fa-icon>
           </span>
         </a>
@@ -53,7 +53,7 @@
       <div class="column is-narrow explore-column">
         <a class="button is-primary has-background-primary-soft has-text-primary-soft-invert"
           [routerLink]="['/search', corpus.name]">
-          <span class="icon" aria-hidden="true">
+          <span aria-hidden="true">
             <fa-icon [icon]="corpusIcons.search"></fa-icon>
           </span>
           <span>Explore</span>

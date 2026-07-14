@@ -14,8 +14,8 @@
   </ia-dropdown>
 </div>
 <div class="control">
-  <button class="button" type="button" (click)="toggleSortType()" [ngClass]="{ 'is-static': !sortField }">
-    <span class="icon" aria-hidden="true">
+  <button class="btn" type="button" (click)="toggleSortType()" [ngClass]="{ 'is-static': !sortField }">
+    <span  aria-hidden="true">
       <fa-icon [icon]="sortIcons[sortType]"></fa-icon>
     </span>
     @if (ascending) {

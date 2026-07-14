@@ -1,4 +1,4 @@
-<div class="block table-container">
+<div class="my-3 table-container">
   <p-table [value]="formattedData" [paginator]="true" [rows]="15" sortField={{defaultSort}} sortOrder={{defaultSortOrder}}>
     <ng-template pTemplate="header">
       <tr class="is-selected">
@@ -31,13 +31,13 @@
   <div class="level-left">
     @if (wideFormatColumn !== undefined) {
       <div class="level-item" iaBalloon="change the format for the table">
-        <div class="field has-addons">
+        <div class="input-group mb-3">
           <div class="control">
-            <button class="button" iaToggleButton [active]="format === 'long'"
+            <button class="btn" iaToggleButton [active]="format === 'long'"
             (click)="setFormat('long')">long format</button>
           </div>
           <div class="control">
-            <button class="button" iaToggleButton [active]="format === 'wide'"
+            <button class="btn" iaToggleButton [active]="format === 'wide'"
             (click)="setFormat('wide')">wide format</button>
           </div>
         </div>
@@ -45,7 +45,7 @@
     }
     @if (!disableFullTable) {
       <div class="level-item">
-        <button class="button" iaToggleButton [active]="fullTableToggle" (click)="toggleFullTable()">Show extra
+        <button class="btn" iaToggleButton [active]="fullTableToggle" (click)="toggleFullTable()">Show extra
         columns</button>
       </div>
     }
@@ -53,8 +53,8 @@
 
   <div class="level-right">
     <div class="level-item">
-      <button class="button" (click)="downloadTable()">
-        <span class="icon">
+      <button class="btn" (click)="downloadTable()">
+        <span >
           <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
         </span>
         <span>Download table data</span>

@@ -1,5 +1,5 @@
 @if (totalResults.result$ | async; as total) {
-  <p class="block">
+  <p class="my-3">
     You can download your search results as a CSV file. View the
     <a [routerLink]="['/manual', 'download']">manual</a>
     for more information.
@@ -13,7 +13,7 @@
   }
   <form>
     <div class="field">
-      <label class="label" id="fields-select-label">Fields</label>
+      <label class="form-label" id="fields-select-label">Fields</label>
       <div class="control">
         <p-multiSelect [options]="fieldOptions"
           [(ngModel)]="fieldSelection"
@@ -22,19 +22,19 @@
           ariaLabelledBy="fields-select-label">
         </p-multiSelect>
       </div>
-      <p class="help">
+      <p class="form-text">
         Select which fields should be included as columns in the CSV file.
       </p>
     </div>
     <div class="field">
-      <label class="label" id="sort-by-label">
+      <label class="form-label" id="sort-by-label">
         Sort results
       </label>
       <ia-search-sorting [pageResults]="resultsConfig" labelledBy="sort-by-label" />
     </div>
     <div class="field">
       <div role="group" class="control">
-        <legend class="label">
+        <legend class="form-label">
           Additional columns
         </legend>
         <!-- checkbox: include query? -->
@@ -69,7 +69,7 @@
     </div>
     @if ((canDownloadDirectly$ | async)) {
       <div class="field" role="group">
-        <legend class="label">File encoding</legend>
+        <legend class="form-label">File encoding</legend>
         <div class="control radios">
           @for (encodingOption of encodingOptions; track encodingOption) {
             <label class="radio">
@@ -78,16 +78,16 @@
             </label>
           }
         </div>
-        <p class="help">
+        <p class="form-text">
           We recommend using utf-8 encoding for most applications, including Python and R.
           For importing files in Microsoft Excel, we recommend utf-16.
         </p>
       </div>
-      <div class="block">
-        <button class="button is-primary" [ngClass]="{'is-loading':isDownloading}"
+      <div class="my-3">
+        <button class="btn btn-primary" [ngClass]="{'is-loading':isDownloading}"
           type="submit"
           (click)="confirmDirectDownload()" [disabled]="total === 0">
-          <span class="icon">
+          <span >
             <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
           </span>
           <span>Download</span>
@@ -101,9 +101,9 @@
           ready.
         </p>
       </div>
-      <div class="block">
-        <button class="button is-primary" type="submit" (click)="longDownload()">
-          <span class="icon">
+      <div class="my-3">
+        <button class="btn btn-primary" type="submit" (click)="longDownload()">
+          <span >
             <fa-icon [icon]="actionIcons.wait"></fa-icon>
           </span>
           <span>Request download</span>

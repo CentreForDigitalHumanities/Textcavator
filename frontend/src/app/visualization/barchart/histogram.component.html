@@ -1,10 +1,10 @@
-<div class="block">
+<div class="my-3">
     <p class=notification *ngIf=showHint>
         <b>Drag to zoom, double click to unzoom</b>
     </p>
 </div>
 
-<div class="block">
+<div class="my-3">
     <ia-barchart-options
         [queryText]="queryText" [showTokenCountOption]="totalTokenCountAvailable" [isLoading]="isLoading"
         [frequencyMeasure]="frequencyMeasure"
@@ -13,11 +13,11 @@
     </ia-barchart-options>
 </div>
 
-<div class="block" [ngClass]="{ 'is-hidden': asTable, 'is-loading': isLoading}">
+<div class="my-3" [ngClass]="{ 'is-hidden': asTable, 'is-loading': isLoading}">
     <canvas id="barchart" width="400" height="200" aria-label="histogram" role="img"></canvas>
 </div>
 
-<div class="block" *ngIf="asTable">
+<div class="my-3" *ngIf="asTable">
     <ia-freqtable [headers]="tableHeaders" [data]="tableData" [defaultSort]="defaultSort"
         [name]="visualizedField ? visualizedField.name : ''" [requiredColumn]="currentValueKey">
     </ia-freqtable>
@@ -25,7 +25,7 @@
 
 <div class="message is-warning" *ngIf="!isLoading && documentLimitExceeded && frequencyMeasure === 'tokens'">
     <div class="message-body">
-        <div class="block">
+        <div class="my-3">
             The results for your search include too many documents to count all matches.
             Only a sample of the first {{percentageDocumentsSearched}}% of documents for each bin are analyzed;
             the matches in other documents are extrapolated based on the sample.

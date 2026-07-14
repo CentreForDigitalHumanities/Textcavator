@@ -3,7 +3,7 @@
     <div #chart id="chart" [class.is-hidden]="asTable" [attr.aria-hidden]="asTable"></div>
     <input iaThemeIndicator >
     @if (asTable) {
-      <div class="block">
+      <div class="my-3">
         <ia-freqtable [headers]="tableHeaders" [data]="results.result$ | async" [defaultSort]="'doc_count'" [name]="(results.state$ | async).field?.name">
         </ia-freqtable>
       </div>

@@ -1,4 +1,4 @@
-<form class="field has-addons">
+<form class="input-group mb-3">
   @if (!createMode) {
     <div class="control">
       @if (filterTags(tags$ | async, exclude); as filteredTags) {
@@ -19,7 +19,7 @@
               </a>
             }
             <a iaDropdownItem (onSelect)="toggleCreate()" [value]="null">
-              <span class="icon"><fa-icon [icon]="actionIcons.add"></fa-icon></span>
+              <span ><fa-icon [icon]="actionIcons.add"></fa-icon></span>
               <span>Create a new tag</span>
             </a>
           </div>
@@ -31,7 +31,7 @@
     <div class="control" >
       <input type="text"
         aria-label="new tag name"
-        class="input is-small tag-input" placeholder="Enter tag name"
+        class="form-control is-small tag-input" placeholder="Enter tag name"
         name="tag-name"
         #newTagNameInput
         [(ngModel)]="newTagName">
@@ -39,19 +39,19 @@
   }
   <div class="control">
     <button
-      class="button tag"
+      class="btn tag"
       aria-label="confirm"
       type="submit"
       (click)="createMode ? createTag() : addTag()"
       [disabled]="createMode ? !newTagName?.length : !selectedTag"
       >
-      <span class="icon"><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
+      <span ><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
     </button>
   </div>
   <div class="control">
-    <button class="button tag" aria-label="cancel" type="reset" (click)="cancel.emit()"
+    <button class="btn tag" aria-label="cancel" type="reset" (click)="cancel.emit()"
       type="button">
-      <span class="icon"><fa-icon [icon]="formIcons.reset"></fa-icon></span>
+      <span ><fa-icon [icon]="formIcons.reset"></fa-icon></span>
     </button>
   </div>
 </form>

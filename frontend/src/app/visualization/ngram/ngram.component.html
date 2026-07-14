@@ -1,9 +1,9 @@
 
 <div class="box">
-  <div class="columns is-multiline">
-    <div class="column is-one-third">
+  <div class="row is-multiline">
+    <div class="col-md is-one-third">
       <div class="field">
-        <label class="label" iaBalloon="view ngrams (phrases) or collocates (loose words)"
+        <label class="form-label" iaBalloon="view ngrams (phrases) or collocates (loose words)"
           iaBalloonPosition="up-left" iaBalloonLength="fit"
           id="label-mode">
           Mode
@@ -24,9 +24,9 @@
         </div>
       </div>
     </div>
-    <div class="column is-one-third">
+    <div class="col-md is-one-third">
       <div class="field">
-        <label class="label" iaBalloon="search for bigrams (2 words) or trigrams (3 words)"
+        <label class="form-label" iaBalloon="search for bigrams (2 words) or trigrams (3 words)"
           iaBalloonPosition="up-left" iaBalloonLength="fit"
           id="label-size">
           @if (currentSettings.mode === 'ngrams') {
@@ -52,9 +52,9 @@
       </div>
     </div>
     @if (currentSettings.mode === 'ngrams') {
-      <div class="column is-one-third">
+      <div class="col-md is-one-third">
         <div class="field">
-          <label class="label" iaBalloon="only search n-grams with the search term in the specified position"
+          <label class="form-label" iaBalloon="only search n-grams with the search term in the specified position"
             iaBalloonPosition="up-left" iaBalloonLength="fit"
             id="label-positions">
             Position of search term
@@ -76,9 +76,9 @@
         </div>
       </div>
     }
-    <div class="column is-one-third">
+    <div class="col-md is-one-third">
       <div class="field">
-        <label class="label" iaBalloon="divide by the average frequency of the words in the n-gram; favours words that are otherwise rare"
+        <label class="form-label" iaBalloon="divide by the average frequency of the words in the n-gram; favours words that are otherwise rare"
           iaBalloonPosition="up-left" iaBalloonLength="fit"
           id="label-freq-compensation">
           Compensate for frequency
@@ -100,9 +100,9 @@
       </div>
     </div>
     @if (analysisOptions) {
-      <div class="column is-one-third">
+      <div class="col-md is-one-third">
         <div class="field">
-          <label class="label" iaBalloon="pre-processing steps on the text, like removing stopwords or stemming"
+          <label class="form-label" iaBalloon="pre-processing steps on the text, like removing stopwords or stemming"
             iaBalloonPosition="up-left" iaBalloonLength="fit"
             id="label-analysis">
             Language processing
@@ -124,9 +124,9 @@
         </div>
       </div>
     }
-    <div class="column is-one-third">
+    <div class="col-md is-one-third">
       <div class="field">
-        <label class="label" iaBalloon="maximum number of documents analyzed per time interval"
+        <label class="form-label" iaBalloon="maximum number of documents analyzed per time interval"
           iaBalloonPosition="up-left" iaBalloonLength="fit"
           id="label-max-documents">
           Document limit
@@ -147,9 +147,9 @@
         </div>
       </div>
     </div>
-    <div class="column is-one-third">
+    <div class="col-md is-one-third">
       <div class="field">
-        <label class="label" iaBalloon="the number of n-grams displayed in the results"
+        <label class="form-label" iaBalloon="the number of n-grams displayed in the results"
           iaBalloonPosition="up-left" iaBalloonLength="fit"
           id="label-number-of-ngrams">
           Number of n-grams
@@ -173,10 +173,10 @@
     </div>
   </div>
   @if (allDateFields && allDateFields.length > 1) {
-    <div class="column is-one-third">
+    <div class="col-md is-one-third">
       <div class="field">
         <div class="control">
-          <label class="label" iaBalloon="field to use on the x-axis"
+          <label class="form-label" iaBalloon="field to use on the x-axis"
             id="label-date-field">
             Compare frequencies by:
           </label>
@@ -202,14 +202,14 @@
       <div class="level-left"></div>
       <div class="level-right">
         <div class="level-item">
-          <button class="button" type="reset" (click)="cancelChanges()">
-            <span class="icon"><fa-icon [icon]="formIcons.reset"></fa-icon></span>
+          <button class="btn" type="reset" (click)="cancelChanges()">
+            <span ><fa-icon [icon]="formIcons.reset"></fa-icon></span>
             <span>Cancel changes</span>
           </button>
         </div>
         <div class="level-item">
-          <button class="button is-primary" type="submit" (click)="confirmChanges()">
-            <span class="icon"><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
+          <button class="btn btn-primary" type="submit" (click)="confirmChanges()">
+            <span ><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
             <span>Calculate!</span>
           </button>
         </div>
@@ -220,7 +220,7 @@
 
 
 <div [ngClass]="{ 'is-hidden': asTable, 'is-loading':isLoading}">
-  <div class="block">
+  <div class="my-3">
     <ia-joyplot [data]="currentResults" [formatValue]="formatValue" [palette]="palette" quantity="frequency"
       [comparedByQuantity]="dateField?.displayName">
     </ia-joyplot>
@@ -228,7 +228,7 @@
 </div>
 
 @if (asTable) {
-  <div class="block">
+  <div class="my-3">
     <ia-freqtable [headers]="tableHeaders" [data]="tableData" [defaultSort]="'date'" [name]="visualizedField.name+'-ngrams'">
     </ia-freqtable>
   </div>

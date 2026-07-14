@@ -15,7 +15,7 @@ const defaultValueType = 'alpha';
     standalone: false
 })
 export class SearchSortingComponent {
-    @HostBinding('class') classes = 'field has-addons';
+    @HostBinding('class') classes = 'input-group mb-3';
     @Input() pageResults: PageResults;
     @Input() labelledBy: string;
 

@@ -1,4 +1,4 @@
-<div class="section">
+<div class="py-5">
   <div class="container">
     <nav aria-label="secondary navigation" class="breadcrumb block">
       <ul>
@@ -9,14 +9,14 @@
 
     <h1 class="title block">Custom corpora</h1>
 
-    <p class="block">
+    <p class="my-3">
       In this environment, you can create your own corpora. You can make a private
       corpus for your own needs, or a public corpus to share with others.
     </p>
 
-    <div class="block">
-      <a class="button" [routerLink]="['new']">
-        <span class="icon" aria-hidden="true">
+    <div class="my-3">
+      <a class="btn" [routerLink]="['new']">
+        <span  aria-hidden="true">
           <fa-icon [icon]="actionIcons.add"></fa-icon>
         </span>
         <span>Create a new corpus</span>
@@ -24,46 +24,46 @@
     </div>
 
     @if (corpora$ | async; as corpora) {
-      <div class="block">
+      <div class="my-3">
         @for (corpus of corpora; track corpus) {
           <section class="box">
             <h2 class="subtitle is-4">{{corpus.definition.meta.title}}</h2>
             @if (corpus.definition.meta.description?.length) {
-              <p class="block">
+              <p class="my-3">
                 {{corpus.definition.meta.description}}
               </p>
             }
-            <div class="buttons">
-              <a class="button" [routerLink]="['edit', corpus.id]">
-                <span class="icon" aria-hidden="true">
+            <div class="btns">
+              <a class="btn" [routerLink]="['edit', corpus.id]">
+                <span  aria-hidden="true">
                   <fa-icon [icon]="actionIcons.edit"></fa-icon>
                 </span>
                 <span>
                   Edit
                 </span>
               </a>
-              <a class="button"
+              <a class="btn"
                 [routerLink]="['/search', corpus.definition.name]"
                 [attr.disabled]="!corpus.active || null">
-                <span class="icon" aria-hidden="true">
+                <span  aria-hidden="true">
                   <fa-icon [icon]="actionIcons.search" />
                 </span>
                 <span>
                   Search
                 </span>
               </a>
-              <a class="button"
+              <a class="btn"
                 [routerLink]="['io', corpus.id]">
-                <span class="icon" aria-hidden="true">
+                <span  aria-hidden="true">
                   <fa-icon [icon]="actionIcons.inOut"></fa-icon>
                 </span>
                 <span>
                   Import/export
                 </span>
               </a>
-              <button class="button" (click)="confirmDelete.open(corpus)"
+              <button class="btn" (click)="confirmDelete.open(corpus)"
                 [disabled]="corpus.active || null">
-                <span class="icon" aria-label="delete">
+                <span  aria-label="delete">
                   <fa-icon [icon]="actionIcons.delete"></fa-icon>
                 </span>
               </button>

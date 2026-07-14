@@ -1,6 +1,6 @@
 <ia-corpus-header [corpus]="corpus" currentPage="info"></ia-corpus-header>
 
-<section class="section pt-0">
+<section class="py-5 pt-0">
   <div class="container">
     @if (documentation$ | async; as documentation) {
       <ia-tabs>
@@ -14,7 +14,7 @@
           <ng-template iaTabPanel
             id="fields" title="Fields">
             @for (field of corpus.fields; track field) {
-              <div class="block">
+              <div class="my-3">
                 <ia-field-info  [field]="field"
                   [coverage]="fieldCoverage ? fieldCoverage[field.name] : undefined"
                   [cardinality]="fieldCardinality ? fieldCardinality[field.name] : undefined">

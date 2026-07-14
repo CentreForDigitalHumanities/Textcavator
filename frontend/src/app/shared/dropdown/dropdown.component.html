@@ -1,5 +1,5 @@
 <div class="dropdown-trigger">
-    <button class="button"
+    <button class="btn"
         aria-haspopup="listbox"
         role="combobox"
         [attr.aria-controls]="menuID"
@@ -13,7 +13,7 @@
         #dropdownTrigger
         type="button">
         <ng-content select="[iaDropdownLabel]"></ng-content>
-        <span class="icon">
+        <span >
             <fa-icon [icon]="actionIcons.dropdown" aria-hidden="true"></fa-icon>
         </span>
     </button>

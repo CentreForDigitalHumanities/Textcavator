@@ -1,5 +1,5 @@
 <ia-corpus-header [corpus]="corpus" currentPage="document"></ia-corpus-header>
-<div class="section pt-3">
+<div class="py-5 pt-3">
   <div class="container">
     <h2 class="title is-4">
       Document: <span class="is-family-monospace">{{documentId}}</span>
@@ -18,14 +18,14 @@
             @if (document?.hasContext) {
               <div class="level-item">
                 <a [routerLink]="contextLink" [queryParams]="contextQueryParams" iaBalloon="view all documents from this {{contextDisplayName}}">
-                  <span class="icon"><fa-icon [icon]="documentIcons.context"></fa-icon></span>
+                  <span ><fa-icon [icon]="documentIcons.context"></fa-icon></span>
                   <span>View {{contextDisplayName}}</span>
                 </a>
               </div>
             }
           </div>
         </div>
-        <div class="block">
+        <div class="my-3">
           @if (document) {
             <ia-document-view [document]="document" [corpus]="corpus" [showEntities]="showNamedEntities"></ia-document-view>
           }

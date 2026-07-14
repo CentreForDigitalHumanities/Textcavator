@@ -1,4 +1,4 @@
-<h1 class="title">Index data</h1>
+<h1 class="mb-4">Index data</h1>
 
 <p class="subtitle">
   Create a search index and activate your corpus
@@ -62,7 +62,7 @@
           To make your corpus searchable, start the indexing proccess below.
           Depending on the amount of data, this can take a while.
         </p>
-        <button class="button" (click)="startIndex()">Start indexing</button>
+        <button class="btn" (click)="startIndex()">Start indexing</button>
       }
       @case ('working') {
         <p>
@@ -73,9 +73,9 @@
           If you want to cancel indexing and edit the form further, you can use the
           button below to abort the indexing process.
         </p>
-        <button class="button" (click)="stopIndex()"
+        <button class="btn" (click)="stopIndex()"
           [class.is-loading]="stopping$ | async">
-          <span class="icon"><fa-icon [icon]="actionIcons.remove"/></span>
+          <span ><fa-icon [icon]="actionIcons.remove"/></span>
           <span>Abort indexing</span>
         </button>
       }
@@ -99,7 +99,7 @@
         }
         <div class="field is-grouped">
           <div class="control">
-            <button class="button" (click)="toggleCorpusActive()"
+            <button class="btn" (click)="toggleCorpusActive()"
               [class.is-primary]="!corpus.active"
               [class.is-loading]="loading$ | async">
               {{corpus.active ? 'Deactivate' : 'Activate'}} corpus
@@ -107,10 +107,10 @@
           </div>
           <div class="control">
             @if (corpus.active) {
-              <a class="button is-primary"
+              <a class="btn btn-primary"
                 [routerLink]="['/search', corpus.definition.name]"
                 [class.is-loading]="loading$ | async">
-                <span class="icon"><fa-icon [icon]="actionIcons.search"/></span>
+                <span ><fa-icon [icon]="actionIcons.search"/></span>
                 <span>Search corpus</span>
               </a>
             }

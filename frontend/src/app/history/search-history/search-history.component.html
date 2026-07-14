@@ -1,7 +1,7 @@
-<section class="section">
-  <h1 class="title">Search history</h1>
+<section class="py-5">
+  <h1 class="mb-4">Search history</h1>
 
-  <p class="block">
+  <p class="my-3">
     Here you can see an overview of your search history.
     You can turn search history on or off in
     <a [routerLink]="['/settings']">settings</a>.
@@ -43,7 +43,7 @@
           <td>{{corpusTitle(query.corpus)}}</td>
           <td>@if (query.queryModel) {
             <a [routerLink]="routerLink(query)" [queryParams]="queryParams(query)">
-              <span class="icon" aria-label="open this query">
+              <span  aria-label="open this query">
                 <fa-icon [icon]="actionIcons.link"></fa-icon>
               </span>
             </a>

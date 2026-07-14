@@ -14,12 +14,12 @@
         <ng-content></ng-content>
       </section>
       <footer class="modal-card-foot">
-        <div class="buttons">
-          <button class="button" (click)="confirm(data.data)"
+        <div class="btns">
+          <button class="btn" (click)="confirm(data.data)"
             [class]="actionButtonClass"
             [class.is-loading]="loading$ | async">
             @if (icon) {
-              <span class="icon">
+              <span >
                 <fa-icon [icon]="icon" />
               </span>
             }
@@ -27,7 +27,7 @@
               {{actionText}}
             </span>
           </button>
-          <button class="button" (click)="cancel()">
+          <button class="btn" (click)="cancel()">
             Cancel
           </button>
         </div>

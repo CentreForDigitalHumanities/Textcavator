@@ -1,15 +1,15 @@
-<section class="section">
-  <div class="columns is-centered">
+<section class="py-5">
+  <div class="row is-centered">
 
     @if (!registrationSucceeded && !serverErrorCode) {
       <div>
         <form (ngSubmit)="register(signupForm)" class="container" #signupForm="ngForm">
           <div class="container is-login">
-            <h1 class="title">{{appName}} sign-up</h1>
+            <h1 class="mb-4">{{appName}} sign-up</h1>
             <div class="field">
-              <label class="label" for="username">Username</label>
+              <label class="form-label" for="username">Username</label>
               <p class="control has-icons-left has-icons-right">
-                <input class="input" type="text" name="username" ngModel #username="ngModel" required>
+                <input class="form-control" type="text" name="username" ngModel #username="ngModel" required>
                 <span class="icon is-left">
                   <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
                 </span>
@@ -28,9 +28,9 @@
               }
             </div>
             <div class="field">
-              <label class="label" for="email">Email</label>
+              <label class="form-label" for="email">Email</label>
               <p class="control has-icons-left">
-                <input class="input" type="email" name="email" ngModel #email="ngModel" required email/>
+                <input class="form-control" type="email" name="email" ngModel #email="ngModel" required email/>
                 <span class="icon is-left">
                   <fa-icon [icon]="userIcons.email" aria-hidden="true"></fa-icon>
                 </span>
@@ -54,9 +54,9 @@
               }
             </div>
             <div class="field">
-              <label class="label" for="email">Password</label>
+              <label class="form-label" for="email">Password</label>
               <p class="control has-icons-left">
-                <input class="input" type="password" name="password" ngModel #password="ngModel" required
+                <input class="form-control" type="password" name="password" ngModel #password="ngModel" required
                   minlength="8" />
                 <span class="icon is-left">
                   <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
@@ -84,9 +84,9 @@
               }
             </div>
             <div class="field">
-              <label class="label" for="email">Confirm password</label>
+              <label class="form-label" for="email">Confirm password</label>
               <p class="control has-icons-left">
-                <input class="input" type="password" name="passwordconfirm" ngModel #passwordconfirm="ngModel"
+                <input class="form-control" type="password" name="passwordconfirm" ngModel #passwordconfirm="ngModel"
                   required />
                 <span class="icon is-left">
                   <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
@@ -129,7 +129,7 @@
             }
             <div class="field">
               <p class="control">
-                <button class="button is-primary" [disabled]="!signupForm.form.valid" [ngClass]="{'is-loading':isLoading}">Register</button>
+                <button class="btn btn-primary" [disabled]="!signupForm.form.valid" [ngClass]="{'is-loading':isLoading}">Register</button>
               </p>
             </div>
           </div>
@@ -139,9 +139,9 @@
 
     @if (registrationSucceeded) {
       <div class="notification is-success container">
-        <p class="title">Hello {{username}},</p>
+        <p class="mb-4">Hello {{username}},</p>
         <p>Thank you for your registration. An email has been sent to:</p>
-        <p class="title">{{email}}</p>
+        <p class="mb-4">{{email}}</p>
         <p>Please follow the instructions in this email to complete your registration. </p>
       </div>
     }

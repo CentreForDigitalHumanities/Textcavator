@@ -17,46 +17,46 @@
         />
     </div>
     <ng-template #footer>
-      <div class="column">
+      <div class="col-md">
         @if (document.position > 1) {
           <a
             iaBalloon="view previous document" iaBalloonPosition="right"
             (click)="page.focusPrevious(document)" (keydown.enter)="page.focusPrevious(document)"
             role="button" tabindex="0">
-            <span class="icon"><fa-icon [icon]="actionIcons.prev">previous</fa-icon></span>
+            <span ><fa-icon [icon]="actionIcons.prev">previous</fa-icon></span>
           </a>
         }
       </div>
-      <div class="column is-narrow">
+      <div class="col-md is-narrow">
         <a [routerLink]="documentPageLink"
           iaBalloon="view this document on its own page"
           tabindex="0">
-          <span class="icon">
+          <span >
             <fa-icon [icon]="actionIcons.link"></fa-icon>
           </span>
           <span>Link</span>
         </a>
       </div>
-      <div class="column is-narrow">
+      <div class="col-md is-narrow">
         @if (document.hasContext) {
           <a
             [routerLink]="['/search', document.corpus.name]" [queryParams]="document.contextQueryParams"
             iaBalloon="view all documents from this {{contextDisplayName}}"
             tabindex="0">
-            <span class="icon">
+            <span >
               <fa-icon [icon]="documentIcons.context"></fa-icon>
             </span>
             <span>View {{contextDisplayName}}</span>
           </a>
         }
       </div>
-      <div class="column" style="text-align:right">
+      <div class="col-md" style="text-align:right">
         @if (document.position < page.documents.length) {
           <a
             iaBalloon="view next document" iaBalloonPosition="left"
             (click)="page.focusNext(document)" (keydown.enter)="page.focusNext(document)"
             role="button" tabindex="0">
-            <span class="icon"><fa-icon [icon]="actionIcons.next">next</fa-icon></span>
+            <span ><fa-icon [icon]="actionIcons.next">next</fa-icon></span>
           </a>
         }
       </div>

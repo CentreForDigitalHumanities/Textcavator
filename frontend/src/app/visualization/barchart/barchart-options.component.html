@@ -1,8 +1,8 @@
 <form>
-  <div class="columns">
-    <div class="column">
+  <div class="row">
+    <div class="col-md">
       <div class="field">
-        <p class="label">Normalization</p>
+        <p class="form-label">Normalization</p>
         <div class="control radios" (change)="onChartParametersChange()">
           <label class="radio"
             iaBalloon="Number of {{frequencyMeasure === 'documents' ? 'documents' : 'observations of the search term'}}">
@@ -34,9 +34,9 @@
       </div>
     </div>
     @if (!freqTable) {
-      <div class="column">
+      <div class="col-md">
         <div class="field">
-          <p class="label">Chart Type</p>
+          <p class="form-label">Chart Type</p>
           <div class="control radios" (change)="onChartParametersChange()">
             <label class="radio">
               <input type="radio" name="chartType" (click)="currentChartType='bar'" [checked]="currentChartType==='bar'">
@@ -63,7 +63,7 @@
   <div class="field">
     @if (!showEdit) {
       <div class="control">
-        <button class="button" (click)="showEdit = true">Compare with another query...</button>
+        <button class="btn" (click)="showEdit = true">Compare with another query...</button>
       </div>
     }
   </div>

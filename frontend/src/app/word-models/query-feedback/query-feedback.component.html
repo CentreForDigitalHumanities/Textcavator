@@ -1,5 +1,5 @@
 @if (queryFeedback && queryFeedback.status !== 'success') {
-  <div class="block message">
+  <div class="my-3 message">
     <div class="message-header">
       <h2>{{titles[queryFeedback.status]}}</h2>
     </div>
@@ -43,5 +43,5 @@
 }
 
 @if (queryFeedback === undefined) {
-  <div class="block is-loading" style="height: 5rem;"></div>
+  <div class="my-3 is-loading" style="height: 5rem;"></div>
 }

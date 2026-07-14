@@ -1,4 +1,4 @@
-<section class="section">
+<section class="py-5">
   <h1 class="title">Downloads</h1>
 
   @if (downloads && corpora) {
@@ -48,7 +48,7 @@
             @if (download.status === 'done') {
               <a role="button" tabindex="0" (click)="itemToDownload = download"
                 (keydown.enter)="itemToDownload = download">
-                <span class="icon">
+                <span >
                   <fa-icon [icon]="actionIcons.download"></fa-icon>
                 </span>
                 <span>download file</span>

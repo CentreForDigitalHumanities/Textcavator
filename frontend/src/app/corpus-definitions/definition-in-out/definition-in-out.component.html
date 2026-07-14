@@ -1,4 +1,4 @@
-<section class="section">
+<section class="py-5">
   <div class="container">
     <nav aria-label="secondary navigation" class="breadcrumb">
       <ul>
@@ -9,9 +9,9 @@
       </ul>
     </nav>
 
-    <h1 class="title">Import/export corpus "{{corpus.definition?.meta.title || '...'}}"</h1>
+    <h1 class="mb-4">Import/export corpus "{{corpus.definition?.meta.title || '...'}}"</h1>
 
-    <p class="block">
+    <p class="my-3">
       You can download or upload a file with your corpus configuration.
       You can use this to create a copy or backup of your corpus, or restore
       your corpus from a backup.
@@ -19,18 +19,18 @@
       <a [routerLink]="['/manual', 'importing-and-exporting-corpora']">manual</a>.
     </p>
 
-    <h2 class="title is-4">Download</h2>
+    <h2 class="mb-4 is-4">Download</h2>
 
-    <div class="block">
-      <button class="button" (click)="downloadJSON()">
-        <span class="icon" aria-hidden="true">
+    <div class="my-3">
+      <button class="btn" (click)="downloadJSON()">
+        <span  aria-hidden="true">
           <fa-icon [icon]="actionIcons.download"></fa-icon>
         </span>
         <span>Download JSON</span>
       </button>
     </div>
 
-    <h2 class="title is-4">Upload</h2>
+    <h2 class="mb-4 is-4">Upload</h2>
 
     @if (corpus.active) {
       <div class="message">
@@ -41,15 +41,15 @@
       </div>
     } @else {
       <form>
-        <div class="block">
+        <div class="my-3">
           <ia-definition-json-upload [reset]="reset$" (upload)="onJSONUpload($event)">
           </ia-definition-json-upload>
         </div>
 
-        <div class="block">
-          <button class="button is-primary" [class.is-loading]="corpus.loading$ | async" type="submit"
+        <div class="my-3">
+          <button class="btn btn-primary" [class.is-loading]="corpus.loading$ | async" type="submit"
             (click)="submit()">
-            <span class="icon" aria-hidden="true">
+            <span  aria-hidden="true">
               <fa-icon [icon]="formIcons.confirm"></fa-icon>
             </span>
             <span>
@@ -57,8 +57,8 @@
             </span>
           </button>
           &nbsp;
-          <button class="button" type="reset" (click)="reset()">
-            <span class="icon" aria-hidden="true">
+          <button class="btn" type="reset" (click)="reset()">
+            <span  aria-hidden="true">
               <fa-icon [icon]="formIcons.reset"></fa-icon>
             </span>
             <span>

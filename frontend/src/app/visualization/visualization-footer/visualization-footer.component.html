@@ -2,8 +2,8 @@
   <div class="level-left">
     @if (manualPage) {
       <div class="level-item">
-        <button class="button" (click)="showHelp()">
-          <span class="icon">
+        <button class="btn" (click)="showHelp()">
+          <span >
             <fa-icon [icon]="actionIcons.helpAlt" aria-label="help"></fa-icon>
           </span>
         </button>
@@ -20,8 +20,8 @@
       @if (!tableView && chartElementID) {
         <div class="level-item">
           @if (!freqtable) {
-            <button class="button download-button" (click)="onRequestImage()">
-              <span class="icon">
+            <button class="btn download-button" (click)="onRequestImage()">
+              <span >
                 <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
               </span>
               <span>Download visualization</span>

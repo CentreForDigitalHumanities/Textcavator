@@ -1,4 +1,4 @@
-<section class="section">
+<section class="py-5">
   <div class="container">
     <nav aria-label="secondary navigation" class="breadcrumb">
       <ul>
@@ -15,15 +15,15 @@
       <ng-template iaTabPanel id="newCorpusTab" title="Create using the interactive editor">
         <form>
           <div class="field">
-            <label class="label" for="title">Title</label>
+            <label class="form-label" for="title">Title</label>
             <div class="control">
-              <input class="input" type="text" name="title" [(ngModel)]="newCorpusTitle" />
+              <input class="form-control" type="text" name="title" [(ngModel)]="newCorpusTitle" />
             </div>
-            <p class="help">Enter a short, clear title for your corpus.</p>
+            <p class="form-text">Enter a short, clear title for your corpus.</p>
           </div>
-          <div class="block">
-            <button class="button is-primary" type="submit" (click)="submit()">
-              <span class="icon" aria-hidden="true">
+          <div class="my-3">
+            <button class="btn btn-primary" type="submit" (click)="submit()">
+              <span  aria-hidden="true">
                 <fa-icon [icon]="formIcons.confirm"></fa-icon>
               </span>
               <span>
@@ -36,19 +36,19 @@
 
       <!-- Upload JSON -->
       <ng-template iaTabPanel id="uploadJSONTab" title="Upload a JSON definition">
-        <p class="block">
+        <p class="my-3">
           Upload a JSON definition file to add it as a corpus.
         </p>
         <form>
-          <div class="block">
+          <div class="my-3">
             <ia-definition-json-upload [reset]="reset$" (upload)="onJSONUpload($event)">
             </ia-definition-json-upload>
           </div>
 
           @if (corpus.isComplete()) {
-            <div class="block">
-              <button class="button is-primary" type="submit" (click)="saveCorpus(true)">
-                <span class="icon" aria-hidden="true">
+            <div class="my-3">
+              <button class="btn btn-primary" type="submit" (click)="saveCorpus(true)">
+                <span  aria-hidden="true">
                   <fa-icon [icon]="formIcons.confirm"></fa-icon>
                 </span>
                 <span>

@@ -1,7 +1,7 @@
 <div [class.is-hidden]="asTable">
-  <div class="block">
+  <div class="my-3">
     <div class="field">
-      <label class="label">Show as:</label>
+      <label class="form-label">Show as:</label>
       <div class="control radios">
         @for (style of ['line', 'bar']; track style) {
           <label class="radio">
@@ -14,7 +14,7 @@
     @if (graphStyle.value==='bar') {
       <div class="field">
         <div class="control">
-          <label class="label">Time interval:</label>
+          <label class="form-label">Time interval:</label>
           <ia-time-interval-slider [labels]="timeIntervals" (currentIndex)="zoomTimeInterval($event)"></ia-time-interval-slider>
         </div>
       </div>
@@ -25,7 +25,7 @@
 </div>
 
 @if (asTable && terms.length) {
-  <div class="block">
+  <div class="my-3">
     <ia-freqtable  [headers]="tableHeaders" [data]="tableData" [defaultSort]="'similarity'" [name]="tableFileName">
     </ia-freqtable>
   </div>

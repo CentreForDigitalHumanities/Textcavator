@@ -1,15 +1,15 @@
 @if (pageResults?.result$ | async; as page) {
-  <section class="section results-navigation mb-4 pt-4 pb-4 pl-0 pr-0">
-    <div class="columns">
-      <div class="column is-narrow has-text-centered">
+  <section class="py-5 results-navigation mb-4 pt-4 pb-4 pl-0 pr-0">
+    <div class="row">
+      <div class="col-md is-narrow has-text-centered">
         <div>
           <label class="heading" id="sort-by-label">Sort By</label>
           <ia-search-sorting [pageResults]="pageResults" labelledBy="sort-by-label" />
         </div>
       </div>
-      <div class="column"></div> <!-- empty column for spacing/alignment -->
+      <div class="col-md"></div> <!-- empty column for spacing/alignment -->
       @if (page.total > resultsPerPage) {
-        <div class="column is-narrow has-text-centered" >
+        <div class="col-md is-narrow has-text-centered" >
           <div>
             <p class="heading">Pages</p>
             <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
@@ -27,9 +27,9 @@
       }
     </div>
   </section>
-  <div class="columns">
+  <div class="row">
     @if (!pageResults.highlightDisabled) {
-      <div class="column">
+      <div class="col-md">
         <ia-highlight-selector  [pageResults]="pageResults" />
       </div>
     }
@@ -50,9 +50,9 @@
     </section>
   }
   <ia-document-popup [page]="page" [queryModel]="queryModel"></ia-document-popup>
-  <div class="columns mt-5">
-    <div class="column"></div>
-    <div class="column is-narrow has-text-centered">
+  <div class="row mt-5">
+    <div class="col-md"></div>
+    <div class="col-md is-narrow has-text-centered">
       <div>
         <p class="heading">Pages</p>
         <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>

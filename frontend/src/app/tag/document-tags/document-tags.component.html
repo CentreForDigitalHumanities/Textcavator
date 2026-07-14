@@ -6,10 +6,10 @@
           {{tag.name}}
         </span>
       </span>
-      <button class="button tag" [attr.aria-label]="'remove tag ' + tag.name"
+      <button class="btn tag" [attr.aria-label]="'remove tag ' + tag.name"
         iaBalloon="remove this tag" iaBalloonPosition="down"
         (click)="removeTag(tag)">
-        <span class="icon"><fa-icon [icon]="actionIcons.remove" aria-hidden="true"></fa-icon></span>
+        <span ><fa-icon [icon]="actionIcons.remove" aria-hidden="true"></fa-icon></span>
       </button>
     </div>
   }
@@ -18,11 +18,11 @@
     @if (showAddNew) {
       <ia-tag-select [exclude]="tags" (selection)="addTag($event)" (cancel)="closeAddNew()" />
     } @else {
-      <button class="button tag" aria-label="add a tag"
+      <button class="btn tag" aria-label="add a tag"
         iaBalloon="add a tag" iaBalloonPosition="down"
         (click)="showAddNew = true"
         #toggleAddNewButton>
-        <span class="icon"><fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon></span>
+        <span ><fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon></span>
       </button>
     }
 

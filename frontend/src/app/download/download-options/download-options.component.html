@@ -9,14 +9,14 @@
         @if (showFormatChoice) {
           <div class="field">
             <div class="control">
-              <label class="label">Format</label>
+              <label class="form-label">Format</label>
               @for (formatOption of ['long', 'wide']; track formatOption) {
                 <label class="radio">
                   <input type="radio" name="format" (click)="format=formatOption" [checked]="format===formatOption">
                   {{formatOption}} format
                 </label>
               }
-              <p class="help">
+              <p class="form-text">
                 In long format, different queries are presented in different rows.
                 In wide format, different queries are presented in different columns.
               </p>
@@ -24,7 +24,7 @@
           </div>
         }
         <div class="field">
-          <label class="label">File encoding</label>
+          <label class="form-label">File encoding</label>
           <div class="control radios">
             @for (encodingOption of encodingOptions; track encodingOption) {
               <label class="radio">
@@ -32,7 +32,7 @@
                 {{encodingOption}}
               </label>
             }
-            <p class="help">
+            <p class="form-text">
               We recommend using utf-8 encoding for most applications, including Python and R.
               For importing files in Microsoft Excel, we recommend utf-16.
             </p>
@@ -41,11 +41,11 @@
       </form>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-primary" (click)="confirmDownload()"
+      <button class="btn btn-primary" (click)="confirmDownload()"
         [class.is-loading]="isDownloading">
         Download
       </button>
-      <button class="button" (click)="cancelDownload()">
+      <button class="btn" (click)="cancelDownload()">
         Cancel
       </button>
     </footer>

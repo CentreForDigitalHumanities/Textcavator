@@ -5,7 +5,7 @@
   what they are looking for.
 </p>
 
-<p class="block">Fields with * are required.</p>
+<p class="my-3">Fields with * are required.</p>
 
 <form (ngSubmit)="onSubmit()" class="box" [formGroup]="metaForm">
   <h2 class="title is-5">Metadata</h2>
@@ -13,28 +13,28 @@
   <div class="field" [class.is-disabled]="corpus.active">
     @let titleControl = metaForm.controls.title;
     @let titleInvalid = titleControl.touched && titleControl.invalid;
-    <label class="label" for="title" id="label-title">Title*</label>
+    <label class="form-label" for="title" id="label-title">Title*</label>
     <div class="control">
-      <input class="input" type="text" name="title"
+      <input class="form-control" type="text" name="title"
         [formControl]="titleControl" [class.is-danger]="titleInvalid"
         aria-required="true" aria-labelledby="label-title"
         aria-describedby="helptext-title feedback-title"
         />
     </div>
-    <p id="feedback-title" class="help is-pulled-right has-text-danger">
+    <p id="feedback-title" class="form-text is-pulled-right has-text-danger">
       @if (titleInvalid) {
         @if (titleControl.hasError('required')) {
           This field is required.
         }
       }
     </p>
-    <p id="helptext-title" class="help">Enter a short, clear title for your corpus.</p>
+    <p id="helptext-title" class="form-text">Enter a short, clear title for your corpus.</p>
   </div>
 
   <div class="field">
     @let descriptionControl = metaForm.controls.description;
     @let descriptionInvalid = descriptionControl.touched && descriptionControl.invalid;
-    <label class="label" for="description" id="label-description">Description*</label>
+    <label class="form-label" for="description" id="label-description">Description*</label>
     <div class="control">
       <textarea class="textarea" name="description" [formControl]="descriptionControl"
         rows="2" aria-required="true" aria-labelledby="label-description"
@@ -42,21 +42,21 @@
         [class.is-danger]="descriptionInvalid">
       </textarea>
     </div>
-    <p id="feedback-description" class="help is-pulled-right has-text-danger">
+    <p id="feedback-description" class="form-text is-pulled-right has-text-danger">
       @if (descriptionInvalid) {
         @if (descriptionControl.hasError('required')) {
           This field is required.
         }
       }
     </p>
-    <p id="helptext-description" class="help">
+    <p id="helptext-description" class="form-text">
       Provide a short description of your corpus. You can add more elaborate
       documentation below.
     </p>
   </div>
 
   <div class="field">
-    <label class="label" for="category" id="label-category">Category*</label>
+    <label class="form-label" for="category" id="label-category">Category*</label>
     <div class="control">
       <ia-dropdown formControlName="category" labelledBy="label-category">
         <span iaDropdownLabel>{{currentCategoryLabel}}</span>
@@ -72,16 +72,16 @@
     </div>
   </div>
 
-  <div class="columns mb-0" formGroupName="date_range">
-    <div class="column pb-0 control">
+  <div class="row mb-0" formGroupName="date_range">
+    <div class="col-md pb-0 control">
       @let minYearControl = metaForm.controls.date_range.controls.min;
       @let minYearInvalid = minYearControl.touched && minYearControl.invalid;
-      <label id="label-minyear" class="label" for="min">Start year*</label>
-      <input class="input" type="number" step="10" name="min"
+      <label id="label-minyear" class="form-label" for="min">Start year*</label>
+      <input class="form-control" type="number" step="10" name="min"
         [formControl]="minYearControl" [class.is-danger]="minYearInvalid"
         aria-required="true" aria-labelledby="label-minyear"
         aria-describedby="feedback-minyear" />
-      <p id="feedback-minyear" class="help is-pulled-right has-text-danger">
+      <p id="feedback-minyear" class="form-text is-pulled-right has-text-danger">
         @if (minYearInvalid) {
           @if (minYearControl.hasError('required')) {
             This field is required.
@@ -89,15 +89,15 @@
         }
       </p>
     </div>
-    <div class="column pb-0 control">
+    <div class="col-md pb-0 control">
       @let maxYearControl = metaForm.controls.date_range.controls.max;
       @let maxYearInvalid = maxYearControl.touched && maxYearControl.invalid;
-      <label id="label-maxyear" class="label" for="max">End year*</label>
-      <input class="input" type="number" step="10" name="max"
+      <label id="label-maxyear" class="form-label" for="max">End year*</label>
+      <input class="form-control" type="number" step="10" name="max"
         [formControl]="maxYearControl" [class.is-danger]="maxYearInvalid"
         aria-required="true" aria-labelledby="label-maxyear"
         aria-describedby="feedback-maxyear" />
-      <p id="feedback-maxyear" class="help is-pulled-right has-text-danger">
+      <p id="feedback-maxyear" class="form-text is-pulled-right has-text-danger">
         @if (maxYearInvalid) {
           @if (maxYearControl.hasError('required')) {
             This field is required.
@@ -106,13 +106,13 @@
       </p>
     </div>
   </div>
-  <p class="help block">Enter the earliest and latest year in your corpus. This is only an indication for
+  <p class="form-text block">Enter the earliest and latest year in your corpus. This is only an indication for
   users, no exact year is required.</p>
 
   <div class="field">
     @let languagesControl = metaForm.controls.languages;
     @let languagesInvalid = languagesControl.touched && languagesControl.invalid;
-    <label id="label-languages" class="label" for="languages">Languages*</label>
+    <label id="label-languages" class="form-label" for="languages">Languages*</label>
     <div class="control">
       <p-autoComplete
         [formControl]="languagesControl"
@@ -128,23 +128,23 @@
         ariaLabelledBy="label-languages"
         />
     </div>
-    <p class="help is-pulled-right has-text-danger">
+    <p class="form-text is-pulled-right has-text-danger">
       @if (languagesInvalid) {
         @if (languagesControl.hasError('required')) {
           This field is required.
         }
       }
     </p>
-    <p class="help">All or the most important languages occuring in your corpus</p>
+    <p class="form-text">All or the most important languages occuring in your corpus</p>
   </div>
 
-  <div class="block"></div>
+  <div class="my-3"></div>
 
   <div class="field">
     <p class="control">
-      <button class="button is-primary"
+      <button class="btn btn-primary"
         [class.is-loading]="loading$ | async">
-        <span class="icon"><fa-icon [icon]="formIcons.confirm" /></span>
+        <span ><fa-icon [icon]="formIcons.confirm" /></span>
         <span>Save changes</span>
       </button>
     </p>
