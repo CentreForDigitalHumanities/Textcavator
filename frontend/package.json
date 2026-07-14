@@ -54,7 +54,7 @@
     "ng2-pdf-viewer": "^10.2.2",
     "ngx-cookie-service": "^21.3.1",
     "ngx-matomo-client": "^9.1.0",
-    "ngx-quill": "^28.0.2",
+    "ngx-quill": "^29.2.0",
     "primeng": "^21.1.9",
     "quill": "^2.0.3",
     "rxjs": "^7.8.1",

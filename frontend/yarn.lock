@@ -4821,10 +4821,10 @@ ngx-matomo-client@^9.1.0:
   dependencies:
     tslib "^2.3.0"
 
-ngx-quill@^28.0.2:
-  version "28.0.2"
-  resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-28.0.2.tgz#f0abc6b80292d5d1455e611a2681993460787ccc"
-  integrity sha512-NL7YzZNoT8G5qWZKXHCIMQff2uVoi8cK3VwFM8RCpFXkc8nMp2moIDMJrF5k9e/xTkQkAQtGgfvbCxRc7su7EA==
+ngx-quill@^29.2.0:
+  version "29.2.0"
+  resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-29.2.0.tgz#3c3443dccac2c32fb1e53574a42a79259ff90bc8"
+  integrity sha512-nutQCD6MtvuNwc/1jdyLp266eu7CXqA0LHho9fEntSxZfEGUTfhMd7F/YR9FMS++5ugBfW+eiWA5zK75ZaL8jg==
   dependencies:
     tslib "^2.3.0"
 
