@@ -1,7 +1,7 @@
 @use "balloon-css/src/balloon";
 @use "quill/dist/quill.snow";
 @use "utilities";
-@use "bulma/bulma";
+// @use "bulma/bulma";
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
@@ -313,24 +313,25 @@ button {
 
 // vega
 
-.vega-bindings {
-    @extend .columns;
-    @extend .is-multiline;
+// TODO: use bootstrap classes
+// .vega-bindings {
+//     @extend .columns;
+//     @extend .is-multiline;
 
-    .vega-bind {
-        @extend .field;
-        @extend .column;
-        @extend .is-4;
+//     .vega-bind {
+//         @extend .field;
+//         @extend .column;
+//         @extend .is-4;
 
-        .vega-bind-name {
-            @extend .label;
-        }
+//         .vega-bind-name {
+//             @extend .label;
+//         }
 
-        select {
-            @extend .select;
-        }
-    }
-}
+//         select {
+//             @extend .select;
+//         }
+//     }
+// }
 
 // quill
 
