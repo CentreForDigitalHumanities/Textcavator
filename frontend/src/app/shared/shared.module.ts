@@ -33,9 +33,7 @@ import { BackToTopButton } from './back-to-top-button/back-to-top-button.compone
         TabPanelDirective,
         ToggleComponent,
         SlugifyPipe,
-        ToggleButtonDirective,
         ConfirmModalComponent,
-        BackToTopButton,
     ],
     exports: [
         // shared components
@@ -61,6 +59,8 @@ import { BackToTopButton } from './back-to-top-button/back-to-top-button.compone
         // Shared pipes
         SlugifyPipe,
     ], imports: [
+        ToggleButtonDirective,
+        BackToTopButton,
         BrowserAnimationsModule,
         BrowserModule,
         CommonModule,

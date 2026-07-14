@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
-import { ToggleButtonDirective } from './toggle-button.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
+import { ToggleButtonDirective } from './toggle-button.directive';
 
 @Component({
     template: `
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
         Test
     </button>
     `,
-    standalone: false
+    imports: [CommonModule, ToggleButtonDirective],
 })
 class ToggleButtonTestComponent {
     active = signal(false);
@@ -22,10 +22,7 @@ describe('ToggleButtonDirective', () => {
     let button: HTMLButtonElement;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            declarations: [ToggleButtonTestComponent, ToggleButtonDirective],
-            imports: [CommonModule],
-        });
+
         fixture = TestBed.createComponent(ToggleButtonTestComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

@@ -4,6 +4,7 @@ import { DropdownModule } from './dropdown.module';
 import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
 
+
 @Component({
     template: `
     <ia-dropdown [value]="selected()" (onChange)="selected.set($event)">
@@ -18,7 +19,7 @@ import { By } from '@angular/platform-browser';
       </div>
     </ia-dropdown>
     `,
-    standalone: false
+    imports: [CommonModule, DropdownModule],
 })
 class DropdownTestComponent {
     options = [
@@ -33,13 +34,6 @@ class DropdownTestComponent {
 describe('DropdownComponent', () => {
     let component: DropdownTestComponent;
     let fixture: ComponentFixture<DropdownTestComponent>;
-
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [DropdownModule, CommonModule],
-            declarations: [DropdownTestComponent],
-        });
-    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent<DropdownTestComponent>(DropdownTestComponent);
