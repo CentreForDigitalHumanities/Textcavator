@@ -1,5 +1,5 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, provideZoneChangeDetection } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 
 import { providePrimeNG } from 'primeng/config';
@@ -203,6 +203,7 @@ export const providers: any[] = [
     }),
     CookieService,
     { provide: APP_BASE_HREF, useValue: '/' },
+    provideZoneChangeDetection(),
 ];
 
 @NgModule({
