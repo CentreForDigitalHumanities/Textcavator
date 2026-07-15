@@ -1,12 +1,13 @@
 <div class="py-5">
     <div class="container">
-        <nav aria-label="secondary navigation" class="breadcrumb block">
-            <ul>
-                <li><a [routerLink]="['/']">{{appName}}</a></li>
-                <li><a [routerLink]="['../..']">Custom corpora</a></li>
-                <li class="is-active" aria-current="page"><a>{{(corpus$ | async).definition?.meta.title ||
+        <nav aria-label="secondary navigation" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a [routerLink]="['/']" >{{appName}}</a></li>
+                <li class="breadcrumb-item"><a [routerLink]="['../..']">Custom corpora</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a>{{(corpus$ | async).definition?.meta.title ||
                         '...'}}: edit</a></li>
-            </ul>
+            </ol>
         </nav>
 
         @let corpus = corpus$ | async;

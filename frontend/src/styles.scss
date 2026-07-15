@@ -203,16 +203,6 @@ table.spreadsheet {
     }
 }
 
-.breadcrumb {
-    li:not(.is-active) > a {
-        text-decoration: underline;
-    }
-
-    li.is-active > a {
-        color: var(--bulma-text);
-    }
-}
-
 .field.is-disabled {
     color: var(--bulma-text-weak);
 

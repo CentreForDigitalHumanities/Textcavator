@@ -1,12 +1,12 @@
 <section class="py-5">
   <div class="container">
-    <nav aria-label="secondary navigation" class="breadcrumb">
-      <ul>
-        <li><a [routerLink]="['/']">{{appName}}</a></li>
-        <li><a [routerLink]="['../..']">Custom corpora</a></li>
-        <li class="is-active" aria-current="page"><a>{{corpus.definition?.meta.title ||
+    <nav aria-label="secondary navigation">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/']">{{appName}}</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['../..']">Custom corpora</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a>{{corpus.definition?.meta.title ||
         '...'}}: import/export</a></li>
-      </ul>
+      </ol>
     </nav>
 
     <h1 class="mb-4">Import/export corpus "{{corpus.definition?.meta.title || '...'}}"</h1>
