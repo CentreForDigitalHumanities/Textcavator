@@ -20,7 +20,7 @@ Start by adding a new Python module `<corpusname>.py` to the `backend/corpora` d
 
 The actual definition is a class that you define in this module. It should subclass the [`CorpusDefinition` class](/backend/addcorpus/python_corpora/corpus.py).  This class includes some default values for attributes and default behaviour.
 
-It also inherits the `Reader` class from [`textcavator_readers`](https://ianalyzer-readers.readthedocs.io/en/latest/) which provides very minimal functionality for reading source files. Most corpus definitions also inherit from a more specific `Reader` that provides functionality for the type of source data, e.g. `XMLReader`, `CSVReader`, etc. For convenience, you can use the classes `XMLCorpusDefinition`, `CSVCorpusDefinition`, etc., defined in [corpus.py](/backend/addcorpus/python_corpora/corpus.py). See [the documentation of textcavator_readers](https://ianalyzer-readers.readthedocs.io/en/latest/) for the available `Reader` classes and the API for each of them.
+It also inherits the `Reader` class from [`textcavator_readers`](https://textcavator-readers.readthedocs.io/en/latest/) which provides very minimal functionality for reading source files. Most corpus definitions also inherit from a more specific `Reader` that provides functionality for the type of source data, e.g. `XMLReader`, `CSVReader`, etc. For convenience, you can use the classes `XMLCorpusDefinition`, `CSVCorpusDefinition`, etc., defined in [corpus.py](/backend/addcorpus/python_corpora/corpus.py). See [the documentation of textcavator_readers](https://textcavator-readers.readthedocs.io/en/latest/) for the available `Reader` classes and the API for each of them.
 
 Your definition module should now look something like this:
 
@@ -54,7 +54,7 @@ The following attributes are required for a corpus to function.
 
 ### Required methods
 
-The corpus class must define a method `sources(self, **kwargs)`. See the [API documentation of textcavator_readers](https://ianalyzer-readers.readthedocs.io/en/stable/api/). When you run the indexing command, Textcavator can provide two named arguments, `start` and `end`, which give a minimum and maximum date to select source files.
+The corpus class must define a method `sources(self, **kwargs)`. See the [API documentation of textcavator_readers](https://textcavator-readers.readthedocs.io/en/stable/api/). When you run the indexing command, Textcavator can provide two named arguments, `start` and `end`, which give a minimum and maximum date to select source files.
 
 ### Optional attributes
 
@@ -113,7 +113,7 @@ See the docstring of `FieldDefinition` for a comprehensive overview of all param
 
 ### Extracting values
 
-The `extractor` attribute of a field should define how it extracts its data from source files. This value should be an instance of `Extractor`, which is defined in the `textcavator_readers` package. See [the API documentation of textcavator_readers](https://ianalyzer-readers.readthedocs.io/en/latest/api/#extractors) for a list of available extractors and their parameters.
+The `extractor` attribute of a field should define how it extracts its data from source files. This value should be an instance of `Extractor`, which is defined in the `textcavator_readers` package. See [the API documentation of textcavator_readers](https://textcavator-readers.readthedocs.io/en/latest/api/#extractors) for a list of available extractors and their parameters.
 
 These extractors are typically sufficient for new corpora; if they are not, you can create a custom `Extractor` subclass for your corpus, or expand the `textcavator_readers` package.
 
