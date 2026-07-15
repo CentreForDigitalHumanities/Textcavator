@@ -20,7 +20,7 @@ from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.constants import document_context
-from corpora.parliament.utils.rds_reader import RDSReader
+from textcavator_readers.readers.rds import RDSReader
 
 logger = logging.getLogger('indexing')
 
