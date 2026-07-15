@@ -12,7 +12,7 @@ class Figaro(Gallica):
     max_date = datetime(year=1954, month=12, day=31)
     corpus_id = "cb34355551z"
     category = "periodical"
-    es_index = getattr(settings, 'FIGARO_INDEX', 'figaro')
+    es_index = 'figaro'
     image = "figaro.jpg"
     description_page = 'figaro.md'
 

@@ -4,7 +4,7 @@ import bs4
 from os.path import join
 import logging
 
-from addcorpus.python_corpora.corpus import HTMLCorpusDefinition, FieldDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import HTMLCorpusDefinition, FieldDefinition
 from ianalyzer_readers.extract import XML
 from ianalyzer_readers.xml_tag import Tag
 from addcorpus.es_mappings import *
@@ -57,14 +57,7 @@ class UBlad(HTMLCorpusDefinition):
     description_page = 'ublad.md'
     min_date = datetime(year=1969, month=1, day=1)
     max_date = datetime(year=2010, month=12, day=31)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('UBLAD_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('UBLAD_ES_INDEX') or 'ublad'
+    es_index = 'ublad'
 
     image = 'ublad.jpg'
     scan_image_type = 'image/jpeg'

@@ -126,11 +126,11 @@ def jm_corpus_settings(settings):
     settings.CORPORA = {
         'jewishmigration': 'corpora.jewishmigration.jewishmigration.JewishMigration',
     }
-    settings.JMIG_DATA_DIR = None
-    settings.JMIG_DATA = None
-    settings.JMIG_DATA_URL = 'http://www.example.com'
-    settings.JMIG_DATA_API_KEY = None
-    settings.JMIG_INDEX = 'test-jewishmigration'
+    settings.CORPUS_SETTINGS['jewishmigration'] = {
+        'data_directory': None,
+        'data_url': 'http://www.example.com',
+        'es_index': 'test_jewishmigration'
+    }
 
 
 @pytest.fixture

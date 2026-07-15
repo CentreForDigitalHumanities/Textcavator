@@ -35,7 +35,7 @@ def extract_chamber(path: str):
         return 'House of Commons'
     else:
         return None
-    
+
 def generate_title(chamber: str, date: str):
     return "{} Debate on {}".format(chamber, date)
 
@@ -56,12 +56,12 @@ def abbreviate_speech_id(full_id):
 def extract_topics_and_subtopics(path):
     with open(path, 'r', encoding='utf-8') as file:
         soup = BeautifulSoup(file, "lxml")
-    
+
     topics = {}
     subtopics = {}
     for tag in soup.find_all('major-heading'):
         topics[abbreviate_speech_id(tag['id'])] = tag.text.replace('\n', '')
-    
+
     for tag in soup.find_all('minor-heading'):
         subtopics[abbreviate_speech_id(tag['id'])] = tag.text.replace('\n', '')
 
@@ -70,7 +70,7 @@ def extract_topics_and_subtopics(path):
 def extract_speaker_ids(path):
     with open(path, 'r', encoding='utf-8') as file:
         soup = BeautifulSoup(file, "lxml")
-    
+
     speaker_ids = []
     for tag in soup.find_all('speech'):
         if tag.has_attr('person_id'):
@@ -92,7 +92,7 @@ def select_topic(input):
 def lookup_person_attribute(lookup_tuple):
     metadata_dict, id, name, label = lookup_tuple #name is only included for debugging purposes
 
-    id = id.split('/')[-1] if id else None # twfy ID is at the end of uri 
+    id = id.split('/')[-1] if id else None  # twfy ID is at the end of uri
     if id in metadata_dict and label in metadata_dict[id]:
         return metadata_dict[id][label]
     else:
@@ -104,7 +104,7 @@ def lookup_person_atttribute_date(lookup_tuple):
         return date_string[:10]
     else:
         return None
-    
+
 def find_current_positions(metadata_dict, date):
     current_positions = {}
     for person in metadata_dict:
@@ -112,7 +112,7 @@ def find_current_positions(metadata_dict, date):
         for position in metadata_dict[person]['positions']:
             if 'startTime' in position and 'endTime' in position:
                 try:
-                    date_range = (datetime.strptime(position['startTime'][:10], "%Y-%m-%d"), 
+                    date_range = (datetime.strptime(position['startTime'][:10], "%Y-%m-%d"),
                                 datetime.strptime(position['endTime'][:10], "%Y-%m-%d"))
                 except ValueError:
                     continue #disregard missing dates
@@ -166,12 +166,10 @@ def lookup_current_party(lookup_tuple):
 class ParliamentUKNew(Parliament, XMLCorpusDefinition):
     title = 'Talking Empire (UK 2022-2025)'
     description = "Speeches from the House of Lords and House of Commons (2022-2025)"
-    data_directory = settings.TE_UK_NEW_DATA
     min_date = datetime(year=2022, month=1, day=1)
     max_date = datetime(year=2025, month=12, day=31)
-    es_index = getattr(settings, 'TE_UK_NEW_ES_INDEX', 'parliament-uk-new')
+    es_index = 'parliament-uk-new'
     image = 'uk.jpeg'
-    # word_model_path = getattr(settings, 'TE_UK_NEW_WM', None) ## TODO: add word model?
     languages = ['en']
     description_page = 'uk-new.md'
     field_entry = 'speech_id'
@@ -201,9 +199,9 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
                 metadata['current_positions'] = find_current_positions(metadata['speaker_metadata'], metadata['date'])
 
                 yield str(full_path), metadata
-        
+
     _speech_id_extractor = Cache(XML(attribute='id'))
-    
+
     chamber = field_defaults.chamber()
     chamber.extractor = Metadata('chamber')
 
@@ -366,7 +364,7 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
             self.debate_title, self.debate_id,
             self.topic, self.subtopic,
             self.chamber,
-            self.speech, self.speech_id, 
+            self.speech, self.speech_id,
             self.speech_type,
             self.speaker, self.speaker_id,
             self.speaker_gender, self.speaker_birthdate,

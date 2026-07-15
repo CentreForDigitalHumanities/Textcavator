@@ -5,7 +5,7 @@ import logging
 import bs4
 from ianalyzer_readers.xml_tag import Tag, FindParentTag, PreviousTag, TransformTag
 
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition
 from ianalyzer_readers.extract import XML, Constant, Combined, Order
 from corpora.parliament.utils.parlamint_v4 import (
     current_party_id_extractor,
@@ -428,30 +428,20 @@ class ParliamentNetherlands(Parliament, XMLCorpusDefinition):
     description = "Debates in the Dutch national parliament, from its founding to the present. A collection of the speeches in the Eerste Kamer and Tweede Kamer."
     min_date = datetime(year=1815, month=1, day=1)
     max_date = datetime(year=2022, month=12, day=31)
+    es_index = 'parliament-netherlands'
 
     languages = ["nl"]
     category = "parliament"
     document_context = document_context()
 
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_NL_RECENT_DATA') or super().data_directory
-
-    @property
-    def data_directory_old(self):
-        return get_deprecated_setting('PP_NL_DATA')
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('PP_NL_WM') or super().word_model_path
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_NL_INDEX') or 'parliament-netherlands'
-
     image = "netherlands.jpg"
     description_page = "netherlands.md"
     citation_page = "netherlands.md"
+
+    @property
+    def data_directory_old(self):
+        raise NotImplementedError(
+            'Required configuration data_directory_old is missing')
 
     @property
     def subcorpora(self):

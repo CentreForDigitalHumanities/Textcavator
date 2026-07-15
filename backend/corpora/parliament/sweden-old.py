@@ -1,7 +1,7 @@
 from glob import glob
 from datetime import datetime
 
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 from ianalyzer_readers.extract import CSV, Constant
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
@@ -34,18 +34,8 @@ class ParliamentSwedenOld(Parliament, CSVCorpusDefinition):
     description = 'Speeches from the Riksdag'
     min_date = datetime(year=1809, month=1, day=1)
     max_date = datetime(year=1919, month=12, day=31)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_SWEDEN_OLD_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_SWEDEN_OLD_INDEX') or 'parliament-sweden-old'
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('PP_SWEDEN_WM') or super().word_model_path
+    es_index = 'parliament-sweden-old'
+    image = 'sweden-old.jpg'
 
     document_context = constants.document_context(
         context_fields=['chamber', 'date_earliest', 'date_latest']

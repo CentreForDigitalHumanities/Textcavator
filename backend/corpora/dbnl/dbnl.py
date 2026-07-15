@@ -4,7 +4,7 @@ import re
 from tqdm import tqdm
 from ianalyzer_readers.xml_tag import Tag, CurrentTag, TransformTag
 
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from ianalyzer_readers.extract import Metadata, XML, Pass, Order, Backup, Combined
 import corpora.dbnl.utils as utils
 from addcorpus.es_mappings import *
@@ -14,17 +14,10 @@ from corpora.dbnl.dbnl_metadata import DBNLMetadata
 class DBNL(XMLCorpusDefinition):
     title = 'DBNL'
     description = 'Dutch literature and publications on literary or linguistic studies, from the Middle Ages to the 19th century'
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('DBNL_DATA') or super().data_directory
+    es_index = 'dbnl'  # default setting for development
 
     min_date = datetime(year=1200, month=1, day=1)
     max_date = datetime(year=1890, month=12, day=31)
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('DBNL_ES_INDEX') or 'dbnl'
 
     image = 'dbnl.png'
     description_page = 'dbnl.md'

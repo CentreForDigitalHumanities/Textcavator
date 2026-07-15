@@ -3,6 +3,7 @@ Collect information from the Guardian-Observer corpus: the articles are containe
 separate xml-files, zipped.
 '''
 
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 import logging
 logger = logging.getLogger(__name__)
 import re
@@ -18,7 +19,6 @@ from ianalyzer_readers import extract
 from api.utils import find_media_file
 from indexing.run_update_task import update_document
 from addcorpus.python_corpora import filters
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition, get_deprecated_setting
 from media.image_processing import sizeof_fmt
 from media.media_url import media_url
 
@@ -36,27 +36,14 @@ class GuardianObserver(XMLCorpusDefinition):
     description_page = 'guardianobserver.md'
     min_date = datetime(year=1791, month=1, day=1)
     max_date = datetime(year=2003, month=12, day=31)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('GO_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('GO_ES_INDEX') or 'guardianobserver'
+    scan_image_type = 'application/pdf'
+    es_index = 'guardianobserver'
 
     image = 'guardianobserver.jpg'
 
-    @property
-    def scan_image_type(self):
-        return get_deprecated_setting('GO_SCAN_IMAGE_TYPE') or 'application/pdf'
 
     languages = ['en']
     category = 'periodical'
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('GO_WM') or super().word_model_path
 
     @property
     def es_settings(self):

@@ -10,8 +10,7 @@ class NewsUS(GaleCorpus):
     description = "A collection of 19th century newspapers from the United States"
     min_date = datetime(1800,1,1)
     max_date = datetime(1900,1,1)
-    data_directory = settings.NEWS_US_19_DATA
-    es_index = getattr(settings, 'NEWS_US_19_ES_INDEX', 'news_us_19')
+    es_index = 'news_us_19'
     image = 'press_room.jpg'
     description_page = '19thCenturyUSNewspapers.md'
     languages = ['en']

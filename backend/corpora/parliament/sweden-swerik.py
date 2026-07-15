@@ -15,7 +15,7 @@ from tqdm import tqdm
 from corpora.parliament.parliament import Parliament
 from corpora.parliament.utils import field_defaults
 from addcorpus.es_mappings import date_estimate_mapping
-from addcorpus.python_corpora.corpus import FieldDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import FieldDefinition
 from api.utils import document_link
 from corpora.parliament.sweden import ParliamentSweden
 
@@ -259,14 +259,9 @@ class ParliamentSwedenSwerik(Parliament, XMLReader):
     languages = ['sv']
     image = 'sweden.jpg'
     description_page = 'sweden-swerik.md'
+    es_index = 'parliament-sweden-swerik'
 
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_SWEDEN_SWERIK_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_SWEDEN_SWERIK_INDEX') or 'parliament-sweden-swerik'
+    hide_cross_corpus_link = False
 
     tag_toplevel = Tag('TEI')
     tag_entry = Tag('u', attrs={'prev': None})
@@ -439,9 +434,6 @@ class ParliamentSwedenSwerik(Parliament, XMLReader):
         PreviousSiblingTag('note', type='title'),
         transform=lambda value: str.strip(value) if value else None,
     )
-
-    hide_cross_corpus_link = \
-        get_deprecated_setting('PP_SWEDEN_SWERIK_HIDE_CROSSCORPUS_LINK') or False
 
     url_sweden_corpus = FieldDefinition(
         name='url_sweden_corpus',

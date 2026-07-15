@@ -54,8 +54,7 @@ class Economist(GaleCorpus):
     description = "Archive of The Economist, a weekly news magazine."
     min_date = datetime(1843, 8, 1)
     max_date = datetime(2021, 1, 1)
-    data_directory = settings.ECONOMIST_DATA
-    es_index = getattr(settings, 'ECONOMIST_ES_INDEX', 'economist')
+    es_index = 'economist'
     image = 'A_stack_of_Economist_papers.jpg'
     description_page = 'Economist.md'
     languages = ['en']
