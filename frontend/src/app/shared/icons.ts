@@ -59,6 +59,10 @@ import {
     faArrowUp,
     faArrowDown,
     faRedo,
+    faCircleHalfStroke,
+    faMoon,
+    faSun,
+    faAngleDoubleUp,
 } from '@fortawesome/free-solid-svg-icons';
 
 type IconDefinition = SolidIconDefinition | RegularIconDefinition;
@@ -178,4 +182,14 @@ export const entityIcons: Icons = {
     location: faLocationDot,
     organization: faBuilding,
     miscellaneous: faBookmark,
+}
+
+export const themeIcons: Icons = {
+    system: faCircleHalfStroke,
+    light: faSun,
+    dark: faMoon,
+}
+
+export const scrollIcons: Icons = {
+    top: faAngleDoubleUp,
 }

@@ -7,7 +7,8 @@ interface UserProfileResponse {
 
 export interface UserResponse {
     id: number;
-    username: string;
+    name: string;
+    username?: string;
     email: string;
     download_limit: number;
     is_admin: boolean;

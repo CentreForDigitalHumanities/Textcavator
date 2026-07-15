@@ -1,54 +1,66 @@
-    <div class="columns is-desktop">
-        <div class="column is-5">
-            <div class="box">
-                <div class="table-container">
-                    <table class="table is-fullwidth" *ngIf="document">
-                        <tr *ngIf="document.relevance">
-                            <th>Relevance</th>
-                            <td>
-                                <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
-                            </td>
-                        </tr>
-                        <tr *ngIf="(document.tags$ | async) as tags">
-                            <th>Your tags</th>
-                            <td>
-                                <ia-document-tags [document]="document" [tags]="tags"></ia-document-tags>
-                            </td>
-                        </tr>
-                        <ng-container *ngFor="let field of propertyFields">
-                            <tr *ngIf="document.hasValue(field)">
-                                <th>
-                                    <span [iaBalloon]="field.description"
-                                        iaBalloonPosition="up" iaBalloonLength="medium">
-                                        {{field.displayName}}
-                                    </span>
-                                </th>
-                                <td [attr.lang]="document.language(field)"
-                                    data-test-field-value>
-                                    <ia-metadata-field [field]="field" [document]="document" />
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="column is-7">
-            <div class="box">
-                <ia-tabs [activeTab]="activeTab">
-                    <ng-template iaTabPanel *ngFor="let field of contentFields"
-                        [id]="fieldTabID(field)"
-                        [title]="field.displayName" [icon]="documentIcons.text">
-                        <ia-content-field
-                            [field]="field"
-                            [document]="document"
-                            [showEntities]="showEntities" />
-                    </ng-template>
-                    <ng-template iaTabPanel id="scan" *ngIf="showScanTab" title="Image" [icon]="documentIcons.scan">
-                        <ia-image-view [corpus]="corpus" [document]="document"></ia-image-view>
-                    </ng-template>
-                </ia-tabs>
-            </div>
-        </div>
+<div class="columns is-desktop">
+  <div class="column is-5">
+    <div class="box">
+      <div class="table-container">
+        @if (document) {
+          <table class="table is-fullwidth">
+            @if (document.relevance) {
+              <tr>
+                <th>Relevance</th>
+                <td>
+                  <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
+                </td>
+              </tr>
+            }
+            @if ((document.tags$ | async); as tags) {
+              <tr>
+                <th>Your tags</th>
+                <td>
+                  <ia-document-tags [document]="document" [tags]="tags"></ia-document-tags>
+                </td>
+              </tr>
+            }
+            @for (field of propertyFields; track field) {
+              @if (document.hasValue(field)) {
+                <tr>
+                  <th>
+                    <span [iaBalloon]="field.description"
+                      iaBalloonPosition="up" iaBalloonLength="medium">
+                      {{field.displayName}}
+                    </span>
+                  </th>
+                  <td [attr.lang]="document.language(field)"
+                    data-test-field-value>
+                    <ia-metadata-field [field]="field" [document]="document" />
+                  </td>
+                </tr>
+              }
+            }
+          </table>
+        }
+      </div>
     </div>
+  </div>
+
+  <div class="column is-7">
+    <div class="box">
+      <ia-tabs [activeTab]="activeTab">
+        @for (field of contentFields; track field) {
+          <ng-template iaTabPanel
+            [id]="fieldTabID(field)"
+            [title]="field.displayName" [icon]="documentIcons.text">
+            <ia-content-field
+              [field]="field"
+              [document]="document"
+              [showEntities]="showEntities" />
+          </ng-template>
+        }
+        @if (showScanTab) {
+          <ng-template iaTabPanel id="scan" title="Image" [icon]="documentIcons.scan">
+            <ia-image-view [corpus]="corpus" [document]="document"></ia-image-view>
+          </ng-template>
+        }
+      </ia-tabs>
+    </div>
+  </div>
+</div>

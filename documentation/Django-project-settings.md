@@ -73,13 +73,23 @@ Unit tests for the backend will assume that there is a default server configured
 
 A dictionary that specifies Python corpus definitions that should be imported in your project.
 
-Each key must be the import path to a corpus class (see [Django module loading](https://docs.djangoproject.com/en/5.2/ref/utils/#module-django.utils.module_loading)). For example:
+Each value must be the import path to a corpus class (see [Django module loading](https://docs.djangoproject.com/en/5.2/ref/utils/#module-django.utils.module_loading)). For example:
 
 ```python
 CORPORA = {
     'times': 'corpora.times.times.Times',
 }
 ```
+
+### `CORPUS_SETTINGS`
+
+A dictionary that specifies settings per corpus. This is only used for Python corpora.
+
+Each key should be the name of a corpus, i.e. one of the keys in the `CORPORA` setting. Keys that don't match a corpus do nothing (they don't cause any errors either).
+
+Each value should be a dictionary with attributes to override on the Python corpus class. This is the recommended way to make corpora configurable; corpus definitions classes often include attributes without an implementation, such as `data_directory`, that *must* be set this way. You can also use it to adapt a corpus.
+
+This setting is new and many corpora still import variables directly from the settings module.
 
 ### `CORPUS_SERVER_NAMES`
 
@@ -120,7 +130,3 @@ If you define a `SAML_GROUP_NAME` in settings, SAML users will always be added t
 A path (string) to an image file.
 
 Corpora can include an image to use in the interface (e.g. in the corpus selection menu); if the corpus has no image, this one will be used instead.
-
-### Settings for individual corpora
-
-Python corpus definitions typically rely on the Django settings, to avoid hard-coding properties that depend on the server. When you include a corpus definition in your settings, read the source file to see the related settings. Some of these settings may be optional.

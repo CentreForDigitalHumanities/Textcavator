@@ -7,7 +7,7 @@ import datetime
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-class MockCSVCorpus(CSVCorpusDefinition):
+class ExampleCorpus(CSVCorpusDefinition):
     '''
     Basic CSV corpus.
 

@@ -46,6 +46,7 @@ describe('user API conversion', () => {
     beforeEach(() => {
         userResponse = {
             id: 1,
+            name: 'Hamlet',
             username: 'Hamlet',
             email: 'hamlet@elsinore.dk',
             download_limit: 10000,

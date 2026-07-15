@@ -5,6 +5,8 @@ import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { QuillModule } from 'ngx-quill';
+import { CorpusDefinitionsModule } from '@app/corpus-definitions/corpus-definitions.module';
+import { CommonModule } from '@angular/common';
 
 const contentH1H2 = `# Bla
 Bla bla
@@ -48,10 +50,10 @@ describe('decreaseHeaderLevels', () => {
 });
 
 @Component({
-    standalone: false,
     template: `
-    <ia-markdown-editor [formControl]="control">
-    `
+    <ia-markdown-editor [formControl]="control"/>
+    `,
+    imports: [MarkdownEditorComponent, ReactiveFormsModule, CommonModule],
 })
 class EditorTestComponent {
     control = new FormControl<string>('');
@@ -62,12 +64,6 @@ describe('MarkdownEditorComponent', () => {
     let fixture: ComponentFixture<EditorTestComponent>;
 
     beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [MarkdownEditorComponent, EditorTestComponent],
-            imports: [SharedModule, ReactiveFormsModule, QuillModule],
-        })
-            .compileComponents();
-
         fixture = TestBed.createComponent(EditorTestComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

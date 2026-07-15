@@ -1,62 +1,69 @@
 <ia-corpus-header [corpus]="corpus" currentPage="search"></ia-corpus-header>
 
-<section class="section search-section" #searchSection [ngClass]="{'is-scrolled-down': isScrolledDown}">
-    <div class="container is-readable">
-        <form (ngSubmit)="search()" *ngIf="corpus">
-            <div class="field has-addons">
-                <div class="control" iaBalloon="View query documentation" iaBalloonPosition="down-left">
-                    <button class="button" type="button" (click)="showQueryDocumentation()"
-                        aria-label="help">
-                        <span class="icon">
-                            <fa-icon [icon]="actionIcons.manual" aria-hidden="true" />
-                        </span>
-                    </button>
-                </div>
-                <div class="control is-expanded">
-                    <input class="input" id="query" [(ngModel)]="queryText" name="queryText" type="text"
-                        placeholder="Query" />
-                </div>
-                <div class="control">
-                    <button class="button is-primary" type="submit" id="search">
-                        <span class="icon">
-                            <fa-icon [icon]="actionIcons.search" aria-hidden="true"></fa-icon>
-                        </span>
-                        <span>Search</span>
-                    </button>
-                </div>
-                <div class="control">
-                    <ia-select-field [queryModel]="queryModel" />
-                </div>
-            </div>
-        </form>
-    </div>
+<section class="section search-section pt-3">
+  <div class="container">
+    <form (ngSubmit)="search()">
+      <div class="field has-addons">
+        <div class="control" iaBalloon="View query documentation" iaBalloonPosition="down-left">
+          <button class="button" type="button" (click)="showQueryDocumentation()"
+            aria-label="help">
+            <span class="icon">
+              <fa-icon [icon]="actionIcons.manual" aria-hidden="true" />
+            </span>
+          </button>
+        </div>
+        <div class="control is-expanded">
+          <input class="input" id="query" [(ngModel)]="queryText" name="queryText" type="text"
+            placeholder="Query" />
+        </div>
+        <div class="control">
+          <button class="button is-primary" type="submit" id="search">
+            <span class="icon">
+              <fa-icon [icon]="actionIcons.search" aria-hidden="true"></fa-icon>
+            </span>
+            <span>Search</span>
+          </button>
+        </div>
+        <div class="control">
+          <ia-select-field [queryModel]="queryModel" />
+        </div>
+      </div>
+    </form>
+  </div>
 </section>
 <section class="section search-results">
-    <div class="container is-readable">
-        <!-- filters and search results -->
-        <div class="columns">
-            <!-- Filters, on left -->
-            <div class="column is-3">
-                <ia-filter-manager *ngIf="queryModel" [queryModel]="queryModel"></ia-filter-manager>
-            </div>
-            <!-- search results, on right -->
-            <div class="column is-9" *ngIf="queryModel">
-                <ia-tabs [activeTab]="tabs.state$.value.tab" (tabChange)="onTabChange($event)">
-                    <ng-template iaTabPanel id="search-results" title="Search results" [icon]="searchIcons.documents">
-                        <ia-search-results [queryModel]="queryModel" [user]="user">
-                        </ia-search-results>
-                    </ng-template>
-                    <ng-template iaTabPanel id="visualizations" title="Visualizations" [icon]="searchIcons.visualizations">
-                        <ia-visualization [corpus]="corpus" [queryModel]="queryModel">
-                        </ia-visualization>
-                    </ng-template>
-                    <ng-template iaTabPanel id="download" title="Download"
-                        [icon]="actionIcons.download">
-                        <ia-download [corpus]="corpus" [queryModel]="queryModel">
-                        </ia-download>
-                    </ng-template>
-                </ia-tabs>
-            </div>
+  <div class="container">
+    <!-- filters and search results -->
+    <div class="columns">
+      <!-- Filters, on left -->
+      <div class="column is-3">
+        @if (queryModel) {
+          <ia-filter-manager [queryModel]="queryModel"></ia-filter-manager>
+        }
+      </div>
+      <!-- search results, on right -->
+      @if (queryModel) {
+        <div class="column is-9">
+          <p ia-results-count [queryModel]="queryModel" class="block has-text-right"></p>
+          <ia-tabs [activeTab]="tabs.state$.value.tab" (tabChange)="onTabChange($event)">
+            <ng-template iaTabPanel id="search-results" title="Search results" [icon]="searchIcons.documents">
+              <ia-search-results [queryModel]="queryModel" [user]="user">
+              </ia-search-results>
+            </ng-template>
+            <ng-template iaTabPanel id="visualizations" title="Visualizations" [icon]="searchIcons.visualizations">
+              <ia-visualization [corpus]="corpus" [queryModel]="queryModel">
+              </ia-visualization>
+            </ng-template>
+            <ng-template iaTabPanel id="download" title="Download"
+              [icon]="actionIcons.download">
+              <ia-download [corpus]="corpus" [queryModel]="queryModel">
+              </ia-download>
+            </ng-template>
+          </ia-tabs>
         </div>
+      }
     </div>
+  </div>
 </section>
+
+<ia-back-to-top-button />

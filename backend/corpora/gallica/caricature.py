@@ -12,7 +12,7 @@ class Caricature(Gallica):
     max_date = datetime(year=1843, month=12, day=31)
     corpus_id = "cb344523348"
     category = "periodical"
-    es_index = getattr(settings, 'CARICATURE_INDEX', 'caricature')
+    es_index = 'caricature'
     description_page = 'caricature.md'
     image = "caricature.jpg"
 

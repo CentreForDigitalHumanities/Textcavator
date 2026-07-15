@@ -31,10 +31,9 @@ class Ecco(XMLCorpusDefinition):
     min_date = datetime(year=1700, month=1, day=1)
     max_date = datetime(year=1800, month=12, day=31)
 
-    data_directory = settings.ECCO_DATA
-    es_index = getattr(settings, 'ECCO_ES_INDEX', 'ecco')
+    es_index = 'ecco'
     image = 'ecco.jpg'
-    scan_image_type = getattr(settings, 'ECCO_SCAN_IMAGE_TYPE', 'application/pdf')
+    scan_image_type = 'application/pdf'
     es_settings = None
     languages = ['en', 'fr', 'la', 'grc', 'de',  'it', 'cy', 'ga', 'gd']
     category = 'book'
@@ -46,7 +45,7 @@ class Ecco(XMLCorpusDefinition):
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
     def sources(self, start=min_date, end=max_date):
         logging.basicConfig(filename='ecco.log', level=logging.INFO)

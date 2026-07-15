@@ -1,8 +1,6 @@
 import logging
 import os
 import os.path as op
-from typing import Optional
-from django.conf import settings
 
 from addcorpus.python_corpora.corpus import CorpusDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
@@ -26,7 +24,9 @@ class Parliament(CorpusDefinition):
     description = "Minutes from European parliaments"
     # store min_year as int, since datetime does not support BCE dates
     visualize = []
-    es_index = getattr(settings, 'PP_ALIAS', 'parliament')
+
+    es_index = 'parliament'
+
     # fields below are required by code but not actually used
     min_date = field_defaults.MIN_DATE
     max_date = field_defaults.MAX_DATE
@@ -39,7 +39,7 @@ class Parliament(CorpusDefinition):
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
 
 

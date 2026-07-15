@@ -119,33 +119,31 @@ These extractors are typically sufficient for new corpora; if they are not, you 
 
 ## Using project settings
 
-Several of the attributes in a corpus definition need to be configurable per environment. This is done by including these values in the project settings.
+The [`CORPUS_SETTINGS` Django setting](./Django-project-settings.md#corpus_settings) can be used to configure a corpus per environment.
 
-Please use the following naming convention when you add settings for your corpus.
+It often makes sense to leave some attributes unimplemented, e.g. `data_directory`, so they must be configured in the settings. Make sure to mention this in the docstring. If possible, it's preferred to set a sensible default value and just highlight the attribute in the docstring.
+
+The `CORPUS_SETTINGS` configuration is new, and some corpora import Django settings directly. This should be phased out, and it should not be used for new corpora.
+
+
+### Advanced usage
+
+`CORPUS_SETTINGS` is applied in [load_corpus.py](/backend/addcorpus/python_corpora/load_corpus.py) by creating a subclass of the original corpus.
+
+If you use the value of an attribute on your corpus class, you should do so in a way that is safe for subclassing. For instance:
 
 ```python
-CORPUSNAME_DATA = '/MyData/CorpusData' # the directory where the xml / html or other files are located
-CORPUSNAME_ES_INDEX = 'dutchbanking' # the name that elasticsearch gives to the index
-CORPUSNAME_SCAN_IMAGE_TYPE = 'image/png' #mimetype of document media
-# etc...
+class MyCorpus(CorpusDefinition):
+    min_year = 1900
+    max_year = 2000
+
+    @property
+    def title(self):
+        return f'My corpus ({self.min_year}-{self.max_year})'
+
+    # Do not do this:
+    # title = f'My corpus ({min_year}-{max_year})'
 ```
-
-These can be retrieved in the corpus definition, for example:
-
-```python
-from django.conf import settings
-
-class Times(XMLCorpus):
-    title = "Times"
-    description = "Newspaper archive, 1785-2010"
-    min_date = datetime(year=1785, month=1, day=1)
-    max_date = datetime(year=2010, month=12, day=31)
-    data_directory = settings.TIMES_DATA
-    es_index = getattr(settings, 'TIMES_ES_INDEX', 'times')
-    # ...
-```
-
-Note that for a property like the elasticsearch index, we define a default value but make it possible to override this in the settings file, while the data directory is required.
 
 ## Unit testing
 

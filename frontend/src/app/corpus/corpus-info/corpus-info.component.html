@@ -1,46 +1,32 @@
 <ia-corpus-header [corpus]="corpus" currentPage="info"></ia-corpus-header>
 
-<section class="section">
-    <div class="container is-readable">
-        <div class="columns">
-            <div class="column">
-                <div class="block">
-                    <p>{{corpus.description}}</p>
-                </div>
-                <div class="block metadata">
-                    <p>Language: <strong>{{corpus.displayLanguages}}</strong></p>
-                    <p>Type: <strong>{{corpus.category}}</strong></p>
-                    <p>Period: <strong>{{corpus.minYear}}-{{corpus.maxYear}}</strong></p>
-                </div>
-            </div>
-            <div class="column is-3">
-                <img src="/api/corpus/image/{{corpus.name}}" alt="{{corpus.title}}">
-            </div>
-        </div>
-    </div>
+<section class="section pt-0">
+  <div class="container">
+    @if (documentation$ | async; as documentation) {
+      <ia-tabs>
+        @for (page of documentation; track page) {
+          <ng-template iaTabPanel
+            [id]="page.type" [title]="page.type">
+            <div class="content" [innerHTML]="renderMarkdown(page.content)"></div>
+          </ng-template>
+        }
+        @if (corpus?.fields) {
+          <ng-template iaTabPanel
+            id="fields" title="Fields">
+            @for (field of corpus.fields; track field) {
+              <div class="block">
+                <ia-field-info  [field]="field"
+                  [coverage]="fieldCoverage ? fieldCoverage[field.name] : undefined"
+                  [cardinality]="fieldCardinality ? fieldCardinality[field.name] : undefined">
+                </ia-field-info>
+              </div>
+            }
+          </ng-template>
+        }
+      </ia-tabs>
+    } @else {
+      <div class="is-loading" aria-label="loading documentation"></div>
+    }
+  </div>
 </section>
 
-<section class="section" style="padding-top: 0;">
-    <div class="container is-readable">
-        <ia-tabs *ngIf="documentation$ | async as documentation; else loading">
-            <ng-template iaTabPanel *ngFor="let page of documentation"
-                [id]="page.type" [title]="page.type">
-                <div class="content" [innerHTML]="renderMarkdown(page.content)"></div>
-            </ng-template>
-
-            <ng-template iaTabPanel *ngIf="corpus?.fields"
-                id="fields" title="Fields">
-                <div class="block" *ngFor="let field of corpus.fields">
-                    <ia-field-info  [field]="field"
-                        [coverage]="fieldCoverage ? fieldCoverage[field.name] : undefined">
-                    </ia-field-info>
-                </div>
-            </ng-template>
-
-        </ia-tabs>
-    </div>
-</section>
-
-<ng-template #loading>
-    <div class="is-loading" aria-label="loading documentation"></div>
-</ng-template>

@@ -8,6 +8,7 @@ from elasticsearch import Elasticsearch
 import warnings
 from django.core.files import File
 from typing import Callable
+from django.test import Client
 
 from es.client import client_from_config
 from addcorpus.python_corpora.save_corpus import load_and_save_single_corpus
@@ -82,6 +83,33 @@ def admin_client(client, admin_user, admin_credentials):
         password=admin_credentials['password'])
     yield client
     client.logout()
+
+
+@pytest.fixture
+def saml_credentials():
+    return {'saml_username': 'test1', 'email': 'test1@example.com'}
+
+
+@pytest.fixture
+def saml_user(django_user_model, saml_credentials):
+    user = django_user_model(
+        username='_', #would normally be uuid
+        saml_username=saml_credentials['saml_username'],
+        email=saml_credentials['email'],
+        saml=True,
+    )
+    user.set_unusable_password()
+    user.save()
+    return user
+
+
+@pytest.fixture
+def saml_client(client: Client, saml_user):
+    client.force_login(saml_user)
+    yield client
+    client.logout()
+
+
 
 @pytest.fixture()
 def basic_corpus_public(db, basic_mock_corpus):
@@ -244,7 +272,7 @@ def index_json_mock_corpus(db, es_client: Elasticsearch, json_mock_corpus: Corpu
 
 @pytest.fixture()
 def json_corpus_definition():
-    path = os.path.join(settings.BASE_DIR, 'corpora_test', 'basic', 'mock_corpus.json')
+    path = os.path.join(settings.BASE_DIR, 'corpora_test', 'basic', 'corpus.json')
     with open(path) as f:
         return json.load(f)
 

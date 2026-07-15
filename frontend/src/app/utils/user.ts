@@ -8,7 +8,7 @@ import { User, UserResponse } from '@models';
 */
 export const parseUserData = (result: UserResponse): User => new User(
     result.id,
-    result.username,
+    result.name,
     result.is_admin,
     result.download_limit == null ? 0 : result.download_limit,
     result.saml,

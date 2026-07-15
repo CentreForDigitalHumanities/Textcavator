@@ -28,18 +28,17 @@ class Periodicals(XMLCorpusDefinition):
     title = "Periodicals"
     description = "A collection of 19th century periodicals"
     min_date = datetime(1800,1,1)
-    max_date = datetime(1900,1,1)
-    data_directory = settings.PERIODICALS_DATA
-    es_index = getattr(settings, 'PERIODICALS_ES_INDEX', 'periodicals')
+    max_date = datetime(1900, 1, 1)
+    es_index = 'periodicals'
     image = 'Fleet_Street.jpg'
-    scan_image_type = getattr(settings, 'PERIODICALS_SCAN_IMAGE_TYPE', 'image/jpeg')
+    scan_image_type = 'image/jpeg'
     description_page = '19thCenturyUKPeriodicals.md'
     languages = ['en']
     category = 'periodical'
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
     tag_toplevel = Tag('articles')
     tag_entry = Tag('artInfo')

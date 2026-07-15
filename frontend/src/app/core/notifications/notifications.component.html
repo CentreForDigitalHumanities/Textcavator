@@ -1,12 +1,18 @@
 <div class="notifications">
-    <div class="notification {{notification.class}}" *ngFor="let notification of notifications"
-        [ngClass]="{'fade-out': notification.fadeOut}">
-        <button *ngIf="notification.canDelete" class="delete" (click)="remove(notification)"></button>
-        <div class="content">
-            <p>{{notification.message}}</p>
-            <p *ngIf="notification.link">
-                <a [routerLink]="notification.link.route">{{notification.link.text}}</a>
-            </p>
-        </div>
+  @for (notification of notifications; track notification) {
+    <div class="notification {{notification.class}}"
+      [ngClass]="{'fade-out': notification.fadeOut}">
+      @if (notification.canDelete) {
+        <button class="delete" (click)="remove(notification)"></button>
+      }
+      <div class="content">
+        <p>{{notification.message}}</p>
+        @if (notification.link) {
+          <p>
+            <a [routerLink]="notification.link.route">{{notification.link.text}}</a>
+          </p>
+        }
+      </div>
     </div>
+  }
 </div>

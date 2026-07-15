@@ -1,16 +1,18 @@
-<div *ngIf="pageIndices.length>1" class="nav-buttons">
+@if (pageIndices.length>1) {
+  <div class="nav-buttons">
     <button id="prevButton" class="button is-small" (click)="prevPage()"
-        aria-label="previous page">
-        <fa-icon [icon]="scanIcons.prev" aria-hidden="true"></fa-icon>
+      aria-label="previous page">
+      <fa-icon [icon]="scanIcons.prev" aria-hidden="true"></fa-icon>
     </button>
-    <ng-container *ngFor="let pageNumber of buttonArray">
-        <button class="button is-small" iaToggleButton [active]="pageNumber===page"
-            (click)="goToPage(pageNumber)">
-            {{pageNumber}}
-    </button>
-    </ng-container>
+    @for (pageNumber of buttonArray; track pageNumber) {
+      <button class="button is-small" iaToggleButton [active]="pageNumber===page"
+        (click)="goToPage(pageNumber)">
+        {{pageNumber}}
+      </button>
+    }
     <button id="nextButton" class="button is-small" (click)="nextPage()"
-        aria-label="next page">
-        <fa-icon [icon]="scanIcons.next" aria-hidden="true"></fa-icon>
+      aria-label="next page">
+      <fa-icon [icon]="scanIcons.next" aria-hidden="true"></fa-icon>
     </button>
-</div>
+  </div>
+}

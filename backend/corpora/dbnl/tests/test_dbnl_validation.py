@@ -4,9 +4,13 @@ from addcorpus.models import Corpus
 here = os.path.abspath(os.path.dirname(__file__))
 
 def test_dbnl_validation(settings, load_test_corpus):
-    settings.DBNL_DATA = os.path.join(here, 'data')
     settings.CORPORA = {
         'dbnl': 'corpora.dbnl.dbnl.DBNL',
+    }
+    settings.CORPUS_SETTINGS = {
+        'dbnl': {
+            'data_directory': os.path.join(here, 'data'),
+        }
     }
 
     load_test_corpus('dbnl')

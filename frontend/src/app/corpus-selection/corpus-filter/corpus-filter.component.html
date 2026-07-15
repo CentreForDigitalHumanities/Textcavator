@@ -1,62 +1,68 @@
 <form [formGroup]="form">
-    <div class="columns">
-        <div class="column field">
-            <label class="label" id="label-language">Language</label>
-            <div class="control">
-                <ia-dropdown name="language" [formControl]="form.controls.language"
-                    labelledBy="label-language">
-                    <span iaDropdownLabel>{{form.controls.language.value || 'Any'}}</span>
-                    <div iaDropdownMenu>
-                        <a iaDropdownItem [value]="null">Any</a>
-                        <a *ngFor="let language of languages"
-                            iaDropdownItem [value]="language">
-                            {{language}}
-                        </a>
-                    </div>
-                </ia-dropdown>
-            </div>
-        </div>
-        <div class="column field">
-            <label class="label" id="label-category">Type of data</label>
-            <div class="control">
-                <ia-dropdown name="category" [formControl]="form.controls.category"
-                    labelledBy="label-category">
-                    <span iaDropdownLabel>{{form.controls.category.value || 'Any'}}</span>
-                    <div iaDropdownMenu>
-                        <a iaDropdownItem [value]="null">Any</a>
-                        <a *ngFor="let category of categories"
-                            iaDropdownItem [value]="category">
-                            {{category}}
-                        </a>
-                    </div>
-                </ia-dropdown>
-            </div>
-        </div>
-        <div class="column field">
-            <label class="label">Period</label>
-            <div class="control">
-                <div class="columns">
-                    <div class="column">
-                        <input class="input"
-                            type="number" step="10" [min]="minYear" [max]="maxYear"
-                            [formControl]="form.controls.minYear">
-                    </div>
-                    <div class="column is-narrow">
-                        -
-                    </div>
-                    <div class="column">
-                        <input class="input"
-                            type="number" step="10" [min]="minYear" [max]="maxYear"
-                            [formControl]="form.controls.maxYear">
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="columns">
+    <div class="column field">
+      <label class="label" id="label-language">Language</label>
+      <div class="control">
+        <ia-dropdown name="language" [formControl]="form.controls.language"
+          labelledBy="label-language">
+          <span iaDropdownLabel>{{form.controls.language.value || 'Any'}}</span>
+          <div iaDropdownMenu>
+            <a iaDropdownItem [value]="null">Any</a>
+            @for (language of languages; track language) {
+              <a
+                iaDropdownItem [value]="language">
+                {{language}}
+              </a>
+            }
+          </div>
+        </ia-dropdown>
+      </div>
     </div>
-    <div *ngIf="canReset$ | async" class="block" style="text-align: right;">
-        <button class="button" type="reset" (click)="form.reset()">
-            <span class="icon"><fa-icon [icon]="formIcons.reset"></fa-icon></span>
-            <span>Reset</span>
-        </button>
+    <div class="column field">
+      <label class="label" id="label-category">Type of data</label>
+      <div class="control">
+        <ia-dropdown name="category" [formControl]="form.controls.category"
+          labelledBy="label-category">
+          <span iaDropdownLabel>{{form.controls.category.value || 'Any'}}</span>
+          <div iaDropdownMenu>
+            <a iaDropdownItem [value]="null">Any</a>
+            @for (category of categories; track category) {
+              <a
+                iaDropdownItem [value]="category">
+                {{category}}
+              </a>
+            }
+          </div>
+        </ia-dropdown>
+      </div>
     </div>
+    <div class="column field">
+      <label class="label">Period</label>
+      <div class="control">
+        <div class="columns is-mobile">
+          <div class="column">
+            <input class="input"
+              type="number" step="10" [min]="minYear" [max]="maxYear"
+              [formControl]="form.controls.minYear">
+          </div>
+          <div class="column is-narrow">
+            -
+          </div>
+          <div class="column">
+            <input class="input"
+              type="number" step="10" [min]="minYear" [max]="maxYear"
+              [formControl]="form.controls.maxYear">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  @if (canReset$ | async) {
+    <div class="block" style="text-align: right;">
+      <button class="button" type="reset" (click)="form.reset()">
+        <span class="icon"><fa-icon [icon]="formIcons.reset"></fa-icon></span>
+        <span>Reset</span>
+      </button>
+    </div>
+  }
 </form>

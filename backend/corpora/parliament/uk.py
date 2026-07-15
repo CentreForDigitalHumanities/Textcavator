@@ -2,7 +2,6 @@ from glob import glob
 import logging
 from datetime import datetime
 
-from django.conf import settings
 
 from ianalyzer_readers.extract import Constant, CSV
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
@@ -34,12 +33,11 @@ def format_speaker(speaker):
 class ParliamentUK(Parliament, CSVCorpusDefinition):
     title = 'People & Parliament (UK)'
     description = "Speeches from the House of Lords and House of Commons"
-    data_directory = settings.PP_UK_DATA
     min_date = datetime(year=1803, month=1, day=1)
     max_date = datetime(year=2021, month=12, day=31)
-    es_index = getattr(settings, 'PP_UK_INDEX', 'parliament-uk')
+    es_index = 'parliament-uk'
+
     image = 'uk.jpeg'
-    word_model_path = getattr(settings, 'PP_UK_WM', None)
     languages = ['en']
     description_page = 'uk.md'
     field_entry = 'speech_id'

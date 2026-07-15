@@ -7,7 +7,6 @@ from ianalyzer_readers import extract
 from datetime import datetime, date
 from os.path import isdir
 import os
-
 from django.conf import settings
 
 from ianalyzer_readers.readers.core import Reader, Field

@@ -1,44 +1,62 @@
-<details class="box" *ngIf="field && !field.hidden">
+@if (field && !field.hidden) {
+  <details class="box">
     <summary>
-        <div class="foldable-header" >
-            <h3 class="title is-5">{{field.displayName}}</h3>
-            <p class="subtitle is-6">{{field.description}}</p>
-        </div>
+      <div class="foldable-header" >
+        <h3 class="title is-5">{{field.displayName}}</h3>
+        <p class="subtitle is-6">{{field.description}}</p>
+      </div>
     </summary>
-
     <br>
-
-    <div class="content">
+      <div class="content">
         <p>Type of data: <b>{{mappingNames[field.mappingType]}}</b></p>
-
         <ul>
-            <li>This field {{field.searchable ? 'can' : 'cannot'}} be searched</li>
-            <li>This field {{field.searchFilter ? 'has' : 'does not have'}} a search filter</li>
+          <li>This field {{field.searchable ? 'can' : 'cannot'}} be searched</li>
+          <li>This field {{field.filterOptions ? 'has' : 'does not have'}} a search filter</li>
         </ul>
-
-        <ng-container *ngIf="field.displayType === 'text_content' && field.multiFields">
-            <p>
-                This field supports the following options for text analysis:
-            </p>
-            <ul>
-                <li *ngIf="field.multiFields.includes('length')">
-                    Counting the total number of words, and calculating term frequencies relative to the total word count.
-                </li>
-                <li *ngIf="field.multiFields.includes('clean')">
-                    Removing stopwords
-                </li>
-                <li  *ngIf="field.multiFields.includes('stemmed')">
-                    Stemming
-                </li>
-            </ul>
-        </ng-container>
-
-        <p *ngIf="coverage !== undefined">
+        @if (field.displayType === 'text_content' && field.multiFields) {
+          <p>
+            This field supports the following options for text analysis:
+          </p>
+          <ul>
+            @if (field.multiFields.includes('length')) {
+              <li>
+                Counting the total number of words, and calculating term frequencies relative to the total word count.
+              </li>
+            }
+            @if (field.multiFields.includes('clean')) {
+              <li>
+                Removing stopwords
+              </li>
+            }
+            @if (field.multiFields.includes('stemmed')) {
+              <li >
+                Stemming
+              </li>
+            }
+          </ul>
+        }
+        @if (coverage !== undefined) {
+          <p>
             <b>{{coveragePercentage}}%</b> of the documents in this corpus have a value for this field
-        </p>
-
-        <p *ngIf="coverage === undefined">
+          </p>
+        }
+        @if (coverage === undefined) {
+          <p>
             Loading coverage data...
-        </p>
-    </div>
-</details>
+          </p>
+        }
+        @if (field.mappingType === 'keyword') {
+          @switch(cardinality) {
+            @case(undefined) {
+              <p>Loading cardinality data...</p>
+            }
+            @default {
+              <p>This field has <b>{{cardinality}}</b> unique
+              @if (cardinality === 1) {value} @else {values}.
+              </p>
+            }
+          }
+        }
+      </div>
+    </details>
+  }

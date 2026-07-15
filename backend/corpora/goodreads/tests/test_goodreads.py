@@ -7,7 +7,11 @@ def test_goodreads(settings, db, admin_client):
     settings.CORPORA = {
         'goodreads': 'corpora.goodreads.goodreads.GoodReads'
     }
-    settings.GOODREADS_DATA = ''
+    settings.CORPUS_SETTINGS = {
+        'goodreads': {
+            'data_directory': ''
+        }
+    }
 
     corpus = corpus_from_api(admin_client, 'goodreads')
     assert corpus['title'] == 'DIOPTRA-L'

@@ -32,19 +32,17 @@ class Times(XMLCorpusDefinition):
     description = "Archives from The Times, a British daily newspaper."
     min_date = datetime(year=1785, month=1, day=1)
     max_date = datetime(year=2010, month=12, day=31)
-    data_directory = settings.TIMES_DATA
-    es_index = getattr(settings, 'TIMES_ES_INDEX', 'times')
+    es_index = 'times'
     image = 'times.jpg'
-    scan_image_type = getattr(settings, 'TIMES_SCAN_IMAGE_TYPE', 'image/png')
+    scan_image_type = 'image/png'
     description_page = 'times.md'
     citation_page = 'citation.md'
     languages = ['en']
     category = 'periodical'
-    word_model_path = getattr(settings, "TIMES_WM", None)
 
     @property
     def es_settings(self):
-        return es_settings(self.languages[:1], stopword_analysis=True, stemming_analysis=True)
+        return es_settings(self.languages[:1])
 
     tag_toplevel = Tag('issue')
     tag_entry = Tag('article')

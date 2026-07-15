@@ -19,10 +19,18 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     saml = serializers.BooleanField(read_only=True)
     download_limit = serializers.IntegerField(read_only=True)
     profile = UserProfileSerializer()
+    name = serializers.CharField(source='get_short_name', read_only=True)
 
     class Meta(UserDetailsSerializer.Meta):
-        fields = ('id', 'username', 'email', 'saml',
+        fields = ('id', 'name', 'username', 'email', 'saml',
                   'download_limit', 'is_admin', 'profile')
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.saml:
+            self.fields.pop('username')
+
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)

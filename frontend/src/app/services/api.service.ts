@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { interval, Observable } from 'rxjs';
+import { firstValueFrom, interval, Observable } from 'rxjs';
 import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
     AggregateTermFrequencyParameters,
@@ -13,6 +13,7 @@ import {
     Download,
     DownloadOptions,
     FieldCoverage,
+    FieldCardinality,
     FoundDocument,
     GeoDocument,
     GeoLocation,
@@ -34,9 +35,8 @@ import * as _ from 'lodash';
 import {
     APIEditableCorpus,
     CorpusDataFile,
-    DataFileInfo,
 } from '@models/corpus-definition';
-import { APIIndexHealth, APIIndexJob, isComplete, JobStatus } from '@models/indexing';
+import { APIIndexHealth, APIIndexJob, isComplete } from '@models/indexing';
 import { ImageInfo } from '@models/image';
 
 interface SolisLoginResponse {
@@ -48,13 +48,37 @@ interface SolisLoginResponse {
     queries: QueryDb[];
 }
 
+export const joinURLPath = (...parts: string[]) => {
+    const cleanParts = parts.map((part, i) => {
+        // remove trailing/leading slashes from segments
+
+        // easy exception to provide '/' as an explicit segment; should never be trimmed.
+        if (part == '/') {
+            return part;
+        }
+
+        const cleanStart: (s: string) => string = (i == 0) ?
+            _.identity :
+            s => _.trimStart(s, '/');
+
+        const cleanEnd: (s: string) => string =
+            (i == parts.length - 1) ?
+            _.identity :
+            s => _.trimEnd(s, '/');
+
+        return cleanStart(cleanEnd(part));
+    });
+
+    return cleanParts.join('/');
+};
+
 @Injectable({
     providedIn: 'root',
 })
 export class ApiService {
     private apiUrl = environment.apiUrl;
 
-    private authApiUrl = 'users';
+    private authApiUrl = '/users';
     private visApiURL = 'visualization';
     private downloadApiURL = 'download';
     private corpusApiUrl = 'corpus';
@@ -62,28 +86,33 @@ export class ApiService {
     private indexApiUrl = 'indexing';
 
     private authApiRoute = (route: string): string =>
-        `/${this.authApiUrl}/${route}/`;
+        joinURLPath(this.authApiUrl, route);
 
     private apiRoute = (subApi: string, route: string): string =>
-        `${this.apiUrl}/${subApi}/${route}`;
+        joinURLPath(this.apiUrl, subApi, route);
 
     constructor(private http: HttpClient) {}
 
     public deleteSearchHistory(): Observable<any> {
-        return this.http.post('/api/search_history/delete_all/', {});
+        return this.http.post(
+            joinURLPath(this.apiUrl, 'search_history/delete_all/'), {});
     }
 
     public searchHistory() {
-        return this.http.get<QueryDb[]>('/api/search_history/').toPromise();
+        return this.http.get<QueryDb[]>(
+            joinURLPath(this.apiUrl, 'search_history/')
+        ).toPromise();
     }
 
     public downloads(): Promise<Download[]> {
-        return this.http.get<Download[]>('/api/download/').toPromise();
+        return this.http.get<Download[]>(
+            joinURLPath(this.apiUrl, 'download/')
+        ).toPromise();
     }
 
     // Media
     public getMedia(data: { args: string }): Promise<any> {
-        const url = `/api/get_media${data.args}`;
+        const url = `${joinURLPath(this.apiUrl, 'get_media')}${data.args}`;
         return this.http
             .get(url, { observe: 'response', responseType: 'arraybuffer' })
             .toPromise();
@@ -103,7 +132,7 @@ export class ApiService {
         };
         return this.http
             .post<{ media: string[]; info?: ImageInfo }>(
-                '/api/request_media',
+                joinURLPath(this.apiUrl, 'request_media'),
                 requestData
             )
             .toPromise();
@@ -113,18 +142,23 @@ export class ApiService {
         corpus_index: string;
         filepath: string;
     }): Promise<any> {
-        const url = `/api/download_pdf/${data.corpus_index}/${data.filepath}`;
+        const url = joinURLPath(
+            this.apiUrl, 'download_pdf', data.corpus_index, data.filepath
+        );
         return this.http.get(url).toPromise();
     }
 
     // Tasks
     public getTasksStatus(tasks: TaskResult): Observable<TasksOutcome> {
-        return this.http.post<TasksOutcome>('/api/task_status', tasks);
+        return this.http.post<TasksOutcome>(
+            joinURLPath(this.apiUrl, 'task_status'), tasks
+        );
     }
 
     public abortTasks(data: TaskResult): Promise<TaskSuccess> {
         return this.http
-            .post<TaskSuccess>('/api/abort_tasks', data)
+            .post<TaskSuccess>(
+                joinURLPath(this.apiUrl, 'abort_tasks'), data)
             .toPromise();
     }
 
@@ -177,12 +211,18 @@ export class ApiService {
         data: DateTermFrequencyParameters
     ): Promise<TaskResult> {
         const url = this.apiRoute(this.visApiURL, 'date_term_frequency');
+        console.log(url);
         return this.http.post<TaskResult>(url, data).toPromise();
     }
 
     fieldCoverage(corpusName: string): Promise<FieldCoverage> {
         const url = this.apiRoute(this.visApiURL, `coverage/${corpusName}`);
         return this.http.get<FieldCoverage>(url).toPromise();
+    }
+
+    fieldCardinality(corpusName: string): Promise<FieldCardinality> {
+        const url = this.apiRoute(this.visApiURL, `cardinality/${corpusName}`);
+        return firstValueFrom(this.http.get<FieldCardinality>(url));
     }
 
     // Download
@@ -259,18 +299,20 @@ export class ApiService {
 
     /** fetch a list of all corpora available for searching */
     public corpus() {
-        return this.http.get<Corpus[]>('/api/corpus/');
+        return this.http.get<Corpus[]>(joinURLPath(this.apiUrl, 'corpus/'));
     }
 
     // Corpus definitions
 
     public corpusDefinitions(): Observable<APIEditableCorpus[]> {
-        return this.http.get<APIEditableCorpus[]>('/api/corpus/definitions/');
+        return this.http.get<APIEditableCorpus[]>(
+            joinURLPath(this.apiUrl, 'corpus/definitions/')
+        );
     }
 
     public corpusDefinition(corpusID: number): Observable<APIEditableCorpus> {
         return this.http.get<APIEditableCorpus>(
-            `/api/corpus/definitions/${corpusID}/`
+            joinURLPath(this.apiUrl, `/corpus/definitions/${corpusID}/`)
         );
     }
 
@@ -278,7 +320,7 @@ export class ApiService {
         data: APIEditableCorpus
     ): Observable<APIEditableCorpus> {
         return this.http.post<APIEditableCorpus>(
-            '/api/corpus/definitions/',
+            joinURLPath(this.apiUrl, 'corpus/definitions/'),
             data
         );
     }
@@ -288,17 +330,20 @@ export class ApiService {
         data: APIEditableCorpus
     ): Observable<APIEditableCorpus> {
         return this.http.put<APIEditableCorpus>(
-            `/api/corpus/definitions/${corpusID}/`,
+            joinURLPath(this.apiUrl, `corpus/definitions/${corpusID}/`),
             data
         );
     }
 
     public deleteCorpus(corpusID: number): Observable<any> {
-        return this.http.delete(`/api/corpus/definitions/${corpusID}/`);
+        return this.http.delete(
+            joinURLPath(this.apiUrl, `corpus/definitions/${corpusID}/`));
     }
 
     public corpusSchema(): Observable<any> {
-        return this.http.get('/api/corpus/definition-schema');
+        return this.http.get(
+            joinURLPath(this.apiUrl, 'corpus/definition-schema')
+        );
     }
 
     public updateCorpusImage(corpusName: string, file: File): Observable<any> {
@@ -323,13 +368,13 @@ export class ApiService {
         formData.append('corpus', String(corpusId));
         formData.append('is_sample', 'True');
         return this.http.post<CorpusDataFile>(
-            `/api/corpus/datafiles/`,
+            this.apiRoute(this.corpusApiUrl, `datafiles/`),
             formData
         );
     }
 
     public deleteDataFile(dataFile: CorpusDataFile): Observable<null> {
-        const url = `/api/corpus/datafiles/${dataFile.id}/`;
+        const url = this.apiRoute(this.corpusApiUrl, `datafiles/${dataFile.id}/`);
         return this.http.delete<null>(url);
     }
 
@@ -337,7 +382,7 @@ export class ApiService {
         fileId: number,
         data: Partial<CorpusDataFile>
     ): Observable<CorpusDataFile> {
-        const url = `/api/corpus/datafiles/${fileId}/`;
+        const url = this.apiRoute(this.corpusApiUrl, `datafiles/${fileId}/`);
         return this.http.patch<CorpusDataFile>(url, data);
     }
 
@@ -348,15 +393,17 @@ export class ApiService {
         const params = new HttpParams()
             .set('corpus', corpusId)
             .set('samples', samples);
-        return this.http.get<CorpusDataFile[]>('/api/corpus/datafiles/', {
-            params: params,
-        });
+        return this.http.get<CorpusDataFile[]>(
+            this.apiRoute(this.corpusApiUrl, 'datafiles/'),
+            { params: params }
+        );
     }
 
     // Tagging
 
     public userTags(): Observable<Tag[]> {
         const url = this.apiRoute(this.tagApiUrl, 'tags/');
+        console.log(url);
         return this.http.get<Tag[]>(url);
     }
 
@@ -398,7 +445,7 @@ export class ApiService {
 
     // Authentication API
     public login(username: string, password: string) {
-        return this.http.post<{ key: string }>(this.authApiRoute('login'), {
+        return this.http.post<{ key: string }>(this.authApiRoute('login/'), {
             username,
             password,
         });
@@ -406,13 +453,13 @@ export class ApiService {
 
     public logout() {
         return this.http.post<{ detail: string }>(
-            this.authApiRoute('logout'),
+            this.authApiRoute('logout/'),
             {}
         );
     }
 
     public getUser() {
-        return this.http.get<UserResponse>(this.authApiRoute('user'));
+        return this.http.get<UserResponse>(this.authApiRoute('user/'));
     }
 
     public register(details: {
@@ -421,26 +468,26 @@ export class ApiService {
         password1: string;
         password2: string;
     }) {
-        return this.http.post<any>(this.authApiRoute('registration'), details);
+        return this.http.post<any>(this.authApiRoute('registration/'), details);
     }
 
     public verify(key: string) {
         return this.http.post<any>(
-            this.authApiRoute('registration/verify-email'),
+            this.authApiRoute('registration/verify-email/'),
             { key }
         );
     }
 
     public keyInfo(key: string) {
         return this.http.post<{ username: string; email: string }>(
-            this.authApiRoute('registration/key-info'),
+            this.authApiRoute('registration/key-info/'),
             { key }
         );
     }
 
     public requestResetPassword(email: string) {
         return this.http.post<{ detail: string }>(
-            this.authApiRoute('password/reset'),
+            this.authApiRoute('password/reset/'),
             { email }
         );
     }
@@ -452,7 +499,7 @@ export class ApiService {
         newPassword2: string
     ) {
         return this.http.post<{ detail: string }>(
-            this.authApiRoute('password/reset/confirm'),
+            this.authApiRoute('password/reset/confirm/'),
             {
                 uid,
                 token,
@@ -482,13 +529,15 @@ export class ApiService {
         details: Partial<UserResponse>
     ): Observable<UserResponse> {
         return this.http.patch<UserResponse>(
-            this.authApiRoute('user'),
+            this.authApiRoute('user/'),
             details
         );
     }
 
     public solisLogin(data: any): Promise<SolisLoginResponse> {
-        return this.http.get<SolisLoginResponse>('/api/solislogin').toPromise();
+        return this.http.get<SolisLoginResponse>(
+            joinURLPath(this.apiUrl, 'solislogin'),
+        ).toPromise();
     }
 
     // INDEXING

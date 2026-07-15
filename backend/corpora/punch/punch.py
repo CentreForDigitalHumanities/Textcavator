@@ -13,8 +13,7 @@ class Punch(GaleCorpus):
     description = "Archive of Punch, a British satirical magazine."
     min_date = datetime(1841, 7, 1)
     max_date = datetime(1992, 4, 8)
-    data_directory = settings.PUNCH_DATA
-    es_index = getattr(settings, 'PUNCH_ES_INDEX', 'punch')
+    es_index = 'punch'
     image = 'Collected_volumes_of_Punch.jpg'
     description_page = 'Punch.md'
     languages = ['en']

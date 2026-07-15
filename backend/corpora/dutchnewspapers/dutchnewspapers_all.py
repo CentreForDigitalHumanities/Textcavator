@@ -14,10 +14,8 @@ class DutchNewsPapersAll(DutchNewspapersPublic):
 
     title = "Dutch Newspapers (full)"
     description = "Full collection of Dutch newspapers digitised by the Koninklijke Bibliotheek."
-    data_directory = settings.DUTCHNEWSPAPERS_ALL_DATA
-    es_index = getattr(settings, 'DUTCHNEWSPAPERS_ALL_ES_INDEX', 'dutchnewspapers-all')
+    es_index = 'dutchnewspapers-all'
     max_date = datetime(year=1995, month=12, day=31)
-    word_model_path = getattr(settings, "DUTCHNEWSPAPERS_WM", None)
 
     def update_body(self, doc=None):
         if not doc:
