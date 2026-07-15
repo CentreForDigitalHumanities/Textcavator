@@ -1,26 +1,32 @@
 <div [class.is-hidden]="asTable">
-    <div class="block">
-        <div class="field">
-            <label class="label">Show as:</label>
-            <div class="control radios">
-                <label class="radio" *ngFor="let style of ['line', 'bar']">
-                    <input type="radio" [checked]="graphStyle.value===style" (click)="graphStyle.next(style)" (keydown.enter)="graphStyle.next(style)">
-                    {{style | titlecase}}
-                </label>
-            </div>
-        </div>
-        <div class="field" *ngIf="graphStyle.value==='bar'">
-            <div class="control">
-                <label class="label">Time interval:</label>
-                <ia-time-interval-slider [labels]="timeIntervals" (currentIndex)="zoomTimeInterval($event)"></ia-time-interval-slider>
-            </div>
-        </div>
+  <div class="block">
+    <div class="field">
+      <label class="label">Show as:</label>
+      <div class="control radios">
+        @for (style of ['line', 'bar']; track style) {
+          <label class="radio">
+            <input type="radio" [checked]="graphStyle.value===style" (click)="graphStyle.next(style)" (keydown.enter)="graphStyle.next(style)">
+            {{style | titlecase}}
+          </label>
+        }
+      </div>
     </div>
+    @if (graphStyle.value==='bar') {
+      <div class="field">
+        <div class="control">
+          <label class="label">Time interval:</label>
+          <ia-time-interval-slider [labels]="timeIntervals" (currentIndex)="zoomTimeInterval($event)"></ia-time-interval-slider>
+        </div>
+      </div>
+    }
+  </div>
 
-    <canvas id="chart"></canvas>
+  <canvas id="chart"></canvas>
 </div>
 
-<div class="block" *ngIf="asTable && terms.length">
+@if (asTable && terms.length) {
+  <div class="block">
     <ia-freqtable  [headers]="tableHeaders" [data]="tableData" [defaultSort]="'similarity'" [name]="tableFileName">
     </ia-freqtable>
-</div>
+  </div>
+}

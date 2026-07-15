@@ -1,139 +1,176 @@
 <section class="section">
-    <div class="columns is-centered">
+  <div class="columns is-centered">
 
-        <div *ngIf="!registrationSucceeded && !serverErrorCode">
-            <form (ngSubmit)="register(signupForm)" class="container" #signupForm="ngForm">
-                <div class="container is-login">
-                    <h1 class="title">{{appName}} sign-up</h1>
-                    <div class="field">
-                        <label class="label" for="username">Username</label>
-                        <p class="control has-icons-left has-icons-right">
-                            <input class="input" type="text" name="username" ngModel #username="ngModel" required>
-                            <span class="icon is-left">
-                                <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
-                            </span>
-                        </p>
-                        <div class="notification is-warning" *ngIf="username.errors?.required  && (username.dirty || username.touched)">
-                            Username is required.
-                        </div>
-                        <div class="notification is-danger" *ngIf="errors?.username">
-                            <p *ngFor="let unError of errors.username">{{unError}}</p>
-                            </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label" for="email">Email</label>
-                        <p class="control has-icons-left">
-                            <input class="input" type="email" name="email" ngModel #email="ngModel" required email/>
-                            <span class="icon is-left">
-                                <fa-icon [icon]="userIcons.email" aria-hidden="true"></fa-icon>
-                            </span>
-                        </p>
-                        <div class="notification is-warning" *ngIf="email.errors?.required && (email.dirty || email.touched)">
-                            Email is required.
-                        </div>
-                        <div class="notification is-warning" class="notification is-warning" *ngIf="email.errors && email.touched">
-                            Please enter a valid email address.
-                        </div>
-                        <div class="notification is-danger" *ngIf="errors?.email">
-                            <p *ngFor="let mError of errors.email">{{mError}}</p>
-                            </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label" for="email">Password</label>
-                        <p class="control has-icons-left">
-                            <input class="input" type="password" name="password" ngModel #password="ngModel" required
-                                minlength="8" />
-                            <span class="icon is-left">
-                                <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
-                            </span>
-                        </p>
-                        <div class="notification is-warning" *ngIf="password.errors?.required && (password.dirty || password.touched)">
-                            Password is required.
-                        </div>
-                        <div class="notification is-warning" *ngIf="password.errors?.minlength">
-                            Password must be at least 8 characters long.
-                        </div>
-                        <div class="notification is-danger" *ngIf="errors?.password1 || errors?.password2">
-                            <p *ngFor="let pwError of errors.password1">{{pwError}}</p>
-                            <p *ngFor="let pwError of errors.password2">{{pwError}}</p>
-                            </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label" for="email">Confirm password</label>
-                        <p class="control has-icons-left">
-                            <input class="input" type="password" name="passwordconfirm" ngModel #passwordconfirm="ngModel"
-                                required />
-                            <span class="icon is-left">
-                                <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
-                            </span>
-                        </p>
-                        <div class="notification is-warning" *ngIf="passwordconfirm.errors?.required && (passwordconfirm.dirty || passwordconfirm.touched)">
-                            Password confirmation is required.
-                        </div>
-
-                        <div class="notification is-warning"
-                            *ngIf=" (signupForm.value.password !==  signupForm.value.passwordconfirm) &&  ( passwordconfirm.touched)">
-                            Passwords do not match.
-                        </div>
-                    </div>
-
-                    <!-- Uncomment this if the privacy statement contains real info-->
-                    <div class="field">
-                        <label>
-                            <input type="checkbox" name="agree" ngModel #agree="ngModel" required> I have read and I
-                            agree with the
-                            <a (click)="toggleModal()">
-                                Privacy Statement
-                            </a>
-                        </label>
-                    </div>
-                    <div class="notification is-warning" *ngIf="agree.errors?.required && (agree.dirty || agree.touched)">
-                        You need to agree with the privacy statement.
-                    </div>
-                    <br><br>
-                    <div class="notification is-danger" *ngIf="errors?.non_field_errors">
-                            <p *ngFor="let error of errors.non_field_errors">{{error}}</p>
-                            </div>
-                    <div class="field">
-                        <p class="control">
-                            <button class="button is-primary" [disabled]="!signupForm.form.valid" [ngClass]="{'is-loading':isLoading}">Register</button>
-                        </p>
-                    </div>
+    @if (!registrationSucceeded && !serverErrorCode) {
+      <div>
+        <form (ngSubmit)="register(signupForm)" class="container" #signupForm="ngForm">
+          <div class="container is-login">
+            <h1 class="title">{{appName}} sign-up</h1>
+            <div class="field">
+              <label class="label" for="username">Username</label>
+              <p class="control has-icons-left has-icons-right">
+                <input class="input" type="text" name="username" ngModel #username="ngModel" required>
+                <span class="icon is-left">
+                  <fa-icon [icon]="userIcons.user" aria-hidden="true"></fa-icon>
+                </span>
+              </p>
+              @if (username.errors?.required  && (username.dirty || username.touched)) {
+                <div class="notification is-warning">
+                  Username is required.
                 </div>
-            </form>
-        </div>
+              }
+              @if (errors?.username) {
+                <div class="notification is-danger">
+                  @for (unError of errors.username; track unError) {
+                    <p>{{unError}}</p>
+                  }
+                </div>
+              }
+            </div>
+            <div class="field">
+              <label class="label" for="email">Email</label>
+              <p class="control has-icons-left">
+                <input class="input" type="email" name="email" ngModel #email="ngModel" required email/>
+                <span class="icon is-left">
+                  <fa-icon [icon]="userIcons.email" aria-hidden="true"></fa-icon>
+                </span>
+              </p>
+              @if (email.errors?.required && (email.dirty || email.touched)) {
+                <div class="notification is-warning">
+                  Email is required.
+                </div>
+              }
+              @if (email.errors && email.touched) {
+                <div class="notification is-warning" class="notification is-warning">
+                  Please enter a valid email address.
+                </div>
+              }
+              @if (errors?.email) {
+                <div class="notification is-danger">
+                  @for (mError of errors.email; track mError) {
+                    <p>{{mError}}</p>
+                  }
+                </div>
+              }
+            </div>
+            <div class="field">
+              <label class="label" for="email">Password</label>
+              <p class="control has-icons-left">
+                <input class="input" type="password" name="password" ngModel #password="ngModel" required
+                  minlength="8" />
+                <span class="icon is-left">
+                  <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
+                </span>
+              </p>
+              @if (password.errors?.required && (password.dirty || password.touched)) {
+                <div class="notification is-warning">
+                  Password is required.
+                </div>
+              }
+              @if (password.errors?.minlength) {
+                <div class="notification is-warning">
+                  Password must be at least 8 characters long.
+                </div>
+              }
+              @if (errors?.password1 || errors?.password2) {
+                <div class="notification is-danger">
+                  @for (pwError of errors.password1; track pwError) {
+                    <p>{{pwError}}</p>
+                  }
+                  @for (pwError of errors.password2; track pwError) {
+                    <p>{{pwError}}</p>
+                  }
+                </div>
+              }
+            </div>
+            <div class="field">
+              <label class="label" for="email">Confirm password</label>
+              <p class="control has-icons-left">
+                <input class="input" type="password" name="passwordconfirm" ngModel #passwordconfirm="ngModel"
+                  required />
+                <span class="icon is-left">
+                  <fa-icon [icon]="userIcons.password" aria-hidden="true"></fa-icon>
+                </span>
+              </p>
+              @if (passwordconfirm.errors?.required && (passwordconfirm.dirty || passwordconfirm.touched)) {
+                <div class="notification is-warning">
+                  Password confirmation is required.
+                </div>
+              }
+              @if ( (signupForm.value.password !==  signupForm.value.passwordconfirm) &&  ( passwordconfirm.touched)) {
+                <div class="notification is-warning"
+                  >
+                  Passwords do not match.
+                </div>
+              }
+            </div>
+            <!-- Uncomment this if the privacy statement contains real info-->
+            <div class="field">
+              <label>
+                <input type="checkbox" name="agree" ngModel #agree="ngModel" required> I have read and I
+                agree with the
+                <a (click)="toggleModal()">
+                  Privacy Statement
+                </a>
+              </label>
+            </div>
+            @if (agree.errors?.required && (agree.dirty || agree.touched)) {
+              <div class="notification is-warning">
+                You need to agree with the privacy statement.
+              </div>
+            }
+            <br><br>
+            @if (errors?.non_field_errors) {
+              <div class="notification is-danger">
+                @for (error of errors.non_field_errors; track error) {
+                  <p>{{error}}</p>
+                }
+              </div>
+            }
+            <div class="field">
+              <p class="control">
+                <button class="button is-primary" [disabled]="!signupForm.form.valid" [ngClass]="{'is-loading':isLoading}">Register</button>
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+    }
 
-        <div class="notification is-success container" *ngIf="registrationSucceeded">
-            <p class="title">Hello {{username}},</p>
-            <p>Thank you for your registration. An email has been sent to:</p>
-            <p class="title">{{email}}</p>
-            <p>Please follow the instructions in this email to complete your registration. </p>
-        </div>
+    @if (registrationSucceeded) {
+      <div class="notification is-success container">
+        <p class="title">Hello {{username}},</p>
+        <p>Thank you for your registration. An email has been sent to:</p>
+        <p class="title">{{email}}</p>
+        <p>Please follow the instructions in this email to complete your registration. </p>
+      </div>
+    }
 
-        <div class="notification is-danger container" *ngIf="serverErrorCode === 429">
-            <p>Too many requests. Try again later.</p>
-        </div>
-        <div class="notification is-danger container" *ngIf="![0, 429].includes(serverErrorCode)">
-            <p>A problem occurred on our side. Please contact the Digital Humanities Lab (<b>digitalhumanities [at] uu [dot] nl</b>), so that we can fix it for you.</p>
-        </div>
-    </div>
+    @if (serverErrorCode === 429) {
+      <div class="notification is-danger container">
+        <p>Too many requests. Try again later.</p>
+      </div>
+    }
+    @if (![0, 429].includes(serverErrorCode)) {
+      <div class="notification is-danger container">
+        <p>A problem occurred on our side. Please contact the Digital Humanities Lab (<b>digitalhumanities [at] uu [dot] nl</b>), so that we can fix it for you.</p>
+      </div>
+    }
+  </div>
 </section>
 
 
 <div class="modal modal-full-screen" [ngClass]="{ 'is-active' : isModalActive }">
-    <div class="modal-background" (click)="toggleModal()"></div>
-    <div class=" modal-content modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Privacy Statement</p>
-            <button class="delete" aria-label="close" (click)="toggleModal()"></button>
-        </header>
-        <section class="modal-card-body">
-            <ia-privacy></ia-privacy>
-        </section>
-        <footer class="modal-card-foot">
-        </footer>
-    </div>
+  <div class="modal-background" (click)="toggleModal()"></div>
+  <div class=" modal-content modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Privacy Statement</p>
+      <button class="delete" aria-label="close" (click)="toggleModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <ia-privacy></ia-privacy>
+    </section>
+    <footer class="modal-card-foot">
+    </footer>
+  </div>
 </div>

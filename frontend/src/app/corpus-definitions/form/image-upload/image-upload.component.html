@@ -1,41 +1,47 @@
 <h2 class="title is-5">Image</h2>
 
 <p class="label">
-    Current image <span *ngIf="!corpus.hasImage">(default)</span>:
+  Current image @if (!corpus.hasImage) {
+  <span>(default)</span>
+  }:
 </p>
 
-<div *ngIf="imageURL$ | async as url" class="block image-container">
+@if (imageURL$ | async; as url) {
+  <div class="block image-container">
     <div class="image is-5by4">
-        <img  [src]="url" />
+      <img  [src]="url" />
     </div>
-</div>
+  </div>
+}
 
 <div class="field is-grouped">
-    <div class="control">
-        <div class="file has-name">
-            <label class="file-label">
-                <input class="file-input" type="file" name="definition-upload"
-                    accept="image/png,image/jpeg" (input)="onImageUpload($event)" />
-                <span class="file-cta">
-                    <span class="file-icon" aria-hidden="true">
-                        <fa-icon [icon]="actionIcons.upload"></fa-icon>
-                    </span>
-                    <span class="file-label">Upload image file...</span>
-                </span>
-                <span class="file-name" *ngIf="file$ | async as file">
-                    {{file.name}}
-                </span>
-            </label>
-        </div>
+  <div class="control">
+    <div class="file has-name">
+      <label class="file-label">
+        <input class="file-input" type="file" name="definition-upload"
+          accept="image/png,image/jpeg" (input)="onImageUpload($event)" />
+        <span class="file-cta">
+          <span class="file-icon" aria-hidden="true">
+            <fa-icon [icon]="actionIcons.upload"></fa-icon>
+          </span>
+          <span class="file-label">Upload image file...</span>
+        </span>
+        @if (file$ | async; as file) {
+          <span class="file-name">
+            {{file.name}}
+          </span>
+        }
+      </label>
     </div>
-    <div class="control">
-        <button class="button" type="button" (click)="deleteImage()">
-            <span class="icon">
-                <fa-icon [icon]="actionIcons.remove" />
-            </span>
-            <span>Remove image</span>
-        </button>
-    </div>
+  </div>
+  <div class="control">
+    <button class="button" type="button" (click)="deleteImage()">
+      <span class="icon">
+        <fa-icon [icon]="actionIcons.remove" />
+      </span>
+      <span>Remove image</span>
+    </button>
+  </div>
 </div>
 
 

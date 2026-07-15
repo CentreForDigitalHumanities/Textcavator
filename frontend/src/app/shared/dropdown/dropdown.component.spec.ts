@@ -1,22 +1,25 @@
-import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Component, signal } from '@angular/core';
 import { DropdownModule } from './dropdown.module';
 import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
 
+
 @Component({
     template: `
-    <ia-dropdown [value]="selected" (onChange)="selected = $event">
-        <span iaDropdownLabel>{{selected?.label || 'Select option'}}</span>
-        <div iaDropdownMenu>
-            <a *ngFor="let option of options"
-                iaDropdownItem [value]="option">
-                {{option.label}}
-            </a>
-        </div>
+    <ia-dropdown [value]="selected()" (onChange)="selected.set($event)">
+      <span iaDropdownLabel>{{ selected()?.label || 'Select option'}}</span>
+      <div iaDropdownMenu>
+        @for (option of options; track option) {
+          <a
+            iaDropdownItem [value]="option">
+            {{option.label}}
+          </a>
+        }
+      </div>
     </ia-dropdown>
     `,
-    standalone: false
+    imports: [CommonModule, DropdownModule],
 })
 class DropdownTestComponent {
     options = [
@@ -25,19 +28,12 @@ class DropdownTestComponent {
         { name: 'item3', label: 'Item 3' }
     ];
 
-    selected: any;
+    selected = signal(undefined);
 }
 
 describe('DropdownComponent', () => {
     let component: DropdownTestComponent;
     let fixture: ComponentFixture<DropdownTestComponent>;
-
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [DropdownModule, CommonModule],
-            declarations: [DropdownTestComponent],
-        });
-    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent<DropdownTestComponent>(DropdownTestComponent);
@@ -53,11 +49,10 @@ describe('DropdownComponent', () => {
         await fixture.whenStable();
 
         const trigger = fixture.debugElement.query(By.css('.dropdown-trigger > button')).nativeElement;
-
         expect(trigger.innerHTML).toContain('Select option');
 
         // allow switching value
-        component.selected = component.options[1];
+        component.selected.set(component.options[1]);
         fixture.detectChanges();
         await fixture.whenStable();
 

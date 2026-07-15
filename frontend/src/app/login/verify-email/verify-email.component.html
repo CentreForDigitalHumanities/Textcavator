@@ -1,24 +1,30 @@
 <section class="section">
-<h1 class="title">Confirm E-mail Address</h1>
-<form *ngIf="(userDetails$ | async) as userDetails" (submit)=confirm(key) class="box">
-    <div class="field">
+  <h1 class="title">Confirm E-mail Address</h1>
+  @if ((userDetails$ | async); as userDetails) {
+    <form (submit)=confirm(key) class="box">
+      <div class="field">
         <label class="label">
-            Please confirm that <a href="mailto:{{userDetails.email}}">{{userDetails.email}}</a> is an e-mail address for user {{userDetails.username}}
+          Please confirm that <a href="mailto:{{userDetails.email}}">{{userDetails.email}}</a> is an e-mail address for user {{userDetails.username}}
         </label>
-    </div>
-    <div class="field is-grouped">
+      </div>
+      <div class="field is-grouped">
         <div class="control">
-            <button class="button is-primary" [disabled]="!userDetails.username || !userDetails.email">Confirm</button>
+          <button class="button is-primary" [disabled]="!userDetails.username || !userDetails.email">Confirm</button>
         </div>
+      </div>
+    </form>
+  }
+  @if ((errors$ | async); as error) {
+    <div class="notification is-danger">
+      {{error.error}}
     </div>
-</form>
-<div *ngIf="(errors$ | async) as error" class="notification is-danger">
-{{error.error}}
-</div>
+  }
 
-<div *ngIf="success" class="notification is-success container">
-    <p>Your email address has been verified! You are being directed to login...</p>
-</div>
+  @if (success) {
+    <div class="notification is-success container">
+      <p>Your email address has been verified! You are being directed to login...</p>
+    </div>
+  }
 
 
 </section>

@@ -1,121 +1,127 @@
 <section class="section">
-    <h1 class="title block">Your tags</h1>
-    <div class="block">
-        <button class="button is-primary" aria-label="create tag" (click)="startCreate()">
-            <span class="icon">
-                <fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon>
-            </span>
-            <span>New</span>
-        </button>
-    </div>
+  <h1 class="title block">Your tags</h1>
+  <div class="block">
+    <button class="button is-primary" aria-label="create tag" (click)="startCreate()">
+      <span class="icon">
+        <fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon>
+      </span>
+      <span>New</span>
+    </button>
+  </div>
 
-    <div class="columns is-multiline">
-        <div class="column is-one-third" *ngFor="let tag of tags$ | async">
-            <div class="card">
-                <header class="card-header">
-                    <p class="card-header-title">
-                        {{tag.name}}
-                    </p>
-                </header>
-
-                <div class="card-content">
-                    <div class="content">
-                        {{tag.description || "(no description)"}}
-                    </div>
-                    <div class="content" *ngIf="tag.count !== undefined && tag.count !== 0; else noTagCount">
-                        <details>
-                            <summary>
-                                Tag used {{tag.count}} times across {{tag.corpus_counts?.length}} corpora.
-                            </summary>
-                            <table class="table">
-                                <tr *ngFor="let entry of tag.corpus_counts">
-                                    <td>{{entry.corpus}}</td>
-                                    <td>
-                                        {{entry.count}}
-                                    </td>
-                                    <td>
-                                        <a [routerLink]="['/search', entry.corpus]" [queryParams]="makeQueryParams(entry.corpus, tag)"
-                                            aria-label="Open search results for this tag" iaBalloon="open search results for this tag">
-                                            <span class="icon"><fa-icon [icon]="actionIcons.search"></fa-icon></span>
-                                        </a>
-                                        </td>
-                                        </tr>
-                            </table>
-                            </details>
-
-                            </div>
-                            <ng-template #noTagCount>
-                                <div class="content">
-                                    <strong>Tag not used in any corpora.</strong>
-                                </div>
-                    </ng-template>
-                </div>
-                <footer class="card-footer">
-                    <a class="card-footer-item" (click)="startEdit(tag)" (keydown.enter)="startEdit(tag)" role="button" tabindex="0"
-                        aria-label="edit tag">Edit</a>
-                    <a class="card-footer-item"
-                        (click)="confirmDelete.open(tag)"
-                        (keydown.enter)="confirmDelete.open(tag)"
-                        (keydown.space)="confirmDelete.open(tag)"
-                        role="button" tabindex="0">
-                        Delete
-                    </a>
-                </footer>
-                </div>
-
+  <div class="columns is-multiline">
+    @for (tag of tags$ | async; track tag) {
+      <div class="column is-one-third">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{tag.name}}
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              {{tag.description || "(no description)"}}
+            </div>
+            @if (tag.count !== undefined && tag.count !== 0) {
+              <div class="content">
+                <details>
+                  <summary>
+                    Tag used {{tag.count}} times across {{tag.corpus_counts?.length}} corpora.
+                  </summary>
+                  <table class="table">
+                    @for (entry of tag.corpus_counts; track entry) {
+                      <tr>
+                        <td>{{entry.corpus}}</td>
+                        <td>
+                          {{entry.count}}
+                        </td>
+                        <td>
+                          <a [routerLink]="['/search', entry.corpus]" [queryParams]="makeQueryParams(entry.corpus, tag)"
+                            aria-label="Open search results for this tag" iaBalloon="open search results for this tag">
+                            <span class="icon"><fa-icon [icon]="actionIcons.search"></fa-icon></span>
+                          </a>
+                        </td>
+                      </tr>
+                    }
+                  </table>
+                </details>
+              </div>
+            } @else {
+              <div class="content">
+                <strong>Tag not used in any corpora.</strong>
+              </div>
+            }
+          </div>
+          <footer class="card-footer">
+            <a class="card-footer-item" (click)="startEdit(tag)" (keydown.enter)="startEdit(tag)" role="button" tabindex="0"
+            aria-label="edit tag">Edit</a>
+            <a class="card-footer-item"
+              (click)="confirmDelete.open(tag)"
+              (keydown.enter)="confirmDelete.open(tag)"
+              (keydown.space)="confirmDelete.open(tag)"
+              role="button" tabindex="0">
+              Delete
+            </a>
+          </footer>
         </div>
+      </div>
+    }
 
-    </div>
+  </div>
 </section>
 
-<div class="modal" [class.is-active]="!!modalType" *ngIf="editedTag">
+@if (editedTag) {
+  <div class="modal" [class.is-active]="!!modalType">
     <div class="modal-background" (click)="cancelEdit()"></div>
     <div class=" modal-content modal-card">
-        <header class="modal-card-head">
-            <h2 class="modal-card-title">{{modalType==='edit' ? 'Edit tag' : 'Create tag'}}</h2>
-            <button class="delete" aria-label="close" (click)="cancelEdit()"></button>
-        </header>
-        <section class="modal-card-body">
-            <div class="content">
-                <form>
-                    <div class="field">
-                        <label class="label">Name</label>
-                        <div class="control">
-                            <input class="input" type="text" [(ngModel)]="editedTag.name" name="name">
-                            <p *ngIf="!tagValid()" class="help is-danger">
-                                This field is required
-                            </p>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Description</label>
-                        <div class="control">
-                            <input class="input" type="text" [(ngModel)]="editedTag.description" name="description">
-                        </div>
-                    </div>
-                </form>
+      <header class="modal-card-head">
+        <h2 class="modal-card-title">{{modalType==='edit' ? 'Edit tag' : 'Create tag'}}</h2>
+        <button class="delete" aria-label="close" (click)="cancelEdit()"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="content">
+          <form>
+            <div class="field">
+              <label class="label">Name</label>
+              <div class="control">
+                <input class="input" type="text" [(ngModel)]="editedTag.name" name="name">
+                @if (!tagValid()) {
+                  <p class="help is-danger">
+                    This field is required
+                  </p>
+                }
+              </div>
             </div>
-        </section>
-        <footer class="modal-card-foot">
-            <div class="buttons is-right">
-                <button class="button is-primary" (click)="modalType === 'edit' ?  finishEdit() : finishCreate()"
-                    [disabled]="!tagValid()">
-                    <span class="icon"><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
-                    <span>Save</span>
-                </button>
-                <button class="button" (click)="cancelEdit()">
-                    <span class="icon"><fa-icon [icon]="formIcons.reset"></fa-icon></span>
-                    <span>Cancel</span></button>
+            <div class="field">
+              <label class="label">Description</label>
+              <div class="control">
+                <input class="input" type="text" [(ngModel)]="editedTag.description" name="description">
+              </div>
             </div>
+          </form>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <div class="buttons is-right">
+          <button class="button is-primary" (click)="modalType === 'edit' ?  finishEdit() : finishCreate()"
+            [disabled]="!tagValid()">
+            <span class="icon"><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
+            <span>Save</span>
+          </button>
+          <button class="button" (click)="cancelEdit()">
+            <span class="icon"><fa-icon [icon]="formIcons.reset"></fa-icon></span>
+            <span>Cancel</span></button>
+          </div>
         </footer>
+      </div>
     </div>
-</div>
+  }
 
 
-<ia-confirm-modal #confirmDelete actionText="Delete tag" [handleAsync]="handleDelete"
+  <ia-confirm-modal #confirmDelete actionText="Delete tag" [handleAsync]="handleDelete"
     [icon]="actionIcons.delete" actionButtonClass="is-danger">
     <p>
-        Are you sure you want to delete your tag
-        <strong>{{confirmDelete.data?.name}}</strong>?
+      Are you sure you want to delete your tag
+      <strong>{{confirmDelete.data?.name}}</strong>?
     </p>
-</ia-confirm-modal>
+  </ia-confirm-modal>

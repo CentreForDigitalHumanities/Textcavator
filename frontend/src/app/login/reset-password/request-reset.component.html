@@ -1,35 +1,41 @@
 <section class="section">
-        <div class="columns is-centered">
-            <div>
-                <form (ngSubmit)="requestReset(requestResetForm)" class="container" #requestResetForm="ngForm">
-                    <div class="container is-login">
-                        <h1 class="title">Reset password</h1>
-                        <div class="field">
-                            <label class="label" for="email">Email</label>
-                            <div class="control has-icons-left">
-                                <input class="input" type="email" name="email" ngModel #email="ngModel" required email
-                                (input)="disableNotification()" />
-                                <span class="icon is-left">
-                                    <fa-icon [icon]="userIcons.email" aria-hidden="true"></fa-icon>
-                                </span>
-                            </div>
-                            <p class="help">Enter the e-mail address with which you registered for {{appName}}.</p>
-                            <div class="notification is-warning" *ngIf="email.errors?.required && (email.dirty || email.touched)">
-                                Email is required.
-                            </div>
-                            <div class="notification is-warning" class="notification is-warning" *ngIf="email.errors && email.touched">
-                                Please enter a valid email address.
-                            </div>
-                            <div *ngIf="showMessage && message" class="notification" [ngClass]="{'is-danger': !success, 'is-success': success}">{{message}}</div>
-                        </div>
+  <div class="columns is-centered">
+    <div>
+      <form (ngSubmit)="requestReset(requestResetForm)" class="container" #requestResetForm="ngForm">
+        <div class="container is-login">
+          <h1 class="title">Reset password</h1>
+          <div class="field">
+            <label class="label" for="email">Email</label>
+            <div class="control has-icons-left">
+              <input class="input" type="email" name="email" ngModel #email="ngModel" required email
+                (input)="disableNotification()" />
+              <span class="icon is-left">
+                <fa-icon [icon]="userIcons.email" aria-hidden="true"></fa-icon>
+              </span>
+            </div>
+            <p class="help">Enter the e-mail address with which you registered for {{appName}}.</p>
+            @if (email.errors?.required && (email.dirty || email.touched)) {
+              <div class="notification is-warning">
+                Email is required.
+              </div>
+            }
+            @if (email.errors && email.touched) {
+              <div class="notification is-warning" class="notification is-warning">
+                Please enter a valid email address.
+              </div>
+            }
+            @if (showMessage && message) {
+              <div class="notification" [ngClass]="{'is-danger': !success, 'is-success': success}">{{message}}</div>
+            }
+          </div>
 
-                        <div class="field">
-                            <p class="control">
-                                <button class="button is-primary" [disabled]="!requestResetForm.form.valid">Request password reset<link rel="stylesheet" href=""></button>
-                            </p>
-                        </div>
-                    </div>
-                </form>
+          <div class="field">
+            <p class="control">
+              <button class="button is-primary" [disabled]="!requestResetForm.form.valid">Request password reset<link rel="stylesheet" href=""></button>
+            </p>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 </section>

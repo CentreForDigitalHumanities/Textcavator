@@ -1,31 +1,53 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "strict": false,
-    "importHelpers": true,
-      "outDir": "../dist/out-tsc",
-      "esModuleInterop": true,
-      "sourceMap": true,
-      "declaration": false,
-      "moduleResolution": "bundler",
-      "experimentalDecorators": true,
-      "target": "ES2022",
-      "typeRoots": ["node_modules/@types"],
-      "lib": ["es2022", "dom", "dom.iterable"],
-      "module": "es2022",
+    "compileOnSave": false,
+    "compilerOptions": {
+        "module": "es2022",
+        "strict": false,
+        "importHelpers": true,
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "bundler",
+        "experimentalDecorators": true,
+        "target": "ES2022",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "types": [
+            "jasmine",
+            "node"
+        ],
       "baseUrl": "src",
-      "paths": {
-          "@app/*": ["app/*"],
-          "@shared/*": ["app/shared/*"],
-          "@models": ["app/models"],
-          "@models/*": ["app/models/*"],
-          "@services": ["app/services"],
-          "@services/*": ["app/services/*"],
-          "@utils/*": ["app/utils/*"],
-          "@environments/*": ["environments/*"],
-          "@mock-data/*": ["mock-data/*"]
-      },
-      "useDefineForClassFields": false,
-      "resolveJsonModule": true
-  }
+        "paths": {
+            "@app/*": [
+                "app/*"
+            ],
+            "@shared/*": [
+                "app/shared/*"
+            ],
+            "@models": [
+                "app/models"
+            ],
+            "@models/*": [
+                "app/models/*"
+            ],
+            "@services": [
+                "app/services"
+            ],
+            "@services/*": [
+                "app/services/*"
+            ],
+            "@utils/*": [
+                "app/utils/*"
+            ],
+            "@environments/*": [
+                "environments/*"
+            ],
+            "@mock-data/*": [
+                "mock-data/*"
+            ]
+        },
+        "useDefineForClassFields": false,
+        "resolveJsonModule": true
+    }
 }
