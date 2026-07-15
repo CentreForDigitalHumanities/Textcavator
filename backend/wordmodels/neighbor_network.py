@@ -95,7 +95,6 @@ def _graph_vega_doc(timeframes, nodes, links):
         "height": 500,
         "padding": 0,
         "autosize": "none",
-
         "signals": [
             { "name": "cx", "update": "width / 2" },
             { "name": "cy", "update": "height / 2" },
@@ -154,7 +153,14 @@ def _graph_vega_doc(timeframes, nodes, links):
                 "on": [
                     {"events": {"signal": "fix"}, "update": "fix && fix.length"}
                 ]
-            }
+            },
+            {
+                'name': 'theme',
+                'description': 'Current site theme (light/dark)',
+                'bind': {
+                    'element': '#current-theme',
+                }
+            },
         ],
 
         "data": [
@@ -181,13 +187,13 @@ def _graph_vega_doc(timeframes, nodes, links):
                 ]
             }
         ],
-
         "scales": [
             {
                 'name': 'link-color',
                 'type': 'linear',
                 'domain': {"data": "link-data", "field": "value"},
                 'range': {'scheme': 'greys'},
+                'reverse': { 'signal': 'theme === "dark"' },
             },
             {
                 'name': 'text-weight',
@@ -196,13 +202,11 @@ def _graph_vega_doc(timeframes, nodes, links):
                 'range': ['bold', 'normal'],
             }
         ],
-
         "marks": [
             {
                 "name": "nodes",
                 "type": "text",
                 "zindex": 1,
-
                 "from": {"data": "node-data"},
                 "on": [
                     {
@@ -218,7 +222,6 @@ def _graph_vega_doc(timeframes, nodes, links):
                 "encode": {
                     "enter": {
                         "fontSize": {"value": 15},
-                        "fill": {"value": "black"},
                         "text": {"field": "term"},
                         "baseline": {"value": "middle"},
                         "align": {"value": "center"},
@@ -227,7 +230,8 @@ def _graph_vega_doc(timeframes, nodes, links):
                         },
                     },
                     "update": {
-                        "cursor": {"value": "pointer"}
+                        "cursor": {"value": "pointer"},
+                        "fill": {'signal': 'theme === "dark" ? "white" : "black"'},
                     },
                 },
                 "transform": [

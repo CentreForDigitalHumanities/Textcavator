@@ -9,7 +9,7 @@ CORPORA = {
     'multilingual-mock-corpus': 'corpora_test.mixed_language.multilingual_mock_corpus.MultilingualMockCorpus',
     'times': 'corpora.times.times.Times',
     'media-mock-corpus': 'corpora_test.media.media_mock_corpus.MediaMockCorpus',
-    'mock-csv-corpus': 'corpora_test.basic.mock_csv_corpus.MockCSVCorpus',
+    'mock-csv-corpus': 'corpora_test.basic.corpus.ExampleCorpus',
     'wordmodels-mock-corpus': 'corpora_test.wordmodels.wm_mock_corpus.WordmodelsMockCorpus',
     'tagging-mock-corpus': 'corpora_test.tag.tag_mock_corpus.TaggingMockCorpus',
     'annotated-mock-corpus': 'corpora_test.named_entities.annotated_mock_corpus.AnnotatedMockCorpus',

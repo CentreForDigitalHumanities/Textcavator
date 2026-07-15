@@ -5,6 +5,7 @@ export const mockUser: User = new User(42, 'mouse', false, 10000, false, true, f
 
 export const mockUserResponse: UserResponse = {
     id: 42,
+    name: 'mouse',
     username: 'mouse',
     is_admin: false,
     email: 'mighty@mouse.com',

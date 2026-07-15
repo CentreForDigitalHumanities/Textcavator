@@ -34,7 +34,7 @@ def test_import_error(db, settings):
 def test_corpus_dir(db, settings, basic_mock_corpus):
     path = load_corpus.corpus_dir(basic_mock_corpus)
     assert os.path.isabs(path)
-    assert 'mock_csv_corpus.py' in os.listdir(path)
+    assert 'corpus.py' in os.listdir(path)
     assert 'source_data' in os.listdir(path)
 
 

@@ -1,17 +1,19 @@
 <nav class="menu" aria-labelledby="topics-header">
-    <h2 class="title is-5" id="topics-header">Manual topics</h2>
-        <ng-container *ngFor="let section of (manifest$ | async)">
-            <ng-container *ngIf="hasPermission(section) | async">
-                <h3 class="menu-label">{{section.title}}</h3>
-                <ul class="menu-list">
-                    <li *ngFor="let page of section.pages">
-                        <a [routerLink]="['/manual', page.id]"
-                            routerLinkActive="is-active"
-                            ariaCurrentWhenActive="page">
-                            {{page.title}}
-                        </a>
-                    </li>
-                </ul>
-            </ng-container>
-    </ng-container>
+  <h2 class="title is-5" id="topics-header">Manual topics</h2>
+  @for (section of (manifest$ | async); track section) {
+    @if (hasPermission(section) | async) {
+      <h3 class="menu-label">{{section.title}}</h3>
+      <ul class="menu-list">
+        @for (page of section.pages; track page) {
+          <li>
+            <a [routerLink]="['/manual', page.id]"
+              routerLinkActive="is-active"
+              ariaCurrentWhenActive="page">
+              {{page.title}}
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  }
 </nav>

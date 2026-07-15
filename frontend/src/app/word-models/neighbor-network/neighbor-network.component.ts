@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { Corpus, FreqTableHeaders } from '@models';
 import { WordmodelsService } from '@services';
+import { Theme, ThemeService } from '@services/theme.service';
 import { BehaviorSubject } from 'rxjs';
 import embed from 'vega-embed';
 
@@ -36,7 +37,7 @@ export class NeighborNetworkComponent implements OnChanges {
             key: 'similarity',
             label: 'Similarity'
         }
-    ]
+    ];
 
     constructor(
         private wordModelsService: WordmodelsService,

@@ -1,8 +1,12 @@
 <ia-notifications></ia-notifications>
-<ia-menu role="banner" *ngIf="!iframe"></ia-menu>
+@if (!iframe) {
+  <ia-menu role="banner"></ia-menu>
+}
 <ia-alert></ia-alert>
 <main id="main" tabindex="-1">
-    <router-outlet></router-outlet>
-    <ia-dialog></ia-dialog>
+  <router-outlet></router-outlet>
+  <ia-dialog></ia-dialog>
 </main>
-<ia-footer role="contentinfo" *ngIf="!iframe"></ia-footer>
+@if (!iframe) {
+  <ia-footer role="contentinfo"></ia-footer>
+}

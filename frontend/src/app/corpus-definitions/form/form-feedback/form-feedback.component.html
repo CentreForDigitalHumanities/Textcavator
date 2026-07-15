@@ -1,19 +1,25 @@
-    <div class="block" role="status">
-        <div class="message is-success" *ngIf="showSuccess">
-            <p class="message-body">
-                Changes saved!
-            </p>
-        </div>
-        <div class="message is-danger" *ngIf="showInvalid">
-            <p class="message-body">
-                The form was not filled out correctly. Please correct the marked
-                fields before saving.
-            </p>
-        </div>
-        <div class="message is-danger" *ngIf="showError">
-            <p class="message-body">
-                Something went wrong saving your changes. Please try again.
-                If you keep seeing this error, please contact support.
-            </p>
-        </div>
+<div class="block" role="status">
+  @if (showSuccess) {
+    <div class="message is-success">
+      <p class="message-body">
+        Changes saved!
+      </p>
     </div>
+  }
+  @if (showInvalid) {
+    <div class="message is-danger">
+      <p class="message-body">
+        The form was not filled out correctly. Please correct the marked
+        fields before saving.
+      </p>
+    </div>
+  }
+  @if (showError) {
+    <div class="message is-danger">
+      <p class="message-body">
+        Something went wrong saving your changes. Please try again.
+        If you keep seeing this error, please contact support.
+      </p>
+    </div>
+  }
+</div>

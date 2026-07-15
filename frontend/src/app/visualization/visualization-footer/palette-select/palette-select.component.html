@@ -1,17 +1,23 @@
-<ia-dropdown *ngIf="palettes" [value]="palette" (onChange)="palette = $event"
+@if (palettes) {
+  <ia-dropdown [value]="palette" (onChange)="palette = $event"
     labelledBy="palette-icon">
     <span iaDropdownLabel class="icon" id="palette-icon">
-        <fa-icon [icon]="visualizationIcons.palette" role="img"
-            aria-label="palette" />
+      <fa-icon [icon]="visualizationIcons.palette" role="img"
+        aria-label="palette" />
     </span>
     <div iaDropdownMenu>
-        <a *ngFor="let palette of palettes"
-            iaDropdownItem [value]="palette">
-            <span role="img" aria-label="colour swatches">
-                <span class="icon" *ngFor="let color of palette" [style.color]="color">
-                    <fa-icon [icon]="visualizationIcons.swatch"></fa-icon>
-                </span>
-            </span>
+      @for (palette of palettes; track palette) {
+        <a
+          iaDropdownItem [value]="palette">
+          <span role="img" aria-label="colour swatches">
+            @for (color of palette; track color) {
+              <span class="icon" [style.color]="color">
+                <fa-icon [icon]="visualizationIcons.swatch"></fa-icon>
+              </span>
+            }
+          </span>
         </a>
+      }
     </div>
-</ia-dropdown>
+  </ia-dropdown>
+}

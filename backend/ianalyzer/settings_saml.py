@@ -20,9 +20,10 @@ SAML_CREATE_UNKNOWN_USER = True
 ACS_DEFAULT_REDIRECT_URL = 'http://localhost:4200' # redirect to this url after logging in on Identity Provider
 LOGOUT_REDIRECT_URL = 'http://localhost:4200'
 SAML_LOGOUT_REQUEST_PREFERRED_BINDING = saml2.BINDING_HTTP_POST
+SAML_DJANGO_USER_MAIN_ATTRIBUTE = 'saml_username'
 
 SAML_ATTRIBUTE_MAPPING = {
-    "uuShortID": ("username", ),
+    "uuShortID": ("saml_username", ),
     "mail": ("email", ),
     "givenName": ("first_name", ),
     "uuPrefixedSn": ("last_name", ),

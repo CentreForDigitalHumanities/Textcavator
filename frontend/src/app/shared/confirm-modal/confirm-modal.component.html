@@ -1,31 +1,37 @@
-<div class="modal is-active" *ngIf="confirmAction$ | async as data">
+@if (confirmAction$ | async; as data) {
+  <div class="modal is-active">
     <div class="modal-background"></div>
     <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title" #modalTitle tabindex="-1">{{actionText}}?
-            </p>
-            <button *ngIf="!disableCloseButton" class="delete" aria-label="close"
-                (click)="cancel()"></button>
-        </header>
-        <section class="modal-card-body">
-            <ng-content></ng-content>
-        </section>
-        <footer class="modal-card-foot">
-            <div class="buttons">
-                <button class="button" (click)="confirm(data.data)"
-                    [class]="actionButtonClass"
-                    [class.is-loading]="loading$ | async">
-                    <span class="icon" *ngIf="icon">
-                        <fa-icon [icon]="icon" />
-                    </span>
-                    <span>
-                        {{actionText}}
-                    </span>
-                </button>
-                <button class="button" (click)="cancel()">
-                    Cancel
-                </button>
-            </div>
-        </footer>
+      <header class="modal-card-head">
+        <p class="modal-card-title" #modalTitle tabindex="-1">{{actionText}}?
+        </p>
+        @if (!disableCloseButton) {
+          <button class="delete" aria-label="close"
+          (click)="cancel()"></button>
+        }
+      </header>
+      <section class="modal-card-body">
+        <ng-content></ng-content>
+      </section>
+      <footer class="modal-card-foot">
+        <div class="buttons">
+          <button class="button" (click)="confirm(data.data)"
+            [class]="actionButtonClass"
+            [class.is-loading]="loading$ | async">
+            @if (icon) {
+              <span class="icon">
+                <fa-icon [icon]="icon" />
+              </span>
+            }
+            <span>
+              {{actionText}}
+            </span>
+          </button>
+          <button class="button" (click)="cancel()">
+            Cancel
+          </button>
+        </div>
+      </footer>
     </div>
-</div>
+  </div>
+}
