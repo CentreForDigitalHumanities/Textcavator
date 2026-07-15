@@ -21,9 +21,6 @@ CORPUS_SETTINGS = {
         "data_directory": os.path.join(BASE_DIR, 'addcorpus', 'python_corpora', 'tests'),
         "es_index": "test-times",
     },
-    "ublad": {
-        "data_directory": ""
-    }
 }
 
 SERVERS['default']['index_prefix'] = 'test'

@@ -439,6 +439,11 @@ class ParliamentNetherlands(Parliament, XMLCorpusDefinition):
     citation_page = "netherlands.md"
 
     @property
+    def data_directory_old(self):
+        raise NotImplementedError(
+            'Required configuration data_directory_old is missing')
+
+    @property
     def subcorpora(self):
         return [
             ParliamentNetherlandsOld(self.data_directory_old),

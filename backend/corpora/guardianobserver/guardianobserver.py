@@ -37,6 +37,7 @@ class GuardianObserver(XMLCorpusDefinition):
     min_date = datetime(year=1791, month=1, day=1)
     max_date = datetime(year=2003, month=12, day=31)
     scan_image_type = 'application/pdf'
+    es_index = 'guardianobserver'
 
     image = 'guardianobserver.jpg'
 
