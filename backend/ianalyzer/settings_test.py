@@ -16,10 +16,12 @@ CORPORA = {
     'cjk-mock-corpus': 'corpora_test.cjk.corpus.CJKMockCorpus'
 }
 
-TIMES_DATA = os.path.join(BASE_DIR, 'addcorpus', 'python_corpora', 'tests')
-TIMES_ES_INDEX = 'test-times'
-
-UBLAD_DATA = '' # necessary to make ublad test not fail
+CORPUS_SETTINGS = {
+    "times": {
+        "data_directory": os.path.join(BASE_DIR, 'addcorpus', 'python_corpora', 'tests'),
+        "es_index": "test-times",
+    },
+}
 
 SERVERS['default']['index_prefix'] = 'test'
 

@@ -11,9 +11,10 @@ def times_test_settings(settings):
     settings.CORPORA = {
         'times': 'corpora.times.times.Times',
     }
-    settings.TIMES_DATA = join(settings.BASE_DIR, 'addcorpus/python_corpora/tests')
-    settings.TIMES_ES_INDEX = 'test-times'
-
+    settings.CORPUS_SETTINGS["times"] = {
+        "data_directory": join(settings.BASE_DIR, "addcorpus/python_corpora/tests"),
+        "es_index": "test-times",
+    }
 
 
 def test_times_source(times_test_settings):

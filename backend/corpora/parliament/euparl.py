@@ -15,7 +15,7 @@ from ianalyzer_readers.readers.core import Field
 from ianalyzer_readers.readers.json import JSONReader
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
-from addcorpus.python_corpora.corpus import FieldDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
@@ -40,30 +40,16 @@ class ParliamentEurope(Parliament):
     title = 'People & Parliament (European Parliament)'
     description = "Speeches from the European Parliament (EP)"
 
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_EUPARL_INDEX') or 'parliament-euparl'
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_EUPARL_DATA') or super().data_directory
-
     languages = ['en']
     category = "parliament"
     document_context = document_context()
     description_page = 'euparl.md'
     image = 'euparl.jpeg'
     min_date = datetime(year=1999, month=7, day=20)
-
-    @property
-    def max_date(self):
-        return get_deprecated_setting('PP_EUPARL_MAX_DATE') or datetime.now()
+    max_date = datetime.now()
+    es_index = 'parliament-euparl'
 
     language_field = 'original_language_code'
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('PP_EUPARL_WM') or super().word_model_path
 
     wordmodels_page = 'euparl.md'
 

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from corpora.parliament.parliament import Parliament
 from ianalyzer_readers.extract import Constant, CSV
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 import corpora.parliament.utils.field_defaults as field_defaults
 
 
@@ -14,21 +14,10 @@ class ParliamentGermanyOld(Parliament, CSVCorpusDefinition):
     description = "Speeches from the Reichstag"
     min_date = datetime(year=1867, month=1, day=1)
     max_date = datetime(year=1942, month=12, day=31)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_GERMANY_OLD_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_GERMANY_OLD_INDEX') or 'parliament-germany-old'
+    es_index = 'parliament-germany-old'
 
     image = 'germany-old.jpeg'
     languages = ['de']
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('PP_DE_WM') or super().word_model_path
 
     description_page = 'germany-old.md'
 

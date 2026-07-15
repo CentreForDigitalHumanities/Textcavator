@@ -547,10 +547,3 @@ def transform_to_date_range(earliest, latest):
         'gte': earliest,
         'lte': latest
     }
-
-
-def get_deprecated_setting(setting: str):
-    '''Utility function to get a corpus-specific Django setting'''
-    if hasattr(settings, setting):
-        logger.warning('Setting %s is deprecated; use CORPUS_SETTINGS', setting)
-        return getattr(settings, setting)

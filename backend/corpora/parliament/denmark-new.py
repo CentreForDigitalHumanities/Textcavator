@@ -6,7 +6,7 @@ import re
 
 from corpora.parliament.parliament import Parliament
 from ianalyzer_readers.extract import Constant, CSV, Metadata, Combined
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 import corpora.parliament.utils.field_defaults as field_defaults
 import corpora.utils.formatting as formatting
 import corpora.utils.constants as constants
@@ -37,19 +37,7 @@ class ParliamentDenmarkNew(Parliament, CSVCorpusDefinition):
     description = "Speeches from the Folketing"
     min_date = datetime(year=2009, month=1, day=1)
     max_date = datetime(year=2016, month=12, day=31)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_DENMARK_NEW_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_DENMARK_NEW_INDEX') or 'parliament-denmark-new'
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('PP_DENMARK_WM') or super().word_model_path
-
+    es_index = 'parliament-denmark-new'
 
     image = 'denmark.jpg'
     description_page = 'denmark-new.md'

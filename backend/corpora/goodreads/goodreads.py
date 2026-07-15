@@ -8,7 +8,7 @@ import openpyxl
 
 from ianalyzer_readers.extract import CSV, Metadata
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
-from addcorpus.python_corpora.corpus import CSVCorpusDefinition, FieldDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import CSVCorpusDefinition, FieldDefinition
 
 from addcorpus.es_mappings import main_content_mapping
 
@@ -20,19 +20,12 @@ class GoodReads(CSVCorpusDefinition):
     # Data overrides from .common.Corpus (fields at bottom of class)
     title = "DIOPTRA-L"
     description = "Goodreads reviews of translated literary texts"
+    es_index = 'goodreads'  # default setting for development
 
     delimiter = ';'
 
     min_date=datetime(2007, 1, 1)
     max_date=datetime(2022, 12, 31)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('GOODREADS_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('GOODREADS_ES_INDEX') or 'goodreads'
 
     image = 'DioptraL.png'
     description_page = 'goodreads.md'

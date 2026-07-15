@@ -8,7 +8,7 @@ import csv
 from ianalyzer_readers.xml_tag import Tag, PreviousSiblingTag
 
 from addcorpus.python_corpora.corpus import (
-    CorpusDefinition, CSVCorpusDefinition, XMLCorpusDefinition, get_deprecated_setting
+    CorpusDefinition, CSVCorpusDefinition, XMLCorpusDefinition
 )
 from ianalyzer_readers.extract import Constant, CSV, XML, Metadata, Combined, Backup
 from corpora.parliament.parliament import Parliament
@@ -312,8 +312,6 @@ class ParliamentIrelandNew(XMLCorpusDefinition):
     Only used for data extraction, use the `ParliamentIreland` class in the application.
     '''
 
-    data_directory = None
-
     def __init__(self, data_directory: str):
         self.data_directory = data_directory
 
@@ -445,18 +443,7 @@ class ParliamentIreland(Parliament, CorpusDefinition):
     description = 'Speeches from the Dáil Éireann and Seanad Éireann'
     min_date = datetime(year=1919, month=1, day=1)
     max_date = datetime(year=2020, month=12, day=31)
-
-    @property
-    def data_directory(self):
-        return get_deprecated_setting('PP_IRELAND_DATA') or super().data_directory
-
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_IRELAND_INDEX') or 'parliament-ireland'
-
-    @property
-    def word_model_path(self):
-        return get_deprecated_setting('PP_IRELAND_WM') or super().word_model_path
+    es_index = 'parliament-ireland'
 
     image = 'ireland.jpg'
     description_page = 'ireland.md'

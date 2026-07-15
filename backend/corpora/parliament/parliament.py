@@ -1,9 +1,8 @@
 import logging
 import os
 import os.path as op
-from typing import Optional
 
-from addcorpus.python_corpora.corpus import CorpusDefinition, get_deprecated_setting
+from addcorpus.python_corpora.corpus import CorpusDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 import corpora.parliament.utils.field_defaults as field_defaults
 from addcorpus.es_settings import es_settings
@@ -26,9 +25,7 @@ class Parliament(CorpusDefinition):
     # store min_year as int, since datetime does not support BCE dates
     visualize = []
 
-    @property
-    def es_index(self):
-        return get_deprecated_setting('PP_ALIAS') or 'parliament'
+    es_index = 'parliament'
 
     # fields below are required by code but not actually used
     min_date = field_defaults.MIN_DATE

@@ -31,10 +31,9 @@ class Ecco(XMLCorpusDefinition):
     min_date = datetime(year=1700, month=1, day=1)
     max_date = datetime(year=1800, month=12, day=31)
 
-    data_directory = settings.ECCO_DATA
-    es_index = getattr(settings, 'ECCO_ES_INDEX', 'ecco')
+    es_index = 'ecco'
     image = 'ecco.jpg'
-    scan_image_type = getattr(settings, 'ECCO_SCAN_IMAGE_TYPE', 'application/pdf')
+    scan_image_type = 'application/pdf'
     es_settings = None
     languages = ['en', 'fr', 'la', 'grc', 'de',  'it', 'cy', 'ga', 'gd']
     category = 'book'
