@@ -41,8 +41,8 @@ def test_corpus_dir(db, settings, basic_mock_corpus):
 def test_corpus_settings(db, settings):
     '''Test configuration using CORPUS_SETTINGS'''
     settings.CORPORA = {
-        'example': 'corpora_test.basic.mock_csv_corpus.MockCSVCorpus',
-        'example-2':  'corpora_test.basic.mock_csv_corpus.MockCSVCorpus',
+        'example': 'corpora_test.basic.corpus.ExampleCorpus',
+        'example-2':  'corpora_test.basic.corpus.ExampleCorpus',
     }
     settings.CORPUS_SETTINGS = {
         'example-2': {
