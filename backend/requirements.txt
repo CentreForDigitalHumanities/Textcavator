@@ -148,7 +148,7 @@ pandas==2.3.3
     #   -r requirements.in
     #   ianalyzer-readers
     #   pyreadr
-pillow==12.2.0
+pillow==12.3.0
     # via -r requirements.in
 pluggy==1.6.0
     # via pytest
