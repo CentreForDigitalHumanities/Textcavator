@@ -21,6 +21,7 @@ import { ToggleButtonDirective } from './toggle-button/toggle-button.directive';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { BackToTopButton } from './back-to-top-button/back-to-top-button.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonLoadingDirective } from './button-loading/button-loading.directive';
 
 /** this should be imported by all other modules; provides basic building blocks
  * for the whole application
@@ -38,6 +39,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ],
     exports: [
         // shared components
+        ButtonLoadingDirective,
         DatePickerComponent,
         ErrorComponent,
         TabsComponent,
@@ -61,6 +63,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         // Shared pipes
         SlugifyPipe,
     ], imports: [
+        ButtonLoadingDirective,
         ToggleButtonDirective,
         BackToTopButton,
         BrowserAnimationsModule,
