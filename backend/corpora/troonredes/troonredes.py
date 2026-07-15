@@ -3,6 +3,7 @@ Collect corpus-specific information, that is, data structures and file
 locations.
 '''
 
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 import logging
 logger = logging.getLogger(__name__)
 import os
@@ -10,11 +11,8 @@ from os.path import join, splitext
 from datetime import datetime
 from ianalyzer_readers.xml_tag import Tag
 
-from django.conf import settings
-
 from ianalyzer_readers import extract
 from addcorpus.python_corpora import filters
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from addcorpus.es_settings import es_settings
@@ -32,10 +30,9 @@ class Troonredes(XMLCorpusDefinition):
     description = "Speeches by Dutch monarchs"
     min_date = datetime(year=1814, month=1, day=1)
     max_date = datetime(year=2025, month=12, day=31)
-    data_directory = settings.TROONREDES_DATA
-    es_index = getattr(settings, 'TROONREDES_ES_INDEX', 'troonredes')
+    es_index = 'troonredes'
+
     image = 'troonrede.jpg'
-    word_model_path = getattr(settings, 'TROONREDES_WM', None)
     languages = ['nl']
     category = 'oration'
     description_page = 'troonredes.md'

@@ -1,17 +1,12 @@
 from datetime import datetime
 from glob import glob
 import logging
-from os.path import join
 
 import bs4
-from django.conf import settings
 from ianalyzer_readers.xml_tag import Tag, FindParentTag, PreviousTag, TransformTag
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition
 from ianalyzer_readers.extract import XML, Constant, Combined, Order
-from corpora.parliament.utils.parlamint import (
-    party_attribute_extractor,
-)
 from corpora.parliament.utils.parlamint_v4 import (
     current_party_id_extractor,
     extract_named_entities,
@@ -108,10 +103,15 @@ def get_sequence_recent(id):
 class ParliamentNetherlandsNew(XMLCorpusDefinition):
     min_date = datetime(year=2015, month=1, day=1)
     max_date = datetime(year=2022, month=12, day=31)
-    data_directory = settings.PP_NL_RECENT_DATA
+    data_directory = None
 
     tag_toplevel = Tag("TEI")
     tag_entry = Tag("u")
+
+
+    def __init__(self, data_directory):
+        self.data_directory = data_directory
+
 
     def sources(self, start: datetime, end: datetime):
         if not in_date_range(self, start, end):
@@ -257,7 +257,10 @@ class ParliamentNetherlandsOld(XMLCorpusDefinition):
 
     tag_toplevel = Tag("root")
     tag_entry = Tag("speech")
-    data_directory = settings.PP_NL_DATA
+    data_directory = None
+
+    def __init__(self, data_directory):
+        self.data_directory = data_directory
 
     def sources(self, start, end):
         logger = logging.getLogger(__name__)
@@ -425,24 +428,26 @@ class ParliamentNetherlands(Parliament, XMLCorpusDefinition):
     description = "Debates in the Dutch national parliament, from its founding to the present. A collection of the speeches in the Eerste Kamer and Tweede Kamer."
     min_date = datetime(year=1815, month=1, day=1)
     max_date = datetime(year=2022, month=12, day=31)
+    es_index = 'parliament-netherlands'
 
     languages = ["nl"]
     category = "parliament"
     document_context = document_context()
 
-    data_directory = settings.PP_NL_RECENT_DATA
-    word_model_path = getattr(settings, "PP_NL_WM", None)
-
-    es_index = getattr(settings, "PP_NL_INDEX", "parliament-netherlands")
     image = "netherlands.jpg"
     description_page = "netherlands.md"
     citation_page = "netherlands.md"
 
     @property
+    def data_directory_old(self):
+        raise NotImplementedError(
+            'Required configuration data_directory_old is missing')
+
+    @property
     def subcorpora(self):
         return [
-            ParliamentNetherlandsOld(),
-            ParliamentNetherlandsNew(),
+            ParliamentNetherlandsOld(self.data_directory_old),
+            ParliamentNetherlandsNew(self.data_directory),
         ]
 
     def sources(self, start, end):

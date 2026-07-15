@@ -7,7 +7,11 @@ def test_troonredes(settings, db, admin_client):
     settings.CORPORA = {
         'troonredes': 'corpora.troonredes.troonredes.Troonredes'
     }
-    settings.TROONREDES_DATA = ''
+    settings.CORPUS_SETTINGS = {
+        'troonredes': {
+            'data_directory': '',
+        }
+    }
 
     corpus = corpus_from_api(admin_client, 'troonredes')
     assert corpus['title'] == 'Troonredes'

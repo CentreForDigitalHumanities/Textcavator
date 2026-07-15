@@ -1,5 +1,4 @@
 from datetime import datetime
-from django.conf import settings
 import os
 from glob import glob
 import re
@@ -8,9 +7,10 @@ import json
 import csv
 from ianalyzer_readers.xml_tag import Tag, PreviousSiblingTag
 
-from addcorpus.python_corpora.corpus import CorpusDefinition, CSVCorpusDefinition, XMLCorpusDefinition
+from addcorpus.python_corpora.corpus import (
+    CorpusDefinition, CSVCorpusDefinition, XMLCorpusDefinition
+)
 from ianalyzer_readers.extract import Constant, CSV, XML, Metadata, Combined, Backup
-from addcorpus.es_mappings import main_content_mapping
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 import corpora.utils.formatting as formatting
@@ -69,12 +69,15 @@ class ParliamentIrelandOld(CSVCorpusDefinition):
     Only used for data extraction, use the `ParliamentIreland` class in the application.
     '''
 
-    data_directory = settings.PP_IRELAND_DATA
+    data_directory = None
     min_date = datetime(year=1919, month=1, day=1)
     max_date = datetime(year=2013, month=12, day=31)
 
     field_entry = 'speechID'
     delimiter = '\t'
+
+    def __init__(self, data_directory: str):
+        self.data_directory = data_directory
 
     def sources(self, start, end):
         if in_date_range(self, start, end):
@@ -309,7 +312,9 @@ class ParliamentIrelandNew(XMLCorpusDefinition):
     Only used for data extraction, use the `ParliamentIreland` class in the application.
     '''
 
-    data_directory = settings.PP_IRELAND_DATA
+    def __init__(self, data_directory: str):
+        self.data_directory = data_directory
+
     min_date = datetime(year=2014, month=1, day=1)
     max_date = datetime(year=2020, month=12, day=31)
 
@@ -438,9 +443,8 @@ class ParliamentIreland(Parliament, CorpusDefinition):
     description = 'Speeches from the Dáil Éireann and Seanad Éireann'
     min_date = datetime(year=1919, month=1, day=1)
     max_date = datetime(year=2020, month=12, day=31)
-    data_directory = settings.PP_IRELAND_DATA
-    es_index = getattr(settings, 'PP_IRELAND_INDEX', 'parliament-ireland')
-    word_model_path = getattr(settings, 'PP_IRELAND_WM', None)
+    es_index = 'parliament-ireland'
+
     image = 'ireland.jpg'
     description_page = 'ireland.md'
     es_settings = {'index': {'number_of_replicas': 0}} # do not include analyzers in es_settings
@@ -449,8 +453,8 @@ class ParliamentIreland(Parliament, CorpusDefinition):
     @property
     def subcorpora(self):
         return [
-            ParliamentIrelandOld(),
-            ParliamentIrelandNew(),
+            ParliamentIrelandOld(self.data_directory),
+            ParliamentIrelandNew(self.data_directory),
         ]
 
     def sources(self, start, end):

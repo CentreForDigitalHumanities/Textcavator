@@ -1,11 +1,9 @@
 import re
 import os
 import os.path as op
-import glob
 import logging
 from datetime import datetime
 
-from django.conf import settings
 import openpyxl
 
 from ianalyzer_readers.extract import CSV, Metadata
@@ -22,13 +20,13 @@ class GoodReads(CSVCorpusDefinition):
     # Data overrides from .common.Corpus (fields at bottom of class)
     title = "DIOPTRA-L"
     description = "Goodreads reviews of translated literary texts"
+    es_index = 'goodreads'  # default setting for development
 
     delimiter = ';'
 
     min_date=datetime(2007, 1, 1)
     max_date=datetime(2022, 12, 31)
-    data_directory = settings.GOODREADS_DATA
-    es_index = getattr(settings, 'GOODREADS_ES_INDEX', 'goodreads')
+
     image = 'DioptraL.png'
     description_page = 'goodreads.md'
     visualize = []

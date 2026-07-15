@@ -10,11 +10,19 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 @pytest.fixture
 def dbnl_corpus(settings):
-    settings.DBNL_DATA = os.path.join(here, 'data')
-    # for testing purposes, also add the metadata helper corpus
+    # for testing purposes, also add the metadata helper corpus - this would normally
+    # be instantiated from the DBNL class
     settings.CORPORA = {
         'dbnl': 'corpora.dbnl.dbnl.DBNL',
         'dbnl_metadata': 'corpora.dbnl.dbnl_metadata.DBNLMetadata',
+    }
+    settings.CORPUS_SETTINGS = {
+        'dbnl': {
+            'data_directory': os.path.join(here, 'data'),
+        },
+        'dbnl_metadata': {
+            'data_directory': os.path.join(here, 'data'),
+        }
     }
     return 'dbnl'
 

@@ -32,14 +32,12 @@ class DutchNewspapersPublic(XMLCorpusDefinition):
     description = "Collection of Dutch newspapers in the public domain, digitised by the Koninklijke Bibliotheek."
     min_date = datetime(year=1600, month=1, day=1)
     max_date = datetime(year=1876, month=12, day=31)
-    data_directory = getattr(settings, 'DUTCHNEWSPAPERS_DATA', None)
-    es_index = getattr(settings, 'DUTCHNEWSPAPERS_ES_INDEX', 'dutchnewspapers-public')
+    es_index = 'dutchnewspapers-public'
     image = 'dutchnewspapers.jpg'
     languages = ['nl']
     category = 'periodical'
     description_page = 'description_public.md'
     citation_page = 'citation_public.md'
-    word_model_path = getattr(settings, "DUTCHNEWSPAPERS_WM", None)
 
     @property
     def es_settings(self):

@@ -17,13 +17,42 @@ def corpus_dir(corpus_name: str) -> str:
     Arguments:
         corpus_name {str} -- Key of the corpus in CORPORA object in settings
     """
-    corpus = load_corpus_definition(corpus_name)
-    return dirname(getabsfile(corpus.__class__))
+    corpus = import_corpus_class(corpus_name)
+    return dirname(getabsfile(corpus))
 
 
-def load_corpus_definition(corpus_name) -> Type[CorpusDefinition]:
+def import_corpus_class(corpus_name: str) -> Type[CorpusDefinition]:
+    '''Imports a corpus definition class'''
     import_path = settings.CORPORA.get(corpus_name)
-    return import_string(import_path)()
+    return import_string(import_path)
+
+
+def corpus_settings(corpus_name: str) -> Dict:
+    '''Attribute overrides for a corpus as configured in settings'''
+    corpora_settings = getattr(settings, 'CORPUS_SETTINGS', {})
+    return corpora_settings.get(corpus_name, dict())
+
+
+def apply_corpus_settings(corpus_class: Type[CorpusDefinition], settings: Dict):
+    '''
+    Creates a subclass of a corpus that overrides parent attributes according to settings.
+
+    Overrides are applied on a class instead of an instance, as this allows you to
+    override `@property` attributes with static values.
+    '''
+    class ConfiguredCorpus(corpus_class):
+        pass
+
+    for attr, value in settings.items():
+        setattr(ConfiguredCorpus, attr, value)
+    return ConfiguredCorpus
+
+
+def load_corpus_definition(corpus_name: str) -> CorpusDefinition:
+    '''Imports, configures and instantiates a corpus definition'''
+    corpus_class = import_corpus_class(corpus_name)
+    configured_class = apply_corpus_settings(corpus_class, corpus_settings(corpus_name))
+    return configured_class()
 
 
 def _try_loading_corpus_definition(corpus_name, stderr=sys.stderr) -> Optional[CorpusDefinition]:

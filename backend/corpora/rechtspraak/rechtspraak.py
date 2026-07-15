@@ -7,8 +7,6 @@ from typing import Optional
 from zipfile import ZipFile, BadZipFile
 from ianalyzer_readers.xml_tag import Tag, ParentTag
 
-from django.conf import settings
-
 from ianalyzer_readers import extract
 from addcorpus.python_corpora.corpus import FieldDefinition, XMLCorpusDefinition
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
@@ -41,8 +39,8 @@ class Rechtspraak(XMLCorpusDefinition):
     description = "Open data of (anonymised) court rulings of the Dutch judicial system"
     min_date = datetime(year=1900, month=1, day=1)
     max_date = datetime(year=2022, month=12, day=6)
-    data_directory = settings.RECHTSPRAAK_DATA
-    es_index = getattr(settings, 'RECHTSPRAAK_ES_INDEX', 'rechtspraak')
+    es_index = 'rechtspraak'
+
     image = 'rechtspraak.jpg' #CC-0, from https://commons.wikimedia.org/wiki/File:Courtroom_One_Gavel_-_Flickr_-_Joe_Gratz.jpg
     description_page = 'rechtspraak.md'
     toplevel_zip_file = 'OpenDataUitspraken.zip'

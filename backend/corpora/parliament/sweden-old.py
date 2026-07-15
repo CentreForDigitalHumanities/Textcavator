@@ -8,7 +8,6 @@ import corpora.parliament.utils.field_defaults as field_defaults
 import corpora.utils.constants as constants
 import corpora.utils.formatting as formatting
 
-from django.conf import settings
 
 def format_era(era):
     eras = {
@@ -35,9 +34,8 @@ class ParliamentSwedenOld(Parliament, CSVCorpusDefinition):
     description = 'Speeches from the Riksdag'
     min_date = datetime(year=1809, month=1, day=1)
     max_date = datetime(year=1919, month=12, day=31)
-    data_directory = settings.PP_SWEDEN_OLD_DATA
-    es_index = getattr(settings, 'PP_SWEDEN_OLD_INDEX', 'parliament-sweden-old')
-    word_model_path = getattr(settings, 'PP_SWEDEN_WM', None)
+    es_index = 'parliament-sweden-old'
+    image = 'sweden-old.jpg'
 
     document_context = constants.document_context(
         context_fields=['chamber', 'date_earliest', 'date_latest']

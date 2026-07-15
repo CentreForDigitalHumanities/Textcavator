@@ -7,7 +7,11 @@ def test_guardian_observer(settings, db, admin_client):
     settings.CORPORA = {
         'guardian-observer': 'corpora.guardianobserver.guardianobserver.GuardianObserver',
     }
-    settings.GO_DATA = ''
+    settings.CORPUS_SETTINGS = {
+        'guardian-observer': {
+            'data_directory': ''
+        }
+    }
 
     corpus = corpus_from_api(admin_client, 'guardian-observer')
     assert corpus['title'] == 'Guardian-Observer'
