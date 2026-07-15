@@ -233,7 +233,7 @@ soupsieve==2.8.4
     # via beautifulsoup4
 sqlparse==0.5.4
     # via django
-textcavator-readers==0.5.0
+textcavator-readers==0.5.1
     # via -r requirements.in
 textdistance==4.6.3
     # via -r requirements.in
