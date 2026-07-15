@@ -33,7 +33,7 @@ cffi==2.0.0
     # via cryptography
 charset-normalizer==3.4.3
     # via requests
-click==8.3.0
+click==8.4.2
     # via
     #   celery
     #   click-didyoumean
@@ -57,7 +57,7 @@ defusedxml==0.7.1
     #   pysaml2
 dj-rest-auth[with-social]==7.2.0
     # via -r requirements.in
-django==5.2.15
+django==5.2.16
     # via
     #   -r requirements.in
     #   dj-rest-auth
@@ -148,7 +148,7 @@ pandas==2.3.3
     #   -r requirements.in
     #   ianalyzer-readers
     #   pyreadr
-pillow==12.2.0
+pillow==12.3.0
     # via -r requirements.in
 pluggy==1.6.0
     # via pytest
