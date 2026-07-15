@@ -19,7 +19,7 @@
   </div>
 
   <div class="my-3">
-    <button class="btn btn-primary" type="submit" [class.is-loading]="loading$ | async">
+    <button class="btn btn-primary" type="submit" [iaButtonLoading]="loading$ | async">
       <span ><fa-icon [icon]="formIcons.confirm" /></span>
       <span>Save changes</span>
     </button>

@@ -104,7 +104,7 @@
     white-space: normal;
 }
 
-.is-loading:not(.button) {
+.is-loading:not(.btn) {
     @extend %content-loader;
 }
 

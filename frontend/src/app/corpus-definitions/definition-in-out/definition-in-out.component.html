@@ -47,7 +47,7 @@
         </div>
 
         <div class="my-3">
-          <button class="btn btn-primary" [class.is-loading]="corpus.loading$ | async" type="submit"
+          <button class="btn btn-primary" [iaButtonLoading]="corpus.loading$ | async" type="submit"
             (click)="submit()">
             <span  aria-hidden="true">
               <fa-icon [icon]="formIcons.confirm"></fa-icon>

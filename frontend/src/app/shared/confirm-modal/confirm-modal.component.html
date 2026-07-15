@@ -14,7 +14,7 @@
         @let data = confirmAction$ | async;
         <button class="btn" (click)="confirm(data)"
             [class]="actionButtonClass || 'btn-body'"
-            [class.is-loading]="loading$ | async">
+            [iaButtonLoading]="loading$ | async">
             @if (icon) {<fa-icon [icon]="icon" />}
             {{actionText}}
         </button>

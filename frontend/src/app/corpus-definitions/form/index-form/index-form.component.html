@@ -74,7 +74,7 @@
           button below to abort the indexing process.
         </p>
         <button class="btn btn-body" (click)="stopIndex()"
-          [class.is-loading]="stopping$ | async">
+          [iaButtonLoading]="stopping$ | async">
           <span ><fa-icon [icon]="actionIcons.remove"/></span>
           <span>Abort indexing</span>
         </button>
@@ -101,15 +101,14 @@
           <div class="control">
             <button class="btn bn-body" (click)="toggleCorpusActive()"
               [class.btn-primary]="!corpus.active"
-              [class.is-loading]="loading$ | async">
+              [iaButtonLoading]="loading$ | async">
               {{corpus.active ? 'Deactivate' : 'Activate'}} corpus
             </button>
           </div>
           <div class="control">
             @if (corpus.active) {
               <a class="btn btn-primary"
-                [routerLink]="['/search', corpus.definition.name]"
-                [class.is-loading]="loading$ | async">
+                [routerLink]="['/search', corpus.definition.name]">
                 <span ><fa-icon [icon]="actionIcons.search"/></span>
                 <span>Search corpus</span>
               </a>

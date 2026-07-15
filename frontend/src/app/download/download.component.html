@@ -84,7 +84,7 @@
         </p>
       </div>
       <div class="my-3">
-        <button class="btn btn-primary" [ngClass]="{'is-loading':isDownloading}"
+        <button class="btn btn-primary" [iaButtonLoading]="isDownloading"
           type="submit"
           (click)="confirmDirectDownload()" [disabled]="total === 0">
           <span >
