@@ -1,3 +1,5 @@
-<div *ngFor="let filter of formattedFilters">
+@for (filter of formattedFilters; track filter) {
+  <div>
     <b>{{filter.name}}</b>: {{filter.formattedData}}
-</div>
+  </div>
+}

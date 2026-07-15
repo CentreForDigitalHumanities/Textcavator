@@ -13,6 +13,7 @@ import { VisualizationModule } from '../visualization/visualization.module';
 import { ResultsSortModule } from './results-sort/results-sort.module';
 import { SelectFieldComponent } from './select-field/select-field.component';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ResultsCountComponent } from './results-count/results-count.component';
 
 
 
@@ -28,6 +29,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
         SearchComponent,
         SearchResultsComponent,
         SelectFieldComponent,
+        ResultsCountComponent,
     ],
     imports: [
         CorpusModule,

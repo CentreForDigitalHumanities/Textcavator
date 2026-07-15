@@ -2,7 +2,6 @@ import { Directive, HostBinding, Input } from '@angular/core';
 
 @Directive({
     selector: 'button[iaToggleButton]',
-    standalone: false
 })
 export class ToggleButtonDirective {
     @HostBinding('attr.aria-pressed')

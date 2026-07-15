@@ -9,7 +9,6 @@ import { CorpusDefinition } from '@models/corpus-definition';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormFeedbackComponent } from '../form-feedback/form-feedback.component';
 import { MarkdownEditorComponent } from './markdown-editor/markdown-editor.component';
-import { QuillModule } from 'ngx-quill';
 import { CorpusServiceMock } from '@mock-data/corpus';
 
 
@@ -22,9 +21,8 @@ describe('DocumentationFormComponent', () => {
             declarations: [
                 DocumentationFormComponent,
                 FormFeedbackComponent,
-                MarkdownEditorComponent,
             ],
-            imports: [SharedModule, ReactiveFormsModule, QuillModule],
+            imports: [SharedModule, ReactiveFormsModule, MarkdownEditorComponent],
             providers: [
                 CorpusDefinitionService,
                 { provide: ApiService, useClass: ApiServiceMock },

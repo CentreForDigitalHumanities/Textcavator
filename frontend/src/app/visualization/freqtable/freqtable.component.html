@@ -1,54 +1,64 @@
 <div class="block table-container">
-    <p-table [value]="formattedData" [paginator]="true" [rows]="15" sortField={{defaultSort}} sortOrder={{defaultSortOrder}}>
-        <ng-template pTemplate="header">
-            <tr class="is-selected">
-                <th *ngFor="let col of formattedHeaders" [pSortableColumn]="col.key">
-                    {{col.label}}
-                    <p-sortIcon [field]="col.key"></p-sortIcon>
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-entry>
-            <tr>
-                <td *ngFor="let col of formattedHeaders">
-                    {{col.format !== undefined ? col.format(entry[col.key]) : entry[col.key]}}
-                    <span *ngIf="entry[col.key] === undefined" class="has-text-grey-light">
-                        none
-                    </span>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+  <p-table [value]="formattedData" [paginator]="true" [rows]="15" sortField={{defaultSort}} sortOrder={{defaultSortOrder}}>
+    <ng-template pTemplate="header">
+      <tr class="is-selected">
+        @for (col of formattedHeaders; track col) {
+          <th [pSortableColumn]="col.key">
+            {{col.label}}
+            <p-sortIcon [field]="col.key"></p-sortIcon>
+          </th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-entry>
+      <tr>
+        @for (col of formattedHeaders; track col) {
+          <td>
+            {{col.format !== undefined ? col.format(entry[col.key]) : entry[col.key]}}
+            @if (entry[col.key] === undefined) {
+              <span class="has-text-grey-light">
+                none
+              </span>
+            }
+          </td>
+        }
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
 
 <div class="level">
-    <div class="level-left">
-        <div class="level-item" *ngIf="wideFormatColumn !== undefined" iaBalloon="change the format for the table">
-            <div class="field has-addons">
-                <div class="control">
-                    <button class="button" iaToggleButton [active]="format === 'long'"
-                        (click)="setFormat('long')">long format</button>
-                </div>
-                <div class="control">
-                    <button class="button" iaToggleButton [active]="format === 'wide'"
-                        (click)="setFormat('wide')">wide format</button>
-                </div>
-            </div>
+  <div class="level-left">
+    @if (wideFormatColumn !== undefined) {
+      <div class="level-item" iaBalloon="change the format for the table">
+        <div class="field has-addons">
+          <div class="control">
+            <button class="button" iaToggleButton [active]="format === 'long'"
+            (click)="setFormat('long')">long format</button>
+          </div>
+          <div class="control">
+            <button class="button" iaToggleButton [active]="format === 'wide'"
+            (click)="setFormat('wide')">wide format</button>
+          </div>
         </div>
-        <div class="level-item" *ngIf="!disableFullTable">
-            <button class="button" iaToggleButton [active]="fullTableToggle" (click)="toggleFullTable()">Show extra
-                columns</button>
-        </div>
-    </div>
+      </div>
+    }
+    @if (!disableFullTable) {
+      <div class="level-item">
+        <button class="button" iaToggleButton [active]="fullTableToggle" (click)="toggleFullTable()">Show extra
+        columns</button>
+      </div>
+    }
+  </div>
 
-    <div class="level-right">
-        <div class="level-item">
-            <button class="button" (click)="downloadTable()">
-                <span class="icon">
-                    <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
-                </span>
-                <span>Download table data</span>
-            </button>
-        </div>
+  <div class="level-right">
+    <div class="level-item">
+      <button class="button" (click)="downloadTable()">
+        <span class="icon">
+          <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
+        </span>
+        <span>Download table data</span>
+      </button>
     </div>
+  </div>
 </div>

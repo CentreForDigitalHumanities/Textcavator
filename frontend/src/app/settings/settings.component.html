@@ -1,17 +1,21 @@
 <section class="section">
-    <div class="container is-readable">
-        <h1 class="title block">Settings</h1>
+  <div class="container">
+    <h1 class="title block">Settings</h1>
 
-        <div class="box">
-            <ia-search-history-settings></ia-search-history-settings>
-        </div>
-
-        <div class="box" *ngIf="enableChangeCredentials$ | async">
-            <ia-change-username />
-        </div>
-
-        <div class="box" *ngIf="enableChangeCredentials$ | async">
-            <ia-change-password />
-        </div>
+    <div class="box">
+      <ia-search-history-settings></ia-search-history-settings>
     </div>
+
+    @if (enableChangeCredentials$ | async) {
+      <div class="box">
+        <ia-change-username />
+      </div>
+    }
+
+    @if (enableChangeCredentials$ | async) {
+      <div class="box">
+        <ia-change-password />
+      </div>
+    }
+  </div>
 </section>

@@ -1,31 +1,37 @@
 <form aria-labelledby="header-filters">
-    <div class="field is-grouped">
-        <div class="control is-expanded">
-            <h2 class="title" id="header-filters">Filters</h2>
-        </div>
-        <p class="control" style="float:right">
-            <button *ngIf="anyActiveFilters$ | async"
-                class="button icon is-ghost is-medium"
-                (click)="resetAllFilters()" iaBalloon="Reset all filters to their default values"
-                iaBalloonPosition="down-left"
-                type="button">
-                <span class="icon">
-                    <fa-icon [icon]="filterIcons.clear" aria-hidden="true"></fa-icon>
-                </span>
-            </button>
-            <button *ngIf="anyNonDefaultFilters$ | async"
-                class="button icon is-ghost is-medium"
-                (click)="toggleActiveFilters()"
-                iaBalloon="{{(anyActiveFilters$ | async) ? ('Disable active filters') : ('Enable deactivated filters')}}"
-                iaBalloonPosition="down-left"
-                type="button">
-                <fa-icon [icon]="filterIcons.toggle" aria-hidden="true"></fa-icon>
-            </button>
-        </p>
+  <div class="field is-grouped">
+    <div class="control is-expanded">
+      <h2 class="title" id="header-filters">Filters</h2>
     </div>
-    <ng-container *ngFor="let filter of filters">
-        <div class="block" *ngIf="!filter.adHoc || filter.state$.value.active">
-            <ia-filter-box [filter]="filter" [queryModel]="queryModel"></ia-filter-box>
-        </div>
-    </ng-container>
+    <p class="control" style="float:right">
+      @if (anyActiveFilters$ | async) {
+        <button
+          class="button icon is-ghost is-medium"
+          (click)="resetAllFilters()" iaBalloon="Reset all filters to their default values"
+          iaBalloonPosition="down-left"
+          type="button">
+          <span class="icon">
+            <fa-icon [icon]="filterIcons.clear" aria-hidden="true"></fa-icon>
+          </span>
+        </button>
+      }
+      @if (anyNonDefaultFilters$ | async) {
+        <button
+          class="button icon is-ghost is-medium"
+          (click)="toggleActiveFilters()"
+          iaBalloon="{{(anyActiveFilters$ | async) ? ('Disable active filters') : ('Enable deactivated filters')}}"
+          iaBalloonPosition="down-left"
+          type="button">
+          <fa-icon [icon]="filterIcons.toggle" aria-hidden="true"></fa-icon>
+        </button>
+      }
+    </p>
+  </div>
+  @for (filter of filters; track filter) {
+    @if (!filter.adHoc || filter.state$.value.active) {
+      <div class="block">
+        <ia-filter-box [filter]="filter" [queryModel]="queryModel"></ia-filter-box>
+      </div>
+    }
+  }
 </form>

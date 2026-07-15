@@ -1,8 +1,9 @@
 import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ContentChange, QuillModules } from 'ngx-quill';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ContentChange, QuillModule, QuillModules } from 'ngx-quill';
 import { marked } from 'marked';
 import TurndownService from 'turndown';
+import { CommonModule } from '@angular/common';
 
 // functions to increase/decrease markdown header levels
 // this is because section headers within documentation should be <h2> (<h1> is the page
@@ -25,7 +26,9 @@ export const decreaseHeaderLevels = (content: string): string =>
     selector: 'ia-markdown-editor',
     templateUrl: './markdown-editor.component.html',
     styleUrl: './markdown-editor.component.scss',
-    standalone: false,
+    imports: [
+        CommonModule, QuillModule, ReactiveFormsModule, FormsModule,
+    ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

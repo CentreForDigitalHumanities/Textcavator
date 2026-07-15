@@ -1,11 +1,11 @@
-<ng-container *ngIf="tags$ | async as tags">
-    <p-multiSelect
-        [options]="tags"
-        [ngModel]="data"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Choose tags"
-        (onChange)="update($event.value)"
-        fluid
-    ></p-multiSelect>
-</ng-container>
+@if (tags$ | async; as tags) {
+  <p-multiSelect
+    [options]="tags"
+    [ngModel]="data"
+    optionLabel="name"
+    optionValue="id"
+    placeholder="Choose tags"
+    (onChange)="update($event.value)"
+    fluid
+  ></p-multiSelect>
+}

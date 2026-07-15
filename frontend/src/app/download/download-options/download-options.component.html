@@ -1,48 +1,53 @@
 <div class="modal" [class.is-active]="download">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p>Download file</p>
-        </header>
-        <section class="modal-card-body">
-            <form>
-                <div class="field" *ngIf="showFormatChoice">
-                    <div class="control">
-                        <label class="label">Format</label>
-                        <label class="radio" *ngFor="let formatOption of ['long', 'wide']">
-                            <input type="radio" name="format" (click)="format=formatOption" [checked]="format===formatOption">
-                            {{formatOption}} format
-                        </label>
-                        <p class="help">
-                            In long format, different queries are presented in different rows.
-                            In wide format, different queries are presented in different columns.
-                        </p>
-
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">File encoding</label>
-                    <div class="control radios">
-                        <label class="radio" *ngFor="let encodingOption of encodingOptions">
-                            <input type="radio" name="encoding" (click)="encoding=encodingOption" [checked]="encoding===encodingOption">
-                            {{encodingOption}}
-                        </label>
-                        <p class="help">
-                            We recommend using utf-8 encoding for most applications, including Python and R.
-                            For importing files in Microsoft Excel, we recommend utf-16.
-                        </p>
-                    </div>
-                </div>
-            </form>
-        </section>
-        <footer class="modal-card-foot">
-            <button class="button is-primary" (click)="confirmDownload()"
-                [class.is-loading]="isDownloading">
-                Download
-            </button>
-            <button class="button" (click)="cancelDownload()">
-                Cancel
-            </button>
-        </footer>
-    </div>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p>Download file</p>
+    </header>
+    <section class="modal-card-body">
+      <form>
+        @if (showFormatChoice) {
+          <div class="field">
+            <div class="control">
+              <label class="label">Format</label>
+              @for (formatOption of ['long', 'wide']; track formatOption) {
+                <label class="radio">
+                  <input type="radio" name="format" (click)="format=formatOption" [checked]="format===formatOption">
+                  {{formatOption}} format
+                </label>
+              }
+              <p class="help">
+                In long format, different queries are presented in different rows.
+                In wide format, different queries are presented in different columns.
+              </p>
+            </div>
+          </div>
+        }
+        <div class="field">
+          <label class="label">File encoding</label>
+          <div class="control radios">
+            @for (encodingOption of encodingOptions; track encodingOption) {
+              <label class="radio">
+                <input type="radio" name="encoding" (click)="encoding=encodingOption" [checked]="encoding===encodingOption">
+                {{encodingOption}}
+              </label>
+            }
+            <p class="help">
+              We recommend using utf-8 encoding for most applications, including Python and R.
+              For importing files in Microsoft Excel, we recommend utf-16.
+            </p>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-primary" (click)="confirmDownload()"
+        [class.is-loading]="isDownloading">
+        Download
+      </button>
+      <button class="button" (click)="cancelDownload()">
+        Cancel
+      </button>
+    </footer>
+  </div>
 </div>

@@ -36,7 +36,6 @@ import { SelectModule } from 'primeng/select';
         FormFeedbackComponent,
         IndexFormComponent,
         DataFormComponent,
-        MarkdownEditorComponent,
     ],
     exports: [
         CreateDefinitionComponent,
@@ -45,6 +44,7 @@ import { SelectModule } from 'primeng/select';
         CorpusFormComponent,
     ],
     imports: [
+        MarkdownEditorComponent,
         SharedModule,
         ReactiveFormsModule,
         StepsModule,

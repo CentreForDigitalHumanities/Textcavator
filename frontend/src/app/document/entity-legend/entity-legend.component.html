@@ -1,13 +1,16 @@
 <footer>
-    <ul *ngIf="entities; else noEntities" title="legend">
-        <li *ngFor="let entity of entities">
-            <span>
-                <fa-icon [className]="'entity-'+entity+' entity-icon'" [icon]="entityIcons[entity]" [title]="entity"></fa-icon>
-                {{entity | titlecase}}
-            </span>
+  @if (entities) {
+    <ul title="legend">
+      @for (entity of entities; track entity) {
+        <li>
+          <span>
+            <fa-icon [className]="'entity-'+entity+' entity-icon'" [icon]="entityIcons[entity]" [title]="entity"></fa-icon>
+            {{entity | titlecase}}
+          </span>
         </li>
+      }
     </ul>
-    <ng-template #noEntities>
-        <em class="no-entities-message">No named entities found.</em>
-    </ng-template>
+  } @else {
+    <em class="no-entities-message">No named entities found.</em>
+  }
 </footer>
