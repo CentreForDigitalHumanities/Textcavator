@@ -1,37 +1,25 @@
-@if (confirmAction$ | async; as data) {
-  <div class="modal is-active">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title" #modalTitle tabindex="-1">{{actionText}}?
-        </p>
+<ng-template #content>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">
+            {{actionText}}?
+        </h4>
         @if (!disableCloseButton) {
-          <button class="delete" aria-label="close"
-          (click)="cancel()"></button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
         }
-      </header>
-      <section class="modal-card-body">
-        <ng-content></ng-content>
-      </section>
-      <footer class="modal-card-foot">
-        <div class="btns">
-          <button class="btn" (click)="confirm(data.data)"
-            [class]="actionButtonClass"
-            [class.is-loading]="loading$ | async">
-            @if (icon) {
-              <span >
-                <fa-icon [icon]="icon" />
-              </span>
-            }
-            <span>
-              {{actionText}}
-            </span>
-          </button>
-          <button class="btn" (click)="cancel()">
-            Cancel
-          </button>
-        </div>
-      </footer>
     </div>
-  </div>
-}
+    <div class="modal-body">
+        <ng-content></ng-content>
+    </div>
+    <div class="modal-footer">
+        @let data = confirmAction$ | async;
+        <button class="btn" (click)="confirm(data)"
+            [class]="actionButtonClass || 'btn-body'"
+            [class.is-loading]="loading$ | async">
+            @if (icon) {<fa-icon [icon]="icon" />}
+            {{actionText}}
+        </button>
+        <button class="btn btn-body" (click)="cancel()">
+            Cancel
+        </button>
+    </div>
+</ng-template>
