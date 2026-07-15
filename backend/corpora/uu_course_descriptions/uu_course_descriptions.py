@@ -1,12 +1,12 @@
 from datetime import datetime
 import os
 from django.conf import settings
-from ianalyzer_readers.readers.xlsx import XLSXReader
+from textcavator_readers.readers.xlsx import XLSXReader
 from typing import Mapping, Callable
 
 from addcorpus.python_corpora.corpus import FieldDefinition, XLSXCorpusDefinition
 from addcorpus.es_mappings import text_mapping, main_content_mapping, keyword_mapping, int_mapping
-from ianalyzer_readers.extract import CSV, Combined, Pass, Constant, Metadata
+from textcavator_readers.extract import CSV, Combined, Pass, Constant, Metadata
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.uu_course_descriptions.utils import html_to_text, language_name, detect_language
 

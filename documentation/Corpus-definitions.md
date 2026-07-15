@@ -31,9 +31,9 @@ These are the key differences between Python and database-only corpora.
 
 ### Data extraction
 
-A Python corpus can theoretically extract data from any format. In practice, we rely on the [ianalyzer_readers](https://ianalyzer-readers.readthedocs.io/en/latest/) package which provides extraction utilities for common file types like CSV and XML, but the methods for extraction can be as complex as you want. The design philosophy is that you can use the original format of a dataset as the source data for Textcavator, without any pre-processing.
+A Python corpus can theoretically extract data from any format. In practice, we rely on the [textcavator_readers](https://ianalyzer-readers.readthedocs.io/en/latest/) package which provides extraction utilities for common file types like CSV and XML, but the methods for extraction can be as complex as you want. The design philosophy is that you can use the original format of a dataset as the source data for Textcavator, without any pre-processing.
 
-A database-only corpus only supports CSV extraction with very little room for customisation. Here, the idea is that you pre-process your data *before* you pass it on to Textcavator. If it is convenient, you can use the `ianalyzer_readers` package to do so.
+A database-only corpus only supports CSV extraction with very little room for customisation. Here, the idea is that you pre-process your data *before* you pass it on to Textcavator. If it is convenient, you can use the `textcavator_readers` package to do so.
 
 ### Customisation of the interface
 

@@ -1,7 +1,7 @@
 from glob import glob
 from datetime import datetime
 
-from ianalyzer_readers.extract import Combined, Constant, CSV
+from textcavator_readers.extract import Combined, Constant, CSV
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults

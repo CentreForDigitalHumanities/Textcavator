@@ -3,7 +3,7 @@ from datetime import datetime
 import re
 import os
 
-from ianalyzer_readers.extract import Combined, Constant, CSV
+from textcavator_readers.extract import Combined, Constant, CSV
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 from corpora.utils.constants import document_context
 from corpora.parliament.parliament import Parliament

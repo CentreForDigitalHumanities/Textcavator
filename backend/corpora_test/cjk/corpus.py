@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-from ianalyzer_readers.extract import CSV
+from textcavator_readers.extract import CSV
 
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition, FieldDefinition
 from addcorpus.es_mappings import keyword_mapping, int_mapping, main_content_mapping

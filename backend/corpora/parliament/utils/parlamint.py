@@ -1,4 +1,4 @@
-from ianalyzer_readers.extract import XML, Combined, Metadata
+from textcavator_readers.extract import XML, Combined, Metadata
 from bs4.element import NavigableString
 
 def clean_value(value):

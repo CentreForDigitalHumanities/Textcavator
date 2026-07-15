@@ -6,10 +6,10 @@ import operator
 from typing import Optional, Iterable, Callable, Dict, List, Tuple
 from bs4.element import Tag as BS4Tag
 
-from ianalyzer_readers.readers.xml import XMLReader
-from ianalyzer_readers.extract import Constant, XML, Combined, Metadata, Order, Pass, Cache
-from ianalyzer_readers.xml_tag import Tag, PreviousSiblingTag, TransformTag
-from ianalyzer_readers.readers.core import Field
+from textcavator_readers.readers.xml import XMLReader
+from textcavator_readers.extract import Constant, XML, Combined, Metadata, Order, Pass, Cache
+from textcavator_readers.xml_tag import Tag, PreviousSiblingTag, TransformTag
+from textcavator_readers.readers.core import Field
 from tqdm import tqdm
 
 from corpora.parliament.parliament import Parliament

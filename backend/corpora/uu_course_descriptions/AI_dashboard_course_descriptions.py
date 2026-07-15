@@ -12,7 +12,7 @@ from addcorpus.python_corpora.filters import MultipleChoiceFilter
 
 from corpora.uu_course_descriptions.uu_course_descriptions import get_from_mapping_or_return, FACULTIES, EXAM_GOALS, LEVELS
 from addcorpus.python_corpora.corpus import FieldDefinition
-from ianalyzer_readers.extract import CSV, Combined, Pass, Constant, Metadata
+from textcavator_readers.extract import CSV, Combined, Pass, Constant, Metadata
 
 def metadata_lookup(values):
     id = values[0]

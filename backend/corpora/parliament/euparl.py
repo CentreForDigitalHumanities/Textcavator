@@ -10,9 +10,9 @@ import numbers
 from bs4 import BeautifulSoup
 from langcodes import standardize_tag, Language
 import requests
-from ianalyzer_readers.extract import Combined, JSON, Pass, CSV, Constant
-from ianalyzer_readers.readers.core import Field
-from ianalyzer_readers.readers.json import JSONReader
+from textcavator_readers.extract import Combined, JSON, Pass, CSV, Constant
+from textcavator_readers.readers.core import Field
+from textcavator_readers.readers.json import JSONReader
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from addcorpus.python_corpora.corpus import FieldDefinition
@@ -353,7 +353,7 @@ class _JSON(JSON):
     '''
     Edited JSON extractor that also accepts 0 keys to return the object as-is
     '''
-    # TODO: make this change in ianalyzer_readers
+    # TODO: make this change in textcavator_readers
 
     def _apply(self, data: Union[str, dict], key_index: int = 0, **kwargs):
         if not len(self.keys):

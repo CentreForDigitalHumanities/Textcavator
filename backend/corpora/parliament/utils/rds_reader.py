@@ -3,7 +3,7 @@ from typing import Iterable, Dict
 import pyreadr
 import pandas
 
-from ianalyzer_readers.readers.core import Reader
+from textcavator_readers.readers.core import Reader
 
 
 class RDSReader(Reader):

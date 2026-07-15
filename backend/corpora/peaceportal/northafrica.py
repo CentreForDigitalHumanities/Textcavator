@@ -6,7 +6,7 @@ from typing import List, Optional, Tuple, Union
 from addcorpus.es_mappings import main_content_mapping, text_mapping
 from addcorpus.python_corpora.corpus import (FieldDefinition,
                                              XLSXCorpusDefinition)
-from ianalyzer_readers.extract import CSV, Constant
+from textcavator_readers.extract import CSV, Constant
 from corpora.peaceportal.peaceportal import PeacePortal, transform_to_date_range
 from corpora.utils.exclude_fields import exclude_fields_without_extractor
 from django.conf import settings

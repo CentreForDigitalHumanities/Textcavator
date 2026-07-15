@@ -3,7 +3,7 @@ import json
 import logging
 
 from django.conf import settings
-from ianalyzer_readers.extract import Combined, JSON
+from textcavator_readers.extract import Combined, JSON
 import langcodes
 import requests
 

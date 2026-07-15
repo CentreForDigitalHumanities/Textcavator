@@ -3,11 +3,11 @@ import os
 import os.path as op
 import logging
 from datetime import datetime
-from ianalyzer_readers.xml_tag import Tag, CurrentTag
+from textcavator_readers.xml_tag import Tag, CurrentTag
 
 from django.conf import settings
 
-from ianalyzer_readers.extract import XML
+from textcavator_readers.extract import XML
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter #SliderRangeFilter, BoxRangeFilter
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping

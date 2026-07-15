@@ -5,7 +5,7 @@ import re
 
 from corpora.parliament.parliament import Parliament
 from corpora.utils.constants import document_context
-from ianalyzer_readers.extract import Constant, CSV
+from textcavator_readers.extract import Constant, CSV
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.parliament.uk import format_house
