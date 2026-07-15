@@ -34,22 +34,22 @@
                   </p>
                 }
                 <div class="hstack gap-2">
-                  <a class="btn" [routerLink]="['edit', corpus.id]">
+                  <a class="btn btn-body" [routerLink]="['edit', corpus.id]">
                     <fa-icon aria-hidden="true" [icon]="actionIcons.edit" />
                       Edit
                   </a>
-                  <a class="btn"
+                  <a class="btn btn-body"
                     [routerLink]="['/search', corpus.definition.name]"
                     [attr.disabled]="!corpus.active || null">
                       <fa-icon aria-hidden="true" [icon]="actionIcons.search" />
                       Search
                   </a>
-                  <a class="btn"
+                  <a class="btn btn-body"
                     [routerLink]="['io', corpus.id]">
                       <fa-icon aria-hidden="true" [icon]="actionIcons.inOut" />
                       Import/export
                   </a>
-                  <button class="btn" (click)="confirmDelete.open(corpus)"
+                  <button class="btn btn-body" (click)="confirmDelete.open(corpus)"
                     [disabled]="corpus.active || null" aria-label="delete">
                       <fa-icon aria-hidden="true" [icon]="actionIcons.delete" />
                   </button>

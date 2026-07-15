@@ -230,6 +230,34 @@ table.spreadsheet {
     --bulma-content-heading-weight: var(--bulma-weight-bold);
 }
 
+// restore some bulma-y styles for bootstrap
+
+.btn.btn-body { // btn-outline only have a subtle border
+    @extend .border;
+    @extend .bg-body;
+
+    &:hover {
+        @extend .bg-body-tertiary;
+    }
+
+    &:active {
+        @extend .bg-body-secondary;
+    }
+}
+
+
+.btn.btn-ghost { // btn-ghost has no border and primary colour text
+    @extend .text-primary;
+
+    &:hover {
+        @extend .bg-body-tertiary;
+    }
+
+    &:active {
+        @extend .bg-body-secondary;
+    }
+}
+
 // restore some rules from older bulma versions for compatibility
 
 .block,

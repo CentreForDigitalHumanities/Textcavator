@@ -6,7 +6,7 @@
     <p class="control" style="float:right">
       @if (anyActiveFilters$ | async) {
         <button
-          class="btn icon is-ghost is-medium"
+          class="btn icon btn-ghost is-medium"
           (click)="resetAllFilters()" iaBalloon="Reset all filters to their default values"
           iaBalloonPosition="down-left"
           type="button">
@@ -17,7 +17,7 @@
       }
       @if (anyNonDefaultFilters$ | async) {
         <button
-          class="btn icon is-ghost is-medium"
+          class="btn icon btn-ghost is-medium"
           (click)="toggleActiveFilters()"
           iaBalloon="{{(anyActiveFilters$ | async) ? ('Disable active filters') : ('Enable deactivated filters')}}"
           iaBalloonPosition="down-left"

@@ -2,19 +2,19 @@
   <div style="text-align: center;">
     <div class="level">
       <div class="level-left">
-        <button class="btn is-ghost" (click)="zoomIn()"
+        <button class="btn btn-ghost" (click)="zoomIn()"
           aria-label="zoom in">
           <span >
             <fa-icon [icon]="scanIcons.zoomIn" aria-hidden="true"></fa-icon>
           </span>
         </button>
-        <button class="btn is-ghost" (click)="zoomOut()"
+        <button class="btn btn-ghost" (click)="zoomOut()"
           aria-label="zoom out">
           <span >
             <fa-icon [icon]="scanIcons.zoomOut" aria-hidden="true"></fa-icon>
           </span>
         </button>
-        <button class="btn is-ghost" (click)="resetZoom()"
+        <button class="btn btn-ghost" (click)="resetZoom()"
           aria-label="reset zoom">
           <span >
             <fa-icon [icon]="scanIcons.zoomReset" aria-hidden="true"></fa-icon>
@@ -26,7 +26,7 @@
       }
       <div class="level-right">
         @if (allowDownload) {
-          <button class="btn download is-ghost" (click)="download()"
+          <button class="btn download btn-ghost" (click)="download()"
             aria-label="download image">
             <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
           </button>

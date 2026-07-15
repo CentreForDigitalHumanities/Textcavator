@@ -15,7 +15,7 @@
         }
         @if ((filter.isDefault$ | async) === false) {
           <button
-            class="btn is-ghost"
+            class="btn btn-ghost"
             type="button"
             (click)="filter.reset()" iaBalloon="Reset this filter to its default values"
             iaBalloonPosition="down-left">
@@ -24,7 +24,7 @@
         }
         @if ((filter.isDefault$ | async) === false) {
           <button
-            class="btn is-ghost"
+            class="btn btn-ghost"
             type="button"
             (click)="filter.toggle()"
             iaBalloon="{{filter.state$.value.active ? 'Disable this filter' : 'Enable this filter'}}"
