@@ -67,18 +67,26 @@ export class DownloadHistoryComponent extends HistoryDirective implements OnInit
 
     queryText(download: Download): string {
         const queryModels = this.getAllQueryModels(download);
-        const queryTexts = queryModels.map(model => model.queryText);
-        return _.join(queryTexts, ', ');
+        if (queryModels) {
+            const queryTexts = queryModels.map(model => model.queryText);
+            return _.join(queryTexts, ', ');
+        } else {
+            return '';
+        }
     }
 
     getAllQueryModels(download: Download): QueryModel[] {
         const corpus = findByName(this.corpora, download.corpus);
-        return downloadQueryModels(download, corpus);
+        if (corpus) {
+            return downloadQueryModels(download, corpus);
+        }
     }
 
     getQueryModel(download: Download): QueryModel {
         const corpus = findByName(this.corpora, download.corpus);
-        return downloadQueryModel(download, corpus);
+        if (corpus) {
+            return downloadQueryModel(download, corpus);
+        }
     }
 
     getFields(download: Download): string {
@@ -86,10 +94,12 @@ export class DownloadHistoryComponent extends HistoryDirective implements OnInit
         const fieldNames =  'fields' in parameters ?
             parameters.fields : [parameters[0].field_name];
         const corpus = findByName(this.corpora, download.corpus);
-        const fields = fieldNames.map(fieldName =>
-            findByName(corpus.fields, fieldName)?.displayName
-        ).filter(_.negate(_.isUndefined));
-        return _.join(fields, ', ');
+        if (corpus) {
+            const fields = fieldNames.map(fieldName =>
+                findByName(corpus.fields, fieldName)?.displayName
+            ).filter(_.negate(_.isUndefined));
+            return _.join(fields, ', ');
+        }
     }
 
     downloadFile(download: Download, options: DownloadOptions) {
