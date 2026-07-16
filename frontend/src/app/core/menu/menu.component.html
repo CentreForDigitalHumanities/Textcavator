@@ -66,7 +66,7 @@
 
             <!-- theme dropdown -->
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item" ngbDropdown>
+                <li class="nav-item" ngbDropdown [attr.data-bs-theme]="activeTheme$ | async">
                     <a class="nav-link" ngbDropdownToggle id="theme-dropdown-toggle" role="button">
                         <fa-icon [icon]="currentThemeOption.icon" aria-label="theme" />
                     </a>
@@ -84,7 +84,7 @@
                 </li>
                 <!-- user dropdown -->
                 @if (user$ | async; as user) {
-                <li class="nav-item" ngbDropdown>
+                <li class="nav-item" ngbDropdown [attr.data-bs-theme]="activeTheme$ | async">
                     <a class="nav-link" ngbDropdownToggle id="user-dropdown-toggle" role="button">
                         <fa-icon aria-hidden="true" [icon]="userIcons.user" />
                         {{user.name}}

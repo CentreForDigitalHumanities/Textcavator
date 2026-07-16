@@ -37,6 +37,8 @@ export class MenuComponent implements OnDestroy, OnInit {
         { label: 'dark', icon: themeIcons.dark, value: Theme.DARK },
     ];
 
+    /** active theme (light/dark) */
+    activeTheme$ = this.themeService.theme$;
 
     private destroy$ = new Subject<void>();
 
@@ -47,6 +49,7 @@ export class MenuComponent implements OnDestroy, OnInit {
         private themeService: ThemeService,
     ) {}
 
+    /** theme selection (light/dark/auto) */
     get currentThemeOption() {
         return this.themeOptions.find(
             option => option.value == this.themeService.selection$.value
