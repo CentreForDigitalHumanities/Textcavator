@@ -5,22 +5,24 @@
         <col style="width: 20%;" />
         <col style="width: 80%;" />
     </colgroup>
-    @if (document.hasValue(field)) {
-    <tr>
-        <th class="align-top">
-            <span [iaBalloon]="field.description" iaBalloonPosition="left" iaBalloonLength="medium">
-                {{field.displayName}}:
-            </span>
-        </th>
-        <td [attr.lang]="document.language(field)" class="align-top">
-            @if (field.displayType === 'text_content') {
-            <ia-content-field-preview [field]="field" [document]="document" />
-            } @else {
-            <ia-metadata-field [field]="field" [document]="document" />
-            }
-        </td>
-    </tr>
-    }
+    <tbody>
+        @if (document.hasValue(field)) {
+        <tr>
+            <th>
+                <span [iaBalloon]="field.description" iaBalloonPosition="left" iaBalloonLength="medium">
+                    {{field.displayName}}:
+                </span>
+            </th>
+            <td [attr.lang]="document.language(field)">
+                @if (field.displayType === 'text_content') {
+                <ia-content-field-preview [field]="field" [document]="document" />
+                } @else {
+                <ia-metadata-field [field]="field" [document]="document" />
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
     }
 </table>
 <div class="row g-2 align-items-center">
