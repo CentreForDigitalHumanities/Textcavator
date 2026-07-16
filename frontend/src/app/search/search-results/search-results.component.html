@@ -1,5 +1,5 @@
 @if (pageResults?.result$ | async; as page) {
-  <section class="py-5 results-navigation mb-4 pt-4 pb-4 pl-0 pr-0">
+  <section class="my-4 results-navigation">
     <div class="row">
       <div class="col-md-auto text-center">
         <div>
@@ -38,7 +38,7 @@
     <section aria-label="search results">
       <div class="hits" [ngClass]="{'is-loading': pageResults.loading$ | async }">
         @for (document of page.documents; track document) {
-          <article class="document border rounded my-3 p-3">
+          <article class="border rounded my-3 p-3">
             <ia-document-preview [document]="document" [page]="page"></ia-document-preview>
           </article>
         }

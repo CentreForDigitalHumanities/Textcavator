@@ -7,12 +7,12 @@
     </colgroup>
     @if (document.hasValue(field)) {
     <tr>
-        <th>
+        <th class="align-top">
             <span [iaBalloon]="field.description" iaBalloonPosition="left" iaBalloonLength="medium">
                 {{field.displayName}}:
             </span>
         </th>
-        <td [attr.lang]="document.language(field)">
+        <td [attr.lang]="document.language(field)" class="align-top">
             @if (field.displayType === 'text_content') {
             <ia-content-field-preview [field]="field" [document]="document" />
             } @else {
@@ -52,7 +52,7 @@
     }
     <div class="col-md-auto">
         <div class="control">
-            <a class="btn btn-outline-secondary" [routerLink]="documentUrl">
+            <a class="btn btn-body" [routerLink]="documentUrl">
                 <span aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
                 <span>
                     Link
