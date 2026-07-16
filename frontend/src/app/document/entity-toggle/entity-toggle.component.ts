@@ -11,7 +11,7 @@ import { DialogService } from '@services';
 })
 export class EntityToggleComponent {
     actionIcons = actionIcons;
-    toggleNER = output<Boolean>();
+    toggleNER = output<boolean>();
     toggleLabel: string;
 
     constructor(private dialogService: DialogService) {
