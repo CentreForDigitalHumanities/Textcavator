@@ -1,11 +1,15 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { DownloadService, NotificationService } from '@app/services';
 import {
     Download,
-    PendingDownload,
     DownloadOptions,
-    TermFrequencyParameters,
     TermFrequencyDownloadParameters,
+    DownloadEncoding,
+    DownloadTableFormat,
 } from '@models';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { from, Observable, Subject } from 'rxjs';
+
 
 @Component({
     selector: 'ia-download-options',
@@ -14,18 +18,21 @@ import {
     standalone: false
 })
 export class DownloadOptionsComponent implements OnChanges {
-    @Input() download: Download | PendingDownload;
-    @Input() isDownloading: boolean;
+    @Input() download: Download;
 
-    @Output() confirm = new EventEmitter<DownloadOptions>();
-    @Output() cancel = new EventEmitter();
+    isDownloading: boolean;
+    confirm$ = new Subject<DownloadOptions>();
 
-    encodingOptions = ['utf-8', 'utf-16'];
-    encoding: 'utf-8' | 'utf-16' = 'utf-8';
+    activeModal = inject(NgbActiveModal);
+    downloadService = inject(DownloadService);
+    notificationService = inject(NotificationService);
 
-    format: 'long' | 'wide';
+    encodingOptions: DownloadEncoding[] = ['utf-8', 'utf-16'];
+    encoding: DownloadEncoding = 'utf-8';
 
-    constructor() {}
+    formatOptions: DownloadTableFormat[] = ['long', 'wide'];
+    format: DownloadTableFormat;
+
 
     /** whether the current download is a term frequency download */
     get isTermFrequency(): boolean {
@@ -53,13 +60,33 @@ export class DownloadOptionsComponent implements OnChanges {
     }
 
     confirmDownload() {
-        this.confirm.emit({
+        this.isDownloading = true;
+        const options: DownloadOptions = {
             encoding: this.encoding,
             table_format: this.format,
-        });
+        };
+        this.download$(this.download, options).subscribe({
+            next: (res) => this.downloadResult(res, this.download.filename),
+            error: (err) => this.downloadFailed(err),
+        })
     }
 
-    cancelDownload() {
-        this.cancel.emit();
+    private download$(download: Download, options: DownloadOptions): Observable<any> {
+        return from(this.downloadService.retrieveFinishedDownload(download.id, options));
+    };
+
+    private downloadResult(result, filename) {
+        if (result.status == 200) {
+            saveAs(result.body, filename);
+            this.activeModal.close();
+        } else {
+            this.downloadFailed(result);
+        }
+    }
+
+    private downloadFailed(result) {
+        console.error(result);
+        this.notificationService.showMessage('could not download file', 'danger');
+        this.activeModal.close();
     }
 }

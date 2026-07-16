@@ -1,53 +1,54 @@
-<div class="modal" [class.is-active]="download">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p>Download file</p>
-    </header>
-    <section class="modal-card-body">
-      <form>
+<header class="modal-header">
+    <h4>Download file</h4>
+    <button type="button" class="btn-close" aria-label="Close"
+        (click)="activeModal.dismiss()"></button>
+</header>
+<section class="modal-body">
+    <form>
         @if (showFormatChoice) {
-          <div class="field">
-            <div class="control">
-              <label class="form-label">Format</label>
-              @for (formatOption of ['long', 'wide']; track formatOption) {
-                <label class="radio">
-                  <input type="radio" name="format" (click)="format=formatOption" [checked]="format===formatOption">
-                  {{formatOption}} format
-                </label>
-              }
-              <p class="form-text">
-                In long format, different queries are presented in different rows.
-                In wide format, different queries are presented in different columns.
-              </p>
-            </div>
-          </div>
+            <fieldset class="mb-3">
+                <legend class="form-label fs-6">Format</legend>
+                @for (formatOption of formatOptions; track formatOption) {
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="format" (click)="format=formatOption"
+                            [checked]="format===formatOption"
+                            class="form-check-input" id="input-format-{{formatOption}}">
+                        <label class="form-check-label" for="input-format-{{formatOption}}">
+                            {{formatOption}} format
+                        </label>
+                    </div>
+                }
+                <p class="form-text">
+                    In long format, different queries are presented in different rows.
+                    In wide format, different queries are presented in different columns.
+                </p>
+            </fieldset>
         }
-        <div class="field">
-          <label class="form-label">File encoding</label>
-          <div class="control radios">
-            @for (encodingOption of encodingOptions; track encodingOption) {
-              <label class="radio">
-                <input type="radio" name="encoding" (click)="encoding=encodingOption" [checked]="encoding===encodingOption">
-                {{encodingOption}}
-              </label>
-            }
-            <p class="form-text">
-              We recommend using utf-8 encoding for most applications, including Python and R.
-              For importing files in Microsoft Excel, we recommend utf-16.
-            </p>
-          </div>
-        </div>
-      </form>
-    </section>
-    <footer class="modal-card-foot">
-      <button class="btn btn-primary" (click)="confirmDownload()"
-        [iaButtonLoading]="isDownloading">
+        <fieldset class="mb-3">
+            <legend class="form-label fs-6">File encoding</legend>
+                @for (encodingOption of encodingOptions; track encodingOption) {
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="encoding"
+                            (click)="encoding=encodingOption"
+                            [checked]="encoding===encodingOption"
+                            class="form-check-input" id="input-encoding-{{encodingOption}}">
+                        <label class="form-check-label" for="input-encoding-{{encodingOption}}">
+                            {{encodingOption}}
+                        </label>
+                    </div>
+                }
+                <p class="form-text">
+                    We recommend using utf-8 encoding for most applications, including Python and R.
+                    For importing files in Microsoft Excel, we recommend utf-16.
+                </p>
+        </fieldset>
+    </form>
+</section>
+<footer class="modal-footer">
+    <button class="btn btn-primary" (click)="confirmDownload()" [iaButtonLoading]="isDownloading">
         Download
-      </button>
-      <button class="btn" (click)="cancelDownload()">
+    </button>
+    <button class="btn btn-body" (click)="activeModal.dismiss()">
         Cancel
-      </button>
-    </footer>
-  </div>
-</div>
+    </button>
+</footer>

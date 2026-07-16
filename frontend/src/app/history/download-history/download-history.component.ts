@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import {
     Download,
-    DownloadOptions,
     DownloadParameters,
     DownloadType,
     QueryModel,
@@ -10,8 +9,6 @@ import {
 import {
     ApiService,
     CorpusService,
-    DownloadService,
-    NotificationService,
 } from '@services';
 import { HistoryDirective } from '../history.directive';
 import { findByName } from '@utils/utils';
@@ -22,6 +19,8 @@ import {
 } from '@utils/download-history';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DownloadOptionsComponent } from '@app/download/download-options/download-options.component';
 
 @Component({
     selector: 'ia-download-history',
@@ -34,13 +33,11 @@ export class DownloadHistoryComponent extends HistoryDirective implements OnInit
 
     actionIcons = actionIcons;
 
-    itemToDownload: Download;
+    private modalService = inject(NgbModal);
 
     constructor(
-        private downloadService: DownloadService,
         private apiService: ApiService,
         corpusService: CorpusService,
-        private notificationService: NotificationService,
         private title: Title,
     ) {
         super(corpusService);
@@ -102,20 +99,9 @@ export class DownloadHistoryComponent extends HistoryDirective implements OnInit
         }
     }
 
-    downloadFile(download: Download, options: DownloadOptions) {
-        this.downloadService.retrieveFinishedDownload(download.id, options).then( result => {
-            if (result.status === 200) {
-                saveAs(result.body, download.filename);
-                this.itemToDownload = undefined;
-            } else {
-                this.downloadFailed(result);
-            }
-        }).catch(this.downloadFailed.bind(this));
-    }
-
-    downloadFailed(result) {
-        console.error(result);
-        this.notificationService.showMessage('could not download file', 'danger');
-        this.itemToDownload = undefined;
+    showOptions(download: Download) {
+        const modalRef = this.modalService.open(DownloadOptionsComponent);
+        const component = modalRef.componentInstance as DownloadOptionsComponent;
+        component.download = download;
     }
 }

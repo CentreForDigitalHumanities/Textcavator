@@ -63,7 +63,7 @@
     </fieldset>
     @if ((canDownloadDirectly$ | async)) {
       <div class="field" role="group">
-        <legend class="form-label">File encoding</legend>
+        <legend class="form-label fs-6">File encoding</legend>
         @for (encodingOption of encodingOptions; track encodingOption) {
             <div class="form-check form-check-inline">
                 <input type="radio" name="encoding"
