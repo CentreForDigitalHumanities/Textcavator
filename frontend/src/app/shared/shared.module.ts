@@ -13,8 +13,6 @@ import { BalloonDirective } from './balloon/balloon.directive';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ErrorComponent } from './error/error.component';
 import { DropdownModule } from './dropdown/dropdown.module';
-import { TabPanelDirective } from './tabs/tab-panel.directive';
-import { TabsComponent } from './tabs/tabs.component';
 import { ToggleComponent } from './toggle/toggle.component';
 import { SlugifyPipe } from './pipes/slugify.pipe';
 import { ToggleButtonDirective } from './toggle-button/toggle-button.directive';
@@ -31,8 +29,6 @@ import { ButtonLoadingDirective } from './button-loading/button-loading.directiv
         DatePickerComponent,
         ErrorComponent,
         BalloonDirective,
-        TabsComponent,
-        TabPanelDirective,
         ToggleComponent,
         SlugifyPipe,
         ConfirmModalComponent,
@@ -42,8 +38,6 @@ import { ButtonLoadingDirective } from './button-loading/button-loading.directiv
         ButtonLoadingDirective,
         DatePickerComponent,
         ErrorComponent,
-        TabsComponent,
-        TabPanelDirective,
         ToggleButtonDirective,
         ConfirmModalComponent,
         // shared modules
