@@ -10,6 +10,7 @@ import {
     SimpleChanges,
     ViewChild,
     forwardRef,
+    input,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -45,6 +46,8 @@ export class DropdownComponent<T> implements OnChanges, OnDestroy, ControlValueA
     public onChange = new EventEmitter<T>();
 
     @ViewChild(NgbDropdownToggle) trigger: ElementRef<HTMLButtonElement>;
+
+    triggerClass = input<string>('');
 
     actionIcons = actionIcons;
 

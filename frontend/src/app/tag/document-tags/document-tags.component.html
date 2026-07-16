@@ -1,28 +1,31 @@
-<div class="field is-grouped is-grouped-multiline">
-  @for (tag of tags; track tag) {
-    <div class="control tags has-addons">
-      <span class="tag is-primary tag-name">
-        <span class="name">
-          {{tag.name}}
-        </span>
-      </span>
-      <button class="btn tag" [attr.aria-label]="'remove tag ' + tag.name"
-        iaBalloon="remove this tag" iaBalloonPosition="down"
-        (click)="removeTag(tag)">
-        <span ><fa-icon [icon]="actionIcons.remove" aria-hidden="true"></fa-icon></span>
-      </button>
-    </div>
+<div class="row g-2">
+    @for (tag of tags; track tag) {
+        <div class="col-auto">
+
+            <div class="btn-group">
+              <span class="btn btn-primary btn-sm tag-name btn-static">
+                <span class="name">
+                  {{tag.name}}
+                </span>
+              </span>
+              <button class="btn btn-body btn-sm" [attr.aria-label]="'remove tag ' + tag.name"
+                ngbTooltip="remove this tag"
+                (click)="removeTag(tag)">
+                <fa-icon [icon]="actionIcons.remove" aria-hidden="true"></fa-icon>
+              </button>
+            </div>
+        </div>
   }
 
-  <div class="control">
+  <div class="col-auto">
     @if (showAddNew) {
       <ia-tag-select [exclude]="tags" (selection)="addTag($event)" (cancel)="closeAddNew()" />
     } @else {
-      <button class="btn tag" aria-label="add a tag"
-        iaBalloon="add a tag" iaBalloonPosition="down"
+      <button class="btn btn-body btn-sm" aria-label="add a tag"
+        ngbTooltip="add a tag"
         (click)="showAddNew = true"
         #toggleAddNewButton>
-        <span ><fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon></span>
+        <fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon>
       </button>
     }
 

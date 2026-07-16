@@ -248,6 +248,18 @@ table.spreadsheet {
     }
 }
 
+.btn.btn-static {
+    cursor: inherit;
+
+    &:hover {
+        border-color: var(--bs-btn-border-color);
+        background-color: var(--bs-btn-bg);
+        color: var(--bs-btn-color);
+        z-index: 0;
+    }
+
+}
+
 // restore some rules from older bulma versions for compatibility
 
 .block,

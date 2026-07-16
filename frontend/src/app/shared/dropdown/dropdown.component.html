@@ -1,5 +1,6 @@
 <div ngbDropdown>
-    <button class="btn btn-body"
+    <button
+        [class]="['btn', 'btn-body', triggerClass()]"
         ngbDropdownToggle
         aria-haspopup="listbox"
         role="combobox"
