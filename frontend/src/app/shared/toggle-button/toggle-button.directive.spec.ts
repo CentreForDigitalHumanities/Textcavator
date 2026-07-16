@@ -5,7 +5,7 @@ import { ToggleButtonDirective } from './toggle-button.directive';
 
 @Component({
     template: `
-    <button class="btn" iaToggleButton [active]="active()" [activeClass]="class">
+    <button class="btn" iaToggleButton [active]="active()" [activeClass]="class()">
         Test
     </button>
     `,
@@ -13,7 +13,7 @@ import { ToggleButtonDirective } from './toggle-button.directive';
 })
 class ToggleButtonTestComponent {
     active = signal(false);
-    class = 'is-primary';
+    class = signal('btn-primary');
 }
 
 describe('ToggleButtonDirective', () => {
@@ -32,21 +32,21 @@ describe('ToggleButtonDirective', () => {
     });
 
     it('should show toggle state', () => {
-        expect(button.className).toEqual('button');
+        expect(button.className).toEqual('btn btn-body');
         expect(button.getAttribute('aria-pressed')).toBe('false');
 
         component.active.set(true);
         fixture.detectChanges();
 
-        expect(button.className).toEqual('button is-primary');
+        expect(button.className).toEqual('btn btn-primary');
         expect(button.getAttribute('aria-pressed')).toBe('true');
     });
 
     it('should set the CSS class through input', () => {
-        component.class = 'is-danger';
+        component.class.set('btn-danger');
         component.active.set(true)
         fixture.detectChanges();
 
-        expect(button.className).toEqual('button is-danger');
+        expect(button.className).toEqual('btn btn-danger');
     });
 });
