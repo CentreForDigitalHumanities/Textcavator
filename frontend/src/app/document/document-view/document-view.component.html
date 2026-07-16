@@ -1,78 +1,84 @@
 <div class="row is-desktop">
-  <div class="col-md is-5">
-    <div class="box">
-      <div class="table-container">
-        @if (document) {
-          <table class="table is-fullwidth">
-            @if (document.relevance) {
-              <tr>
-                <th>Relevance</th>
-                <td>
-                  <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
-                </td>
-              </tr>
-            }
-            @if ((document.tags$ | async); as tags) {
-              <tr>
-                <th>Your tags</th>
-                <td>
-                  <ia-document-tags [document]="document" [tags]="tags"></ia-document-tags>
-                </td>
-              </tr>
-            }
-            @for (field of propertyFields; track field) {
-              @if (document.hasValue(field)) {
-                <tr>
-                  <th>
-                    <span [iaBalloon]="field.description"
-                      iaBalloonPosition="up" iaBalloonLength="medium">
-                      {{field.displayName}}
-                    </span>
-                  </th>
-                  <td [attr.lang]="document.language(field)"
-                    data-test-field-value>
-                    <ia-metadata-field [field]="field" [document]="document" />
-                  </td>
-                </tr>
+  <div class="col-md-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+              @if (document) {
+                <table class="table">
+                    <tbody>
+                        @if (document.relevance) {
+                          <tr>
+                            <th>Relevance</th>
+                            <td>
+                              <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
+                            </td>
+                          </tr>
+                        }
+                        @if ((document.tags$ | async); as tags) {
+                          <tr>
+                            <th>Your tags</th>
+                            <td>
+                              <ia-document-tags [document]="document" [tags]="tags"></ia-document-tags>
+                            </td>
+                          </tr>
+                        }
+                        @for (field of propertyFields; track field) {
+                          @if (document.hasValue(field)) {
+                            <tr>
+                              <th>
+                                <span [iaBalloon]="field.description"
+                                  iaBalloonPosition="up" iaBalloonLength="medium">
+                                  {{field.displayName}}
+                                </span>
+                              </th>
+                              <td [attr.lang]="document.language(field)"
+                                data-test-field-value>
+                                <ia-metadata-field [field]="field" [document]="document" />
+                              </td>
+                            </tr>
+                          }
+                        }
+                    </tbody>
+                </table>
               }
-            }
-          </table>
-        }
-      </div>
+            </div>
+        </div>
     </div>
   </div>
 
-  <div class="col-md is-7">
-    <div class="box">
-        <ul ngbNav #nav="ngbNav" [activeId]="activeTab" class="nav-tabs mb-3">
-            @for (field of contentFields; track field) {
-                <li [ngbNavItem]="fieldTabID(field)">
-                    <button ngbNavLink>
-                        <fa-icon [icon]="documentIcons.text" class="me-1" />
-                        {{field.displayName}}
-                    </button>
-                    <ng-template ngbNavContent>
-                        <ia-content-field
-                        [field]="field"
-                        [document]="document"
-                        [showEntities]="showEntities" />
-                    </ng-template>
-                </li>
-            }
-            @if (showScanTab) {
-                <li ngbNavItem="scan">
-                    <button ngbNavLink>
-                        <fa-icon [icon]="documentIcons.scan" class="me-1" />
-                        Image
-                    </button>
-                    <ng-template ngbNavContent>
-                        <ia-image-view [corpus]="corpus" [document]="document" />
-                    </ng-template>
-                </li>
-            }
-        </ul>
+  <div class="col-md-7">
+    <div class="card">
+        <div class="card-body">
+            <ul ngbNav #nav="ngbNav" [activeId]="activeTab" class="nav-tabs mb-3">
+                @for (field of contentFields; track field) {
+                    <li [ngbNavItem]="fieldTabID(field)">
+                        <button ngbNavLink>
+                            <fa-icon [icon]="documentIcons.text" class="me-1" />
+                            {{field.displayName}}
+                        </button>
+                        <ng-template ngbNavContent>
+                            <ia-content-field
+                            [field]="field"
+                            [document]="document"
+                            [showEntities]="showEntities" />
+                        </ng-template>
+                    </li>
+                }
+                @if (showScanTab) {
+                    <li ngbNavItem="scan">
+                        <button ngbNavLink>
+                            <fa-icon [icon]="documentIcons.scan" class="me-1" />
+                            Image
+                        </button>
+                        <ng-template ngbNavContent>
+                            <ia-image-view [corpus]="corpus" [document]="document" />
+                        </ng-template>
+                    </li>
+                }
+            </ul>
 
-        <div [ngbNavOutlet]="nav"></div>
+            <div [ngbNavOutlet]="nav"></div>
+        </div>
     </div>
   </div>
 </div>

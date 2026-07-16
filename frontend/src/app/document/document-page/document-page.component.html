@@ -1,29 +1,27 @@
 <ia-corpus-header [corpus]="corpus" currentPage="document"></ia-corpus-header>
 <div class="py-5 pt-3">
-  <div class="container">
-    <h2 class="title is-4">
-      Document: <span class="is-family-monospace">{{documentId}}</span>
-    </h2>
+    <div class="container">
+        <h2 class="h3 mb-4">
+            Document: <span class="font-monospace">{{documentId}}</span>
+        </h2>
 
     @if (documentFound) {
       <div [ngClass]="{'is-loading': !document}">
 
-        <div class="level block">
-          <div class="level-left">
-            @if (showNEROption) {
-              <ia-entity-toggle (toggleNER)="toggleNER($event)"></ia-entity-toggle>
-            }
-          </div>
-          <div class="level-right">
+        <div class="d-flex justify-content-between">
+            <div>
+                @if (showNEROption) {
+                  <ia-entity-toggle (toggleNER)="toggleNER($event)"></ia-entity-toggle>
+                }
+            </div>
             @if (document?.hasContext) {
-              <div class="level-item">
-                <a [routerLink]="contextLink" [queryParams]="contextQueryParams" iaBalloon="view all documents from this {{contextDisplayName}}">
-                  <span ><fa-icon [icon]="documentIcons.context"></fa-icon></span>
-                  <span>View {{contextDisplayName}}</span>
+                <a [routerLink]="contextLink" [queryParams]="contextQueryParams"
+                    ngbTooltip="view all documents from this {{contextDisplayName}}"
+                    class="icon-link">
+                  <fa-icon [icon]="documentIcons.context" />
+                  View {{contextDisplayName}}
                 </a>
-              </div>
             }
-          </div>
         </div>
         <div class="my-3">
           @if (document) {
@@ -32,11 +30,9 @@
         </div>
       </div>
     } @else {
-      <div class="message is-danger">
-        <div class="message-body">
-          Cannot find document "{{documentId}}" in {{corpus.title}}
+        <div class="alert alert-danger">
+            Cannot find document "{{documentId}}" in {{corpus.title}}
         </div>
-      </div>
     }
   </div>
 </div>
