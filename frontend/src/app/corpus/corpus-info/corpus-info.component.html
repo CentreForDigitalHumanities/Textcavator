@@ -3,13 +3,12 @@
 <section class="py-5 pt-0">
     <div class="container">
         @if (documentation$ | async; as documentation) {
-            <ul ngbNav #nav="ngbNav" class="nav-tabs">
+            <ul ngbNav #nav="ngbNav" class="nav-tabs mb-4">
                 @for (page of documentation; track page.type) {
                     <li [ngbNavItem]="page.type">
                         <button ngbNavLink>{{page.type}}</button>
                         <ng-template ngbNavContent >
-                            <div [innerHTML]="renderMarkdown(page.content)"
-                                class="my-4"></div>
+                            <div [innerHTML]="renderMarkdown(page.content)"></div>
                         </ng-template>
                     </li>
                 }
@@ -29,7 +28,7 @@
                     </li>
                 }
             </ul>
-            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+            <div [ngbNavOutlet]="nav"></div>
         } @else {
             <div class="is-loading" aria-label="loading documentation"></div>
         }

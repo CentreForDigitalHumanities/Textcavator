@@ -89,6 +89,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
 
     onTabChange(tab: SearchTab) {
+        console.log(tab);
         this.tabs.setParams({tab});
     }
 

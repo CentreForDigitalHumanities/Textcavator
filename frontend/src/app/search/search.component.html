@@ -1,60 +1,82 @@
 <ia-corpus-header [corpus]="corpus" currentPage="search"></ia-corpus-header>
 
 <section class="py-4 search-section pt-3">
-  <div class="container">
-    <form (ngSubmit)="search()">
-      <div class="input-group mb-3">
-          <button class="btn btn-secondary" type="button" (click)="showQueryDocumentation()"
-            aria-label="View query documentation" ngbTooltip="View query documentation"
-            placement="bottom">
-            <span >
-              <fa-icon [icon]="actionIcons.manual" aria-hidden="true" />
-            </span>
-          </button>
-          <input class="form-control" id="query" [(ngModel)]="queryText" name="queryText" type="text"
-            placeholder="Query" />
-        <button class="btn btn-primary" type="submit" id="search">
-            <fa-icon [icon]="actionIcons.search" aria-hidden="true"></fa-icon>
-            Search
-        </button>
-        <ia-select-field [queryModel]="queryModel" />
-      </div>
-    </form>
-  </div>
+    <div class="container">
+        <form (ngSubmit)="search()">
+            <div class="input-group mb-3">
+                <button class="btn btn-secondary" type="button" (click)="showQueryDocumentation()"
+                    aria-label="View query documentation" ngbTooltip="View query documentation" placement="bottom">
+                    <span>
+                        <fa-icon [icon]="actionIcons.manual" aria-hidden="true" />
+                    </span>
+                </button>
+                <input class="form-control" id="query" [(ngModel)]="queryText" name="queryText" type="text"
+                    placeholder="Query" />
+                <button class="btn btn-primary" type="submit" id="search">
+                    <fa-icon [icon]="actionIcons.search" aria-hidden="true"></fa-icon>
+                    Search
+                </button>
+                <ia-select-field [queryModel]="queryModel" />
+            </div>
+        </form>
+    </div>
 </section>
 <section class="py-4 search-results">
-  <div class="container">
-    <!-- filters and search results -->
-    <div class="row">
-      <!-- Filters, on left -->
-      <div class="col-md-3">
-        @if (queryModel) {
-          <ia-filter-manager [queryModel]="queryModel"></ia-filter-manager>
-        }
-      </div>
-      <!-- search results, on right -->
-      @if (queryModel) {
-        <div class="col-md-9">
-          <p ia-results-count [queryModel]="queryModel" class="my-3 has-text-right"></p>
-          <ia-tabs [activeTab]="tabs.state$.value.tab" (tabChange)="onTabChange($event)">
-            <ng-template iaTabPanel id="search-results" title="Search results" [icon]="searchIcons.documents">
-              <ia-search-results [queryModel]="queryModel" [user]="user">
-              </ia-search-results>
-            </ng-template>
-            <ng-template iaTabPanel id="visualizations" title="Visualizations" [icon]="searchIcons.visualizations">
-              <ia-visualization [corpus]="corpus" [queryModel]="queryModel">
-              </ia-visualization>
-            </ng-template>
-            <ng-template iaTabPanel id="download" title="Download"
-              [icon]="actionIcons.download">
-              <ia-download [corpus]="corpus" [queryModel]="queryModel">
-              </ia-download>
-            </ng-template>
-          </ia-tabs>
+    <div class="container">
+        <!-- filters and search results -->
+        <div class="row">
+            <!-- Filters, on left -->
+            <div class="col-md-3">
+                @if (queryModel) {
+                <ia-filter-manager [queryModel]="queryModel"></ia-filter-manager>
+                }
+            </div>
+            <!-- search results, on right -->
+            @if (queryModel) {
+            <div class="col-md-9">
+                <p ia-results-count [queryModel]="queryModel" class="my-3 text-end"></p>
+                <ul ngbNav #nav="ngbNav" class="nav-tabs mb-4"
+                    [activeId]="(tabs.state$ | async).tab"
+                    (navChange)="onTabChange($event.nextId)">
+                    <li ngbNavItem="search-results">
+                        <button ngbNavLink>
+                            <fa-icon [icon]="searchIcons.documents" class="me-1"
+                                aria-hidden="true" />
+                            Search results
+                        </button>
+                        <ng-template ngbNavContent>
+                            <ia-search-results [queryModel]="queryModel" [user]="user">
+                            </ia-search-results>
+                        </ng-template>
+                    </li>
+                    <li ngbNavItem="visualizations">
+                        <button ngbNavLink>
+                            <fa-icon [icon]="searchIcons.visualizations" class="me-1"
+                                aria-hidden="true" />
+                            Visualizations
+                        </button>
+                        <ng-template ngbNavContent>
+                            <ia-visualization [corpus]="corpus" [queryModel]="queryModel">
+                            </ia-visualization>
+                        </ng-template>
+                    </li>
+                    <li ngbNavItem="download">
+                        <button ngbNavLink>
+                            <fa-icon [icon]="actionIcons.download" class="me-1"
+                                aria-hidden="true" />
+                            Download
+                        </button>
+                        <ng-template ngbNavContent>
+                            <ia-download [corpus]="corpus" [queryModel]="queryModel">
+                            </ia-download>
+                        </ng-template>
+                    </li>
+                </ul>
+                <div [ngbNavOutlet]="nav"></div>
+            </div>
+            }
         </div>
-      }
     </div>
-  </div>
 </section>
 
 <ia-back-to-top-button />
