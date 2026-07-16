@@ -3,12 +3,12 @@
     [labelledBy]="labelledBy">
     <span iaDropdownLabel>{{ sortField?.displayName || 'Relevance' }}</span>
     <div iaDropdownMenu>
-      <a iaDropdownItem [value]="undefined">Relevance</a>
+      <button iaDropdownItem [value]="undefined">Relevance</button>
       @for (field of sortableFields; track field) {
-        <a
+        <button
           iaDropdownItem [value]="field">
           {{field.displayName}}
-        </a>
+        </button>
       }
     </div>
   </ia-dropdown>

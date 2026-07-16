@@ -4,6 +4,7 @@ import { DropdownItemDirective } from './dropdown-item.directive';
 import { DropdownMenuDirective } from './dropdown-menu.directive';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
@@ -14,6 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     imports: [
         CommonModule,
         FontAwesomeModule,
+        NgbDropdownModule
     ],
     exports: [
         DropdownComponent,
@@ -21,4 +23,4 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         DropdownItemDirective,
     ]
 })
-export class DropdownModule {};
+export class DropdownModule { };

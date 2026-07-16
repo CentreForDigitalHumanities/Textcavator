@@ -1,6 +1,10 @@
 # Dropdown component
 
-The dropdown component is a [combobox](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/combobox_role). It has a [listbox](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role) popup and allows the user to select a single item from a list.
+The dropdown component is a wrapper around the [ng-bootstrap dropdown](https://ng-bootstrap.github.io/#/components/dropdown/examples).
+
+Bootstrap dropdowns are generic - this component is more specific for a single-select listbox. Additions to the bootstrap dropdown:
+- Assigns a [combobox](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/combobox_role) / [listbox](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role) role to the elements (and some related ARIA properties).
+- Handles the data logic for single-select. You can listen to the selected value with `(onChange)` or by binding a `FormControl`.
 
 Typical usage looks like this:
 
@@ -9,40 +13,17 @@ Typical usage looks like this:
 <ia-dropdown (onChange)="selection = $event" labelledBy="lucky-number-label">
     <span iaDropdownLabel>{{selection}}</span>
     <div iaDropdownMenu>
-        <a iaDropdownItem [value]="3">
+        <button iaDropdownItem [value]="3">
             3
-        </a>
-        <a iaDropdownItem [value]="5">
+        </button>
+        <button iaDropdownItem [value]="5">
             5
-        </a>
+        </button>
     </div>
 </ia-dropdown>
 ```
 
-# Template
-
-You can insert other content into the dropdown menu:
-
-```html
-<label id="lucky-number-id">Lucky number</label>
-<ia-dropdown (onChange)="value = $event" labelledBy="lucky-number-id">
-    <span iaDropdownLabel>{{value}}</span>
-    <div iaDropdownMenu>
-        <a iaDropdownItem [value]="3">
-            3
-        </a>
-        <hr class="dropdown-divider">
-        <div class="dropdown-item">
-            This explanation can't be selected!
-        </div>
-        <a iaDropdownItem [value]="5">
-            5
-        </a>
-    </div>
-</ia-dropdown>
-```
-
-However, be aware that a [listbox]((https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role)) has limited options for the semantics of its children. Also, because the popup is normally hidden, unfocusable content (such as explanations) may be missed by users who navigate the page with a screen reader.
+See [bootstrap documentation](https://getbootstrap.com/docs/5.3/components/dropdowns/) for more information on layout.
 
 ## API
 
@@ -56,6 +37,7 @@ The dropdown component supports:
 - `[value]` input: this sets the selected value in the menu - use this to set the value from the parent component.
 - `[disabled]` input: if `true`, this disables the entire menu.
 - `[labelledBy]` input: sets the ID of the element labelling the dropdown. This is required to make the dropdown accessible.
+- `[triggerClass]`: additional CSS classes for the trigger button
 - `(onChanges)` output: emits all changes to the selected value, including when it is set through input. If you only want to listen to UI events, use `(onSelect)` on the individual items instead.
 - `[formControl]`: register a control in a [reactive form](https://angular.dev/guide/forms/reactive-forms).
 

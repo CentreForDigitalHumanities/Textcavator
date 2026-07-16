@@ -2,43 +2,33 @@ import { Directive, ElementRef, HostBinding, HostListener, Input, Output } from 
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DropdownService } from './dropdown.service';
 import * as _ from 'lodash';
+import { NgbDropdownButtonItem, NgbDropdownItem } from '@ng-bootstrap/ng-bootstrap';
 
 @Directive({
     selector: '[iaDropdownItem]',
     standalone: false,
+    hostDirectives: [
+        {
+            directive: NgbDropdownItem,
+            inputs: ['disabled: disabled'],
+        },
+        {
+            directive: NgbDropdownButtonItem,
+        }
+    ],
 })
 export class DropdownItemDirective {
-    @HostBinding('class') class = 'dropdown-item';
     @HostBinding('attr.role') role = 'option';
-    @HostBinding('attr.tabIndex') tabIndex = 0;
-
     @Input() value;
-
-    @Input() disabled: boolean;
 
     @Output() onSelect = new Subject<any>();
 
+    disabled: boolean;
     focused = new BehaviorSubject<boolean>(false);
 
     constructor(private elementRef: ElementRef, private dropdownService: DropdownService) { }
 
-    /** value bound to [disabled] attribute in the DOM
-     *
-     * If `this.disabled === false`, the bound value is `undefined`
-     *
-     * This is bound to `disabled` attribute which is used as a CSS selector,
-     * but that attribute is not supported for the menuitem role, so we also bind it
-     * to `aria-disabled`. C.f. https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/menuitem_role
-     */
-    @HostBinding('attr.disabled')
-    @HostBinding('attr.aria-disabled')
-    get disabledAttribute() {
-        if (this.disabled) {
-            return true;
-        };
-    }
-
-    @HostBinding('class.is-active')
+    @HostBinding('class.active')
     @HostBinding('attr.aria-selected')
     get isActive(): boolean {
         return _.isEqual(this.dropdownService.selection$.value, this.value);
@@ -75,12 +65,6 @@ export class DropdownItemDirective {
     navigatePrev() {
         this.dropdownService.focusShift$.next(-1);
         return false;
-    }
-
-    @HostListener('keydown.escape')
-    close() {
-        this.dropdownService.menuEscaped$.next();
-        this.dropdownService.open$.next(false);
     }
 
     focus() {

@@ -6,12 +6,12 @@
           labelledBy="label-language">
           <span iaDropdownLabel>{{form.controls.language.value || 'Any'}}</span>
           <div iaDropdownMenu>
-            <a iaDropdownItem [value]="null">Any</a>
+            <button iaDropdownItem [value]="null">Any</button>
             @for (language of languages; track language) {
-              <a
+              <button
                 iaDropdownItem [value]="language">
                 {{language}}
-              </a>
+            </button>
             }
           </div>
         </ia-dropdown>
@@ -22,12 +22,12 @@
           labelledBy="label-category">
           <span iaDropdownLabel>{{form.controls.category.value || 'Any'}}</span>
           <div iaDropdownMenu>
-            <a iaDropdownItem [value]="null">Any</a>
+            <button iaDropdownItem [value]="null">Any</button>
             @for (category of categories; track category) {
-              <a
+                <button
                 iaDropdownItem [value]="category">
                 {{category}}
-              </a>
+                </button>
             }
           </div>
         </ia-dropdown>

@@ -56,10 +56,10 @@
                         <span iaDropdownLabel>{{getFieldProperty(field, 'label')}}</span>
                         <div iaDropdownMenu>
                             @for (option of fieldTypeOptions; track option) {
-                            <a iaDropdownItem [value]="option.value">
+                            <button iaDropdownItem [value]="option.value">
                                 {{option.label}}
                                 <span class="form-text">{{option.helpText}}</span>
-                            </a>
+                            </button>
                             }
                         </div>
                     </ia-dropdown>
@@ -135,9 +135,9 @@
                     <span iaDropdownLabel>{{languageControl.value.displayName}}</span>
                     <div iaDropdownMenu>
                         @for (lang of languageOptions; track lang) {
-                        <a iaDropdownItem [value]="lang">
+                        <button iaDropdownItem [value]="lang">
                             {{lang.displayName}}
-                        </a>
+                        </button>
                         }
                     </div>
                 </ia-dropdown>

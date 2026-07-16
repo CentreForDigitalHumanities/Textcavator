@@ -2,7 +2,6 @@ import {
     Component,
     ElementRef,
     EventEmitter,
-    HostListener,
     Input,
     Output,
     OnDestroy,
@@ -10,7 +9,6 @@ import {
     OnChanges,
     SimpleChanges,
     ViewChild,
-    AfterViewInit,
     forwardRef,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
@@ -19,6 +17,7 @@ import * as _ from 'lodash';
 import { actionIcons } from '../icons';
 import { DropdownService } from './dropdown.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap';
 
 let nextID = 0;
 
@@ -35,9 +34,7 @@ let nextID = 0;
     ],
     standalone: false
 })
-export class DropdownComponent<T> implements OnChanges, AfterViewInit, OnDestroy, ControlValueAccessor  {
-    @HostBinding('class') classes = 'dropdown';
-
+export class DropdownComponent<T> implements OnChanges, OnDestroy, ControlValueAccessor  {
     @Input() value: any;
     @Input() disabled: boolean;
 
@@ -47,20 +44,18 @@ export class DropdownComponent<T> implements OnChanges, AfterViewInit, OnDestroy
     @Output()
     public onChange = new EventEmitter<T>();
 
-    @ViewChild('dropdownTrigger') trigger: ElementRef<HTMLButtonElement>;
+    @ViewChild(NgbDropdownToggle) trigger: ElementRef<HTMLButtonElement>;
 
     actionIcons = actionIcons;
 
-
     id = nextID++;
-    open$ = this.dropdownService.open$;
 
     private blur$ = new Subject<void>();
     private destroy$ = new Subject<void>();
     private onChangeSubscription?: Subscription;
     private onTouchedSubscription?: Subscription;
 
-    constructor(private elementRef: ElementRef, private dropdownService: DropdownService) {
+    constructor(private dropdownService: DropdownService) {
         // don't trigger a lot of events when a user is quickly looping through the options
         // for example using the keyboard arrows
         this.dropdownService.selection$.pipe(
@@ -70,34 +65,12 @@ export class DropdownComponent<T> implements OnChanges, AfterViewInit, OnDestroy
         ).subscribe((value) => this.onChange.next(value));
     }
 
-    @HostBinding('class.is-active')
-    get isActive(): boolean {
-        return this.dropdownService.open$.value;
-    }
-
     get triggerID(): string {
         return `dropdown-trigger-${this.id}`;
     }
 
     get menuID(): string {
         return `dropdown-menu-${this.id}`;
-    }
-
-    @HostListener('document:click', ['$event'])
-    onClickOut(event) {
-        if (!this.elementRef.nativeElement.contains(event.target)) {
-            this.dropdownService.open$.next(false);
-        }
-    }
-
-    @HostListener('focusout', ['$event'])
-    onFocusOut(event: FocusEvent) {
-        if (_.isNull(event.relatedTarget) ||
-            !this.elementRef.nativeElement.contains(event.relatedTarget)
-        ) {
-            this.dropdownService.open$.next(false);
-            this.blur$.next();
-        }
     }
 
     writeValue(value: any) {
@@ -124,27 +97,14 @@ export class DropdownComponent<T> implements OnChanges, AfterViewInit, OnDestroy
         }
     }
 
-    ngAfterViewInit(): void {
-        this.dropdownService.menuEscaped$.pipe(
-            takeUntil(this.destroy$)
-        ).subscribe(() => {
-            this.trigger.nativeElement.focus();
-        });
-    }
-
     ngOnDestroy(): void {
         this.blur$.complete();
         this.destroy$.next(undefined);
         this.destroy$.complete();
     }
 
-    public toggleDropdown() {
-        this.dropdownService.open$.next(!this.dropdownService.open$.value);
-    }
-
     focusOnFirstItem(event: Event) {
         event.preventDefault();
-        this.dropdownService.open$.next(true);
         // focus on the first item - use setTimeout to wait until the menu is opened
         setTimeout(() => this.dropdownService.focusShift$.next(1));
     }
