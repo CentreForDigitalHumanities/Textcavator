@@ -7,7 +7,7 @@
 </p>
 
 <div class="my-3">
-  <button class="btn" (click)="openDocumentation()">Manual</button>
+  <button class="btn btn-body" (click)="openDocumentation()">Manual</button>
 </div>
 
 
@@ -63,7 +63,7 @@
 } @else {
   @if (fileState === "firstUploaded" || fileState === "firstConfirmed") {
     <div class="field is-grouped">
-      <button class="btn" (click)="confirmReset.open(dataFiles)">
+      <button class="btn btn-body" (click)="confirmReset.open(dataFiles)">
         <span  aria-hidden="true">
           <fa-icon [icon]="formIcons.reset"></fa-icon>
         </span>

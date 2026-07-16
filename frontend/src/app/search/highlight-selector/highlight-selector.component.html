@@ -6,7 +6,7 @@
     <div class="input-group mb-3 is-justify-content-flex-end">
       @if (highlight$ | async; as highlight) {
         <div class="control">
-          <button class="btn"
+          <button class="btn btn-body"
             (click)="updateHighlightSize('more')"
             [disabled]="highlight>=800"
             iaBalloon="increase preview size"
@@ -15,7 +15,7 @@
           </button>
         </div>
         <div class="control">
-          <button class="btn"
+          <button class="btn btn-body"
             (click)="updateHighlightSize('less')"
             [disabled]="highlight<=200"
             iaBalloon="decrease preview size"
@@ -25,7 +25,7 @@
         </div>
       }
       <div class="control">
-        <button class="btn" id="highlight-toggle" [class.is-active]="highlight$ | async"
+        <button class="btn btn-body" id="highlight-toggle" [class.is-active]="highlight$ | async"
           (click)="updateHighlightSize(highlight ? 'off' : 'on')">
           {{ (highlight$ | async) ? 'ON' : 'OFF' }}
         </button>

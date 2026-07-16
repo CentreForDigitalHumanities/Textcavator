@@ -81,13 +81,13 @@
         <div class="input-group mb-3">
           <!-- Buttons for switching between table and graphical representation -->
           <div class="control">
-            <button class="btn" iaToggleButton [active]="!freqtable"
+            <button class="btn btn-body" iaToggleButton [active]="!freqtable"
               (click)="freqtable = false" aria-label="view chart">
               <fa-icon [icon]="visualizationIcons.chart" aria-hidden="true" />
             </button>
           </div>
           <div class="control">
-            <button class="btn" iaToggleButton [active]="freqtable"
+            <button class="btn btn-body" iaToggleButton [active]="freqtable"
               (click)="freqtable = true" aria-label="view table">
               <fa-icon [icon]="visualizationIcons.table" aria-hidden="true"/>
             </button>

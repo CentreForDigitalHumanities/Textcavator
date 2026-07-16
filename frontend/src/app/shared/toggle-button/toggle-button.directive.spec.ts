@@ -5,7 +5,7 @@ import { ToggleButtonDirective } from './toggle-button.directive';
 
 @Component({
     template: `
-    <button class="btn" iaToggleButton [active]="active()" [activeClass]="class()">
+    <button class="btn btn-body" iaToggleButton [active]="active()" [activeClass]="class()">
         Test
     </button>
     `,
