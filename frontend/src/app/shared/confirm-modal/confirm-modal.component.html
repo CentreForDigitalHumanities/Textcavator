@@ -12,7 +12,7 @@
     </div>
     <div class="modal-footer">
         @let data = confirmAction$ | async;
-        <button class="btn btn-body" (click)="confirm(data)"
+        <button class="btn" (click)="confirm(data)"
             [class]="actionButtonClass || 'btn-body'"
             [iaButtonLoading]="loading$ | async">
             @if (icon) {<fa-icon [icon]="icon" />}

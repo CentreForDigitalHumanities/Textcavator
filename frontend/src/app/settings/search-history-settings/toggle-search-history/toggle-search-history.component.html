@@ -1,14 +1,13 @@
-<div class="field">
-    <div class="control">
-        <label class="checkbox">
-            <input type="checkbox" [checked]="searchHistoryEnabled$ | async"
-                (change)="emitChange($event.target.checked)">
-            Save my search history
-        </label>
-
-        <p class="form-text">
-            You can change this setting at any time. Doing so will not delete
-            your existing search history.
-        </p>
-    </div>
+<div class="form-check">
+    <input type="checkbox" [checked]="searchHistoryEnabled$ | async"
+        (change)="emitChange($event.target.checked)"
+        class="form-check-input">
+    <label class="form-check-label">
+        Save my search history
+    </label>
 </div>
+
+<p class="form-text">
+    You can change this setting at any time. Doing so will not delete
+    your existing search history.
+</p>
