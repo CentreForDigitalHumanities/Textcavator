@@ -44,23 +44,35 @@
 
   <div class="col-md is-7">
     <div class="box">
-      <ia-tabs [activeTab]="activeTab">
-        @for (field of contentFields; track field) {
-          <ng-template iaTabPanel
-            [id]="fieldTabID(field)"
-            [title]="field.displayName" [icon]="documentIcons.text">
-            <ia-content-field
-              [field]="field"
-              [document]="document"
-              [showEntities]="showEntities" />
-          </ng-template>
-        }
-        @if (showScanTab) {
-          <ng-template iaTabPanel id="scan" title="Image" [icon]="documentIcons.scan">
-            <ia-image-view [corpus]="corpus" [document]="document"></ia-image-view>
-          </ng-template>
-        }
-      </ia-tabs>
+        <ul ngbNav #nav="ngbNav" [activeId]="activeTab" class="nav-tabs mb-3">
+            @for (field of contentFields; track field) {
+                <li [ngbNavItem]="fieldTabID(field)">
+                    <button ngbNavLink>
+                        <fa-icon [icon]="documentIcons.text" class="me-1" />
+                        {{field.displayName}}
+                    </button>
+                    <ng-template ngbNavContent>
+                        <ia-content-field
+                        [field]="field"
+                        [document]="document"
+                        [showEntities]="showEntities" />
+                    </ng-template>
+                </li>
+            }
+            @if (showScanTab) {
+                <li ngbNavItem="scan">
+                    <button ngbNavLink>
+                        <fa-icon [icon]="documentIcons.scan" class="me-1" />
+                        Image
+                    </button>
+                    <ng-template ngbNavContent>
+                        <ia-image-view [corpus]="corpus" [document]="document" />
+                    </ng-template>
+                </li>
+            }
+        </ul>
+
+        <div [ngbNavOutlet]="nav"></div>
     </div>
   </div>
 </div>
