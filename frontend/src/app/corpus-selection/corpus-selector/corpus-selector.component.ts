@@ -26,4 +26,7 @@ export class CorpusSelectorComponent implements OnInit {
         }
     }
 
+    backgroundImage(corpus: Corpus) {
+        return `url("/api/corpus/image/${corpus.name}")`;
+    }
 }

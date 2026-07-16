@@ -1,21 +1,7 @@
 
-// .corpus-container {
-//     padding: 0;
-//     margin-inline-start: 0px;
-//     margin-inline-end: 0px;
-//     margin-bottom: 1.75rem;
-
-//     > .column {
-//         padding: 1rem; // slightly more generous padding
-//     }
-
-//     border-radius: $radius;
-// }
-
-
-img.corpus-image {
+.corpus-image {
+    background-position: center;
+    background-size: cover;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+    height: 100%
 }
