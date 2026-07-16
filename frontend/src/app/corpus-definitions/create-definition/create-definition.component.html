@@ -8,66 +8,73 @@
       </ol>
     </nav>
 
-    <h1 class="title">New corpus</h1>
+    <h1 class="mb-5">New corpus</h1>
 
-    <ia-tabs>
-      <!-- Create from scratch -->
-      <ng-template iaTabPanel id="newCorpusTab" title="Create using the interactive editor">
-        <form>
-          <div class="field">
-            <label class="form-label" for="title">Title</label>
-            <div class="control">
-              <input class="form-control" type="text" name="title" [(ngModel)]="newCorpusTitle" />
-            </div>
-            <p class="form-text">Enter a short, clear title for your corpus.</p>
-          </div>
-          <div class="my-3">
-            <button class="btn btn-primary" type="submit" (click)="submit()">
-              <span  aria-hidden="true">
-                <fa-icon [icon]="formIcons.confirm"></fa-icon>
-              </span>
-              <span>
-                Save corpus
-              </span>
-            </button>
-          </div>
-        </form>
-      </ng-template>
+    <ul ngbNav #nav="ngbNav" class="nav-tabs mb-4">
+        <!-- Create from scratch -->
+        <li ngbNavItem="newCorpusTab">
+            <button ngbNavLink>Create using the interactive editor</button>
+            <ng-template ngbNavContent>
+                <form>
+                  <div class="field">
+                    <label class="form-label" for="title">Title</label>
+                    <div class="control">
+                      <input class="form-control" type="text" name="title" [(ngModel)]="newCorpusTitle" />
+                    </div>
+                    <p class="form-text">Enter a short, clear title for your corpus.</p>
+                  </div>
+                  <div class="my-3">
+                    <button class="btn btn-primary" type="submit" (click)="submit()">
+                      <span  aria-hidden="true">
+                        <fa-icon [icon]="formIcons.confirm"></fa-icon>
+                      </span>
+                      <span>
+                        Save corpus
+                      </span>
+                    </button>
+                  </div>
+                </form>
+            </ng-template>
+        </li>
 
-      <!-- Upload JSON -->
-      <ng-template iaTabPanel id="uploadJSONTab" title="Upload a JSON definition">
-        <p class="my-3">
-          Upload a JSON definition file to add it as a corpus.
-        </p>
-        <form>
-          <div class="my-3">
-            <ia-definition-json-upload [reset]="reset$" (upload)="onJSONUpload($event)">
-            </ia-definition-json-upload>
-          </div>
+        <!-- Upload JSON -->
+        <li ngbNavItem="uploadJSONTab">
+            <button ngbNavLink>Upload a JSON definition</button>
+            <ng-template ngbNavContent>
+                <p class="my-3">
+                  Upload a JSON definition file to add it as a corpus.
+                </p>
+                <form>
+                  <div class="my-3">
+                    <ia-definition-json-upload [reset]="reset$" (upload)="onJSONUpload($event)">
+                    </ia-definition-json-upload>
+                  </div>
 
-          @if (corpus.isComplete()) {
-            <div class="my-3">
-              <button class="btn btn-primary" type="submit" (click)="saveCorpus(true)">
-                <span  aria-hidden="true">
-                  <fa-icon [icon]="formIcons.confirm"></fa-icon>
-                </span>
-                <span>
-                  Save corpus
-                </span>
-              </button>
-            </div>
-          }
+                  @if (corpus.isComplete()) {
+                    <div class="my-3">
+                      <button class="btn btn-primary" type="submit" (click)="saveCorpus(true)">
+                        <span  aria-hidden="true">
+                          <fa-icon [icon]="formIcons.confirm"></fa-icon>
+                        </span>
+                        <span>
+                          Save corpus
+                        </span>
+                      </button>
+                    </div>
+                  }
 
-          @if (error) {
-            <div class="message is-danger">
-              <div class="message-body">
-                Could not save corpus: {{error.message}}
-              </div>
-            </div>
-          }
-        </form>
-      </ng-template>
-    </ia-tabs>
+                  @if (error) {
+                    <div class="message is-danger">
+                      <div class="message-body">
+                        Could not save corpus: {{error.message}}
+                      </div>
+                    </div>
+                  }
+                </form>
+            </ng-template>
+        </li>
+    </ul>
 
+    <div [ngbNavOutlet]="nav"></div>
   </div>
 </section>
