@@ -1,35 +1,29 @@
 <div class="contextbox">
   <div>
-    <h2 class="heading has-text-right">Toggle highlights:</h2>
+    <h2 class="heading">Toggle highlights:</h2>
   </div>
-  <div class="col-md is-narrow">
-    <div class="input-group mb-3 is-justify-content-flex-end">
-      @if (highlight$ | async; as highlight) {
-        <div class="control">
-          <button class="btn btn-body"
-            (click)="updateHighlightSize('more')"
-            [disabled]="highlight>=800"
-            iaBalloon="increase preview size"
-            aria-label="increase preview size">
-            <fa-icon [icon]="actionIcons.more" aria-hidden="true"></fa-icon>
-          </button>
-        </div>
-        <div class="control">
-          <button class="btn btn-body"
-            (click)="updateHighlightSize('less')"
-            [disabled]="highlight<=200"
-            iaBalloon="decrease preview size"
-            aria-label="decrease preview size">
-            <fa-icon [icon]="actionIcons.less" aria-hidden="true"></fa-icon>
-          </button>
-        </div>
-      }
-      <div class="control">
-        <button class="btn btn-body" id="highlight-toggle" [class.is-active]="highlight$ | async"
-          (click)="updateHighlightSize(highlight ? 'off' : 'on')">
+    <div class="btn-group my-2">
+        <button class="btn" id="highlight-toggle"
+            [class.btn-body]="(highlight$ | async) === undefined"
+            [class.btn-secondary]="highlight$ | async"
+            (click)="updateHighlightSize(highlight ? 'off' : 'on')">
           {{ (highlight$ | async) ? 'ON' : 'OFF' }}
         </button>
-      </div>
-    </div>
+        @if (highlight$ | async; as highlight) {
+            <button class="btn btn-body"
+                (click)="updateHighlightSize('less')"
+                [disabled]="highlight<=200"
+                iaBalloon="decrease preview size"
+                aria-label="decrease preview size">
+                <fa-icon [icon]="actionIcons.less" aria-hidden="true"></fa-icon>
+            </button>
+            <button class="btn btn-body"
+                (click)="updateHighlightSize('more')"
+                [disabled]="highlight>=800"
+                iaBalloon="increase preview size"
+                aria-label="increase preview size">
+                <fa-icon [icon]="actionIcons.more" aria-hidden="true"></fa-icon>
+            </button>
+        }
   </div>
 </div>
