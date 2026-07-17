@@ -16,26 +16,24 @@
             <div class="col-md">
                 <h1 class="mb-4">Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
             </div>
-            <div class="col-md is-narrow">
+            <div class="col-md-auto">
                 @if (corpus.active) {
-                    <a class="btn is-medium" [routerLink]="['/search', corpus.definition.name]">
-                        <span >
-                            <fa-icon [icon]="corpusIcons.search" aria-hidden="true" />
-                        </span>
+                    <a class="btn btn-ghost btn-lg"
+                        [routerLink]="['/search', corpus.definition.name]"
+                        aria-label="search corpus">
+                        <fa-icon [icon]="corpusIcons.search" aria-hidden="true" />
                     </a>
                 }
             </div>
         </div>
 
         @if (corpus.active) {
-            <div class="message">
-                <div class="message-body">
-                    <p class="my-3">
-                        This corpus is currently active and available for searching. Some
-                        editing options are locked. To enable them, deactive the corpus in
-                        step 4.
-                    </p>
-                </div>
+            <div class="alert alert-secondary">
+                <p class="mb-0">
+                    This corpus is currently active and available for searching. Some
+                    editing options are locked. To enable them, deactive the corpus in
+                    step 4.
+                </p>
             </div>
         }
     </div>
