@@ -1,11 +1,8 @@
-@use '../../../utilities';
-
 .logo {
     max-height: 3rem;
 }
 
 .app-title {
-    font-family: utilities.$brand-font;
     text-wrap: wrap;
     max-width: 100%;
 }

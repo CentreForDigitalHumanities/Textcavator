@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" aria-label="primary navigation">
+<nav class="navbar navbar-expand-lg" aria-label="primary navigation">
     <div class="container-fluid">
         <!-- skip link for keyboard navigation.
     Complicated setup because the menu is outside of router-outlet and so
@@ -17,7 +17,7 @@
                     [alt]="brand.logoAlt"
                     [attr.aria-hidden]="!brand.logoAlt?.length">
             }
-            <span class="app-title fs-4">
+            <span class="app-title display-6 fs-4">
                 <span>{{brand.title}}</span>
                 @if (brand.subtitle) {
                 <span>

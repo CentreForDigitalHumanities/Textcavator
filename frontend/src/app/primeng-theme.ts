@@ -28,8 +28,8 @@ export const stylePreset = definePreset(Nora, {
                 formField: {
                     background: 'var(--bs-body-bg)',
                     borderColor: 'var(--bs-border-color)',
-                    disabledBackground: 'var(--bulma-tertiary-bg)',
-                    disabledColor: 'var(--bulma-tertiary-color)',
+                    disabledBackground: 'var(--bs-secondary-bg)',
+                    disabledColor: 'var(--bs-secondary-color)',
                 },
                 content: {
                     borderColor: 'var(--bs-border-color)',

@@ -1,137 +1,33 @@
 @use "balloon-css/src/balloon";
 @use "quill/dist/quill.snow";
-@use "utilities";
-// @use "bulma/bulma";
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+@use './variables' as var;
+@use './tc_theme';
 
-
-
-@font-face {
-    font-family: "Open Sans";
-    src: url('/assets/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf');
-}
-
-@font-face {
-    font-family: "Open Sans";
-    src: url('/assets/fonts/Open_Sans/OpenSans-Italic-VariableFont_wdth,wght.ttf');
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Regular.ttf') format('opentype');
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Italic.ttf') format('opentype');
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Bold.ttf') format('opentype');
-    font-weight: 700;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-BoldItalic.ttf') format('opentype');
-    font-weight: 700;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Light.ttf') format('opentype');
-    font-weight: 200;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-LightItalic.ttf') format('opentype');
-    font-weight: 200;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-Medium.ttf') format('opentype');
-    font-weight: 500;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-MediumItalic.ttf') format('opentype');
-    font-weight: 500;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-SemiBold.ttf') format('opentype');
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: "Zilla Slab";
-    src: url('/assets/fonts/Zilla_Slab/ZillaSlab-SemiBoldItalic.ttf') format('opentype');
-    font-weight: 600;
-    font-style: italic;
-}
 
 
 [data-balloon]:after {
     border-radius: 0;
 }
 
-.container.is-readable {
-    max-width: 1024px !important;
-}
-
-.search-section {
-    +section {
-        padding-top: utilities.$size-6;
-    }
-
-    .search-controls {
-        align-items: flex-start;
-    }
-}
-
-.tabs {
-    white-space: normal;
-}
-
 .is-loading:not(.btn) {
-    @extend %content-loader;
+    // TODO: restore loader
+
+    opacity: .5;
+    // @extend %content-loader;
 }
 
-.tag-dropdown .button {
-    align-items: center;
-    border-radius: 3px;
-    display: inline-flex;
-    font-size: 0.75rem;
-    height: 2em;
-    justify-content: center;
-    line-height: 1.5;
-    padding-left: 0.75em;
-    padding-right: 0.75em;
-    white-space: nowrap;
-}
 
 a.dropdown-item:focus {
     @extend a, .dropdown-item, :hover;
 }
 
 a.dropdown-item[disabled] {
-    color: utilities.$grey;
+    color: var(--bs-secondary-color);
     cursor: not-allowed;
 
     &:hover {
         background-color: inherit;
-        color: utilities.$grey;
+        color: var(--bs-secondary-color);
     }
 }
 
@@ -150,19 +46,19 @@ a.dropdown-item[disabled] {
 }
 
 .entity-person {
-    @include mark-entity(utilities.$entity-person);
+    @include mark-entity(var.$entity-person);
 }
 
 .entity-location {
-    @include mark-entity(utilities.$entity-location);
+    @include mark-entity(var.$entity-location);
 }
 
 .entity-organization {
-    @include mark-entity(utilities.$entity-organization);
+    @include mark-entity(var.$entity-organization);
 }
 
 .entity-miscellaneous {
-    @include mark-entity(utilities.$entity-miscellaneous);
+    @include mark-entity(var.$entity-miscellaneous);
 }
 
 .is-disabled {
@@ -170,8 +66,8 @@ a.dropdown-item[disabled] {
 }
 
 .highlight {
-    background-color: var(--bulma-primary-soft);
-    color: var(--bulma-primary-soft-invert);
+    background-color: var(--bs-primary-bg-subtle);
+    color: var(--bs-emphasis-color);
 }
 
 .input-feedback {
@@ -186,7 +82,7 @@ a.dropdown-item[disabled] {
 
 
 table.spreadsheet {
-    border: 2px solid var(--bulma-border);
+    border: 2px solid var(--bs-border-color);
 
     thead th,
     tbody td,
@@ -195,7 +91,7 @@ table.spreadsheet {
     }
 
     th {
-        background-color: var(--bulma-body-background-color);
+        background-color: var(--bs-body-bg);
     }
 
     tr:hover {
@@ -204,21 +100,13 @@ table.spreadsheet {
 }
 
 .field.is-disabled {
-    color: var(--bulma-text-weak);
+    color: var(--bs-secondary-color);
 
     label {
-        color: var(--bulma-text-weak);
+        color: var(--bs-secondary-color);
     }
 }
 
-// do not use extra-bold weight for titles
-
-.title {
-    --bulma-title-weight: var(--bulma-weight-bold);
-}
-.content {
-    --bulma-content-heading-weight: var(--bulma-weight-bold);
-}
 
 // restore some bulma-y styles for bootstrap
 
@@ -262,15 +150,6 @@ table.spreadsheet {
 
 // restore some rules from older bulma versions for compatibility
 
-.block,
-.message,
-.title,
-.box,
-.field,
-.content {
-    @include utilities.block();
-}
-
 .heading {
     display: block;
     font-size: 11px;
@@ -279,47 +158,30 @@ table.spreadsheet {
     text-transform: uppercase;
 }
 
-:root {
-    --bulma-shadow: 0 2px 3px hsla(var(--bulma-shadow-h), var(--bulma-shadow-s), var(--bulma-shadow-l), 0.1),
-        0 0 0 1px hsla(var(--bulma-shadow-h), var(--bulma-shadow-s), var(--bulma-shadow-l), 0.1);
-}
-
-.modal-card .modal-card-body:last-child {
-    border-end-start-radius: var(--bulma-modal-card-foot-radius);
-    border-end-end-radius: var(--bulma-modal-card-foot-radius);
-}
-
-
-
-.image > img {
-    object-fit: cover;
-    object-position: center;
-}
-
 
 // reset focus styling for accessibility
 // bulma's customisation makes focus rings invisible on blue background
 
-a,
-button {
-    &:focus-visible {
-        outline: auto !important;
-        border: inherit !important;
-    }
-}
+// a,
+// button {
+//     &:focus-visible {
+//         outline: auto !important;
+//         border: inherit !important;
+//     }
+// }
 
-.input, .select {
-    &:focus {
-        outline: auto !important;
-        border: inherit !important;
-        box-shadow: inherit !important;
-    }
-}
+// .input, .select {
+//     &:focus {
+//         outline: auto !important;
+//         border: inherit !important;
+//         box-shadow: inherit !important;
+//     }
+// }
 
 
 // primeNG
 
-.field.has-addons .control:last-child {
+.input-group :last-child {
     .p-multiselect {
         border-start-start-radius: 0;
         border-end-start-radius: 0;
@@ -410,33 +272,8 @@ button {
 
 // dark mode
 
-[data-bs-theme="dark"] {
-    // increase contrast in dark mode
+// [data-bs-theme="dark"] {
+    // tweaks for dark mode
 
-    --bulma-border-l: 40%;
-    --bulma-shadow: 0 0 0 1px hsla(var(--bulma-shadow-h), var(--bulma-shadow-s), var(--bulma-shadow-l), 0.3);
-
-    --bulma-scheme-main-l: 12%;
-    --bulma-scheme-main-bis-l: 18%;
-    --bulma-scheme-main-ter-l: 25%;
-    --bulma-text-l: 85%;
-    --bulma-text-weak-l: 70%;
-    --bulma-link-on-scheme-l: 77%;
-    --bulma-link-text: hsl(var(--bulma-link-h), 80%, var(--bulma-link-on-scheme-l));
-    --bulma-hr-background-color: var(--bulma-border);
-
-    .control, .input, .select {
-        --bulma-input-placeholder-color: hsla(var(--bulma-text-h), var(--bulma-text-s), var(--bulma-text-strong-l), 0.5);
-    }
-
-    .navbar.is-primary {
-        --bulma-navbar-dropdown-item-background-l: 20%;
-    }
-
-    .message {
-        color: hsl(var(--bulma-message-h), var(--bulma-message-s), 85%);
-    }
-
-    --corpus-header-background: hsl(var(--bulma-scheme-h), var(--bulma-scheme-s), 20%);
-}
+// }
 

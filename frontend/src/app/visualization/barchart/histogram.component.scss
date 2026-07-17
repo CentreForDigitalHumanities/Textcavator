@@ -27,8 +27,3 @@ div.tooltip::after {
 .form-check-label {
     margin-left: 5px;
 }
-
-.notification {
-    @include mixins.unselectable;
-    opacity: 0.75;
-}

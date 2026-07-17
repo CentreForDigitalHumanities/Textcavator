@@ -4,9 +4,3 @@ ia-timeline {
     z-index: 1;
     position: absolute;
 }
-
-
-.notification {
-    @include mixins.unselectable;
-    opacity: 0.75;
-}

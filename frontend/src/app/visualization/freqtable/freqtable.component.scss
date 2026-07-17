@@ -1,8 +1,8 @@
-@use "../../../utilities";
+@use '../../../variables' as var;
 
 .p-active, .p-highlight {
-    background-color: utilities.$primary !important;
-    color: var(--bulma-primary-invert) !important;
+    background-color: var.$tc_primary !important;
+    color: var(--bs-emphasis-color) !important;
 }
 
 .p-datatable-wrapper {

@@ -1,8 +1,8 @@
-@use "../../../_utilities";
+@use "../../../variables";
 
 .content {
     ::ng-deep a {
-        color: utilities.$primary;
+        color: variables.$tc_primary;
     }
 
     max-height: 80vh;
