@@ -13,14 +13,14 @@
             <button class="btn btn-body"
                 (click)="updateHighlightSize('less')"
                 [disabled]="highlight<=200"
-                iaBalloon="decrease preview size"
+                ngbTooltip="decrease preview size"
                 aria-label="decrease preview size">
                 <fa-icon [icon]="actionIcons.less" aria-hidden="true"></fa-icon>
             </button>
             <button class="btn btn-body"
                 (click)="updateHighlightSize('more')"
                 [disabled]="highlight>=800"
-                iaBalloon="increase preview size"
+                ngbTooltip="increase preview size"
                 aria-label="increase preview size">
                 <fa-icon [icon]="actionIcons.more" aria-hidden="true"></fa-icon>
             </button>

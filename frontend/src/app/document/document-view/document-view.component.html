@@ -26,8 +26,7 @@
                           @if (document.hasValue(field)) {
                             <tr>
                               <th>
-                                <span [iaBalloon]="field.description"
-                                  iaBalloonPosition="up" iaBalloonLength="medium">
+                                <span [ngbTooltip]="field.description">
                                   {{field.displayName}}
                                 </span>
                               </th>

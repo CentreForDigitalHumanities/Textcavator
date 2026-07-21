@@ -4,9 +4,7 @@
     [displaySelectedLabel]="true"
     (onChange)="onUpdate()"
     [ngModelOptions]="{standalone: true}"
-    iaBalloon="Limit your search to specific fields"
-    iaBalloonLength="medium"
-    iaBalloonPosition="up">
+    ngbTooltip="Limit your search to specific fields">
     <ng-template #footer>
         <button class="btn btn-ghost" (click)="toggleAllFields()">
             {{allVisible? 'Show default fields' : 'Show all fields'}}

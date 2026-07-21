@@ -15,25 +15,22 @@
                     </h2>
                 </div>
                 @if (corpus.editable) {
-                  <div class="col-auto"
-                    >
-                    <a class="text-bg-primary fs-5"
-                      iaBalloon="Edit corpus" iaBalloonPosition="down-left"
-                      [routerLink]="['/custom-corpora/edit', corpus.id]"
-                      aria-label="edit corpus">
-                      <span>
-                        <fa-icon [icon]="corpusIcons.edit" aria-hidden="true"></fa-icon>
-                      </span>
-                    </a>
-                  </div>
+                    <div class="col-auto">
+                        <a class="text-bg-primary fs-5"
+                            ngbTooltip="Edit corpus"
+                            [routerLink]="['/custom-corpora/edit', corpus.id]"
+                            aria-label="edit corpus">
+                            <fa-icon [icon]="corpusIcons.edit" aria-hidden="true"></fa-icon>
+                        </a>
+                    </div>
                 }
                 <div class="col-auto">
-                  <a class="text-bg-primary fs-5"
-                    iaBalloon="More information" iaBalloonPosition="down-left"
-                    [routerLink]="['/info', corpus.name]"
-                    aria-label="more information">
-                    <fa-icon [icon]="corpusIcons.infoAlt" aria-hidden="true"></fa-icon>
-                  </a>
+                    <a class="text-bg-primary fs-5"
+                        ngbTooltip="More information"
+                        [routerLink]="['/info', corpus.name]"
+                        aria-label="more information">
+                        <fa-icon [icon]="corpusIcons.infoAlt" aria-hidden="true"></fa-icon>
+                    </a>
                 </div>
             </div>
             <hr class="mt-1">
