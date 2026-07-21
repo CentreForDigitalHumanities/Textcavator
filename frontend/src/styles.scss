@@ -9,13 +9,25 @@
     border-radius: 0;
 }
 
-.is-loading:not(.btn) {
-    // TODO: restore loader
 
-    opacity: .5;
-    // @extend %content-loader;
+.has-spinner-overlay {
+    position: relative;
+    min-width: 4em;
+    min-height: 4em;
+
+    :not(.spinner-border, .spinner-overlay) {
+        pointer-events: none;
+    }
+
+    .spinner-overlay {
+        position: absolute;
+        background: rgba(var(--bs-body-bg-rgb), 0.5);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 }
-
 
 a.dropdown-item:focus {
     @extend a, .dropdown-item, :hover;
