@@ -17,7 +17,7 @@
     </ia-barchart-options>
 </div>
 
-<div class="my-3" [ngClass]="{'is-loading':isLoading, 'd-none': asTable }">
+<div class="my-3" [iaLoading]="isLoading" [class.d-none]="asTable">
     <canvas id="barchart" width="400" height="200" aria-label="timeline" role="img"></canvas>
 </div>
 

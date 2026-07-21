@@ -29,7 +29,7 @@
   <p>No scan available for this document.</p>
 }
 @if (imagePaths) {
-  <div [ngClass]="{'is-loading':imagePaths===undefined}">
+  <div [iaLoading]="imagePaths===undefined">
     @if (mediaType!=='application/pdf') {
       <ia-scan-image [imagePaths]="imagePaths" [zoomFactor]="zoomFactor" [showPage]="showPage"></ia-scan-image>
     }
