@@ -6,7 +6,7 @@
             triggerClass="btn-sm">
             <span iaDropdownLabel>
                 {{ selectedTag?.name }}
-                <span [class.is-hidden]="selectedTag?.name !== null" id="select-tag-placeholder">
+                <span [class.d-none]="selectedTag?.name !== null" id="select-tag-placeholder">
                     Assign a tag
                 </span>
             </span>
