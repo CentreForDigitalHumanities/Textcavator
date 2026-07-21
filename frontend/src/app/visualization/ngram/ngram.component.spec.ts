@@ -71,7 +71,7 @@ describe('NgramComponent', () => {
 
     it('should switch labels in size selection', () => {
         const label = element.querySelector('#label-size');
-        const dropdownLabel = (label.nextSibling as HTMLElement).querySelector('[iaDropdownLabel]')
+        const dropdownLabel = (label.nextElementSibling as HTMLElement).querySelector('[iaDropdownLabel]')
         expect(label.textContent.trim()).toBe('Length of n-gram');
         expect(dropdownLabel.textContent.trim()).toBe('bigrams');
 
