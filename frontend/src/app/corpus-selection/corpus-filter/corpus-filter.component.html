@@ -8,8 +8,7 @@
           <div iaDropdownMenu>
             <button iaDropdownItem [value]="null">Any</button>
             @for (language of languages; track language) {
-              <button
-                iaDropdownItem [value]="language">
+              <button iaDropdownItem [value]="language">
                 {{language}}
             </button>
             }
@@ -24,9 +23,8 @@
           <div iaDropdownMenu>
             <button iaDropdownItem [value]="null">Any</button>
             @for (category of categories; track category) {
-                <button
-                iaDropdownItem [value]="category">
-                {{category}}
+                <button iaDropdownItem [value]="category">
+                    {{category}}
                 </button>
             }
           </div>

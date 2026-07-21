@@ -14,10 +14,9 @@
             <span iaDropdownLabel>{{currentModeOption?.label}}</span>
             <div iaDropdownMenu>
               @for (option of modeOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
+                <button iaDropdownItem [value]="option">
+                    {{option.label}}
+                </button>
               }
             </div>
           </ia-dropdown>
@@ -41,10 +40,9 @@
             <span iaDropdownLabel>{{currentSizeOption?.label}}</span>
             <div iaDropdownMenu>
               @for (option of sizeOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
+                <button iaDropdownItem [value]="option">
+                    {{option.label}}
+                </button>
               }
             </div>
           </ia-dropdown>
@@ -65,10 +63,9 @@
               <span iaDropdownLabel>{{currentPositionsOption?.label}}</span>
               <div iaDropdownMenu>
                 @for (option of positionsOptions; track option) {
-                  <a
-                    iaDropdownItem [value]="option">
-                    {{option.label}}
-                  </a>
+                    <button iaDropdownItem [value]="option">
+                        {{option.label}}
+                    </button>
                 }
               </div>
             </ia-dropdown>
@@ -89,10 +86,9 @@
             <span iaDropdownLabel>{{currentFreqCompensationOption?.label}}</span>
             <div iaDropdownMenu>
               @for (option of freqCompensationOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
+                <button iaDropdownItem [value]="option">
+                    {{option.label}}
+                </button>
               }
             </div>
           </ia-dropdown>
@@ -113,10 +109,9 @@
               <span iaDropdownLabel>{{currentAnalysisOption?.label}}</span>
               <div iaDropdownMenu>
                 @for (option of analysisOptions; track option) {
-                  <a
-                    iaDropdownItem [value]="option">
-                    {{option.label}}
-                  </a>
+                    <button iaDropdownItem [value]="option">
+                        {{option.label}}
+                    </button>
                 }
               </div>
             </ia-dropdown>
@@ -137,10 +132,9 @@
             <span iaDropdownLabel>{{currentMaxDocumentsOption?.label}}</span>
             <div iaDropdownMenu>
               @for (option of maxDocumentsOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
+                <button iaDropdownItem [value]="option">
                   {{option.label}}
-                </a>
+                </button>
               }
             </div>
           </ia-dropdown>
@@ -161,10 +155,9 @@
             <span iaDropdownLabel>{{currentNumberOfNgramsOption?.label}}</span>
             <div iaDropdownMenu>
               @for (option of numberOfNgramsOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
+                <button iaDropdownItem [value]="option">
+                    {{option.label}}
+                </button>
               }
             </div>
           </ia-dropdown>
@@ -186,10 +179,9 @@
             <span iaDropdownLabel>{{dateField?.displayName}}</span>
             <div iaDropdownMenu>
               @for (field of allDateFields; track field) {
-                <a
-                  iaDropdownItem [value]="field.name">
-                  {{field.displayName}}
-                </a>
+                <button iaDropdownItem [value]="field.name">
+                    {{field.displayName}}
+                </button>
               }
             </div>
           </ia-dropdown>

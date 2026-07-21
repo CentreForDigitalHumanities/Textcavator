@@ -11,10 +11,9 @@ import { By } from '@angular/platform-browser';
       <span iaDropdownLabel>{{ selected()?.label || 'Select option'}}</span>
       <div iaDropdownMenu>
         @for (option of options; track option) {
-          <a
-            iaDropdownItem [value]="option">
+          <button iaDropdownItem [value]="option">
             {{option.label}}
-          </a>
+        </button>
         }
       </div>
     </ia-dropdown>

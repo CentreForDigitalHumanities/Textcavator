@@ -11,8 +11,7 @@
               <span iaDropdownLabel>{{(selector.activeOption$ | async).label}}</span>
               <div iaDropdownMenu>
                 @for (option of selector.options; track option) {
-                    <button
-                        iaDropdownItem [value]="option"
+                    <button iaDropdownItem [value]="option"
                         [disabled]="option.disabled$ | async"
                         (onSelect)="setVisualizationType($event)">
                         {{option.label}}
@@ -54,8 +53,7 @@
                     <span iaDropdownLabel>{{(selector.state$ | async).field?.displayName}}</span>
                     <div iaDropdownMenu>
                     @for (field of fields; track field) {
-                        <button
-                            iaDropdownItem [value]="field"
+                        <button iaDropdownItem [value]="field"
                             (onSelect)="setVisualizedField($event)">
                             {{field.displayName}}
                         </button>
