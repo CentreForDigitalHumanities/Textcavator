@@ -160,24 +160,15 @@ table.spreadsheet {
 
 
 // reset focus styling for accessibility
-// bulma's customisation makes focus rings invisible on blue background
+// this ensures focus is visible on primary-colour background
 
-// a,
-// button {
-//     &:focus-visible {
-//         outline: auto !important;
-//         border: inherit !important;
-//     }
-// }
-
-// .input, .select {
-//     &:focus {
-//         outline: auto !important;
-//         border: inherit !important;
-//         box-shadow: inherit !important;
-//     }
-// }
-
+a, button, .form-control, .form-select {
+    &:focus-visible,&:focus {
+        outline: auto !important;
+        border: inherit !important;
+        box-shadow: inherit !important;
+    }
+}
 
 // primeNG
 
@@ -206,24 +197,30 @@ table.spreadsheet {
 // vega
 
 // TODO: use bootstrap classes
-// .vega-bindings {
-//     @extend .columns;
-//     @extend .is-multiline;
+.vega-bindings {
+    @extend .row;
 
-//     .vega-bind {
-//         @extend .field;
-//         @extend .column;
-//         @extend .is-4;
+    .vega-bind {
+        @extend .col-md-4;
 
-//         .vega-bind-name {
-//             @extend .label;
-//         }
+        .vega-bind-name {
+            @extend .form-label;
+        }
 
-//         select {
-//             @extend .select;
-//         }
-//     }
-// }
+        select {
+            @extend .form-select;
+        }
+
+        input[type=range] {
+            @extend .form-range;
+        }
+
+        input[type=checkbox] {
+            @extend .form-check-input;
+            @extend .mx-1;
+        }
+    }
+}
 
 // quill
 

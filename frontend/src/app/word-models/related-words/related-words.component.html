@@ -1,19 +1,15 @@
 <form class="my-3">
     <div class="field">
         <label class="form-label">Nearest neighbours to include:</label>
-        <div class="input-group mb-3">
-            <div class="control">
-                <input class="form-control" type="number" value="5" min="0" name="neighbours"
-                    [(ngModel)]="neighbours">
-            </div>
-            <div class="control">
-                <button class="btn btn-primary" type="submit" (click)="getData()">
-                    <span >
-                        <fa-icon [icon]="formIcons.confirm"></fa-icon>
-                    </span>
-                    <span>Confirm</span>
-                </button>
-            </div>
+        <div class="input-group">
+            <input class="form-control" type="number" value="5" min="0" name="neighbours"
+                [(ngModel)]="neighbours">
+            <button class="btn btn-primary" type="submit" (click)="getData()">
+                <span >
+                    <fa-icon [icon]="formIcons.confirm"></fa-icon>
+                </span>
+                <span>Confirm</span>
+            </button>
         </div>
     </div>
 </form>

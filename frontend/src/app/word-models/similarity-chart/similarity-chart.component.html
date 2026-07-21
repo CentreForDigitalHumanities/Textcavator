@@ -1,18 +1,24 @@
 <div [class.is-hidden]="asTable">
-  <div class="my-3">
-    <div class="field">
-      <label class="form-label">Show as:</label>
-      <div class="control radios">
-        @for (style of ['line', 'bar']; track style) {
-          <label class="radio">
-            <input type="radio" [checked]="graphStyle.value===style" (click)="graphStyle.next(style)" (keydown.enter)="graphStyle.next(style)">
-            {{style | titlecase}}
-          </label>
-        }
-      </div>
-    </div>
+    <div class="my-3">
+        <fieldset class="field">
+            <legend class="form-label fs-6">Show as:</legend>
+            @for (style of graphStyles; track style) {
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"
+                        name="graph-style"
+                        id="input-graph-style-{{style}}"
+                        [value]="style"
+                        [checked]="graphStyle.value === style"
+                        (click)="graphStyle.next(style)">
+                    <label class="form-check-label"
+                        for="input-graph-style-{{style}}">
+                        {{style | titlecase}}
+                    </label>
+                </div>
+            }
+    </fieldset>
     @if (graphStyle.value==='bar') {
-      <div class="field">
+      <div class="my-4">
         <div class="control">
           <label class="form-label">Time interval:</label>
           <ia-time-interval-slider [labels]="timeIntervals" (currentIndex)="zoomTimeInterval($event)"></ia-time-interval-slider>

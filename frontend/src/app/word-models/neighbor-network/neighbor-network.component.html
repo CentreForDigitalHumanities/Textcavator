@@ -1,8 +1,8 @@
 <div class="my-3">
-    <div #chart id="chart" [class.is-hidden]="asTable" [attr.aria-hidden]="asTable"></div>
+    <div #chart id="chart" [hidden]="asTable"></div>
 
     <input iaThemeIndicator >
 
     <ia-freqtable [headers]="tableHeaders" [data]="data?.table"
-        [class.is-hidden]="!asTable" [attr.aria-hidden]="!asTable" />
+        [hidden]="!asTable" />
 </div>
