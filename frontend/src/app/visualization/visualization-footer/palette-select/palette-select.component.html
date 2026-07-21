@@ -7,7 +7,7 @@
     </span>
     <div iaDropdownMenu>
       @for (palette of palettes; track palette) {
-        <a
+        <button
           iaDropdownItem [value]="palette">
           <span role="img" aria-label="colour swatches">
             @for (color of palette; track color) {
@@ -16,7 +16,7 @@
               </span>
             }
           </span>
-        </a>
+        </button>
       }
     </div>
   </ia-dropdown>

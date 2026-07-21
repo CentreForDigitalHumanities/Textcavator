@@ -6,28 +6,23 @@
           <label class="form-label" id="label-visualization-type">
             What do you want to visualise?
           </label>
-          <div class="control">
             <ia-dropdown [value]="selector.activeOption$ | async"
               labelledBy="label-visualization-type">
               <span iaDropdownLabel>{{(selector.activeOption$ | async).label}}</span>
               <div iaDropdownMenu>
                 @for (option of selector.options; track option) {
-                  <a
-                    iaDropdownItem [value]="option"
-                    [disabled]="option.disabled$ | async"
-                    (onSelect)="setVisualizationType($event)">
-                    {{option.label}}
-                    @if (option.disabled$ | async) {
-                      <span
-                         iaBalloon="this visualisation requires a search term">
-                        <fa-icon [icon]="actionIcons.help"></fa-icon>
-                      </span>
-                    }
-                  </a>
+                    <button
+                        iaDropdownItem [value]="option"
+                        [disabled]="option.disabled$ | async"
+                        (onSelect)="setVisualizationType($event)">
+                        {{option.label}}
+                        @if (option.disabled$ | async) {
+                            <small><br> <i>Requires a search term</i></small>
+                        }
+                    </button>
                 }
               </div>
             </ia-dropdown>
-          </div>
         </div>
       </div>
       @if ((selector.activeOption$ | async).fields; as fields) {
@@ -53,45 +48,35 @@
                 }
               </label>
             }
-            <div class="control">
-              @if (fields.length > 1) {
-                <ia-dropdown
-                  labelledBy="label-visualized-field"
-                  [value]="(selector.state$ | async).field">
-                  <span iaDropdownLabel>{{(selector.state$ | async).field?.displayName}}</span>
-                  <div iaDropdownMenu>
+            <ia-dropdown
+                labelledBy="label-visualized-field"
+                [value]="(selector.state$ | async).field">
+                    <span iaDropdownLabel>{{(selector.state$ | async).field?.displayName}}</span>
+                    <div iaDropdownMenu>
                     @for (field of fields; track field) {
-                      <a
-                        iaDropdownItem [value]="field"
-                        (onSelect)="setVisualizedField($event)">
-                        {{field.displayName}}
-                      </a>
+                        <button
+                            iaDropdownItem [value]="field"
+                            (onSelect)="setVisualizedField($event)">
+                            {{field.displayName}}
+                        </button>
                     }
-                  </div>
-                </ia-dropdown>
-              }
-              @if (fields.length === 1) {
-                <input class="form-control is-static" type="text" [value]="fields[0].displayName">
-              }
-            </div>
+                </div>
+            </ia-dropdown>
+
           </div>
         </div>
       }
-      <div class="col-md is-narrow">
-        <div class="input-group mb-3">
+      <div class="col-md-auto">
+        <div class="input-group">
           <!-- Buttons for switching between table and graphical representation -->
-          <div class="control">
-            <button class="btn btn-body" iaToggleButton [active]="!freqtable"
+            <button class="btn" iaToggleButton [active]="!freqtable"
               (click)="freqtable = false" aria-label="view chart">
               <fa-icon [icon]="visualizationIcons.chart" aria-hidden="true" />
             </button>
-          </div>
-          <div class="control">
-            <button class="btn btn-body" iaToggleButton [active]="freqtable"
+            <button class="btn" iaToggleButton [active]="freqtable"
               (click)="freqtable = true" aria-label="view table">
               <fa-icon [icon]="visualizationIcons.table" aria-hidden="true"/>
             </button>
-          </div>
         </div>
       </div>
     </div>
