@@ -1,36 +1,22 @@
-<div class="level">
-  <div class="level-left">
+<div class="hstack">
     @if (manualPage) {
-      <div class="level-item">
-        <button class="btn btn-body" (click)="showHelp()">
-          <span >
-            <fa-icon [icon]="actionIcons.helpAlt" aria-label="help"></fa-icon>
-          </span>
+        <button class="btn btn-body" aria-label="help" (click)="showHelp()">
+            <fa-icon [icon]="actionIcons.helpAlt" aria-hidden="true"></fa-icon>
         </button>
-      </div>
     }
-  </div>
-  @if (!tableView) {
-    <div class="level-right">
-      @if (!freqtable) {
-        <div class="level-item">
-          <ia-palette-select (paletteChanged)="palette.next($event)"></ia-palette-select>
+    @if (!tableView) {
+        <div class="ms-auto hstack">
+            @if (!tableView) {
+                <ia-palette-select (paletteChanged)="palette.next($event)"></ia-palette-select>
+            }
+            @if (!tableView && chartElementID) {
+                @if (!tableView) {
+                    <button class="btn btn-body ms-2" (click)="onRequestImage()">
+                        <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
+                        Download visualization
+                    </button>
+                }
+            }
         </div>
-      }
-      @if (!tableView && chartElementID) {
-        <div class="level-item">
-          @if (!freqtable) {
-            <button class="btn download-button" (click)="onRequestImage()">
-              <span >
-                <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
-              </span>
-              <span>Download visualization</span>
-            </button>
-          }
-        </div>
-      }
-    </div>
-  }
+    }
 </div>
-
-

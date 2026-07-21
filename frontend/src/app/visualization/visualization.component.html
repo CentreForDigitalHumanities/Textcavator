@@ -112,14 +112,12 @@
             <ia-timeline [corpus]="corpus" [queryModel]="queryModel"
               [visualizedField]="visualizedField" [frequencyMeasure]="'documents'"
               [asTable]="freqtable" [palette]="palette"
-              (error)="setErrorMessage($event)"
-            (totalTokenCountAvailable)="showTokenCountOption = $event"></ia-timeline>
+              (error)="setErrorMessage($event)"></ia-timeline>
           }
           @if (visualizedField.displayType !== 'date') {
             <ia-histogram [corpus]="corpus" [queryModel]="queryModel" [visualizedField]="visualizedField"
               [asTable]="freqtable" [palette]="palette"
-              (error)="setErrorMessage($event)"
-            (totalTokenCountAvailable)="showTokenCountOption = $event"></ia-histogram>
+              (error)="setErrorMessage($event)"></ia-histogram>
           }
         }
         @case ('termfrequency') {
@@ -127,15 +125,13 @@
             <ia-timeline [corpus]="corpus" [queryModel]="queryModel"
               [visualizedField]="visualizedField" [frequencyMeasure]="'tokens'"
               [asTable]="freqtable" [palette]="palette"
-              (error)="setErrorMessage($event)"
-            (totalTokenCountAvailable)="showTokenCountOption = $event"></ia-timeline>
+              (error)="setErrorMessage($event)"></ia-timeline>
           }
           @if (visualizedField.displayType !== 'date') {
             <ia-histogram [corpus]="corpus" [queryModel]="queryModel" [visualizedField]="visualizedField"
               [frequencyMeasure]="'tokens'"
               [asTable]="freqtable" [palette]="palette"
-              (error)="setErrorMessage($event)"
-            (totalTokenCountAvailable)="showTokenCountOption = $event"></ia-histogram>
+              (error)="setErrorMessage($event)"></ia-histogram>
           }
         }
         @case ( 'wordcloud' ) {
