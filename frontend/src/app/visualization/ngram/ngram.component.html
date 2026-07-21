@@ -8,8 +8,7 @@
           id="label-mode">
           Mode
         </label>
-        <div class="control">
-          <ia-dropdown [value]="currentModeOption" labelledBy="label-mode"
+        <ia-dropdown [value]="currentModeOption" labelledBy="label-mode"
             (onChange)="onParameterChange('mode', $event.value)">
             <span iaDropdownLabel>{{currentModeOption?.label}}</span>
             <div iaDropdownMenu>
@@ -19,8 +18,7 @@
                 </button>
               }
             </div>
-          </ia-dropdown>
-        </div>
+        </ia-dropdown>
       </div>
     </div>
     <div class="col-md is-one-third">
@@ -34,8 +32,7 @@
             Maximum distance
           }
         </label>
-        <div class="control">
-          <ia-dropdown [value]="currentSizeOption" labelledBy="label-size"
+        <ia-dropdown [value]="currentSizeOption" labelledBy="label-size"
             (onChange)="onParameterChange('size', $event.value)">
             <span iaDropdownLabel>{{currentSizeOption?.label}}</span>
             <div iaDropdownMenu>
@@ -45,8 +42,7 @@
                 </button>
               }
             </div>
-          </ia-dropdown>
-        </div>
+        </ia-dropdown>
       </div>
     </div>
     @if (currentSettings.mode === 'ngrams') {
@@ -57,8 +53,7 @@
             id="label-positions">
             Position of search term
           </label>
-          <div class="control">
-            <ia-dropdown [value]="currentPositionsOption" labelledBy="label-positions"
+        <ia-dropdown [value]="currentPositionsOption" labelledBy="label-positions"
               (onChange)="onParameterChange('positions', $event.value)">
               <span iaDropdownLabel>{{currentPositionsOption?.label}}</span>
               <div iaDropdownMenu>
@@ -69,7 +64,6 @@
                 }
               </div>
             </ia-dropdown>
-          </div>
         </div>
       </div>
     }
@@ -80,7 +74,6 @@
           id="label-freq-compensation">
           Compensate for frequency
         </label>
-        <div class="control">
           <ia-dropdown [value]="currentFreqCompensationOption" labelledBy="label-freq-compensation"
             (onChange)="onParameterChange('freqCompensation', $event.value)">
             <span iaDropdownLabel>{{currentFreqCompensationOption?.label}}</span>
@@ -92,7 +85,6 @@
               }
             </div>
           </ia-dropdown>
-        </div>
       </div>
     </div>
     @if (analysisOptions) {
@@ -103,7 +95,6 @@
             id="label-analysis">
             Language processing
           </label>
-          <div class="control">
             <ia-dropdown [value]="currentAnalysisOption" labelledBy="label-analysis"
               (onChange)="onParameterChange('analysis', $event.value)">
               <span iaDropdownLabel>{{currentAnalysisOption?.label}}</span>
@@ -115,7 +106,6 @@
                 }
               </div>
             </ia-dropdown>
-          </div>
         </div>
       </div>
     }
@@ -126,7 +116,6 @@
           id="label-max-documents">
           Document limit
         </label>
-        <div class="control">
           <ia-dropdown [value]="currentMaxDocumentsOption" labelledBy="label-max-documents"
             (onChange)="onParameterChange('maxDocuments', $event.value)">
             <span iaDropdownLabel>{{currentMaxDocumentsOption?.label}}</span>
@@ -138,7 +127,6 @@
               }
             </div>
           </ia-dropdown>
-        </div>
       </div>
     </div>
     <div class="col-md is-one-third">
@@ -148,7 +136,6 @@
           id="label-number-of-ngrams">
           Number of n-grams
         </label>
-        <div class="control">
           <ia-dropdown [value]="currentNumberOfNgramsOption"
             labelledBy="label-number-of-ngrams"
             (onChange)="onParameterChange('numberOfNgrams', $event.value)">
@@ -161,14 +148,12 @@
               }
             </div>
           </ia-dropdown>
-        </div>
       </div>
     </div>
   </div>
   @if (allDateFields && allDateFields.length > 1) {
     <div class="col-md is-one-third">
       <div class="field">
-        <div class="control">
           <label class="form-label" iaBalloon="field to use on the x-axis"
             id="label-date-field">
             Compare frequencies by:
@@ -185,7 +170,6 @@
               }
             </div>
           </ia-dropdown>
-        </div>
       </div>
     </div>
   }

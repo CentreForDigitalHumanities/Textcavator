@@ -19,10 +19,8 @@
     </fieldset>
     @if (graphStyle.value==='bar') {
       <div class="my-4">
-        <div class="control">
           <label class="form-label">Time interval:</label>
           <ia-time-interval-slider [labels]="timeIntervals" (currentIndex)="zoomTimeInterval($event)"></ia-time-interval-slider>
-        </div>
       </div>
     }
   </div>

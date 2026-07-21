@@ -83,20 +83,16 @@
           <form>
             <div class="field">
               <label class="form-label">Name</label>
-              <div class="control">
                 <input class="form-control" type="text" [(ngModel)]="editedTag.name" name="name">
                 @if (!tagValid()) {
                   <p class="form-text is-danger">
                     This field is required
                   </p>
                 }
-              </div>
             </div>
             <div class="field">
-              <label class="form-label">Description</label>
-              <div class="control">
+                <label class="form-label">Description</label>
                 <input class="form-control" type="text" [(ngModel)]="editedTag.description" name="description">
-              </div>
             </div>
           </form>
         </div>

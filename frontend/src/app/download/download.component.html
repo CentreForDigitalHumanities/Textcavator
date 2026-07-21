@@ -14,14 +14,12 @@
   <form>
     <div class="mb-3">
       <label class="form-label" id="fields-select-label">Fields</label>
-      <div class="control">
         <p-multiSelect [options]="fieldOptions"
           [(ngModel)]="fieldSelection"
           placeholder="select fields"
           name="searchFields"
           ariaLabelledBy="fields-select-label">
         </p-multiSelect>
-      </div>
       <p class="form-text">
         Select which fields should be included as columns in the CSV file.
       </p>

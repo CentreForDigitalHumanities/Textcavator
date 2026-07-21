@@ -15,13 +15,11 @@
         @let titleControl = metaForm.controls.title;
         @let titleInvalid = titleControl.touched && titleControl.invalid;
         <label class="form-label" for="title" id="label-title">Title*</label>
-        <div class="control">
         <input class="form-control" type="text" name="title"
             [formControl]="titleControl" [class.is-danger]="titleInvalid"
             aria-required="true" aria-labelledby="label-title"
             aria-describedby="helptext-title feedback-title"
             />
-        </div>
         <p id="helptext-title" class="form-text">Enter a short, clear title for your corpus.</p>
         <p id="feedback-title" class="form-text is-pulled-right has-text-danger">
         @if (titleInvalid) {

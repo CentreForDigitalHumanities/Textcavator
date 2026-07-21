@@ -31,15 +31,11 @@
   <div class="level-left">
     @if (wideFormatColumn !== undefined) {
       <div class="level-item" iaBalloon="change the format for the table">
-        <div class="input-group mb-3">
-          <div class="control">
+        <div class="input-group">
             <button class="btn btn-body" iaToggleButton [active]="format === 'long'"
             (click)="setFormat('long')">long format</button>
-          </div>
-          <div class="control">
             <button class="btn btn-body" iaToggleButton [active]="format === 'wide'"
             (click)="setFormat('wide')">wide format</button>
-          </div>
         </div>
       </div>
     }

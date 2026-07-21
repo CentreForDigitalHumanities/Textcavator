@@ -33,34 +33,26 @@
     }
     <div class="col-md" role="presentation"></div>
     <div class="col-md-auto">
-        <div class="control">
-            <button class="btn btn-primary" (click)="page.focus(document)">
-                <span aria-hidden="true"><fa-icon [icon]="actionIcons.view"></fa-icon></span>
-                <span>
-                    View
-                </span>
-            </button>
-        </div>
+        <button class="btn btn-primary" (click)="page.focus(document)">
+            <fa-icon [icon]="actionIcons.view" aria-hidden="true"></fa-icon>
+            View
+        </button>
     </div>
     @if (document.fieldValues.image_path) {
         <div class="col-md-auto">
-            <div class="control">
-                <button class="btn btn-body" (click)="goToScan(page, document, $event)" aria-label="view scan">
-                    <span aria-hidden="true"><fa-icon [icon]="documentIcons.scanAlt"></fa-icon></span>
-                    <span>View scan</span>
-                </button>
-            </div>
+            <button class="btn btn-body" (click)="goToScan(page, document, $event)" aria-label="view scan">
+                <span aria-hidden="true"><fa-icon [icon]="documentIcons.scanAlt"></fa-icon></span>
+                <span>View scan</span>
+            </button>
         </div>
     }
     <div class="col-md-auto">
-        <div class="control">
-            <a class="btn btn-body" [routerLink]="documentUrl">
-                <span aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
-                <span>
-                    Link
-                </span>
-            </a>
-        </div>
+        <a class="btn btn-body" [routerLink]="documentUrl">
+            <span aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
+            <span>
+                Link
+            </span>
+        </a>
     </div>
 </div>
 }

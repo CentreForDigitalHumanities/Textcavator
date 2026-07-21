@@ -10,10 +10,8 @@
             @let fieldGroup = fieldsForm.controls.fields.controls[i];
             <div class="mb-3">
                 <label class="form-label" for="column_name">Column name</label>
-                <div class="control">
-                    <input class="form-control" type="text" name="column_name"
-                        [value]="field.get('extract').get('column').value" disabled>
-                </div>
+                <input class="form-control" type="text" name="column_name"
+                    [value]="field.get('extract').get('column').value" disabled>
                 <p class="form-text">The column name in your CSV (sample) file. This cannot be changed.</p>
             </div>
             <div class="mb-3">
@@ -51,19 +49,17 @@
                 <label class="form-label" for="input-type">
                     Type*
                 </label>
-                <div class="control">
-                    <ia-dropdown formControlName="type" id="input-type">
-                        <span iaDropdownLabel>{{getFieldProperty(field, 'label')}}</span>
-                        <div iaDropdownMenu>
-                            @for (option of fieldTypeOptions; track option) {
-                            <button iaDropdownItem [value]="option.value">
-                                {{option.label}}
-                                <span class="form-text">{{option.helpText}}</span>
-                            </button>
-                            }
-                        </div>
-                    </ia-dropdown>
-                </div>
+                <ia-dropdown formControlName="type" id="input-type">
+                    <span iaDropdownLabel>{{getFieldProperty(field, 'label')}}</span>
+                    <div iaDropdownMenu>
+                        @for (option of fieldTypeOptions; track option) {
+                        <button iaDropdownItem [value]="option.value">
+                            {{option.label}}
+                            <span class="form-text">{{option.helpText}}</span>
+                        </button>
+                        }
+                    </div>
+                </ia-dropdown>
                 <p class="form-text content">
                     What type of data is this? See the
                     <a role="button" tabindex="0" (click)="showFieldDocumentation()"
@@ -76,30 +72,23 @@
                 <legend class="form-label">Options</legend>
                 <ng-container formGroupName="options">
                     @if (field.get('type').value === 'text_content' || field.get('type').value === 'text_metadata' ) {
-                    <div class="control">
                         <label class="checkbox" [class.is-disabled]="corpus.active">
                             <input type="checkbox" name="search" formControlName="search" /> Search
                             <p class="form-text">Enable text searching within this field.</p>
                         </label>
-                    </div>
                     }
                     @if (field.get('type').value !== 'text_content' && field.get('type').value !== 'url' ) {
-                    <div class="control">
                         <label class="checkbox" [class.is-disabled]="corpus.active">
                             <input type="checkbox" name="filter" formControlName="filter" /> Filter
                             <p class="form-text">Add a filter widget for this field.</p>
                         </label>
-                    </div>
                     }
-                    <div class="control">
-                        <label class="checkbox">
-                            <input type="checkbox" name="preview" formControlName="preview" /> Preview
-                            <p class="form-text">Show this field in the results overview.</p>
-                        </label>
-                    </div>
+                    <label class="checkbox">
+                        <input type="checkbox" name="preview" formControlName="preview" /> Preview
+                        <p class="form-text">Show this field in the results overview.</p>
+                    </label>
                     @if (field.get('type').value !== 'text_content' && field.get('type').value !== 'boolean' &&
                     field.get('type').value !== 'url') {
-                    <div class="control">
                         <label class="checkbox">
                             <input type="checkbox" name="sort" formControlName="sort" /> Sort
                             <p class="form-text">
@@ -115,15 +104,12 @@
                                 .
                             </p>
                         </label>
-                    </div>
                     }
                     @if (field.get('type').value !== 'url') {
-                    <div class="control">
                         <label class="checkbox">
                             <input type="checkbox" name="visualize" formControlName="visualize" /> Visualize
                             <p class="form-text">Include visualisations for this field.</p>
                         </label>
-                    </div>
                     }
                 </ng-container>
             </fieldset>

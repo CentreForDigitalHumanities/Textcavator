@@ -97,15 +97,12 @@
             the corpus to start editing again.
           </p>
         }
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="btn bn-body" (click)="toggleCorpusActive()"
+        <div class="hstack">
+            <button class="btn bn-body me-2" (click)="toggleCorpusActive()"
               [class.btn-primary]="!corpus.active"
               [iaButtonLoading]="loading$ | async">
               {{corpus.active ? 'Deactivate' : 'Activate'}} corpus
             </button>
-          </div>
-          <div class="control">
             @if (corpus.active) {
               <a class="btn btn-primary"
                 [routerLink]="['/search', corpus.definition.name]">
@@ -113,7 +110,6 @@
                 <span>Search corpus</span>
               </a>
             }
-          </div>
         </div>
       }
       @case ('indexing failed') {

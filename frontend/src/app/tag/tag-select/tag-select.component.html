@@ -1,6 +1,5 @@
 <form class="input-group">
     @if (!createMode) {
-    <div class="control">
         @if (filterTags(tags$ | async, exclude); as filteredTags) {
         <ia-dropdown (onChange)="selectedTag = $event" labelledBy="select-tag-placeholder"
             triggerClass="btn-sm">
@@ -23,7 +22,6 @@
             </div>
         </ia-dropdown>
         }
-    </div>
     }
     @if (createMode) {
         <input type="text" aria-label="new tag name"

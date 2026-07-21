@@ -23,9 +23,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <p class="control">
                         <button class="btn btn-primary" [iaButtonLoading]="isLoading">Login</button>
-                    </p>
                 </div>
                 <div class="col-sm-auto">
                     <a [routerLinkActive]="'is-active'" [routerLink]="['/reset']">
@@ -41,7 +39,7 @@
             </div>
             @if (showSolis) {
             <div>
-                <p class="control">
+                <p>
                     Or login with:
                 </p>
                 <div class="card">

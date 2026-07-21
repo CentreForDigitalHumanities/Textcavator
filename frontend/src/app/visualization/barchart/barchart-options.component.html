@@ -60,16 +60,14 @@
 
 
 
-  <div class="field">
+  <div class="my-3">
     @if (!showEdit) {
-      <div class="control">
         <button class="btn btn-body" (click)="showEdit = true">Compare with another query...</button>
-      </div>
     }
   </div>
 
   @if (showEdit) {
-    <div class="control">
+    <div class="my-3">
       <ia-term-comparison-editor />
     </div>
   }

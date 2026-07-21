@@ -7,10 +7,8 @@
           Please confirm that <a href="mailto:{{userDetails.email}}">{{userDetails.email}}</a> is an e-mail address for user {{userDetails.username}}
         </label>
       </div>
-      <div class="field is-grouped">
-        <div class="control">
+      <div class="my-3">
           <button class="btn btn-primary" [disabled]="!userDetails.username || !userDetails.email">Confirm</button>
-        </div>
       </div>
     </form>
   }
