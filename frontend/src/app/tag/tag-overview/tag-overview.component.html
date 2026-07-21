@@ -1,74 +1,72 @@
-<section class="py-5">
-  <h1 class="mb-4 block">Your tags</h1>
-  <div class="my-3">
-    <button class="btn btn-primary" aria-label="create tag" (click)="startCreate()">
-      <span >
-        <fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon>
-      </span>
-      <span>New</span>
-    </button>
-  </div>
+<section class="py-5 container">
+    <h1 class="mb-4 block">Your tags</h1>
+    <div class="my-3">
+        <button class="btn btn-primary" (click)="startCreate()">
+            <fa-icon [icon]="actionIcons.add" aria-hidden="true"></fa-icon>
+            New tag
+        </button>
+    </div>
 
-  <div class="row is-multiline">
+    <div class="row">
     @for (tag of tags$ | async; track tag) {
-      <div class="col-md is-one-third">
-        <div class="card">
-          <header class="card-header">
-            <p class="card-header-title">
-              {{tag.name}}
-            </p>
-          </header>
-          <div class="card-content">
-            <div class="content">
-              {{tag.description || "(no description)"}}
-            </div>
-            @if (tag.count !== undefined && tag.count !== 0) {
-              <div class="content">
-                <details>
-                  <summary>
-                    Tag used {{tag.count}} times across {{tag.corpus_counts?.length}} corpora.
-                  </summary>
-                  <table class="table">
-                    @for (entry of tag.corpus_counts; track entry) {
-                      <tr>
-                        <td>{{entry.corpus}}</td>
-                        <td>
-                          {{entry.count}}
-                        </td>
-                        <td>
-                          <a [routerLink]="['/search', entry.corpus]" [queryParams]="makeQueryParams(entry.corpus, tag)"
-                            aria-label="Open search results for this tag" iaBalloon="open search results for this tag">
-                            <span ><fa-icon [icon]="actionIcons.search"></fa-icon></span>
-                          </a>
-                        </td>
-                      </tr>
+        <div class="col-md-4">
+            <div class="card">
+                <header class="card-header">
+                    <h2 class="h4 mb-0">
+                        {{tag.name}}
+                    </h2>
+                </header>
+                <div class="card-body">
+                    <p>{{tag.description || "(no description)"}}</p>
+                    @if (tag.count !== undefined && tag.count !== 0) {
+                        <details>
+                            <summary>
+                                Tag used {{tag.count}} times across {{tag.corpus_counts?.length}} corpora.
+                            </summary>
+                            <table class="table">
+                                <tbody>
+                                    @for (entry of tag.corpus_counts; track entry) {
+                                    <tr>
+                                        <td>{{entry.corpus}}</td>
+                                        <td>{{entry.count}}</td>
+                                        <td>
+                                            <a [routerLink]="['/search', entry.corpus]"
+                                                [queryParams]="makeQueryParams(entry.corpus, tag)"
+                                                aria-label="Open search results for this tag"
+                                                ngbTooltip="Open search results for this tag">
+                                            <fa-icon [icon]="actionIcons.search" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </details>
+                    } @else {
+                        <p>
+                            <strong>Tag not used in any corpora.</strong>
+                        </p>
                     }
-                  </table>
-                </details>
-              </div>
-            } @else {
-              <div class="content">
-                <strong>Tag not used in any corpora.</strong>
-              </div>
-            }
-          </div>
-          <footer class="card-footer">
-            <a class="card-footer-item" (click)="startEdit(tag)" (keydown.enter)="startEdit(tag)" role="button" tabindex="0"
-            aria-label="edit tag">Edit</a>
-            <a class="card-footer-item"
-              (click)="confirmDelete.open(tag)"
-              (keydown.enter)="confirmDelete.open(tag)"
-              (keydown.space)="confirmDelete.open(tag)"
-              role="button" tabindex="0">
-              Delete
-            </a>
-          </footer>
-        </div>
+                    <div class="row g-2 mt-3">
+                        <div class="col-auto">
+                            <button class="btn btn-primary" (click)="startEdit(tag)" (keydown.enter)="startEdit(tag)" role="button" tabindex="0"
+                            aria-label="edit tag">Edit</button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-body"
+                                (click)="confirmDelete.open(tag)"
+                                role="button" tabindex="0">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
       </div>
     }
-
-  </div>
+    </div>
 </section>
+
 
 @if (editedTag) {
   <div class="modal" [class.is-active]="!!modalType">
@@ -114,10 +112,10 @@
   }
 
 
-  <ia-confirm-modal #confirmDelete actionText="Delete tag" [handleAsync]="handleDelete"
-    [icon]="actionIcons.delete" actionButtonClass="is-danger">
+<ia-confirm-modal #confirmDelete actionText="Delete tag" [handleAsync]="handleDelete"
+    [icon]="actionIcons.delete" actionButtonClass="btn-danger">
     <p>
       Are you sure you want to delete your tag
       <strong>{{confirmDelete.data?.name}}</strong>?
     </p>
-  </ia-confirm-modal>
+</ia-confirm-modal>
