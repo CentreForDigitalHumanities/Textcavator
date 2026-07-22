@@ -1,48 +1,29 @@
-<h2 class="mb-4 is-5">Image</h2>
+<h2 class="mb-4">Image</h2>
 
 <p class="form-label">
-  Current image @if (!corpus.hasImage) {
-  <span>(default)</span>
-  }:
+    Current image @if (!corpus.hasImage) {<span>(default)</span>}:
 </p>
 
 @if (imageURL$ | async; as url) {
-  <div class="my-3 image-container">
-    <div class="image is-5by4">
-      <img  [src]="url" />
+    <div class="corpus-image-container mb-3" style="max-width: 400px;">
+        <img [src]="url" class="rounded" />
     </div>
-  </div>
 }
 
-<div class="field is-grouped">
-  <div class="control">
-    <div class="file has-name">
-      <label class="file-label">
-        <input class="file-input" type="file" name="definition-upload"
-          accept="image/png,image/jpeg" (input)="onImageUpload($event)" />
-        <span class="file-cta">
-          <span class="file-icon" aria-hidden="true">
-            <fa-icon [icon]="actionIcons.upload"></fa-icon>
-          </span>
-          <span class="file-label">Upload image file...</span>
-        </span>
-        @if (file$ | async; as file) {
-          <span class="file-name">
-            {{file.name}}
-          </span>
-        }
-      </label>
+<div class="row g-2">
+    <div class="col-md-auto">
+        <label class="file-label" for="input-corpus-image">
+        <input class="form-control" type="file" name="image-upload"
+            id="input-corpus-image"
+            accept="image/png,image/jpeg" (input)="onImageUpload($event)" />
+        </label>
     </div>
-  </div>
-  <div class="control">
-    <button class="btn btn-body" type="button" (click)="deleteImage()">
-      <span >
-        <fa-icon [icon]="actionIcons.remove" />
-      </span>
-      <span>Remove image</span>
-    </button>
-  </div>
+    <div class="col-md-auto">
+        <button class="btn btn-body" type="button" (click)="deleteImage()">
+            <fa-icon [icon]="actionIcons.remove" />
+            Remove image
+        </button>
+    </div>
 </div>
-
 
 <ia-form-feedback [showSuccess]="showSuccess" [showError]="showError" />
