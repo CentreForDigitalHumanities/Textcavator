@@ -27,7 +27,8 @@
         @for (corpus of corpora; track corpus) {
           <section class="card my-3">
             <div class="card-body">
-                <h2 class="lead is-4">{{corpus.definition.meta.title}}</h2>
+                <h2 class="card-title h4">{{corpus.definition.meta.title}}</h2>
+                <hr>
                 @if (corpus.definition.meta.description?.length) {
                   <p class="my-3">
                     {{corpus.definition.meta.description}}
