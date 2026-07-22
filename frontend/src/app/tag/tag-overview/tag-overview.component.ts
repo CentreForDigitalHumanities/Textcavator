@@ -9,6 +9,7 @@ import { findByName } from '@utils/utils';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'ia-tag-overview',
@@ -17,7 +18,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
     standalone: false
 })
 export class TagOverviewComponent implements OnInit {
-    @ViewChild('editForm') editForm: TemplateRef<HTMLElement>;
+    @ViewChild('editFormModal') editFormTemplate: TemplateRef<HTMLElement>;
 
     tags$ = this.tagService.tags$;
 
@@ -28,7 +29,13 @@ export class TagOverviewComponent implements OnInit {
 
     modalType: 'edit' | 'create';
 
-    editedTag: Partial<Tag>;
+    editForm = new FormGroup({
+        name: new FormControl<string>('', {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
+        description: new FormControl<string>(''),
+    });
 
     handleDelete = this.tagService.deleteTag.bind(this.tagService);
 
@@ -48,37 +55,35 @@ export class TagOverviewComponent implements OnInit {
     }
 
     startEdit(tag: Tag) {
-        this.editedTag = tag;
+        this.editForm.setValue({name: tag.name, description: tag.description});
         this.modalType = 'edit';
-        this.modal = this.modalService.open(this.editForm);
+        this.modal = this.modalService.open(this.editFormTemplate);
     }
 
     startCreate() {
-        this.editedTag = { name: undefined, description: undefined };
+        this.editForm.reset();
         this.modalType = 'create';
-        this.modal = this.modalService.open(this.editForm);
+        this.modal = this.modalService.open(this.editFormTemplate);
     }
 
     cancelEdit() {
         this.modal?.close();
-        this.editedTag = undefined;
+        this.editForm.reset();
         this.modalType = undefined;
     }
 
     finishEdit() {
         this.tagService
-            .updateTag(this.editedTag as Tag)
+            .updateTag(this.editForm.getRawValue() as Tag)
             .subscribe(() => this.cancelEdit());
     }
 
     finishCreate() {
         this.tagService
-            .makeTag(this.editedTag.name, this.editedTag.description)
-            .subscribe(() => this.cancelEdit());
-    }
-
-    tagValid() {
-        return !isUndefined(this.editedTag?.name);
+            .makeTag(
+                this.editForm.controls.name.value,
+                this.editForm.controls.description.value,
+            ).subscribe(() => this.cancelEdit());
     }
 
     makeQueryParams(corpusName, tag) {

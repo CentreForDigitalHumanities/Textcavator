@@ -49,8 +49,9 @@
                     }
                     <div class="row g-2 mt-3">
                         <div class="col-auto">
-                            <button class="btn btn-primary" (click)="startEdit(tag)" (keydown.enter)="startEdit(tag)" role="button" tabindex="0"
-                            aria-label="edit tag">Edit</button>
+                            <button class="btn btn-primary"
+                                (click)="startEdit(tag)"
+                                aria-label="edit tag">Edit</button>
                         </div>
                         <div class="col-auto">
                             <button class="btn btn-body"
@@ -67,7 +68,7 @@
     </div>
 </section>
 
-<ng-template #editForm>
+<ng-template #editFormModal>
     <header class="modal-header">
         <h2 class="modal-title">
             {{modalType==='edit' ? 'Edit tag' : 'Create tag'}}
@@ -76,33 +77,33 @@
             (click)="cancelEdit()"></button>
     </header>
     <section class="modal-body">
-        @if (editedTag) {
-            <form>
-                <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input class="form-control" type="text"
-                        [(ngModel)]="editedTag.name" name="name"
-                        [class.is-invalid]="!tagValid()">
-                    <p class="invalid-feedback">
-                        This field is required
-                    </p>
-                </div>
-                <label class="form-label">Description</label>
+        <form [formGroup]="editForm">
+            <div class="mb-3">
+                @let nameControl = editForm.controls.name;
+                <label class="form-label">Name</label>
                 <input class="form-control" type="text"
-                    [(ngModel)]="editedTag.description" name="description">
-            </form>
-        }
+                    [formControl]="nameControl" name="name"
+                    [class.is-invalid]="nameControl.touched && nameControl.invalid">
+                <p class="invalid-feedback">
+                    This field is required
+                </p>
+            </div>
+            <label class="form-label">Description</label>
+            <input class="form-control" type="text"
+                [formControl]="editForm.controls.description" name="description">
+        </form>
     </section>
     <footer class="modal-footer">
         <div class="hstack">
             <button class="btn btn-primary" (click)="modalType === 'edit' ?  finishEdit() : finishCreate()"
-                [disabled]="!tagValid()">
-                <span ><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
-                <span>Save</span>
+                [disabled]="!editForm.valid">
+                <fa-icon [icon]="formIcons.confirm" class="me-1" />
+                Save
             </button>
             <button class="btn btn-body ms-2" (click)="cancelEdit()">
-                <span ><fa-icon [icon]="formIcons.reset"></fa-icon></span>
-                <span>Cancel</span></button>
+                <fa-icon [icon]="formIcons.reset" class="me-1" />
+                Cancel
+            </button>
         </div>
     </footer>
 </ng-template>
