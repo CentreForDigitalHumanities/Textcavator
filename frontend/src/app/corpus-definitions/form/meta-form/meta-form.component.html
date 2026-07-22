@@ -16,17 +16,16 @@
         @let titleInvalid = titleControl.touched && titleControl.invalid;
         <label class="form-label" for="title" id="label-title">Title*</label>
         <input class="form-control" type="text" name="title"
-            [formControl]="titleControl" [class.is-danger]="titleInvalid"
+            [formControl]="titleControl" [class.is-invalid]="titleInvalid"
+            [attr.aria-invalid]="titleInvalid"
             aria-required="true" aria-labelledby="label-title"
             aria-describedby="helptext-title feedback-title"
             />
         <p id="helptext-title" class="form-text">Enter a short, clear title for your corpus.</p>
-        <p id="feedback-title" class="form-text is-pulled-right has-text-danger">
-        @if (titleInvalid) {
+        <p id="feedback-title" class="invalid-feedback">
             @if (titleControl.hasError('required')) {
             This field is required.
             }
-        }
         </p>
     </div>
 
@@ -38,19 +37,17 @@
         <textarea class="form-control" name="description" [formControl]="descriptionControl"
             rows="2" aria-required="true" aria-labelledby="label-description"
             aria-describedby="helptext-description feedback-description"
-            [class.is-danger]="descriptionInvalid">
+            [class.is-invalid]="descriptionInvalid" [attr.aria-invalid]="descriptionInvalid">
         </textarea>
         </div>
         <p id="helptext-description" class="form-text">
             Provide a short description of your corpus. You can add more elaborate
             documentation below.
         </p>
-        <p id="feedback-description" class="form-text is-pulled-right has-text-danger">
-        @if (descriptionInvalid) {
+        <p id="feedback-description" class="invalid-feedback" aria-live="polite">
             @if (descriptionControl.hasError('required')) {
             This field is required.
             }
-        }
         </p>
     </div>
 
@@ -69,14 +66,13 @@
         @let minYearInvalid = minYearControl.touched && minYearControl.invalid;
         <label id="label-minyear" class="form-label" for="min">Start year*</label>
         <input class="form-control" type="number" step="10" name="min"
-            [formControl]="minYearControl" [class.is-danger]="minYearInvalid"
+            [formControl]="minYearControl" [class.is-invalid]="minYearInvalid"
+            [attr.aria-invalid]="minYearInvalid"
             aria-required="true" aria-labelledby="label-minyear"
             aria-describedby="feedback-minyear" />
-        <p id="feedback-minyear" class="form-text is-pulled-right has-text-danger">
-            @if (minYearInvalid) {
+        <p id="feedback-minyear" class="invalid-feedback">
             @if (minYearControl.hasError('required')) {
                 This field is required.
-            }
             }
         </p>
         </div>
@@ -85,10 +81,11 @@
         @let maxYearInvalid = maxYearControl.touched && maxYearControl.invalid;
         <label id="label-maxyear" class="form-label" for="max">End year*</label>
         <input class="form-control" type="number" step="10" name="max"
-            [formControl]="maxYearControl" [class.is-danger]="maxYearInvalid"
+            [formControl]="maxYearControl" [class.is-invalid]="maxYearInvalid"
+            [attr.aria-invalid]="maxYearInvalid"
             aria-required="true" aria-labelledby="label-maxyear"
             aria-describedby="feedback-maxyear" />
-        <p id="feedback-maxyear" class="form-text is-pulled-right has-text-danger">
+        <p id="feedback-maxyear" class="invalid-feedback">
             @if (maxYearInvalid) {
             @if (maxYearControl.hasError('required')) {
                 This field is required.
@@ -104,10 +101,10 @@
         @let languagesControl = metaForm.controls.languages;
         @let languagesInvalid = languagesControl.touched && languagesControl.invalid;
         <label id="label-languages" class="form-label" for="languages">Languages*</label>
-        <div class="control">
         <p-autoComplete
             [formControl]="languagesControl"
             [class.ng-invalid]="languagesInvalid"
+            [class.is-invalid]="languagesInvalid"
             [class.ng-pristine]="!languagesControl.touched"
             [class.ng-dirty]="languagesControl.touched"
             fluid
@@ -117,16 +114,13 @@
             optionLabel="displayName"
             [minLength]="3"
             ariaLabelledBy="label-languages"
-            />
-        </div>
-        <p class="form-text is-pulled-right has-text-danger">
-        @if (languagesInvalid) {
-            @if (languagesControl.hasError('required')) {
-            This field is required.
-            }
-        }
-        </p>
+        />
         <p class="form-text">All or the most important languages occuring in your corpus</p>
+        <p class="invalid-feedback">
+            @if (languagesControl.hasError('required')) {
+                This field is required.
+            }
+        </p>
     </div>
 
     <div class="my-3"></div>
