@@ -20,6 +20,11 @@ $font-family-sans-serif: fonts.$tc_font_sans_serif;
 $display-font-family: fonts.$tc_font_brand;
 $display-font-weight: normal;
 
+$form-label-font-weight: bold;
+
+$pagination-active-color: white;
+$nav-pills-link-active-color: white;
+
 
 // 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
 @import "../node_modules/bootstrap/scss/variables";
@@ -27,20 +32,6 @@ $display-font-weight: normal;
 
 
 // 4. Include any default map overrides here
-
-$_on_primary_color: color-contrast($primary, $color-contrast-dark, $color-contrast-light, 4.5);
-
-$pagination-active-color: $_on_primary_color;
-$nav-pills-link-active-color: $_on_primary_color;
-
-$navbar-light-color: color-contrast($primary, $primary-text-emphasis, $primary-text-emphasis-dark, 2);
-$navbar-light-hover-color: $_on_primary_color;
-$navbar-light-active-color: $_on_primary_color;
-$navbar-light-brand-color: $_on_primary_color;
-$navbar-light-brand-hover-color: $_on_primary_color;
-$navbar-light-icon-color: $_on_primary_color;
-$navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
-$navbar-light-toggler-border-color: $_on_primary_color;
 
 
 // 5. Include remainder of required parts
