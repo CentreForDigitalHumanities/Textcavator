@@ -55,7 +55,7 @@ import { BehaviorSubject, lastValueFrom, of, Subject, timer } from 'rxjs';
 export class ConfirmModalComponent implements OnDestroy {
     @Input({required: true}) actionText: string;
     @Input() icon: any;
-    @Input() actionButtonClass: string = 'primary';
+    @Input() actionButtonClass: string = 'btn-primary';
     @Input() disableCloseButton: boolean = false;
     @Output() accept = new Subject<any>();
     @Output() reject = new Subject<void>();

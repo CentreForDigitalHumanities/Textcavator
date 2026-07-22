@@ -219,7 +219,6 @@ a, button, .form-control, .form-select {
 
 // vega
 
-// TODO: use bootstrap classes
 .vega-bindings {
     @extend .row;
 
@@ -251,7 +250,12 @@ a, button, .form-control, .form-select {
     font-family: inherit;
     font-size: inherit;
     border: 1px solid var(--bs-border-color);
+
+    .ql-editor.ql-blank::before {
+        color: var(--bs-secondary-color)
+    }
 }
+
 
 .ql-snow.ql-toolbar {
     border: 1px solid var(--bs-border-color);
