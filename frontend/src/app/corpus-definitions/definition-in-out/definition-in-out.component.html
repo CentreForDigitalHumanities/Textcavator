@@ -1,82 +1,72 @@
 <section class="py-5">
-  <div class="container">
-    <nav aria-label="secondary navigation">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a [routerLink]="['/']">{{appName}}</a></li>
-        <li class="breadcrumb-item"><a [routerLink]="['../..']">Custom corpora</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a>{{corpus.definition?.meta.title ||
-        '...'}}: import/export</a></li>
-      </ol>
-    </nav>
+    <div class="container">
+        <nav aria-label="secondary navigation">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a [routerLink]="['/']">{{appName}}</a></li>
+                <li class="breadcrumb-item"><a [routerLink]="['../..']">Custom corpora</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>{{corpus.definition?.meta.title ||
+                '...'}}: import/export</a></li>
+            </ol>
+        </nav>
 
-    <h1 class="mb-4">Import/export corpus "{{corpus.definition?.meta.title || '...'}}"</h1>
+        <h1 class="mb-4">Import/export corpus "{{corpus.definition?.meta.title || '...'}}"</h1>
 
-    <p class="my-3">
-      You can download or upload a file with your corpus configuration.
-      You can use this to create a copy or backup of your corpus, or restore
-      your corpus from a backup.
-      For more information about these files, see the
-      <a [routerLink]="['/manual', 'importing-and-exporting-corpora']">manual</a>.
-    </p>
-
-    <h2 class="mb-4 is-4">Download</h2>
-
-    <div class="my-3">
-      <button class="btn btn-body" (click)="downloadJSON()">
-        <span  aria-hidden="true">
-          <fa-icon [icon]="actionIcons.download"></fa-icon>
-        </span>
-        <span>Download JSON</span>
-      </button>
-    </div>
-
-    <h2 class="mb-4 is-4">Upload</h2>
-
-    @if (corpus.active) {
-      <div class="message">
-        <p class="message-body">
-          Uploading a new configuration is disabled while this corpus is active.
-          You can deactive the corpus in the editing form.
+        <p class="my-3">
+            You can download or upload a file with your corpus configuration.
+            You can use this to create a copy or backup of your corpus, or restore
+            your corpus from a backup.
+            For more information about these files, see the
+            <a [routerLink]="['/manual', 'importing-and-exporting-corpora']">manual</a>.
         </p>
-      </div>
-    } @else {
-      <form>
-        <div class="my-3">
-          <ia-definition-json-upload [reset]="reset$" (upload)="onJSONUpload($event)">
-          </ia-definition-json-upload>
-        </div>
+
+        <h2 class="my-4 is-4">Download</h2>
 
         <div class="my-3">
-          <button class="btn btn-primary" [iaButtonLoading]="corpus.loading$ | async" type="submit"
-            (click)="submit()">
-            <span  aria-hidden="true">
-              <fa-icon [icon]="formIcons.confirm"></fa-icon>
-            </span>
-            <span>
-              Save changes
-            </span>
-          </button>
-          &nbsp;
-          <button class="btn btn-body" type="reset" (click)="reset()">
-            <span  aria-hidden="true">
-              <fa-icon [icon]="formIcons.reset"></fa-icon>
-            </span>
-            <span>
-              Cancel changes
-            </span>
-          </button>
+            <button class="btn btn-body" (click)="downloadJSON()">
+                <fa-icon [icon]="actionIcons.download" aria-hidden="true" />
+                Download JSON
+            </button>
         </div>
 
-        @if (error) {
-          <div class="message is-danger">
-            <div class="message-body">
-              Could not save corpus. Make sure that you upload a valid JSON
-              file. If this problem persists, please contact an administrator.
+        <h2 class="my-4 is-4">Upload</h2>
+
+        @if (corpus.active) {
+            <div class="alert alert-secondary">
+                <p class="mb-0">
+                    Uploading a new configuration is disabled while this corpus is active.
+                    You can deactive the corpus in the editing form.
+                </p>
             </div>
-          </div>
-        }
-      </form>
-    }
+        } @else {
+            <form>
+                <div class="my-3">
+                    <ia-definition-json-upload [reset]="reset$" (upload)="onJSONUpload($event)">
+                    </ia-definition-json-upload>
+                </div>
 
-  </div>
+                <div class="my-3">
+                    <button class="btn btn-primary" [iaButtonLoading]="corpus.loading$ | async"
+                        type="submit"
+                        (click)="submit()">
+                        <fa-icon [icon]="formIcons.confirm" aria-hidden="true" />
+                        Save changes
+                    </button>
+                    &nbsp;
+                    <button class="btn btn-body" type="reset" (click)="reset()">
+                        <fa-icon [icon]="formIcons.reset" aria-hidden="true" />
+                        Cancel changes
+                    </button>
+                </div>
+
+                @if (error) {
+                    <div class="alert alert-danger">
+                        <p class="mb-0">
+                            Could not save corpus. Make sure that you upload a valid JSON
+                            file. If this problem persists, please contact an administrator.
+                        </p>
+                    </div>
+                }
+            </form>
+        }
+    </div>
 </section>
