@@ -67,50 +67,45 @@
     </div>
 </section>
 
-
-@if (editedTag) {
-  <div class="modal" [class.is-active]="!!modalType">
-    <div class="modal-background" (click)="cancelEdit()"></div>
-    <div class=" modal-content modal-card">
-      <header class="modal-card-head">
-        <h2 class="modal-card-title">{{modalType==='edit' ? 'Edit tag' : 'Create tag'}}</h2>
-        <button class="delete" aria-label="close" (click)="cancelEdit()"></button>
-      </header>
-      <section class="modal-card-body">
-        <div class="content">
-          <form>
-            <div class="field">
-              <label class="form-label">Name</label>
-                <input class="form-control" type="text" [(ngModel)]="editedTag.name" name="name">
-                @if (!tagValid()) {
-                  <p class="form-text is-danger">
-                    This field is required
-                  </p>
-                }
-            </div>
-            <div class="field">
+<ng-template #editForm>
+    <header class="modal-header">
+        <h2 class="modal-title">
+            {{modalType==='edit' ? 'Edit tag' : 'Create tag'}}
+        </h2>
+        <button type="button" class="btn-close" aria-label="close"
+            (click)="cancelEdit()"></button>
+    </header>
+    <section class="modal-body">
+        @if (editedTag) {
+            <form>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input class="form-control" type="text"
+                        [(ngModel)]="editedTag.name" name="name"
+                        [class.is-invalid]="!tagValid()">
+                    <p class="invalid-feedback">
+                        This field is required
+                    </p>
+                </div>
                 <label class="form-label">Description</label>
-                <input class="form-control" type="text" [(ngModel)]="editedTag.description" name="description">
-            </div>
-          </form>
+                <input class="form-control" type="text"
+                    [(ngModel)]="editedTag.description" name="description">
+            </form>
+        }
+    </section>
+    <footer class="modal-footer">
+        <div class="hstack">
+            <button class="btn btn-primary" (click)="modalType === 'edit' ?  finishEdit() : finishCreate()"
+                [disabled]="!tagValid()">
+                <span ><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
+                <span>Save</span>
+            </button>
+            <button class="btn btn-body ms-2" (click)="cancelEdit()">
+                <span ><fa-icon [icon]="formIcons.reset"></fa-icon></span>
+                <span>Cancel</span></button>
         </div>
-      </section>
-      <footer class="modal-card-foot">
-        <div class="btns is-right">
-          <button class="btn btn-primary" (click)="modalType === 'edit' ?  finishEdit() : finishCreate()"
-            [disabled]="!tagValid()">
-            <span ><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
-            <span>Save</span>
-          </button>
-          <button class="btn btn-body" (click)="cancelEdit()">
-            <span ><fa-icon [icon]="formIcons.reset"></fa-icon></span>
-            <span>Cancel</span></button>
-          </div>
-        </footer>
-      </div>
-    </div>
-  }
-
+    </footer>
+</ng-template>
 
 <ia-confirm-modal #confirmDelete actionText="Delete tag" [handleAsync]="handleDelete"
     [icon]="actionIcons.delete" actionButtonClass="btn-danger">

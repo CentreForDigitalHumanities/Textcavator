@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { isUndefined } from 'lodash';
 import { Corpus, QueryModel, Tag } from '@models';
 import { isTagFilter } from '@models/tag-filter';
@@ -8,6 +8,7 @@ import { actionIcons, formIcons } from '@shared/icons';
 import { findByName } from '@utils/utils';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'ia-tag-overview',
@@ -16,6 +17,8 @@ import { pageTitle } from '@utils/app';
     standalone: false
 })
 export class TagOverviewComponent implements OnInit {
+    @ViewChild('editForm') editForm: TemplateRef<HTMLElement>;
+
     tags$ = this.tagService.tags$;
 
     actionIcons = actionIcons;
@@ -28,6 +31,9 @@ export class TagOverviewComponent implements OnInit {
     editedTag: Partial<Tag>;
 
     handleDelete = this.tagService.deleteTag.bind(this.tagService);
+
+    private modalService = inject(NgbModal);
+    private modal: NgbModalRef;
 
     constructor(
         private tagService: TagService,
@@ -44,14 +50,17 @@ export class TagOverviewComponent implements OnInit {
     startEdit(tag: Tag) {
         this.editedTag = tag;
         this.modalType = 'edit';
+        this.modal = this.modalService.open(this.editForm);
     }
 
     startCreate() {
         this.editedTag = { name: undefined, description: undefined };
         this.modalType = 'create';
+        this.modal = this.modalService.open(this.editForm);
     }
 
     cancelEdit() {
+        this.modal?.close();
         this.editedTag = undefined;
         this.modalType = undefined;
     }
@@ -69,7 +78,7 @@ export class TagOverviewComponent implements OnInit {
     }
 
     tagValid() {
-        return !isUndefined(this.editedTag.name);
+        return !isUndefined(this.editedTag?.name);
     }
 
     makeQueryParams(corpusName, tag) {
