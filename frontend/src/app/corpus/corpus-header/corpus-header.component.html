@@ -50,7 +50,7 @@
                 </li>
                 @if (corpus.editable) {
                     <li class="nav-item ms-auto">
-                        <a [routerLink]="['/custom-corpora/edit', corpus.name]"
+                        <a [routerLink]="['/custom-corpora/edit', corpus.id]"
                             class="nav-link ms-auto">
                             <fa-icon [icon]="corpusIcons.edit" aria-hidden="true" />
                             Edit corpus

@@ -46,7 +46,7 @@ export class CorpusFormComponent {
         fetchedCorpus.definitionUpdated$.pipe(
             takeUntilDestroyed(),
         ).subscribe(() => {
-            const corpusTitle = fetchedCorpus.definition.meta.title;
+            const corpusTitle = fetchedCorpus.definition?.meta.title;
             this.title.setTitle(pageTitle(`${corpusTitle}: edit`));
         });
     }
