@@ -1,54 +1,41 @@
-<div class="file block">
-  <label class="file-label">
-    <input class="file-input" type="file" name="definition-upload"
-      accept=".json,application/json"
-      (input)="onJSONUpload($event)" />
-    <span class="file-cta">
-      <span class="file-icon" aria-hidden="true">
+<div class="mb-3">
+    <label class="form-label">
         <fa-icon [icon]="actionIcons.upload"></fa-icon>
-      </span>
-      <span class="file-label">Upload JSON...</span>
-    </span>
-    @if (file$ | async; as file) {
-      <span class="file-name">
-        {{file.name}}
-      </span>
-    }
-  </label>
+        Upload JSON
+    </label>
+    <input class="form-control" name="definition-upload"
+        type="file"
+        accept=".json,application/json"
+        (input)="onJSONUpload($event)" />
 </div>
 
+
 @if (error$ | async; as error) {
-  <div class="message is-danger">
-    <div class="message-header">
-      Cannot read file
+    <div class="alert alert-danger">
+        <h4 class="alert-heading">
+            Cannot read file
+        </h4>
+        <p class="mb-0">
+            An error occurred when reading the file: {{error.message}}. Is this a JSON file?
+        </p>
     </div>
-    <div class="message-body content">
-      <p>
-        An error occurred when reading the file: {{error.message}}. Is this a JSON file?
-      </p>
-    </div>
-  </div>
 }
 
 @if (validationErrors$ | async; as validationErrors) {
-  @if (validationErrors.length) {
-    <div class="message is-danger">
-      <div class="message-header">
-        Invalid data
-      </div>
-      <div class="message-body content">
-        <p>
-          The data in the file is not a valid corpus definition. The following
-          issues were found:
-        </p>
-        <ul>
-          @for (error of validationErrors; track error) {
-            <li>
-              {{error.stack}}
-            </li>
-          }
-        </ul>
-      </div>
-    </div>
-  }
+    @if (validationErrors.length) {
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">
+                Invalid data
+            </h4>
+            <p>
+                The data in the file is not a valid corpus definition. The following
+                issues were found:
+            </p>
+            <ul>
+                @for (error of validationErrors; track error) {
+                    <li>{{error.stack}}</li>
+                }
+            </ul>
+        </div>
+    }
 }
