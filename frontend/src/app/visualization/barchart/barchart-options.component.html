@@ -1,74 +1,111 @@
 <form>
-  <div class="row">
-    <div class="col-md">
-      <div class="field">
-        <p class="form-label">Normalization</p>
-        <div class="control radios" (change)="onChartParametersChange()">
-          <label class="radio"
-            iaBalloon="Number of {{frequencyMeasure === 'documents' ? 'documents' : 'observations of the search term'}}">
-            <input type="radio" name="normalizer" (click)="currentNormalizer='raw'" [checked]="currentNormalizer==='raw'">
-            None
-          </label>
+  <div class="row my-4">
+    <fieldset class="col-md">
+        <legend class="form-label fs-6">Normalization</legend>
+        <div (change)="onChartParametersChange()">
+            <div class="form-check form-check-inline"
+                ngbTooltip="Number of {{frequencyMeasure === 'documents' ? 'documents' : 'observations of the search term'}}">
+                <input class="form-check-input"
+                    id="input-normalizer-none"
+                    type="radio" name="normalizer"
+                    (click)="currentNormalizer='raw'"
+                    [checked]="currentNormalizer==='raw'">
+                <label class="form-check-label"
+                    for="input-normalizer-none">
+                    None
+                </label>
+            </div>
           @if (frequencyMeasure==='documents') {
-            <label class="radio"
-              iaBalloon="Divide by the total amount of documents">
-              <input type="radio" name="normalizer" (click)="currentNormalizer='percent'" [checked]="currentNormalizer==='percent'">
-              Percentage
-            </label>
+            <div class="form-check form-check-inline"
+                ngbTooltip="Divide by the total number of documents">
+                <input type="radio" name="normalizer"
+                    class="form-check-input"
+                    id="input-normalizer-percentage"
+                    (click)="currentNormalizer='percent'"
+                    [checked]="currentNormalizer==='percent'">
+                <label class="form-check-label"
+                    for="input-normalizer-percentage">
+                    Percentage
+                </label>
+            </div>
           }
           @if (frequencyMeasure==='tokens') {
-            <label class="radio"
-              iaBalloon="Divide by the total documents in each bin">
-              <input type="radio" name="normalizer" (click)="currentNormalizer='documents'" [checked]="currentNormalizer==='documents'">
-              Documents
-            </label>
+            <div class="form-check form-check-inline"
+                ngbTooltip="Divide by the total documents in each bin">
+                <input type="radio" name="normalizer"
+                    id="input-normalizer-documents"
+                    (click)="currentNormalizer='documents'"
+                    [checked]="currentNormalizer==='documents'">
+                <label class="form-check-label"
+                    for="input-normalizer-documents">
+                    Documents
+                </label>
+            </div>
             @if (showTokenCountOption) {
-              <label class="radio"
-                iaBalloon="Divide by the total word count in each bin">
-                <input type="radio" name="normalizer" (click)="currentNormalizer='terms'" [checked]="currentNormalizer==='terms'">
-                Terms
-              </label>
+                <div class="form-check form-check-inline"
+                    ngbTooltip="Divide by the total word count in each bin">
+                    <input type="radio" name="normalizer"
+                        id="input-normalizer-terms"
+                        (click)="currentNormalizer='terms'"
+                        [checked]="currentNormalizer==='terms'">
+                    <label class="form-check-label"
+                        for="input-normalizer-terms">
+                        Terms
+                    </label>
+                </div>
             }
           }
-        </div>
       </div>
-    </div>
+    </fieldset>
     @if (!freqTable) {
-      <div class="col-md">
-        <div class="field">
-          <p class="form-label">Chart Type</p>
-          <div class="control radios" (change)="onChartParametersChange()">
-            <label class="radio">
-              <input type="radio" name="chartType" (click)="currentChartType='bar'" [checked]="currentChartType==='bar'">
-              Bar
-            </label>
-            @if (!histogram) {
-              <label class="radio">
-                <input type="radio" name="chartType" (click)="currentChartType='line'" [checked]="currentChartType==='line'">
-                Line
-              </label>
-            }
-            <label class="radio">
-              <input type="radio" name="chartType" (click)="currentChartType='scatter'" [checked]="currentChartType==='scatter'">
-              Scatter
-            </label>
-          </div>
-        </div>
-      </div>
+        <fieldset class="col-md">
+            <legend class="form-label fs-6">Chart Type</legend>
+            <div (change)="onChartParametersChange()">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"
+                        id="input-chartype-bar"
+                        name="chartType"
+                        (click)="currentChartType='bar'" [checked]="currentChartType==='bar'">
+                    <label class="form-check-label"
+                        for="input-chartype-bar">
+                        Bar
+                    </label>
+                </div>
+                @if (!histogram) {
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"
+                            id="input-chartype-line"
+                            name="chartType"
+                            (click)="currentChartType='line'" [checked]="currentChartType==='line'">
+                        <label class="form-check-label"
+                            for="input-chartype-line">
+                            Line
+                        </label>
+                    </div>
+                }
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"
+                        id="input-chartype-scatter"
+                        name="chartType"
+                        (click)="currentChartType='scatter'" [checked]="currentChartType==='scatter'">
+                    <label class="form-check-label"
+                        for="input-chartype-scatter">
+                        Scatter
+                    </label>
+                </div>
+            </div>
+        </fieldset>
     }
   </div>
 
-
-
-  <div class="my-3">
-    @if (!showEdit) {
-        <button class="btn btn-body" (click)="showEdit = true">Compare with another query...</button>
-    }
-  </div>
-
-  @if (showEdit) {
-    <div class="my-3">
-      <ia-term-comparison-editor />
+    <div class="my-4">
+        @if (!showEdit) {
+            <button class="btn btn-body" (click)="showEdit = true">
+                Compare with another query...
+            </button>
+        } @else {
+            <ia-term-comparison-editor />
+        }
     </div>
-  }
 </form>
