@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
     Component,
     ElementRef,
@@ -5,12 +6,12 @@ import {
     Input,
     Output,
     OnDestroy,
-    HostBinding,
     OnChanges,
     SimpleChanges,
-    ViewChild,
     forwardRef,
     input,
+    inject,
+    ContentChild,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -18,9 +19,9 @@ import * as _ from 'lodash';
 import { actionIcons } from '../icons';
 import { DropdownService } from './dropdown.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { DropdownToggleDirective } from './dropdown-toggle.directive';
 
-let nextID = 0;
 
 @Component({
     selector: 'ia-dropdown',
@@ -33,32 +34,41 @@ let nextID = 0;
             multi: true,
         },
     ],
+    hostDirectives: [
+        NgbDropdown,
+    ],
+    host: {
+        '(focusout)': 'blur$.next()',
+        'class': 'd-block',
+    },
     standalone: false
 })
 export class DropdownComponent<T> implements OnChanges, OnDestroy, ControlValueAccessor  {
     @Input() value: any;
     @Input() disabled: boolean;
 
-    /** ID of the element labelling the dropdown */
+    /** Removed, set aria-labelledby on iaDropdownToggle instead */
     @Input() labelledBy: string;
 
     @Output()
     public onChange = new EventEmitter<T>();
 
-    @ViewChild(NgbDropdownToggle) trigger: ElementRef<HTMLButtonElement>;
+    @ContentChild(DropdownToggleDirective) trigger: ElementRef<HTMLButtonElement>;
 
+    /** Removed, set [class] on iaDropdownToggle instead  */
     triggerClass = input<string>('');
 
     actionIcons = actionIcons;
 
-    id = nextID++;
+    blur$ = new Subject<void>();
 
-    private blur$ = new Subject<void>();
     private destroy$ = new Subject<void>();
     private onChangeSubscription?: Subscription;
     private onTouchedSubscription?: Subscription;
 
-    constructor(private dropdownService: DropdownService) {
+    private dropdownService = inject(DropdownService);
+
+    constructor() {
         // don't trigger a lot of events when a user is quickly looping through the options
         // for example using the keyboard arrows
         this.dropdownService.selection$.pipe(
@@ -66,14 +76,6 @@ export class DropdownComponent<T> implements OnChanges, OnDestroy, ControlValueA
             debounceTime(100),
             distinctUntilChanged(_.isEqual),
         ).subscribe((value) => this.onChange.next(value));
-    }
-
-    get triggerID(): string {
-        return `dropdown-trigger-${this.id}`;
-    }
-
-    get menuID(): string {
-        return `dropdown-menu-${this.id}`;
     }
 
     writeValue(value: any) {
@@ -98,18 +100,15 @@ export class DropdownComponent<T> implements OnChanges, OnDestroy, ControlValueA
         if (changes.value) {
             this.dropdownService.selection$.next(this.value);
         }
+        if (changes.disabled) {
+            this.dropdownService.disabled$.next(this.disabled);
+        }
     }
 
     ngOnDestroy(): void {
         this.blur$.complete();
         this.destroy$.next(undefined);
         this.destroy$.complete();
-    }
-
-    focusOnFirstItem(event: Event) {
-        event.preventDefault();
-        // focus on the first item - use setTimeout to wait until the menu is opened
-        setTimeout(() => this.dropdownService.focusShift$.next(1));
     }
 
 }

@@ -55,18 +55,6 @@ export class DropdownItemDirective {
         }
     }
 
-    @HostListener('keydown.arrowdown')
-    navigateNext() {
-        this.dropdownService.focusShift$.next(1);
-        return false;
-    }
-
-    @HostListener('keydown.arrowup')
-    navigatePrev() {
-        this.dropdownService.focusShift$.next(-1);
-        return false;
-    }
-
     focus() {
         this.elementRef.nativeElement.focus();
     }

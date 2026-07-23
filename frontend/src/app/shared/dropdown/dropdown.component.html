@@ -1,23 +1,2 @@
-<div ngbDropdown>
-    <button
-        [class]="['btn', 'btn-body', triggerClass()]"
-        ngbDropdownToggle
-        aria-haspopup="listbox"
-        role="combobox"
-        [attr.aria-controls]="menuID"
-        [attr.aria-labelledby]="labelledBy"
-        [id]="triggerID"
-        [disabled]="disabled"
-        (keydown.arrowdown)="focusOnFirstItem($event)"
-        (keydown.arrowup)="focusOnFirstItem($event)"
-        type="button"
-        >
-        <ng-content select="[iaDropdownLabel]"></ng-content>
-    </button>
-    <div ngbDropdownMenu
-        role="listbox"
-        [id]="menuID"
-        [aria-labelledby]="triggerID" >
-        <ng-content select="[iaDropdownMenu]"></ng-content>
-    </div>
-</div>
+<ng-content select="[iaDropdownToggle]"></ng-content>
+<ng-content select="[iaDropdownMenu]"></ng-content>
