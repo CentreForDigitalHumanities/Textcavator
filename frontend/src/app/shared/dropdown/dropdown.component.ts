@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
     Component,
-    ElementRef,
     EventEmitter,
     Input,
     Output,
@@ -9,9 +8,7 @@ import {
     OnChanges,
     SimpleChanges,
     forwardRef,
-    input,
     inject,
-    ContentChild,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -20,7 +17,6 @@ import { actionIcons } from '../icons';
 import { DropdownService } from './dropdown.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
-import { DropdownToggleDirective } from './dropdown-toggle.directive';
 
 
 @Component({
@@ -47,16 +43,8 @@ export class DropdownComponent<T> implements OnChanges, OnDestroy, ControlValueA
     @Input() value: any;
     @Input() disabled: boolean;
 
-    /** Removed, set aria-labelledby on iaDropdownToggle instead */
-    @Input() labelledBy: string;
-
     @Output()
     public onChange = new EventEmitter<T>();
-
-    @ContentChild(DropdownToggleDirective) trigger: ElementRef<HTMLButtonElement>;
-
-    /** Removed, set [class] on iaDropdownToggle instead  */
-    triggerClass = input<string>('');
 
     actionIcons = actionIcons;
 
