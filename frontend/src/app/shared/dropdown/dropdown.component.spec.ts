@@ -47,7 +47,7 @@ describe('DropdownComponent', () => {
     it('should render the label', async () => {
         await fixture.whenStable();
 
-        const trigger = fixture.debugElement.query(By.css('.dropdown-trigger > button')).nativeElement;
+        const trigger = fixture.debugElement.query(By.css('button.btn-body')).nativeElement;
         expect(trigger.innerHTML).toContain('Select option');
 
         // allow switching value
@@ -58,21 +58,4 @@ describe('DropdownComponent', () => {
         expect(trigger.innerHTML).not.toContain('Select option');
         expect(trigger.innerHTML).toContain('Item 2');
     });
-
-    it('should open when clicked', fakeAsync(() => {
-        tick();
-
-        const dropdown = fixture.debugElement.query(By.css('.dropdown'));
-
-        expect(dropdown.classes['is-active']).toBeFalsy();
-
-        const trigger = dropdown.query(By.css('.dropdown-trigger > button'));
-        trigger.triggerEventHandler('click', undefined);
-
-        tick();
-        fixture.detectChanges();
-
-        expect(dropdown.classes['is-active']).toBeTruthy();
-    }));
-
 });

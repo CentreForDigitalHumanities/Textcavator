@@ -18,7 +18,43 @@ import { DropdownService } from './dropdown.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
-
+/**
+ * Wrapper around NgbDropdown for single-select fuctionality.
+ *
+ * Bootstrap dropdowns are general-purpose. The iaDropdown adds logic and roles
+ * for a single-select combobox.
+ *
+ * For single-select form controls, you can also use `<select>`. The advantage
+ * for the dropdown is that values can be of any data type (not just strings).
+ * It also looks more consistent when mixed with other types of dropdowns (e.g.
+ * multi-select).
+ *
+ * Example usage:
+ *
+ * ```html
+ * <label id="label-lucky-number">Lucky number</label>
+ * <ia-dropdown (onChange)="setLuckyNumber($event)">
+ *     <button iaDropdownToggle aria-labelledby="label-lucky-number">
+ *         {{luckyNumber}}
+ *     </button>
+ *     <div iaDropdownMenu>
+ *         <button iaDropdownItem [value]="1">1</button>
+ *         <button iaDropdownItem [value]="2">2</button>
+ *     </div>
+ * </iaDropdown>
+ * ```
+ *
+ * Can be controlled with a [formControl], or with the [value] / (onChange) inputs.
+ * Individual dropdown items also support a (onSelect) output event.
+ *
+ * The dropdown toggle is a form control that must be labelled, usually through
+ * aria-labelledby.
+ *
+ * See also:
+ * - https://ng-bootstrap.github.io/#/components/dropdown/examples
+ * - https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/combobox_role
+ * - https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role
+ */
 @Component({
     selector: 'ia-dropdown',
     templateUrl: './dropdown.component.html',
