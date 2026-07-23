@@ -1,13 +1,6 @@
-@use "balloon-css/src/balloon";
 @use "quill/dist/quill.snow";
 @use './variables' as var;
 @use './tc_theme';
-
-
-
-[data-balloon]:after {
-    border-radius: 0;
-}
 
 
 .has-spinner-overlay {

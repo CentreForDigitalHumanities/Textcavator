@@ -9,7 +9,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
-import { BalloonDirective } from './balloon/balloon.directive';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ErrorComponent } from './error/error.component';
 import { DropdownModule } from './dropdown/dropdown.module';
@@ -28,7 +27,6 @@ import { LoadingDirective } from './loading/loading.directive';
     declarations: [
         DatePickerComponent,
         ErrorComponent,
-        BalloonDirective,
         SlugifyPipe,
         ConfirmModalComponent,
     ],
@@ -48,7 +46,6 @@ import { LoadingDirective } from './loading/loading.directive';
         DialogModule,
         FormsModule,
         FontAwesomeModule,
-        BalloonDirective,
         RouterModule,
         TableModule,
         BackToTopButton,
