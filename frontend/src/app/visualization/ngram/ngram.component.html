@@ -9,16 +9,18 @@
                 id="label-mode">
                 Mode
               </label>
-              <ia-dropdown [value]="currentModeOption" labelledBy="label-mode"
-                  (onChange)="onParameterChange('mode', $event.value)">
-                  <span iaDropdownLabel>{{currentModeOption?.label}}</span>
-                  <div iaDropdownMenu>
-                    @for (option of modeOptions; track option) {
-                      <button iaDropdownItem [value]="option">
-                          {{option.label}}
-                      </button>
-                    }
-                  </div>
+                <ia-dropdown [value]="currentModeOption"
+                    (onChange)="onParameterChange('mode', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-mode">
+                        {{currentModeOption?.label}}
+                    </button>
+                    <div iaDropdownMenu>
+                        @for (option of modeOptions; track option) {
+                            <button iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </button>
+                        }
+                    </div>
               </ia-dropdown>
             </div>
           </div>
@@ -33,17 +35,19 @@
                   Maximum distance
                 }
               </label>
-              <ia-dropdown [value]="currentSizeOption" labelledBy="label-size"
-                  (onChange)="onParameterChange('size', $event.value)">
-                  <span iaDropdownLabel>{{currentSizeOption?.label}}</span>
-                  <div iaDropdownMenu>
+                <ia-dropdown [value]="currentSizeOption"
+                    (onChange)="onParameterChange('size', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-size">
+                        {{currentSizeOption?.label}}
+                    </button>
+                    <div iaDropdownMenu>
                     @for (option of sizeOptions; track option) {
-                      <button iaDropdownItem [value]="option">
-                          {{option.label}}
-                      </button>
+                        <button iaDropdownItem [value]="option">
+                            {{option.label}}
+                        </button>
                     }
-                  </div>
-              </ia-dropdown>
+                    </div>
+                </ia-dropdown>
             </div>
           </div>
           @if (currentSettings.mode === 'ngrams') {
@@ -54,9 +58,11 @@
                     id="label-positions">
                   Position of search term
                 </label>
-              <ia-dropdown [value]="currentPositionsOption" labelledBy="label-positions"
+                <ia-dropdown [value]="currentPositionsOption"
                     (onChange)="onParameterChange('positions', $event.value)">
-                    <span iaDropdownLabel>{{currentPositionsOption?.label}}</span>
+                    <button iaDropdownToggle aria-labelledby="label-positions">
+                        {{currentPositionsOption?.label}}
+                    </button>
                     <div iaDropdownMenu>
                       @for (option of positionsOptions; track option) {
                           <button iaDropdownItem [value]="option">
@@ -64,7 +70,7 @@
                           </button>
                       }
                     </div>
-                  </ia-dropdown>
+                </ia-dropdown>
               </div>
             </div>
           }
@@ -75,16 +81,17 @@
                 id="label-freq-compensation">
                 Compensate for frequency
               </label>
-                <ia-dropdown [value]="currentFreqCompensationOption" labelledBy="label-freq-compensation"
-                  (onChange)="onParameterChange('freqCompensation', $event.value)">
-                  <span iaDropdownLabel>{{currentFreqCompensationOption?.label}}</span>
-                  <div iaDropdownMenu>
-                    @for (option of freqCompensationOptions; track option) {
-                      <button iaDropdownItem [value]="option">
-                          {{option.label}}
-                      </button>
-                    }
-                  </div>
+                <ia-dropdown [value]="currentFreqCompensationOption"
+                    (onChange)="onParameterChange('freqCompensation', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-freq-compensation">
+                        {{currentFreqCompensationOption?.label}}</button>
+                    <div iaDropdownMenu>
+                        @for (option of freqCompensationOptions; track option) {
+                            <button iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </button>
+                        }
+                    </div>
                 </ia-dropdown>
             </div>
           </div>
@@ -96,17 +103,19 @@
                     id="label-analysis">
                   Language processing
                 </label>
-                  <ia-dropdown [value]="currentAnalysisOption" labelledBy="label-analysis"
-                    (onChange)="onParameterChange('analysis', $event.value)">
-                    <span iaDropdownLabel>{{currentAnalysisOption?.label}}</span>
-                    <div iaDropdownMenu>
-                      @for (option of analysisOptions; track option) {
-                          <button iaDropdownItem [value]="option">
-                              {{option.label}}
-                          </button>
-                      }
-                    </div>
-                  </ia-dropdown>
+                    <ia-dropdown [value]="currentAnalysisOption"
+                            (onChange)="onParameterChange('analysis', $event.value)">
+                        <button iaDropdownToggle aria-labelledby="label-analysis">
+                            {{currentAnalysisOption?.label}}
+                        </button>
+                        <div iaDropdownMenu>
+                            @for (option of analysisOptions; track option) {
+                                <button iaDropdownItem [value]="option">
+                                    {{option.label}}
+                                </button>
+                            }
+                        </div>
+                    </ia-dropdown>
               </div>
             </div>
           }
@@ -117,17 +126,19 @@
                 id="label-max-documents">
                 Document limit
               </label>
-                <ia-dropdown [value]="currentMaxDocumentsOption" labelledBy="label-max-documents"
-                  (onChange)="onParameterChange('maxDocuments', $event.value)">
-                  <span iaDropdownLabel>{{currentMaxDocumentsOption?.label}}</span>
-                  <div iaDropdownMenu>
-                    @for (option of maxDocumentsOptions; track option) {
-                      <button iaDropdownItem [value]="option">
-                        {{option.label}}
-                      </button>
-                    }
-                  </div>
-                </ia-dropdown>
+                    <ia-dropdown [value]="currentMaxDocumentsOption"
+                        (onChange)="onParameterChange('maxDocuments', $event.value)">
+                        <button iaDropdownToggle aria-labelledby="label-max-documents">
+                            {{currentMaxDocumentsOption?.label}}
+                        </button>
+                        <div iaDropdownMenu>
+                            @for (option of maxDocumentsOptions; track option) {
+                            <button iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </button>
+                            }
+                        </div>
+                    </ia-dropdown>
             </div>
           </div>
           <div class="col-md-4">
@@ -138,16 +149,17 @@
                 Number of n-grams
               </label>
                 <ia-dropdown [value]="currentNumberOfNgramsOption"
-                  labelledBy="label-number-of-ngrams"
-                  (onChange)="onParameterChange('numberOfNgrams', $event.value)">
-                  <span iaDropdownLabel>{{currentNumberOfNgramsOption?.label}}</span>
-                  <div iaDropdownMenu>
-                    @for (option of numberOfNgramsOptions; track option) {
-                      <button iaDropdownItem [value]="option">
-                          {{option.label}}
-                      </button>
-                    }
-                  </div>
+                    (onChange)="onParameterChange('numberOfNgrams', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-number-of-ngrams">
+                        {{currentNumberOfNgramsOption?.label}}
+                    </button>
+                    <div iaDropdownMenu>
+                        @for (option of numberOfNgramsOptions; track option) {
+                            <button iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </button>
+                        }
+                    </div>
                 </ia-dropdown>
             </div>
           </div>
@@ -161,16 +173,17 @@
                   Compare frequencies by:
                 </label>
                 <ia-dropdown [value]="dateField"
-                  labelledBy="label-date-field"
-                  (onChange)="onParameterChange('dateField', $event)">
-                  <span iaDropdownLabel>{{dateField?.displayName}}</span>
-                  <div iaDropdownMenu>
-                    @for (field of allDateFields; track field) {
-                      <button iaDropdownItem [value]="field.name">
-                          {{field.displayName}}
-                      </button>
-                    }
-                  </div>
+                    (onChange)="onParameterChange('dateField', $event)">
+                    <button iaDropdownToggle aria-labelledby="label-date-field">
+                        {{dateField?.displayName}}
+                    </button>
+                    <div iaDropdownMenu>
+                        @for (field of allDateFields; track field) {
+                            <button iaDropdownItem [value]="field.name">
+                                {{field.displayName}}
+                            </button>
+                        }
+                    </div>
                 </ia-dropdown>
             </div>
           </div>

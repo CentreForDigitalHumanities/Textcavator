@@ -1,13 +1,13 @@
-<ia-dropdown (onChange)="changeField($event)" [value]="sortField" [labelledBy]="labelledBy" class="text-left">
-    <span iaDropdownLabel>{{ sortField?.displayName || 'Relevance' }}</span>
+<ia-dropdown (onChange)="changeField($event)" [value]="sortField" class="text-left">
+    <button iaDropdownToggle [attr.aria-labelledby]="labelledBy">{{ sortField?.displayName || 'Relevance' }}</button>
     <div iaDropdownMenu>
-      <button iaDropdownItem [value]="undefined">Relevance</button>
-      @for (field of sortableFields; track field.name) {
-        <button
-          iaDropdownItem [value]="field">
-          {{field.displayName}}
-        </button>
-      }    </div>
+        <button iaDropdownItem [value]="undefined">Relevance</button>
+        @for (field of sortableFields; track field.name) {
+            <button iaDropdownItem [value]="field">
+                {{field.displayName}}
+            </button>
+        }
+    </div>
 </ia-dropdown>
 <button class="btn btn-body" type="button" (click)="toggleSortType()"
     [disabled]="!sortField">

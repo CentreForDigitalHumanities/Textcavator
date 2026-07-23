@@ -8,7 +8,7 @@ import { By } from '@angular/platform-browser';
 @Component({
     template: `
     <ia-dropdown [value]="selected()" (onChange)="selected.set($event)">
-      <span iaDropdownLabel>{{ selected()?.label || 'Select option'}}</span>
+      <button iaDropdownToggle>{{ selected()?.label || 'Select option'}}</button>
       <div iaDropdownMenu>
         @for (option of options; track option) {
           <button iaDropdownItem [value]="option">

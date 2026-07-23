@@ -6,9 +6,10 @@
           <label class="form-label" id="label-visualization-type">
             What do you want to visualise?
           </label>
-            <ia-dropdown [value]="selector.activeOption$ | async"
-              labelledBy="label-visualization-type">
-              <span iaDropdownLabel>{{(selector.activeOption$ | async).label}}</span>
+            <ia-dropdown [value]="selector.activeOption$ | async">
+              <button iaDropdownToggle aria-labelledby="label-visualization-type">
+                {{(selector.activeOption$ | async).label}}
+                </button>
               <div iaDropdownMenu>
                 @for (option of selector.options; track option) {
                     <button iaDropdownItem [value]="option"
@@ -47,11 +48,11 @@
                 }
               </label>
             }
-            <ia-dropdown
-                labelledBy="label-visualized-field"
-                [value]="(selector.state$ | async).field">
-                    <span iaDropdownLabel>{{(selector.state$ | async).field?.displayName}}</span>
-                    <div iaDropdownMenu>
+            <ia-dropdown [value]="(selector.state$ | async).field">
+                <button iaDropdownToggle aria-labelledby="label-visualized-field">
+                    {{(selector.state$ | async).field?.displayName}}
+                </button>
+                <div iaDropdownMenu>
                     @for (field of fields; track field) {
                         <button iaDropdownItem [value]="field"
                             (onSelect)="setVisualizedField($event)">

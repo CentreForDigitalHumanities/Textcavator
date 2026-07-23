@@ -1,35 +1,38 @@
 <form [formGroup]="form">
-  <div class="row my-4">
-    <div class="col-md field">
-      <label class="form-label" id="label-language">Language</label>
-        <ia-dropdown name="language" [formControl]="form.controls.language"
-          labelledBy="label-language">
-          <span iaDropdownLabel>{{form.controls.language.value || 'Any'}}</span>
-          <div iaDropdownMenu>
-            <button iaDropdownItem [value]="null">Any</button>
-            @for (language of languages; track language) {
-              <button iaDropdownItem [value]="language">
-                {{language}}
-            </button>
-            }
-          </div>
-        </ia-dropdown>
-    </div>
-    <div class="col-md field">
-      <label class="form-label" id="label-category">Type of data</label>
-        <ia-dropdown name="category" [formControl]="form.controls.category"
-          labelledBy="label-category">
-          <span iaDropdownLabel>{{form.controls.category.value || 'Any'}}</span>
-          <div iaDropdownMenu>
-            <button iaDropdownItem [value]="null">Any</button>
-            @for (category of categories; track category) {
-                <button iaDropdownItem [value]="category">
-                    {{category}}
-                </button>
-            }
-          </div>
-        </ia-dropdown>
-    </div>
+    <div class="row my-4">
+        <div class="col-md field">
+            <label class="form-label" id="label-language">Language</label>
+                <ia-dropdown name="language"
+                    [formControl]="form.controls.language">
+                    <button iaDropdownToggle aria-labelledby="label-language">
+                        {{form.controls.language.value || 'Any'}}
+                    </button>
+                    <div iaDropdownMenu>
+                        <button iaDropdownItem [value]="null">Any</button>
+                        @for (language of languages; track language) {
+                            <button iaDropdownItem [value]="language">
+                                {{language}}
+                            </button>
+                        }
+                    </div>
+                </ia-dropdown>
+            </div>
+            <div class="col-md field">
+                <label class="form-label" id="label-category">Type of data</label>
+                <ia-dropdown name="category" [formControl]="form.controls.category">
+                    <button iaDropdownToggle aria-labelledby="label-category">
+                        {{form.controls.category.value || 'Any'}}
+                    </button>
+                    <div iaDropdownMenu>
+                        <button iaDropdownItem [value]="null">Any</button>
+                        @for (category of categories; track category) {
+                            <button iaDropdownItem [value]="category">
+                                {{category}}
+                            </button>
+                        }
+                    </div>
+                </ia-dropdown>
+            </div>
     <div class="col-md field">
       <label class="form-label">Period</label>
         <div class="hstack">

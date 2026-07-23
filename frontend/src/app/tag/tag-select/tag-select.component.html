@@ -1,14 +1,14 @@
 <form class="input-group">
     @if (!createMode) {
         @if (filterTags(tags$ | async, exclude); as filteredTags) {
-        <ia-dropdown (onChange)="selectedTag = $event" labelledBy="select-tag-placeholder"
-            triggerClass="btn-sm">
-            <span iaDropdownLabel>
+        <ia-dropdown (onChange)="selectedTag = $event">
+            <button iaDropdownToggle aria-labelledby="select-tag-placeholder"
+                class="btn btn-body btn-sm" #selectToggle>
                 {{ selectedTag?.name }}
                 <span [class.d-none]="selectedTag?.name !== null" id="select-tag-placeholder">
                     Assign a tag
                 </span>
-            </span>
+            </button>
             <div iaDropdownMenu>
                 @for (tag of filteredTags; track tag) {
                 <button iaDropdownItem [value]="tag">

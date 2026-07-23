@@ -46,11 +46,13 @@
                 </p>
             </div>
             <div class="mb-3" [class.is-disabled]="corpus.active">
-                <label class="form-label" for="input-type">
+                <label class="form-label" for="input-type" id="label-type">
                     Type*
                 </label>
                 <ia-dropdown formControlName="type" id="input-type">
-                    <span iaDropdownLabel>{{getFieldProperty(field, 'label')}}</span>
+                    <button iaDropdownToggle aria-labelledby="label-type">
+                        {{getFieldProperty(field, 'label')}}
+                    </button>
                     <div iaDropdownMenu>
                         @for (option of fieldTypeOptions; track option) {
                         <button iaDropdownItem [value]="option.value">
@@ -117,8 +119,10 @@
             <div class="field" [class.is-disabled]="corpus.active">
                 @let languageControl = field.controls.language;
                 <label class="form-label" id="language-label">Language (optional)</label>
-                <ia-dropdown formControlName="language" labelledBy="language-label">
-                    <span iaDropdownLabel>{{languageControl.value.displayName}}</span>
+                <ia-dropdown formControlName="language">
+                    <button iaDropdownToggle aria-labelledby="language-label">
+                        {{languageControl.value.displayName}}
+                    </button>
                     <div iaDropdownMenu>
                         @for (lang of languageOptions; track lang) {
                         <button iaDropdownItem [value]="lang">
