@@ -1,25 +1,42 @@
+/**
+Bootstrap import with customisations. This sets the "textcavator theme".
+
+Customisations include:
+- Set the primary colour
+- Set fonts
+- Set navbar background colour
+
+Adapted from https://getbootstrap.com/docs/5.3/customize/sass/#importing
+
+Note on theme customisation:
+
+It should be possible to serve Textcavator with a different theme by swapping out this
+file. For this reason, component stylesheets should NOT import this file or depend
+on its customisations. E.g., to use "textcavator blue", use a bootstrap variable like
+var(--bs-primary-color).
+*/
+
 @use "./variables" as var;
 @use "./fonts";
-
 @forward "./fonts";
 
-// based on https://getbootstrap.com/docs/5.3/customize/sass/#importing
 
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "../node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
 
+// primary colour
 $primary: var.$tc_primary;
-
-$primary-text-emphasis-dark: tint-color($primary, 60%) !default;
-
+$primary-text-emphasis-dark: tint-color($primary, 60%);
 $link-color: $primary;
 
+// custom fonts
 $font-family-sans-serif: fonts.$tc_font_sans_serif;
 $display-font-family: fonts.$tc_font_brand;
 $display-font-weight: normal;
 
+// bold weight for form labels
 $form-label-font-weight: bold;
 
 $pagination-active-color: white;
@@ -76,6 +93,10 @@ $nav-pills-link-active-color: white;
 
 // 8. Theme-specific styles
 
+// Set navbar background. Set here rather than in the component, as a different theme
+// (e.g. Utrecht University branding) may not use the primary colour background.
+// Note: the navbar component specifies dark theme for the navbar, so if you set a
+// light background here, the navbar text colours will need to be customised too.
 .navbar {
     background-color: $primary;
 }

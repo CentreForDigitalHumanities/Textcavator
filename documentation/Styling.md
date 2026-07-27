@@ -2,9 +2,11 @@
 
 This document covers CSS styling for the frontend.
 
-Textcavator uses the CSS framework [bulma](https://bulma.io/documentation/).
+Textcavator uses [bootstrap](https://getbootstrap.com) as a CSS framework.
 
-Initial and derived variables from bulma are customised in [_utilities.css](/frontend/src/_utilities.scss). This file only defines variables and mixins and can be imported in component stylesheets. [styles.csss](/frontend/src/styles.scss) includes site-wide selectors.
+[tc_theme.scss](/frontend/src/tc_theme.scss) import bootstrap with Sass overrides. These overrides are used to define the "Textcavator theme".
+
+[styles.scss](/frontend/src/styles.scss) imports the customised bootstrap styles, CSS from other libraries, and applies site-wide styling. This includes general classes and CSS tweaks to integrate libraries like Vega and Quill with our main style.
 
 ## Dark mode
 
@@ -18,7 +20,7 @@ Several other libraries are used to provide components, visualisations, etc. The
 
 ## PrimeNG components
 
-We use several components from [primeNG](https://v19.primeng.org/). [primeng-theme.ts](/frontend/src/app/primeng-theme.ts) defines the preset to customise primeNG styles, mostly using bulma CSS variables.
+We use several components from [primeNG](https://v19.primeng.org/). [primeng-theme.ts](/frontend/src/app/primeng-theme.ts) defines the preset to customise primeNG styles, mostly using bootstrap CSS variables.
 
 ## Chart.js
 
