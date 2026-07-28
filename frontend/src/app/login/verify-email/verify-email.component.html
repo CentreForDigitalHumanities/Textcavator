@@ -1,4 +1,4 @@
-<section class="py-5">
+<section class="container-lg py-5">
   <h1 class="mb-4">Confirm E-mail Address</h1>
   @if ((userDetails$ | async); as userDetails) {
     <form (submit)=confirm(key) class="box">
@@ -19,7 +19,7 @@
   }
 
   @if (success) {
-    <div class="notification is-success container">
+    <div class="notification is-success">
       <p>Your email address has been verified! You are being directed to login...</p>
     </div>
   }

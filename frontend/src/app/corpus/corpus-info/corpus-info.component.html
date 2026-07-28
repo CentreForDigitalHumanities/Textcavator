@@ -1,7 +1,7 @@
 <ia-corpus-header [corpus]="corpus" currentPage="info"></ia-corpus-header>
 
 <section class="py-5 pt-0">
-    <div class="container">
+    <div class="container-lg">
         @if (documentation$ | async; as documentation) {
             <ul ngbNav #nav="ngbNav" class="nav-tabs mb-4">
                 @for (page of documentation; track page.type) {

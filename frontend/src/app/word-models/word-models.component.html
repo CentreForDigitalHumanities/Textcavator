@@ -1,7 +1,7 @@
 <ia-corpus-header [corpus]="corpus" currentPage="word-models"></ia-corpus-header>
 
 <section class="py-5">
-    <div class="container">
+    <div class="container-lg">
         <form class="my-3">
             <div class="input-group mb-3">
                 <input class="form-control" name="query" placeholder="Query" [(ngModel)]="queryText">
@@ -14,7 +14,7 @@
 </section>
 
 <section class="py-5">
-    <div class="container">
+    <div class="container-lg">
         @if (activeQuery || queryFeedback) {
         <ia-query-feedback [query]="activeQuery" [queryFeedback]="queryFeedback"
             (selectedSuggestion)="queryText = $event; submitQuery()"></ia-query-feedback>
@@ -69,7 +69,7 @@
                             } @else {
                             <b> Did not find data to visualize.</b>
                             @if (errorMessage && errorMessage.length > 0) {
-                            <div class="container">
+                            <div class="container-lg">
                                 <div class="notification is-warning">
                                     {{errorMessage}}
                                 </div>
