@@ -1,9 +1,9 @@
 <section class="py-5">
 
     <form (ngSubmit)="login()" class="container">
-        <div class="container is-login">
+        <div class="login-container m-auto">
             <h1>Sign in</h1>
-            <div class="my-3">
+            <div class="my-4">
                 <label class="form-label" for="username">Username</label>
                 <div class="input-group">
                     <span class="input-group-text">
@@ -12,7 +12,7 @@
                     <input class="form-control" type="text" [(ngModel)]="username" name="username" />
                 </div>
             </div>
-            <div class="field">
+            <div class="my-4">
                 <label class="form-label" for="password">Password</label>
                 <p class="input-group">
                     <span class="input-group-text">
@@ -21,7 +21,7 @@
                     <input class="form-control" type="password" [(ngModel)]="password" name="password" />
                 </p>
             </div>
-            <div class="row">
+            <div class="row my-4">
                 <div class="col">
                         <button class="btn btn-primary" [iaButtonLoading]="isLoading">Login</button>
                 </div>
@@ -38,7 +38,7 @@
                 </div>
             </div>
             @if (showSolis) {
-            <div>
+            <div class="my-4">
                 <p>
                     Or login with:
                 </p>
@@ -57,7 +57,7 @@
     </form>
 </section>
 <section class="py-5">
-    <div class="container">
+    <div class="container-lg">
         @if (isWrong) {
         <div class="alert alert-danger">
             <strong>Invalid username or password</strong>. Please try again.
