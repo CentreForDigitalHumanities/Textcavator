@@ -91,6 +91,8 @@ $nav-pills-link-active-color: white;
 @import "../node_modules/bootstrap/scss/utilities/api";
 
 
+
+
 // 8. Theme-specific styles
 
 // Set navbar background. Set here rather than in the component, as a different theme
@@ -99,4 +101,11 @@ $nav-pills-link-active-color: white;
 // light background here, the navbar text colours will need to be customised too.
 .navbar {
     background-color: $primary;
+}
+
+// Adjust close button colour for light-on-dark utility classes
+.text-bg-primary, .text-bg-secondary, .text-bg-success, .text-bg-danger {
+    .btn-close {
+        --bs-btn-close-filter: invert(1) grayscale(100%) brightness(200%);
+    }
 }
