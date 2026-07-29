@@ -22,20 +22,6 @@
     }
 }
 
-a.dropdown-item:focus {
-    @extend a, .dropdown-item, :hover;
-}
-
-a.dropdown-item[disabled] {
-    color: var(--bs-secondary-color);
-    cursor: not-allowed;
-
-    &:hover {
-        background-color: inherit;
-        color: var(--bs-secondary-color);
-    }
-}
-
 @mixin mark-entity($color) {
     background-color: rgb(from $color r g b /.2);
     border-bottom: .2em solid;
@@ -74,17 +60,6 @@ a.dropdown-item[disabled] {
     background-color: var(--bs-primary-bg-subtle);
     color: var(--bs-emphasis-color);
 }
-
-.input-feedback {
-    margin-top: 0.5rem;
-}
-
-.content {
-    a:not(.button) {
-        text-decoration: underline;
-    }
-}
-
 
 table.spreadsheet {
     border: 2px solid var(--bs-border-color);
@@ -151,20 +126,6 @@ table.spreadsheet {
         @extend .bg-body-secondary;
     }
 }
-
-.btn.btn-static {
-    cursor: inherit;
-
-    &:hover {
-        border-color: var(--bs-btn-border-color);
-        background-color: var(--bs-btn-bg);
-        color: var(--bs-btn-color);
-        z-index: 0;
-    }
-
-}
-
-// restore some rules from older bulma versions for compatibility
 
 .heading {
     display: block;
@@ -286,11 +247,3 @@ a, button, .form-control, .form-select {
         }
     }
 }
-
-// dark mode
-
-// [data-bs-theme="dark"] {
-    // tweaks for dark mode
-
-// }
-
