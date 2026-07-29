@@ -1,13 +1,13 @@
 @if (filter) {
     @let legendID = 'legend-filter-' + (filter.displayName | slugify);
-    <fieldset class="border filter-container rounded p-3"
-        [class.border-primary]="filter.state$.value.active"
+    <fieldset class="border rounded p-3"
+        [class.border-primary-subtle]="filter.state$.value.active"
         [attr.aria-labelledby]="legendID">
     <div class="row mb-3">
         <legend class="col form-label" [id]="legendID">
           {{ filter.displayName }}
         </legend>
-        <div class="d-flex flex-row justify-content-end"
+        <div class="d-flex flex-row justify-content-end align-items-start"
             [class.col-auto]="filter.displayName.length < 50">
             @if (filter.description?.length) {
               <span class="btn px-1 btn-sm"

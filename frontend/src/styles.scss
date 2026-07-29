@@ -115,8 +115,8 @@ table.spreadsheet {
 }
 
 
-.btn.btn-ghost { // btn-ghost has no border and primary colour text
-    @extend .text-primary;
+.btn.btn-ghost { // btn-ghost has no border and link colour text
+    color: var(--bs-link-color);
 
     &:hover {
         @extend .bg-body-tertiary;
