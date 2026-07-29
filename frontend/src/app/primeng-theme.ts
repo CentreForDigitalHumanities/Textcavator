@@ -16,9 +16,6 @@ const graySurfaceScheme = {
     0: 'var(--bs-white)',
 }
 
-/***
- * Color palette based on bulma variables
- */
 export const stylePreset = definePreset(Nora, {
     semantic: {
         colorScheme: {
