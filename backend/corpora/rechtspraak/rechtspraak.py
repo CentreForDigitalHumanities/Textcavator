@@ -5,9 +5,9 @@ from datetime import datetime
 from os import makedirs, remove
 from typing import Optional
 from zipfile import ZipFile, BadZipFile
-from ianalyzer_readers.xml_tag import Tag, ParentTag
+from textcavator_readers.xml_tag import Tag, ParentTag
 
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from addcorpus.python_corpora.corpus import FieldDefinition, XMLCorpusDefinition
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
 from addcorpus.es_settings import es_settings

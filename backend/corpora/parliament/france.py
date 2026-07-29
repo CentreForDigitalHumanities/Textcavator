@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 
 from corpora.parliament.parliament import Parliament
-from ianalyzer_readers.extract import Constant, Combined, CSV
+from textcavator_readers.extract import Constant, Combined, CSV
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.formatting import underscore_to_space

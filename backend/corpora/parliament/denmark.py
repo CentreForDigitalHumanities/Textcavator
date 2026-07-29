@@ -3,7 +3,7 @@ from glob import glob
 import logging
 
 from corpora.parliament.parliament import Parliament
-from ianalyzer_readers.extract import Constant, CSV
+from textcavator_readers.extract import Constant, CSV
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 import corpora.parliament.utils.field_defaults as field_defaults
 import corpora.utils.formatting as formatting

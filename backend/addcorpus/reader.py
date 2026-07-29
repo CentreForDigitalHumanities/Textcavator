@@ -2,10 +2,10 @@ import glob
 import os
 from typing import List
 
-from ianalyzer_readers.extract import CSV
-from ianalyzer_readers.readers.core import Field as ReaderField
-from ianalyzer_readers.readers.core import Reader
-from ianalyzer_readers.readers.csv import CSVReader
+from textcavator_readers.extract import CSV
+from textcavator_readers.readers.core import Field as ReaderField
+from textcavator_readers.readers.core import Reader
+from textcavator_readers.readers.csv import CSVReader
 
 from addcorpus.models import Corpus, Field, CorpusDataFile
 from addcorpus.python_corpora.load_corpus import load_corpus_definition

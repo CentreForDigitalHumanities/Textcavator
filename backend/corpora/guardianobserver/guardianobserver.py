@@ -13,8 +13,8 @@ from datetime import datetime
 from zipfile import ZipFile
 from io import BytesIO
 
-from ianalyzer_readers.xml_tag import Tag
-from ianalyzer_readers import extract
+from textcavator_readers.xml_tag import Tag
+from textcavator_readers import extract
 
 from api.utils import find_media_file
 from indexing.run_update_task import update_document

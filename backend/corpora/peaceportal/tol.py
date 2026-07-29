@@ -1,12 +1,12 @@
 import re
 from copy import copy
-from ianalyzer_readers.xml_tag import Tag, TransformTag
+from textcavator_readers.xml_tag import Tag, TransformTag
 from typing import Optional
 import bs4
 from django.conf import settings
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition
-from ianalyzer_readers.extract import XML, Constant, Combined
+from textcavator_readers.extract import XML, Constant, Combined
 from corpora.peaceportal.peaceportal import PeacePortal, categorize_material, \
     clean_newline_characters, clean_commentary, join_commentaries, get_text_in_language, \
     transform_to_date_range, not_before_extractor, not_after_extractor

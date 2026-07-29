@@ -7,12 +7,12 @@ from os.path import join, isfile, split, splitext
 from datetime import datetime
 import logging
 import re
-from ianalyzer_readers.xml_tag import Tag
+from textcavator_readers.xml_tag import Tag
 
 from django.conf import settings
 
 from api.utils import find_media_file
-from ianalyzer_readers.extract import Combined, Metadata, XML
+from textcavator_readers.extract import Combined, Metadata, XML
 from addcorpus.python_corpora import filters
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.es_settings import es_settings

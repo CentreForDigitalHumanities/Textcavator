@@ -2,10 +2,10 @@ from datetime import datetime
 import os
 import re
 from tqdm import tqdm
-from ianalyzer_readers.xml_tag import Tag, CurrentTag, TransformTag
+from textcavator_readers.xml_tag import Tag, CurrentTag, TransformTag
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
-from ianalyzer_readers.extract import Metadata, XML, Pass, Order, Backup, Combined
+from textcavator_readers.extract import Metadata, XML, Pass, Order, Backup, Combined
 import corpora.dbnl.utils as utils
 from addcorpus.es_mappings import *
 from addcorpus.python_corpora.filters import RangeFilter, MultipleChoiceFilter, BooleanFilter

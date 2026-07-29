@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 import os
 from os.path import join, splitext
 from datetime import datetime
-from ianalyzer_readers.xml_tag import Tag
+from textcavator_readers.xml_tag import Tag
 
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from addcorpus.python_corpora import filters
 
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
