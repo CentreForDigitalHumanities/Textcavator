@@ -1,10 +1,14 @@
 from glob import glob
 import logging
 from datetime import datetime
+import os
+import json
+import csv
+import re
 
-
-from ianalyzer_readers.extract import Constant, CSV
+from ianalyzer_readers.extract import Combined, Constant, CSV, Metadata, Pass
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
+from addcorpus.python_corpora.filters import MultipleChoiceFilter, DateFilter
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.utils.constants import document_context
@@ -30,6 +34,17 @@ def format_speaker(speaker):
 
         return speaker.title()
 
+def lookup_variable(metadata_tuple):
+    name, lookup_dict, variable = metadata_tuple
+    if name in lookup_dict and variable in lookup_dict[name]:
+        return lookup_dict[name][variable]
+    
+def transform_date_to_year(date):
+    if date:
+        return date[0:4]
+    else:
+        return None
+
 class ParliamentUK(Parliament, CSVCorpusDefinition):
     title = 'People & Parliament (UK)'
     description = "Speeches from the House of Lords and House of Commons"
@@ -45,8 +60,28 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
 
     def sources(self, start, end):
         logger = logging.getLogger('indexing')
+        with open(os.path.join(self.data_directory, 'merged_metadata_twfy_keys.json'), 'r', encoding='utf-8') as file:
+             all_person_metadata = json.load(file)
+            
         for csv_file in glob('{}/*.csv'.format(self.data_directory)):
-            yield csv_file, {}
+            year = re.search(r'\d{4}', csv_file)[0]
+
+            with open(os.path.join(self.data_directory, 'metadata_conversion_per_year/conversion_dict_{}.json'.format(year))) as file:
+                conversion_dict = json.load(file)
+
+            metadata = {}
+            metadata_this_year = {}
+            for speaker_name in conversion_dict:
+                metadata_this_year[speaker_name] = all_person_metadata[conversion_dict[speaker_name]]
+            metadata['metadata_this_year'] = metadata_this_year
+
+            with open(csv_file, 'r', encoding='utf-8') as file:
+                reader = csv.reader(file, delimiter=',', quotechar='"')
+                speaker_ids = []
+                for line in reader:
+                    if line and len(line) > 3 and line[3] not in speaker_ids:
+                        speaker_ids.append(line[3].split('/')[-1])
+            yield csv_file, metadata
 
     chamber =  field_defaults.chamber()
     chamber.extractor = CSV(
@@ -95,6 +130,50 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
     speaker_id = field_defaults.speaker_id()
     speaker_id.extractor = CSV('speaker_id')
 
+    speaker_gender = field_defaults.speaker_gender()
+    speaker_gender.extractor = Combined(
+        CSV('speaker_name'),
+        Metadata('metadata_this_year'),
+        Constant('genderLabel'),
+        transform=lookup_variable
+    )
+    speaker_gender.search_filter = MultipleChoiceFilter(
+        description="Search only in speeches from speakers with a specific gender"
+    )
+
+    speaker_birth_year = field_defaults.speaker_birth_year()
+    speaker_birth_year.extractor = Pass(
+        Combined(
+            CSV('speaker_name'),
+            Metadata('metadata_this_year'),
+            Constant('birthdate'),
+            transform=lookup_variable
+        ),
+        transform=transform_date_to_year
+    )
+    speaker_birth_year.visualizations = ['resultscount', 'termfrequency']
+    
+    speaker_death_year = field_defaults.speaker_death_year()
+    speaker_death_year.extractor = Pass(
+        Combined(
+            CSV('speaker_name'),
+            Metadata('metadata_this_year'),
+            Constant('deathdate'),
+            transform=lookup_variable
+        ),
+        transform=transform_date_to_year
+    )
+    speaker_death_year.visualizations = ['resultscount', 'termfrequency']
+    
+    speaker_birthplace = field_defaults.speaker_birthplace()
+    speaker_birthplace.extractor = Combined(
+        CSV('speaker_name'),
+        Metadata('metadata_this_year'),
+        Constant('birthPlaceLabel'),
+        transform=lookup_variable
+    )
+    
+
     topic = field_defaults.topic()
     topic.extractor = CSV('heading_major',)
     topic.language = 'en'
@@ -115,4 +194,6 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
             self.speech, self.speech_id, self.speech_type,
             self.sequence,
             self.speaker, self.speaker_id,
+            self.speaker_gender, self.speaker_birth_year,
+            self.speaker_death_year, self.speaker_birthplace
         ]
