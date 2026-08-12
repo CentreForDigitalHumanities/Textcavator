@@ -408,6 +408,15 @@ def speaker_academic_title():
         es_mapping=keyword_mapping(),
     )
 
+def speaker_wikidata():
+    """Link to the wikidata entry for the speaker"""
+    return FieldDefinition(
+        name = 'speaker_wikidata',
+        display_name = 'Speaker Wikidata URI',
+        description= 'URI for the Wikidata page for this speaker',
+        es_mapping=keyword_mapping(),
+    )
+
 
 def parliamentary_role():
     "parliamentary role of the speaker (speaker, chair, MP, etc...)"
