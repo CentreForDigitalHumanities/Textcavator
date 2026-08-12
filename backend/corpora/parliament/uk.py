@@ -45,6 +45,28 @@ def transform_date_to_year(date):
     else:
         return None
 
+def find_current_positions(positions, date):
+    current_position_list = []
+    for position in positions:
+        if 'startTime' in position and 'endTime' in position:
+            start_time = datetime.strptime(position['startTime'][:10], "%Y-%m-%d")
+            end_time = datetime.strptime(position['endTime'][:10], "%Y-%m-%d")
+            if start_time < datetime.strptime(date, "%Y-%m-%d") < end_time:
+                current_position_list.append(position)
+        elif 'startTime' in position and start_time < datetime.strptime(date, "%Y-%m-%d"):
+            current_position_list.append(position)
+    return current_position_list
+
+
+
+def lookup_current_ministerial_position(lookup_tuple):
+    name, metadata, date = lookup_tuple
+    if metadata[name]:
+        current_positions = find_current_positions(metadata[name]['positions'], date)
+        for position in current_positions:
+            if position['minister']:
+                return position['positionLabel']
+
 class ParliamentUK(Parliament, CSVCorpusDefinition):
     title = 'People & Parliament (UK)'
     description = "Speeches from the House of Lords and House of Commons"
@@ -180,6 +202,15 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
         Constant('wikidata_uri'),
         transform=lookup_variable
     )
+
+    ministerial_role = field_defaults.ministerial_role()
+    ministerial_role.extractor = Combined(
+        CSV('speaker_name'),
+        Metadata('metadata_this_year'),
+        CSV('date'),
+        transform=lookup_current_ministerial_position
+    )
+
     
 
     topic = field_defaults.topic()
@@ -204,6 +235,6 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
             self.speaker, self.speaker_id,
             self.speaker_gender, self.speaker_birth_year,
             self.speaker_death_year, self.speaker_birthplace,
-            self.speaker_wikidata, #self.ministerial_role,
+            self.speaker_wikidata, self.ministerial_role,
             #self.parliamentary_role, self.party,
         ]
