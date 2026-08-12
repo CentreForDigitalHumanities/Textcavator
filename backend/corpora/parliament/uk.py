@@ -172,6 +172,14 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
         Constant('birthPlaceLabel'),
         transform=lookup_variable
     )
+
+    speaker_wikidata = field_defaults.speaker_wikidata()
+    speaker_wikidata.extractor = Combined(
+        CSV('speaker_name'),
+        Metadata('metadata_this_year'),
+        Constant('wikidata_uri'),
+        transform=lookup_variable
+    )
     
 
     topic = field_defaults.topic()
@@ -195,5 +203,7 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
             self.sequence,
             self.speaker, self.speaker_id,
             self.speaker_gender, self.speaker_birth_year,
-            self.speaker_death_year, self.speaker_birthplace
+            self.speaker_death_year, self.speaker_birthplace,
+            self.speaker_wikidata, #self.ministerial_role,
+            #self.parliamentary_role, self.party,
         ]
