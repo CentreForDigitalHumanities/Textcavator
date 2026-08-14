@@ -45,27 +45,48 @@ def transform_date_to_year(date):
     else:
         return None
 
-def find_current_positions(positions, date):
+def find_current_positions(positions, datestring):
     current_position_list = []
+    date = datetime.strptime(datestring, "%Y-%m-%d")
     for position in positions:
         if 'startTime' in position and 'endTime' in position:
-            start_time = datetime.strptime(position['startTime'][:10], "%Y-%m-%d")
-            end_time = datetime.strptime(position['endTime'][:10], "%Y-%m-%d")
-            if start_time < datetime.strptime(date, "%Y-%m-%d") < end_time:
+            try:
+                start_time = datetime.strptime(position['startTime'][:10], "%Y-%m-%d")
+                end_time = datetime.strptime(position['endTime'][:10], "%Y-%m-%d")
+            except:
+                continue  # if it cannot convert the dates, do not include the position in the list
+            if start_time < date < end_time:
                 current_position_list.append(position)
-        elif 'startTime' in position and start_time < datetime.strptime(date, "%Y-%m-%d"):
+        elif 'startTime' in position and datetime.strptime(position['startTime'][:10], "%Y-%m-%d") < date:
             current_position_list.append(position)
     return current_position_list
 
-
-
 def lookup_current_ministerial_position(lookup_tuple):
     name, metadata, date = lookup_tuple
-    if metadata[name]:
+    if name in metadata:
         current_positions = find_current_positions(metadata[name]['positions'], date)
         for position in current_positions:
             if position['minister']:
                 return position['positionLabel']
+
+def lookup_current_parliamentary_position(lookup_tuple):
+    name, metadata, date = lookup_tuple
+    if name in metadata:
+        current_positions = find_current_positions(metadata[name]['positions'], date)
+        for position in current_positions:
+            if position['member_parliament']:
+                return position['positionLabel']
+            
+def lookup_current_party(lookup_tuple):
+    name, metadata, date = lookup_tuple
+    if name in metadata:
+        current_positions = find_current_positions(metadata[name]['positions'], date)
+        for position in current_positions:
+            if position['member_parliament'] or position['minister']:
+                for label in ['partyLabel', 'partyBackupLabel']:
+                    if label in position:
+                        return position[label]
+
 
 class ParliamentUK(Parliament, CSVCorpusDefinition):
     title = 'People & Parliament (UK)'
@@ -211,7 +232,22 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
         transform=lookup_current_ministerial_position
     )
 
-    
+    parliamentary_role = field_defaults.parliamentary_role()
+    parliamentary_role.extractor = Combined(
+        CSV('speaker_name'),
+        Metadata('metadata_this_year'),
+        CSV('date'),
+        transform=lookup_current_parliamentary_position
+    )
+
+    party = field_defaults.party()
+    party.extractor = Combined(
+        CSV('speaker_name'),
+        Metadata('metadata_this_year'),
+        CSV('date'),
+        transform=lookup_current_party
+    )
+    party.search_filter = MultipleChoiceFilter(option_count=50)
 
     topic = field_defaults.topic()
     topic.extractor = CSV('heading_major',)
@@ -235,6 +271,8 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
             self.speaker, self.speaker_id,
             self.speaker_gender, self.speaker_birth_year,
             self.speaker_death_year, self.speaker_birthplace,
-            self.speaker_wikidata, self.ministerial_role,
-            #self.parliamentary_role, self.party,
+            self.speaker_wikidata, 
+            self.ministerial_role,
+            self.parliamentary_role, 
+            self.party,
         ]
