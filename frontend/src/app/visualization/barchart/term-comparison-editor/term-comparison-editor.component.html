@@ -1,4 +1,5 @@
-<form>
+<p class="form-label" id="term-comparison-label">Compare search terms</p>
+<form aria-labelledby="term-comparison-label">
     <div class="input-group">
         <ia-chips [(value)]="queries" itemName="query" />
         <button class="btn btn-primary" (click)="confirmQueries()" [disabled]="!valid(queries)">
