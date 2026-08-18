@@ -1,13 +1,10 @@
 import pytest
-import os
-import shutil
 from addcorpus.language_analyzers import get_analyzer
 
-def test_stopwords(clean_nltk_data_directory, settings):
+def test_stopwords(clean_nltk_data_directory):
     """
     Check that stopwords results are valid and all languages are included
     """
-    settings.NLTK_DATA_PATH = clean_nltk_data_directory
     cases = [
         {
             'language': 'en',
@@ -51,14 +48,8 @@ def test_stopwords(clean_nltk_data_directory, settings):
 
 
 @pytest.fixture
-def clean_nltk_data_directory(settings):
-    """
-    Temporarily move already downloaded nltk_data if it was already downloaded,
-    and restore the nltk_data directory after testing. If no nltk_data folder existed,
-    data downloaded during testing will also be removed when done.
-    """
-    here = os.path.dirname(os.path.abspath(__file__))
-    data_path = os.path.join(here, '_nltk_data_temp')
-    yield data_path
-
-    shutil.rmtree(data_path)
+def clean_nltk_data_directory(settings, tmp_path_factory) -> str:
+    data_path = tmp_path_factory.mktemp('nltk')
+    path_str = str(data_path.resolve())
+    settings.NLTK_DATA_PATH = path_str
+    return path_str
