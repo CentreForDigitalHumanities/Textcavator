@@ -11,9 +11,6 @@ from addcorpus.es_mappings import keyword_mapping, text_mapping, date_mapping, m
 
 # Corpora that include a `foo` field should initialise it with `foo()` and then modify attributes as needed.
 
-MIN_DATE = datetime(year=1800, month=1, day=1)
-MAX_DATE = datetime(year=2022, month=12, day=31)
-
 
 def book_id():
     """Unique ID of the book in which the speech was recorded"""
