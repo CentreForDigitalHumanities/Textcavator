@@ -41,12 +41,13 @@
 
 <div class="py-5">
     <div class="container-lg">
-        <ul ngbNav #nav="ngbNav" class="nav-pills" [activeId]="activeStep$ | async"
+        <ul ngbNav #nav="ngbNav" class="nav-pills nav-fill flex-column flex-md-row"
+            [activeId]="activeStep$ | async"
             (activeIdChange)="onActiveIndexChange($event)">
             @for (step of steps$ | async; let index = $index; track $index) {
                 <li [ngbNavItem]="index" [disabled]="step.disabled">
                     <button ngbNavLink>
-                        {{index + 1}} <br>
+                        <b class="m-3">{{index + 1}}</b> <br>
                         {{step.label}}
                     </button>
                     <ng-template ngbNavContent>
