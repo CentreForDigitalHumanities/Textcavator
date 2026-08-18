@@ -41,25 +41,40 @@
 
 <div class="py-5">
     <div class="container-lg">
-        <p-steps [model]="steps$ | async" [readonly]="false" [activeIndex]="activeStep$ | async"
-            (activeIndexChange)="onActiveIndexChange($event)" />
+        <ul ngbNav #nav="ngbNav" class="nav-pills" [activeId]="activeStep$ | async"
+            (activeIdChange)="onActiveIndexChange($event)">
+            @for (step of steps$ | async; let index = $index; track $index) {
+                <li [ngbNavItem]="index" [disabled]="step.disabled">
+                    <button ngbNavLink>
+                        {{index + 1}} <br>
+                        {{step.label}}
+                    </button>
+                    <ng-template ngbNavContent>
+                        @if (corpus$ | async; as corpus) {
+                            @switch (index) {
+                                @case (0) {
+                                    <ia-meta-form [corpus]="corpus" />
+                                }
+                                @case (1) {
+                                    <ia-data-form />
+                                }
+                                @case (2) {
+                                    <ia-field-form [corpus]="corpus" />
+                                }
+                                @case (3) {
+                                    <ia-index-form [corpus]="corpus" />
+                                }
+                            }
+                        }
+                    </ng-template>
+                </li>
+            }
+        </ul>
     </div>
 </div>
-<ng-container [ngSwitch]="activeStep$ | async">
-    <div class="py-5">
-        <div class="container-lg" *ngIf="corpus$ | async as corpus">
-            <ng-container *ngSwitchCase="0"><ia-meta-form
-                    [corpus]="corpus" /></ng-container>
-            <ia-data-form *ngSwitchCase="1" />
-            <ng-container *ngSwitchCase="2">
-                <ia-field-form [corpus]="corpus" />
-            </ng-container>
-            <p *ngSwitchCase="3">
-                <ia-index-form [corpus]="corpus" />
-            </p>
-        </div>
-    </div>
-</ng-container>
+<div class="py-5">
+    <div class="container-lg" [ngbNavOutlet]="nav"></div>
+</div>
 
 <div class="py-5" *ngIf="nextStep$ | async as nextStep">
     <div class="container-lg">
