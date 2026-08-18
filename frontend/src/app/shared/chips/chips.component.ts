@@ -36,7 +36,8 @@ export class ChipsComponent {
     }
 
     confirmInput() {
-        if (this.input.length) {
+        const input = this.input.trim();
+        if (input.length) {
             this.value.update(value => _.uniq([...value, this.input]));
             this.input = '';
         }
