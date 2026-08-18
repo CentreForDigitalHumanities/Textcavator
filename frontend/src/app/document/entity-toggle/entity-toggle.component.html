@@ -1,6 +1,11 @@
-<button class="button" type="button" (click)="showNamedEntityDocumentation()">
-    <span class="icon">
+<button class="btn btn-body" type="button" (click)="showNamedEntityDocumentation()">
+    <span >
         <fa-icon [icon]="actionIcons.helpAlt" aria-label="help"></fa-icon>
     </span>
 </button>
-<em [id]="toggleLabel">Show named entities<ia-toggle (toggled)="toggleNER.emit($event)" [toggleLabel]="toggleLabel"></ia-toggle></em>
+
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" [id]="toggleLabel"
+        (change)="toggleNER.emit($event.target.checked)">
+    <label class="form-check-label" [for]="toggleLabel">Show named entities</label>
+</div>

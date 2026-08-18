@@ -6,6 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 import { selectColor } from '@utils/select-color';
 import { FreqTableHeaders, WordSimilarity } from '@models';
 
+type GraphStyle = 'line' | 'bar';
+
 /**
  * Child component of the related words and compare similarity graphs.
  * Handles making the visualisations: a graph with a line and bar layout
@@ -35,7 +37,8 @@ export class SimilarityChartComponent implements OnInit, OnChanges, OnDestroy {
 
     averages: number[];
 
-    graphStyle = new BehaviorSubject<'line' | 'bar'>('line');
+    graphStyles: GraphStyle[] = ['line', 'bar']
+    graphStyle = new BehaviorSubject<GraphStyle>('line');
 
     currentTimeIndex = undefined;
 
@@ -142,7 +145,7 @@ export class SimilarityChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /** convert array of word similarities to a chartData object */
-    makeChartData(data: WordSimilarity[], style: 'line' | 'bar'): ChartData {
+    makeChartData(data: WordSimilarity[], style: GraphStyle): ChartData {
         this.averages = this.timeIntervals.map((t) => this.getAverageTime(t));
         const allSeries = _.groupBy(data, (point) => point.key);
         const datasets = _.values(allSeries).map((series, datasetIndex) => {
@@ -177,7 +180,7 @@ export class SimilarityChartComponent implements OnInit, OnChanges, OnDestroy {
         return data.filter((point) => point.time === interval);
     }
 
-    updateChart(style: 'line' | 'bar'): void {
+    updateChart(style: GraphStyle): void {
         let data: WordSimilarity[];
         if (style !== 'bar') {
             this.currentTimeIndex = undefined;
@@ -198,7 +201,7 @@ export class SimilarityChartComponent implements OnInit, OnChanges, OnDestroy {
         this.makeChart(this.chartData, style);
     }
 
-    makeChart(data: ChartData, style: 'line' | 'bar'): void {
+    makeChart(data: ChartData, style: GraphStyle): void {
         const options: ChartOptions = {
             elements: {
                 line: {

@@ -1,21 +1,27 @@
-<section class="section">
-  <div class="container">
-    <h1 class="title block">Settings</h1>
+<section class="py-5">
+    <div class="container-lg">
+        <h1 class="mb-4">Settings</h1>
 
-    <div class="box">
-      <ia-search-history-settings></ia-search-history-settings>
+        <div class="card mb-4">
+            <div class="card-body">
+                <ia-search-history-settings></ia-search-history-settings>
+            </div>
+        </div>
+
+        @if (enableChangeCredentials$ | async) {
+            <div class="card mb-4">
+                <div class="card-body">
+                    <ia-change-username />
+                </div>
+            </div>
+        }
+
+        @if (enableChangeCredentials$ | async) {
+        <div class="card mb-4">
+            <div class="card-body">
+                <ia-change-password />
+            </div>
+        </div>
+        }
     </div>
-
-    @if (enableChangeCredentials$ | async) {
-      <div class="box">
-        <ia-change-username />
-      </div>
-    }
-
-    @if (enableChangeCredentials$ | async) {
-      <div class="box">
-        <ia-change-password />
-      </div>
-    }
-  </div>
 </section>

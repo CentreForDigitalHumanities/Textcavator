@@ -1,14 +1,15 @@
-<nav class="menu" aria-labelledby="topics-header">
-  <h2 class="title is-5" id="topics-header">Manual topics</h2>
+<nav class="" aria-labelledby="topics-header">
+  <h2 class="" id="topics-header">Manual topics</h2>
   @for (section of (manifest$ | async); track section) {
     @if (hasPermission(section) | async) {
-      <h3 class="menu-label">{{section.title}}</h3>
-      <ul class="menu-list">
+      <h3 class="h4">{{section.title}}</h3>
+      <ul class="nav flex-column nav-pills mb-3">
         @for (page of section.pages; track page) {
-          <li>
+          <li class="nav-item">
             <a [routerLink]="['/manual', page.id]"
-              routerLinkActive="is-active"
-              ariaCurrentWhenActive="page">
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link">
               {{page.title}}
             </a>
           </li>

@@ -1,9 +1,9 @@
-<section class="section">
-  <div class="container">
-    <h1 class="title site-header is-2">{{appName}}</h1>
+<section class="my-5">
+  <div class="container-lg">
+    <h1 class="site-header display-5 mb-4">{{appName}}</h1>
 
     @if (appDescription) {
-      <div class="content" [innerHTML]="appDescription"></div>
+      <div [innerHTML]="appDescription"></div>
     }
   </div>
 </section>

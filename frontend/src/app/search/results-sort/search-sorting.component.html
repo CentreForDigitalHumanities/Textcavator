@@ -1,28 +1,20 @@
-<div class="control has-text-left">
-  <ia-dropdown (onChange)="changeField($event)" [value]="sortField"
-    [labelledBy]="labelledBy">
-    <span iaDropdownLabel>{{ sortField?.displayName || 'Relevance' }}</span>
+<ia-dropdown (onChange)="changeField($event)" [value]="sortField" class="text-left">
+    <button iaDropdownToggle [attr.aria-labelledby]="labelledBy">{{ sortField?.displayName || 'Relevance' }}</button>
     <div iaDropdownMenu>
-      <a iaDropdownItem [value]="undefined">Relevance</a>
-      @for (field of sortableFields; track field) {
-        <a
-          iaDropdownItem [value]="field">
-          {{field.displayName}}
-        </a>
-      }
+        <button iaDropdownItem [value]="undefined">Relevance</button>
+        @for (field of sortableFields; track field.name) {
+            <button iaDropdownItem [value]="field">
+                {{field.displayName}}
+            </button>
+        }
     </div>
-  </ia-dropdown>
-</div>
-<div class="control">
-  <button class="button" type="button" (click)="toggleSortType()" [ngClass]="{ 'is-static': !sortField }">
-    <span class="icon" aria-hidden="true">
-      <fa-icon [icon]="sortIcons[sortType]"></fa-icon>
-    </span>
+</ia-dropdown>
+<button class="btn btn-body" type="button" (click)="toggleSortType()"
+    [disabled]="!sortField">
+    <fa-icon aria-hidden="true" [icon]="sortIcons[sortType]"></fa-icon>
     @if (ascending) {
-      <span>Ascending</span>
+        Ascending
+    } @else {
+        Descending
     }
-    @if (!ascending) {
-      <span>Descending</span>
-    }
-  </button>
-</div>
+</button>

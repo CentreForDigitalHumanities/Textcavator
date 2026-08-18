@@ -1,40 +1,35 @@
 @if (selector) {
   @if (selector.options.length) {
-    <div class="columns">
-      <div class="column">
+    <div class="row">
+      <div class="col-md">
         <div class="field">
-          <label class="label" id="label-visualization-type">
+          <label class="form-label" id="label-visualization-type">
             What do you want to visualise?
           </label>
-          <div class="control">
-            <ia-dropdown [value]="selector.activeOption$ | async"
-              labelledBy="label-visualization-type">
-              <span iaDropdownLabel>{{(selector.activeOption$ | async).label}}</span>
+            <ia-dropdown [value]="selector.activeOption$ | async">
+              <button iaDropdownToggle aria-labelledby="label-visualization-type">
+                {{(selector.activeOption$ | async).label}}
+                </button>
               <div iaDropdownMenu>
                 @for (option of selector.options; track option) {
-                  <a
-                    iaDropdownItem [value]="option"
-                    [disabled]="option.disabled$ | async"
-                    (onSelect)="setVisualizationType($event)">
-                    {{option.label}}
-                    @if (option.disabled$ | async) {
-                      <span
-                        class="icon" iaBalloon="this visualisation requires a search term">
-                        <fa-icon [icon]="actionIcons.help"></fa-icon>
-                      </span>
-                    }
-                  </a>
+                    <button iaDropdownItem [value]="option"
+                        [disabled]="option.disabled$ | async"
+                        (onSelect)="setVisualizationType($event)">
+                        {{option.label}}
+                        @if (option.disabled$ | async) {
+                            <small><br> <i>Requires a search term</i></small>
+                        }
+                    </button>
                 }
               </div>
             </ia-dropdown>
-          </div>
         </div>
       </div>
       @if ((selector.activeOption$ | async).fields; as fields) {
-        <div class="column">
+        <div class="col-md">
           <div class="field">
             @if (selector.state$ | async; as state) {
-              <label class="label"
+              <label class="form-label"
                 id="label-visualized-field">
                 @if (state.name === 'resultscount' || state.name === 'termfrequency') {
                   <span>
@@ -53,45 +48,34 @@
                 }
               </label>
             }
-            <div class="control">
-              @if (fields.length > 1) {
-                <ia-dropdown
-                  labelledBy="label-visualized-field"
-                  [value]="(selector.state$ | async).field">
-                  <span iaDropdownLabel>{{(selector.state$ | async).field?.displayName}}</span>
-                  <div iaDropdownMenu>
+            <ia-dropdown [value]="(selector.state$ | async).field">
+                <button iaDropdownToggle aria-labelledby="label-visualized-field">
+                    {{(selector.state$ | async).field?.displayName}}
+                </button>
+                <div iaDropdownMenu>
                     @for (field of fields; track field) {
-                      <a
-                        iaDropdownItem [value]="field"
-                        (onSelect)="setVisualizedField($event)">
-                        {{field.displayName}}
-                      </a>
+                        <button iaDropdownItem [value]="field"
+                            (onSelect)="setVisualizedField($event)">
+                            {{field.displayName}}
+                        </button>
                     }
-                  </div>
-                </ia-dropdown>
-              }
-              @if (fields.length === 1) {
-                <input class="input is-static" type="text" [value]="fields[0].displayName">
-              }
-            </div>
+                </div>
+            </ia-dropdown>
+
           </div>
         </div>
       }
-      <div class="column is-narrow">
-        <div class="field has-addons">
+      <div class="col-md-auto">
+        <div class="input-group">
           <!-- Buttons for switching between table and graphical representation -->
-          <div class="control">
-            <button class="button" iaToggleButton [active]="!freqtable"
+            <button class="btn" iaToggleButton [active]="!freqtable"
               (click)="freqtable = false" aria-label="view chart">
               <fa-icon [icon]="visualizationIcons.chart" aria-hidden="true" />
             </button>
-          </div>
-          <div class="control">
-            <button class="button" iaToggleButton [active]="freqtable"
+            <button class="btn" iaToggleButton [active]="freqtable"
               (click)="freqtable = true" aria-label="view table">
               <fa-icon [icon]="visualizationIcons.table" aria-hidden="true"/>
             </button>
-          </div>
         </div>
       </div>
     </div>
@@ -105,21 +89,19 @@
         </div>
       </div>
     }
-    <div class="block">
+    <div class="my-3">
       @switch (visualizationType) {
         @case ('resultscount') {
           @if (visualizedField.displayType === 'date') {
             <ia-timeline [corpus]="corpus" [queryModel]="queryModel"
               [visualizedField]="visualizedField" [frequencyMeasure]="'documents'"
               [asTable]="freqtable" [palette]="palette"
-              (error)="setErrorMessage($event)"
-            (totalTokenCountAvailable)="showTokenCountOption = $event"></ia-timeline>
+              (error)="setErrorMessage($event)"></ia-timeline>
           }
           @if (visualizedField.displayType !== 'date') {
             <ia-histogram [corpus]="corpus" [queryModel]="queryModel" [visualizedField]="visualizedField"
               [asTable]="freqtable" [palette]="palette"
-              (error)="setErrorMessage($event)"
-            (totalTokenCountAvailable)="showTokenCountOption = $event"></ia-histogram>
+              (error)="setErrorMessage($event)"></ia-histogram>
           }
         }
         @case ('termfrequency') {
@@ -127,15 +109,13 @@
             <ia-timeline [corpus]="corpus" [queryModel]="queryModel"
               [visualizedField]="visualizedField" [frequencyMeasure]="'tokens'"
               [asTable]="freqtable" [palette]="palette"
-              (error)="setErrorMessage($event)"
-            (totalTokenCountAvailable)="showTokenCountOption = $event"></ia-timeline>
+              (error)="setErrorMessage($event)"></ia-timeline>
           }
           @if (visualizedField.displayType !== 'date') {
             <ia-histogram [corpus]="corpus" [queryModel]="queryModel" [visualizedField]="visualizedField"
               [frequencyMeasure]="'tokens'"
               [asTable]="freqtable" [palette]="palette"
-              (error)="setErrorMessage($event)"
-            (totalTokenCountAvailable)="showTokenCountOption = $event"></ia-histogram>
+              (error)="setErrorMessage($event)"></ia-histogram>
           }
         }
         @case ( 'wordcloud' ) {
@@ -160,7 +140,7 @@
       (palette)="palette = $event">
     </ia-visualization-footer>
   } @else {
-    <div class="block message">
+    <div class="my-3 message">
       This corpus has no fields with associated visualizations.
     </div>
   }

@@ -1,12 +1,13 @@
 @if (filter) {
-  <div class="bool">
-    <ia-dropdown [value]="data" (onChange)="update($event)"
-      labelledBy="legend-filter-{{filter.displayName | slugify}}">
-      <span iaDropdownLabel>{{data !== undefined ? (data | json) : 'Choose'}}</span>
-      <div iaDropdownMenu>
-        <a iaDropdownItem [value]="true">True</a>
-        <a iaDropdownItem [value]="false">False</a>
-      </div>
-    </ia-dropdown>
-  </div>
+    <div class="bool">
+        <ia-dropdown [value]="data" (onChange)="update($event)">
+            <button iaDropdownToggle aria-labelledby="legend-filter-{{filter.displayName | slugify}}">
+                {{data !== undefined ? (data | json) : 'Choose'}}
+            </button>
+            <div iaDropdownMenu>
+                <button iaDropdownItem [value]="true">True</button>
+                <button iaDropdownItem [value]="false">False</button>
+            </div>
+        </ia-dropdown>
+    </div>
 }

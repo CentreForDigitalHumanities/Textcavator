@@ -142,6 +142,9 @@ export interface Download {
     status: DownloadStatus;
 }
 
+export type DownloadEncoding = 'utf-8' | 'utf-16';
+export type DownloadTableFormat = 'long' | 'wide';
+
 export interface DownloadOptions {
     table_format?: 'long'|'wide';
     encoding: 'utf-8'|'utf-16';

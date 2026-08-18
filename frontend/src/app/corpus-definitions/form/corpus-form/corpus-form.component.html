@@ -1,54 +1,53 @@
-<div class="section">
-    <div class="container">
-        <nav aria-label="secondary navigation" class="breadcrumb block">
-            <ul>
-                <li><a [routerLink]="['/']">{{appName}}</a></li>
-                <li><a [routerLink]="['../..']">Custom corpora</a></li>
-                <li class="is-active" aria-current="page"><a>{{(corpus$ | async).definition?.meta.title ||
+<div class="py-5">
+    <div class="container-lg">
+        <nav aria-label="secondary navigation" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a [routerLink]="['/']" >{{appName}}</a></li>
+                <li class="breadcrumb-item"><a [routerLink]="['../..']">Custom corpora</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a>{{(corpus$ | async).definition?.meta.title ||
                         '...'}}: edit</a></li>
-            </ul>
+            </ol>
         </nav>
 
         @let corpus = corpus$ | async;
 
-        <div class="columns">
-            <div class="column">
-                <h1 class="title">Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
+        <div class="row">
+            <div class="col-md">
+                <h1 class="mb-4">Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
             </div>
-            <div class="column is-narrow">
+            <div class="col-md-auto">
                 @if (corpus.active) {
-                    <a class="button is-medium" [routerLink]="['/search', corpus.definition.name]">
-                        <span class="icon">
-                            <fa-icon [icon]="corpusIcons.search" aria-hidden="true" />
-                        </span>
+                    <a class="btn btn-ghost btn-lg"
+                        [routerLink]="['/search', corpus.definition.name]"
+                        aria-label="search corpus">
+                        <fa-icon [icon]="corpusIcons.search" aria-hidden="true" />
                     </a>
                 }
             </div>
         </div>
 
         @if (corpus.active) {
-            <div class="message">
-                <div class="message-body">
-                    <p class="block">
-                        This corpus is currently active and available for searching. Some
-                        editing options are locked. To enable them, deactive the corpus in
-                        step 4.
-                    </p>
-                </div>
+            <div class="alert alert-secondary">
+                <p class="mb-0">
+                    This corpus is currently active and available for searching. Some
+                    editing options are locked. To enable them, deactive the corpus in
+                    step 4.
+                </p>
             </div>
         }
     </div>
 </div>
 
-<div class="section">
-    <div class="container">
+<div class="py-5">
+    <div class="container-lg">
         <p-steps [model]="steps$ | async" [readonly]="false" [activeIndex]="activeStep$ | async"
             (activeIndexChange)="onActiveIndexChange($event)" />
     </div>
 </div>
 <ng-container [ngSwitch]="activeStep$ | async">
-    <div class="section">
-        <div class="container" *ngIf="corpus$ | async as corpus">
+    <div class="py-5">
+        <div class="container-lg" *ngIf="corpus$ | async as corpus">
             <ng-container *ngSwitchCase="0"><ia-meta-form
                     [corpus]="corpus" /></ng-container>
             <ia-data-form *ngSwitchCase="1" />
@@ -62,8 +61,8 @@
     </div>
 </ng-container>
 
-<div class="section" *ngIf="nextStep$ | async as nextStep">
-    <div class="container">
+<div class="py-5" *ngIf="nextStep$ | async as nextStep">
+    <div class="container-lg">
         @if (nextStep.disabled) {
             <div class="message">
                 <p class="message-body">
@@ -71,8 +70,8 @@
                 </p>
             </div>
         } @else {
-            <button class="button" (click)="toNext()">
-                <span class="icon"><fa-icon [icon]="actionIcons.next" aria-hidden="true" /></span>
+            <button class="btn btn-body" (click)="toNext()">
+                <span ><fa-icon [icon]="actionIcons.next" aria-hidden="true" /></span>
                 <span>{{nextStep.label}}</span>
             </button>
         }

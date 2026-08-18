@@ -1,14 +1,14 @@
-<div class="block" *ngIf="frequencyMeasure === 'tokens'">
+<div class="my-3" *ngIf="frequencyMeasure === 'tokens'">
     <i>Searching in <strong>{{searchFields}}</strong></i>
 </div>
 
-<div class="block">
+<div class="my-3">
     <p class=notification *ngIf=showHint>
         <b>Drag to zoom, double click to unzoom</b>
     </p>
 </div>
 
-<div class="block">
+<div class="my-3">
     <ia-barchart-options
         [queryText]="queryText" [showTokenCountOption]="totalTokenCountAvailable" [isLoading]="isLoading"
         [freqTable]="asTable" [histogram]="false"
@@ -17,11 +17,11 @@
     </ia-barchart-options>
 </div>
 
-<div class="block" [ngClass]="{'is-loading':isLoading, 'is-hidden': asTable }">
+<div class="my-3" [iaLoading]="isLoading" [class.d-none]="asTable">
     <canvas id="barchart" width="400" height="200" aria-label="timeline" role="img"></canvas>
 </div>
 
-<div class="block" *ngIf="asTable">
+<div class="my-3" *ngIf="asTable">
     <ia-freqtable [headers]="tableHeaders" [data]="tableData" [defaultSort]="'date'" [name]="visualizedField.name"
         [requiredColumn]="currentValueKey">
     </ia-freqtable>
@@ -29,7 +29,7 @@
 
 <div class="message is-warning" *ngIf="!isLoading && documentLimitExceeded && frequencyMeasure === 'tokens'">
     <div class="message-body">
-        <div class="block">
+        <div class="my-3">
         The results for your search include too many documents to count all matches.
         Only a sample of the first {{percentageDocumentsSearched}}% of documents for each bin are analyzed;
         the matches in other documents are extrapolated based on the sample.

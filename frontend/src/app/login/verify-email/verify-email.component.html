@@ -1,16 +1,14 @@
-<section class="section">
-  <h1 class="title">Confirm E-mail Address</h1>
+<section class="container-lg py-5">
+  <h1 class="mb-4">Confirm E-mail Address</h1>
   @if ((userDetails$ | async); as userDetails) {
     <form (submit)=confirm(key) class="box">
       <div class="field">
-        <label class="label">
+        <label class="form-label">
           Please confirm that <a href="mailto:{{userDetails.email}}">{{userDetails.email}}</a> is an e-mail address for user {{userDetails.username}}
         </label>
       </div>
-      <div class="field is-grouped">
-        <div class="control">
-          <button class="button is-primary" [disabled]="!userDetails.username || !userDetails.email">Confirm</button>
-        </div>
+      <div class="my-3">
+          <button class="btn btn-primary" [disabled]="!userDetails.username || !userDetails.email">Confirm</button>
       </div>
     </form>
   }
@@ -21,7 +19,7 @@
   }
 
   @if (success) {
-    <div class="notification is-success container">
+    <div class="notification is-success">
       <p>Your email address has been verified! You are being directed to login...</p>
     </div>
   }

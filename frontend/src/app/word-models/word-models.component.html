@@ -1,103 +1,88 @@
 <ia-corpus-header [corpus]="corpus" currentPage="word-models"></ia-corpus-header>
 
-<section class="section search-section">
-  <div class="container">
-    <form class="block">
-      <div class="field has-addons">
-        <div class="control is-expanded">
-          <input class="input" name="query" placeholder="Query" [(ngModel)]="queryText">
-        </div>
-        <div class="control">
-          <button type="submit" class="button is-primary" (click)="submitQuery()">
-            Search
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>
+<section class="py-5">
+    <div class="container-lg">
+        <form class="my-3">
+            <div class="input-group mb-3">
+                <input class="form-control" name="query" placeholder="Query" [(ngModel)]="queryText">
+                <button type="submit" class="btn btn-primary" (click)="submitQuery()">
+                    Search
+                </button>
+            </div>
+        </form>
+    </div>
 </section>
 
-<section class="section">
-  <div class="container">
-    @if (activeQuery || queryFeedback) {
-      <ia-query-feedback [query]="activeQuery" [queryFeedback]="queryFeedback" (selectedSuggestion)="queryText = $event; submitQuery()"></ia-query-feedback>
-    }
-
-    @if (activeQuery && queryFeedback && queryFeedback.status === 'success') {
-      <ia-tabs [activeTab]="currentTab" (tabChange)="onTabChange($event)">
-        @for (tab of tabNames; track tab) {
-          <ng-template iaTabPanel
-            [id]="tab" [title]="tabs[tab].title">
-            @if (!errorMessage) {
-              <div class="columns">
-                <div class="column"></div>
-                <div class="column is-narrow">
-                  <div class="field has-addons">
-                    <!-- Buttons for switching between table and graphical representation -->
-                    <div class="control">
-                      <button class="button" iaToggleButton
-                        [active]="!asTable"
-                        (click)="asTable = false"
-                        aria-label="view chart">
-                        <fa-icon [icon]="visualizationIcons.chart"
-                          aria-hidden="true" />
-                      </button>
-                    </div>
-                    <div class="control">
-                      <button class="button" iaToggleButton
-                        [active]="asTable"
-                        (click)="asTable = true"
-                        aria-label="view table">
-                        <fa-icon [icon]="visualizationIcons.table"
-                          aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="block" [ngClass]="{'is-loading':isLoading}">
-                @if (tab === 'relatedwords') {
-                  <ia-related-words
-                    [corpus]="corpus" [queryText]="activeQuery"
-                    [asTable]="asTable" [palette]="palette"
-                    (relatedWordsError)="setErrorMessage($event)">
-                  </ia-related-words>
-                }
-                @if (tab === 'wordsimilarity') {
-                  <ia-word-similarity
-                    [corpus]="corpus"
-                    [asTable]="asTable" [palette]="palette"
-                    (wordSimilarityError)="setErrorMessage($event)">
-                  </ia-word-similarity>
-                }
-                @if (tab==='neighbornetwork') {
-                  <ia-neighbor-network
-                    [corpus]="corpus" [queryText]="activeQuery"
-                    [asTable]="asTable"
-                    />
-                }
-              </div>
-              <div class="block">
-                <ia-visualization-footer [tableView]="asTable" [manualPage]="tabs[tab].manual"
-                  [chartElementID]="tabs[tab].chartID" [imageFileName]="imageFileName"
-                  (palette)="palette = $event">
-                </ia-visualization-footer>
-              </div>
-            } @else {
-              <b> Did not find data to visualize.</b>
-              @if (errorMessage && errorMessage.length > 0) {
-                <div class="container">
-                  <div class="notification is-warning">
-                    {{errorMessage}}
-                  </div>
-                </div>
-              }
-            }
-          </ng-template>
+<section class="py-5">
+    <div class="container-lg">
+        @if (activeQuery || queryFeedback) {
+        <ia-query-feedback [query]="activeQuery" [queryFeedback]="queryFeedback"
+            (selectedSuggestion)="queryText = $event; submitQuery()"></ia-query-feedback>
         }
-      </ia-tabs>
-    }
-  </div>
+
+        @if (activeQuery && queryFeedback && queryFeedback.status === 'success') {
+            <ul ngbNav #nav="ngbNav" class="nav-tabs mb-4"
+                [activeId]="currentTab"
+                (navChange)="onTabChange($event.nextId)">
+                @for (tab of tabNames; track tab) {
+                    <li [ngbNavItem]="tab">
+                        <button ngbNavLink>
+                            {{tabs[tab].title}}
+                        </button>
+                        <ng-template ngbNavContent>
+                            @if (!errorMessage) {
+                                <div class="clearfix">
+                                    <div class="float-end">
+                                        <div class="input-group">
+                                            <button class="btn" iaToggleButton [active]="!asTable" (click)="asTable = false"
+                                                aria-label="view chart">
+                                                <fa-icon [icon]="visualizationIcons.chart" aria-hidden="true" />
+                                            </button>
+                                            <button class="btn" iaToggleButton [active]="asTable" (click)="asTable = true"
+                                                aria-label="view table">
+                                                <fa-icon [icon]="visualizationIcons.table" aria-hidden="true" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="my-3">
+                                    @if (tab === 'relatedwords') {
+                                        <ia-related-words [corpus]="corpus" [queryText]="activeQuery" [asTable]="asTable"
+                                            [palette]="palette" (relatedWordsError)="setErrorMessage($event)">
+                                        </ia-related-words>
+                                    }
+                                    @if (tab === 'wordsimilarity') {
+                                        <ia-word-similarity [corpus]="corpus" [asTable]="asTable" [palette]="palette"
+                                            (wordSimilarityError)="setErrorMessage($event)">
+                                        </ia-word-similarity>
+                                    }
+                                    @if (tab==='neighbornetwork') {
+                                    <ia-neighbor-network [corpus]="corpus" [queryText]="activeQuery" [asTable]="asTable" />
+                                    }
+                                </div>
+                                <div class="my-3">
+                                    <ia-visualization-footer [tableView]="asTable" [manualPage]="tabs[tab].manual"
+                                        [chartElementID]="tabs[tab].chartID" [imageFileName]="imageFileName"
+                                        (palette)="palette = $event">
+                                    </ia-visualization-footer>
+                                </div>
+                            } @else {
+                            <b> Did not find data to visualize.</b>
+                            @if (errorMessage && errorMessage.length > 0) {
+                            <div class="container-lg">
+                                <div class="notification is-warning">
+                                    {{errorMessage}}
+                                </div>
+                            </div>
+                            }
+                            }
+                        </ng-template>
+                    </li>
+                }
+            </ul>
+            <div [ngbNavOutlet]="nav"></div>
+        }
+    </div>
 </section>
 
 <ia-back-to-top-button />

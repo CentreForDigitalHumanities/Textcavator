@@ -1,15 +1,15 @@
-<section class="section">
-  <div class="container" [class.is-loading]="isLoading | async">
+<section class="py-5">
+  <div class="container-lg" [iaLoading]="isLoading | async">
     @if (items) {
       @if (showCorpusFilters) {
-        <div class="block">
+        <div class="my-3">
           <ia-corpus-filter [corpora]="items" (filtered)="filteredItems = $event"></ia-corpus-filter>
         </div>
       } @else {
         <div style="margin-bottom: 3rem;"></div>
       }
       @for (item of displayItems; track item) {
-        <div class="block">
+        <div class="my-3">
           <ia-corpus-selector [corpus]="item"></ia-corpus-selector>
         </div>
       }

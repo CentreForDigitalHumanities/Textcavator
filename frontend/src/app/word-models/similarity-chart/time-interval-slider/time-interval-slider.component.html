@@ -1,5 +1,6 @@
-<div class="block">
-    <input type="range" [value]="currentIndex | async" [max]="sliderMax"
+<div class="my-3">
+    <input type="range" class="form-range"
+        [value]="currentIndex | async" [max]="sliderMax"
         (change)="sliderIndex.next($event.target.valueAsNumber)">
 
     <p style="text-align:center;">

@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import {
     Download,
-    DownloadOptions,
     DownloadParameters,
     DownloadType,
     QueryModel,
@@ -10,8 +9,6 @@ import {
 import {
     ApiService,
     CorpusService,
-    DownloadService,
-    NotificationService,
 } from '@services';
 import { HistoryDirective } from '../history.directive';
 import { findByName } from '@utils/utils';
@@ -22,6 +19,8 @@ import {
 } from '@utils/download-history';
 import { Title } from '@angular/platform-browser';
 import { pageTitle } from '@utils/app';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DownloadOptionsComponent } from '@app/download/download-options/download-options.component';
 
 @Component({
     selector: 'ia-download-history',
@@ -34,13 +33,11 @@ export class DownloadHistoryComponent extends HistoryDirective implements OnInit
 
     actionIcons = actionIcons;
 
-    itemToDownload: Download;
+    private modalService = inject(NgbModal);
 
     constructor(
-        private downloadService: DownloadService,
         private apiService: ApiService,
         corpusService: CorpusService,
-        private notificationService: NotificationService,
         private title: Title,
     ) {
         super(corpusService);
@@ -67,18 +64,26 @@ export class DownloadHistoryComponent extends HistoryDirective implements OnInit
 
     queryText(download: Download): string {
         const queryModels = this.getAllQueryModels(download);
-        const queryTexts = queryModels.map(model => model.queryText);
-        return _.join(queryTexts, ', ');
+        if (queryModels) {
+            const queryTexts = queryModels.map(model => model.queryText);
+            return _.join(queryTexts, ', ');
+        } else {
+            return '';
+        }
     }
 
     getAllQueryModels(download: Download): QueryModel[] {
         const corpus = findByName(this.corpora, download.corpus);
-        return downloadQueryModels(download, corpus);
+        if (corpus) {
+            return downloadQueryModels(download, corpus);
+        }
     }
 
     getQueryModel(download: Download): QueryModel {
         const corpus = findByName(this.corpora, download.corpus);
-        return downloadQueryModel(download, corpus);
+        if (corpus) {
+            return downloadQueryModel(download, corpus);
+        }
     }
 
     getFields(download: Download): string {
@@ -86,26 +91,17 @@ export class DownloadHistoryComponent extends HistoryDirective implements OnInit
         const fieldNames =  'fields' in parameters ?
             parameters.fields : [parameters[0].field_name];
         const corpus = findByName(this.corpora, download.corpus);
-        const fields = fieldNames.map(fieldName =>
-            findByName(corpus.fields, fieldName)?.displayName
-        ).filter(_.negate(_.isUndefined));
-        return _.join(fields, ', ');
+        if (corpus) {
+            const fields = fieldNames.map(fieldName =>
+                findByName(corpus.fields, fieldName)?.displayName
+            ).filter(_.negate(_.isUndefined));
+            return _.join(fields, ', ');
+        }
     }
 
-    downloadFile(download: Download, options: DownloadOptions) {
-        this.downloadService.retrieveFinishedDownload(download.id, options).then( result => {
-            if (result.status === 200) {
-                saveAs(result.body, download.filename);
-                this.itemToDownload = undefined;
-            } else {
-                this.downloadFailed(result);
-            }
-        }).catch(this.downloadFailed.bind(this));
-    }
-
-    downloadFailed(result) {
-        console.error(result);
-        this.notificationService.showMessage('could not download file', 'danger');
-        this.itemToDownload = undefined;
+    showOptions(download: Download) {
+        const modalRef = this.modalService.open(DownloadOptionsComponent);
+        const component = modalRef.componentInstance as DownloadOptionsComponent;
+        component.download = download;
     }
 }

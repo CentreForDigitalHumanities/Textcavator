@@ -3,6 +3,7 @@ import { SharedModule } from '@shared/shared.module';
 import { TagSelectComponent } from './tag-select/tag-select.component';
 import { DocumentTagsComponent } from './document-tags/document-tags.component';
 import { TagOverviewComponent } from './tag-overview/tag-overview.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -12,7 +13,7 @@ import { TagOverviewComponent } from './tag-overview/tag-overview.component';
         TagSelectComponent,
         TagOverviewComponent,
     ],
-    imports: [SharedModule],
+    imports: [SharedModule, ReactiveFormsModule],
     exports: [DocumentTagsComponent],
 })
 export class TagModule {}

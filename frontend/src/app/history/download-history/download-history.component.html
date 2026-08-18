@@ -1,5 +1,5 @@
-<section class="section">
-  <h1 class="title">Downloads</h1>
+<section class="py-5 container-lg">
+  <h1 class="mb-4">Downloads</h1>
 
   @if (downloads && corpora) {
     <p-table #dt [value]="downloads"
@@ -46,13 +46,10 @@
           <td>{{download.status}}</td>
           <td>
             @if (download.status === 'done') {
-              <a role="button" tabindex="0" (click)="itemToDownload = download"
-                (keydown.enter)="itemToDownload = download">
-                <span class="icon">
-                  <fa-icon [icon]="actionIcons.download"></fa-icon>
-                </span>
-                <span>download file</span>
-              </a>
+                <button class="btn btn-ghost" (click)="showOptions(download)">
+                    <fa-icon [icon]="actionIcons.download" />
+                    download file
+                </button>
             }
           </td>
         </tr>
@@ -60,6 +57,3 @@
     </p-table>
   }
 </section>
-
-<ia-download-options [download]="itemToDownload" (cancel)="itemToDownload = undefined"
-(confirm)="downloadFile(itemToDownload, $event)"></ia-download-options>

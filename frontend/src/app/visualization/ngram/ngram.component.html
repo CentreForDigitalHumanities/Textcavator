@@ -1,226 +1,215 @@
 
-<div class="box">
-  <div class="columns is-multiline">
-    <div class="column is-one-third">
-      <div class="field">
-        <label class="label" iaBalloon="view ngrams (phrases) or collocates (loose words)"
-          iaBalloonPosition="up-left" iaBalloonLength="fit"
-          id="label-mode">
-          Mode
-        </label>
-        <div class="control">
-          <ia-dropdown [value]="currentModeOption" labelledBy="label-mode"
-            (onChange)="onParameterChange('mode', $event.value)">
-            <span iaDropdownLabel>{{currentModeOption?.label}}</span>
-            <div iaDropdownMenu>
-              @for (option of modeOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
-              }
+<div class="card">
+    <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="field">
+              <label class="form-label"
+                ngbTooltip="view ngrams (phrases) or collocates (loose words)"
+                id="label-mode">
+                Mode
+              </label>
+                <ia-dropdown [value]="currentModeOption"
+                    (onChange)="onParameterChange('mode', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-mode">
+                        {{currentModeOption?.label}}
+                    </button>
+                    <div iaDropdownMenu>
+                        @for (option of modeOptions; track option) {
+                            <button iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </button>
+                        }
+                    </div>
+              </ia-dropdown>
             </div>
-          </ia-dropdown>
-        </div>
-      </div>
-    </div>
-    <div class="column is-one-third">
-      <div class="field">
-        <label class="label" iaBalloon="search for bigrams (2 words) or trigrams (3 words)"
-          iaBalloonPosition="up-left" iaBalloonLength="fit"
-          id="label-size">
+          </div>
+          <div class="col-md-4">
+            <div class="field">
+              <label class="form-label"
+                ngbTooltip="search for bigrams (2 words) or trigrams (3 words)"
+                id="label-size">
+                @if (currentSettings.mode === 'ngrams') {
+                  Length of n-gram
+                } @else {
+                  Maximum distance
+                }
+              </label>
+                <ia-dropdown [value]="currentSizeOption"
+                    (onChange)="onParameterChange('size', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-size">
+                        {{currentSizeOption?.label}}
+                    </button>
+                    <div iaDropdownMenu>
+                    @for (option of sizeOptions; track option) {
+                        <button iaDropdownItem [value]="option">
+                            {{option.label}}
+                        </button>
+                    }
+                    </div>
+                </ia-dropdown>
+            </div>
+          </div>
           @if (currentSettings.mode === 'ngrams') {
-            Length of n-gram
-          } @else {
-            Maximum distance
+            <div class="col-md-4">
+              <div class="field">
+                <label class="form-label"
+                    ngbTooltip="only search n-grams with the search term in the specified position"
+                    id="label-positions">
+                  Position of search term
+                </label>
+                <ia-dropdown [value]="currentPositionsOption"
+                    (onChange)="onParameterChange('positions', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-positions">
+                        {{currentPositionsOption?.label}}
+                    </button>
+                    <div iaDropdownMenu>
+                      @for (option of positionsOptions; track option) {
+                          <button iaDropdownItem [value]="option">
+                              {{option.label}}
+                          </button>
+                      }
+                    </div>
+                </ia-dropdown>
+              </div>
+            </div>
           }
-        </label>
-        <div class="control">
-          <ia-dropdown [value]="currentSizeOption" labelledBy="label-size"
-            (onChange)="onParameterChange('size', $event.value)">
-            <span iaDropdownLabel>{{currentSizeOption?.label}}</span>
-            <div iaDropdownMenu>
-              @for (option of sizeOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
-              }
+          <div class="col-md-4">
+            <div class="field">
+              <label class="form-label"
+                ngbTooltip="divide by the average frequency of the words in the n-gram; favours words that are otherwise rare"
+                id="label-freq-compensation">
+                Compensate for frequency
+              </label>
+                <ia-dropdown [value]="currentFreqCompensationOption"
+                    (onChange)="onParameterChange('freqCompensation', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-freq-compensation">
+                        {{currentFreqCompensationOption?.label}}</button>
+                    <div iaDropdownMenu>
+                        @for (option of freqCompensationOptions; track option) {
+                            <button iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </button>
+                        }
+                    </div>
+                </ia-dropdown>
             </div>
-          </ia-dropdown>
-        </div>
-      </div>
-    </div>
-    @if (currentSettings.mode === 'ngrams') {
-      <div class="column is-one-third">
-        <div class="field">
-          <label class="label" iaBalloon="only search n-grams with the search term in the specified position"
-            iaBalloonPosition="up-left" iaBalloonLength="fit"
-            id="label-positions">
-            Position of search term
-          </label>
-          <div class="control">
-            <ia-dropdown [value]="currentPositionsOption" labelledBy="label-positions"
-              (onChange)="onParameterChange('positions', $event.value)">
-              <span iaDropdownLabel>{{currentPositionsOption?.label}}</span>
-              <div iaDropdownMenu>
-                @for (option of positionsOptions; track option) {
-                  <a
-                    iaDropdownItem [value]="option">
-                    {{option.label}}
-                  </a>
-                }
+          </div>
+          @if (analysisOptions) {
+            <div class="col-md-4">
+              <div class="field">
+                <label class="form-label"
+                    ngbTooltip="pre-processing steps on the text, like removing stopwords or stemming"
+                    id="label-analysis">
+                  Language processing
+                </label>
+                    <ia-dropdown [value]="currentAnalysisOption"
+                            (onChange)="onParameterChange('analysis', $event.value)">
+                        <button iaDropdownToggle aria-labelledby="label-analysis">
+                            {{currentAnalysisOption?.label}}
+                        </button>
+                        <div iaDropdownMenu>
+                            @for (option of analysisOptions; track option) {
+                                <button iaDropdownItem [value]="option">
+                                    {{option.label}}
+                                </button>
+                            }
+                        </div>
+                    </ia-dropdown>
               </div>
-            </ia-dropdown>
+            </div>
+          }
+          <div class="col-md-4">
+            <div class="field">
+              <label class="form-label"
+                ngbTooltip="maximum number of documents analyzed per time interval"
+                id="label-max-documents">
+                Document limit
+              </label>
+                    <ia-dropdown [value]="currentMaxDocumentsOption"
+                        (onChange)="onParameterChange('maxDocuments', $event.value)">
+                        <button iaDropdownToggle aria-labelledby="label-max-documents">
+                            {{currentMaxDocumentsOption?.label}}
+                        </button>
+                        <div iaDropdownMenu>
+                            @for (option of maxDocumentsOptions; track option) {
+                            <button iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </button>
+                            }
+                        </div>
+                    </ia-dropdown>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="field">
+              <label class="form-label"
+                ngbTooltip="the number of n-grams displayed in the results"
+                id="label-number-of-ngrams">
+                Number of n-grams
+              </label>
+                <ia-dropdown [value]="currentNumberOfNgramsOption"
+                    (onChange)="onParameterChange('numberOfNgrams', $event.value)">
+                    <button iaDropdownToggle aria-labelledby="label-number-of-ngrams">
+                        {{currentNumberOfNgramsOption?.label}}
+                    </button>
+                    <div iaDropdownMenu>
+                        @for (option of numberOfNgramsOptions; track option) {
+                            <button iaDropdownItem [value]="option">
+                                {{option.label}}
+                            </button>
+                        }
+                    </div>
+                </ia-dropdown>
+            </div>
           </div>
         </div>
-      </div>
-    }
-    <div class="column is-one-third">
-      <div class="field">
-        <label class="label" iaBalloon="divide by the average frequency of the words in the n-gram; favours words that are otherwise rare"
-          iaBalloonPosition="up-left" iaBalloonLength="fit"
-          id="label-freq-compensation">
-          Compensate for frequency
-        </label>
-        <div class="control">
-          <ia-dropdown [value]="currentFreqCompensationOption" labelledBy="label-freq-compensation"
-            (onChange)="onParameterChange('freqCompensation', $event.value)">
-            <span iaDropdownLabel>{{currentFreqCompensationOption?.label}}</span>
-            <div iaDropdownMenu>
-              @for (option of freqCompensationOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
-              }
+        @if (allDateFields && allDateFields.length > 1) {
+          <div class="col-md-4">
+            <div class="field">
+                <label class="form-label"
+                    ngbTooltip="field to use on the x-axis"
+                    id="label-date-field">
+                  Compare frequencies by:
+                </label>
+                <ia-dropdown [value]="dateField"
+                    (onChange)="onParameterChange('dateField', $event)">
+                    <button iaDropdownToggle aria-labelledby="label-date-field">
+                        {{dateField?.displayName}}
+                    </button>
+                    <div iaDropdownMenu>
+                        @for (field of allDateFields; track field) {
+                            <button iaDropdownItem [value]="field.name">
+                                {{field.displayName}}
+                            </button>
+                        }
+                    </div>
+                </ia-dropdown>
             </div>
-          </ia-dropdown>
-        </div>
-      </div>
-    </div>
-    @if (analysisOptions) {
-      <div class="column is-one-third">
-        <div class="field">
-          <label class="label" iaBalloon="pre-processing steps on the text, like removing stopwords or stemming"
-            iaBalloonPosition="up-left" iaBalloonLength="fit"
-            id="label-analysis">
-            Language processing
-          </label>
-          <div class="control">
-            <ia-dropdown [value]="currentAnalysisOption" labelledBy="label-analysis"
-              (onChange)="onParameterChange('analysis', $event.value)">
-              <span iaDropdownLabel>{{currentAnalysisOption?.label}}</span>
-              <div iaDropdownMenu>
-                @for (option of analysisOptions; track option) {
-                  <a
-                    iaDropdownItem [value]="option">
-                    {{option.label}}
-                  </a>
-                }
-              </div>
-            </ia-dropdown>
           </div>
-        </div>
-      </div>
-    }
-    <div class="column is-one-third">
-      <div class="field">
-        <label class="label" iaBalloon="maximum number of documents analyzed per time interval"
-          iaBalloonPosition="up-left" iaBalloonLength="fit"
-          id="label-max-documents">
-          Document limit
-        </label>
-        <div class="control">
-          <ia-dropdown [value]="currentMaxDocumentsOption" labelledBy="label-max-documents"
-            (onChange)="onParameterChange('maxDocuments', $event.value)">
-            <span iaDropdownLabel>{{currentMaxDocumentsOption?.label}}</span>
-            <div iaDropdownMenu>
-              @for (option of maxDocumentsOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
-              }
+        }
+        @if (parametersChanged) {
+          <div class="row justify-content-end mt-3 g-2">
+              <div class="col-auto">
+                <button class="btn btn-body" type="reset" (click)="cancelChanges()">
+                  <fa-icon [icon]="formIcons.reset" class="me-1" />
+                  Cancel changes
+                </button>
+              </div>
+              <div class="col-auto">
+                <button class="btn btn-primary" type="submit" (click)="confirmChanges()">
+                  <fa-icon [icon]="formIcons.confirm" class="me-1" />
+                  Calculate!
+                </button>
+              </div>
             </div>
-          </ia-dropdown>
-        </div>
-      </div>
+        }
     </div>
-    <div class="column is-one-third">
-      <div class="field">
-        <label class="label" iaBalloon="the number of n-grams displayed in the results"
-          iaBalloonPosition="up-left" iaBalloonLength="fit"
-          id="label-number-of-ngrams">
-          Number of n-grams
-        </label>
-        <div class="control">
-          <ia-dropdown [value]="currentNumberOfNgramsOption"
-            labelledBy="label-number-of-ngrams"
-            (onChange)="onParameterChange('numberOfNgrams', $event.value)">
-            <span iaDropdownLabel>{{currentNumberOfNgramsOption?.label}}</span>
-            <div iaDropdownMenu>
-              @for (option of numberOfNgramsOptions; track option) {
-                <a
-                  iaDropdownItem [value]="option">
-                  {{option.label}}
-                </a>
-              }
-            </div>
-          </ia-dropdown>
-        </div>
-      </div>
-    </div>
-  </div>
-  @if (allDateFields && allDateFields.length > 1) {
-    <div class="column is-one-third">
-      <div class="field">
-        <div class="control">
-          <label class="label" iaBalloon="field to use on the x-axis"
-            id="label-date-field">
-            Compare frequencies by:
-          </label>
-          <ia-dropdown [value]="dateField"
-            labelledBy="label-date-field"
-            (onChange)="onParameterChange('dateField', $event)">
-            <span iaDropdownLabel>{{dateField?.displayName}}</span>
-            <div iaDropdownMenu>
-              @for (field of allDateFields; track field) {
-                <a
-                  iaDropdownItem [value]="field.name">
-                  {{field.displayName}}
-                </a>
-              }
-            </div>
-          </ia-dropdown>
-        </div>
-      </div>
-    </div>
-  }
-  @if (parametersChanged) {
-    <div class="level">
-      <div class="level-left"></div>
-      <div class="level-right">
-        <div class="level-item">
-          <button class="button" type="reset" (click)="cancelChanges()">
-            <span class="icon"><fa-icon [icon]="formIcons.reset"></fa-icon></span>
-            <span>Cancel changes</span>
-          </button>
-        </div>
-        <div class="level-item">
-          <button class="button is-primary" type="submit" (click)="confirmChanges()">
-            <span class="icon"><fa-icon [icon]="formIcons.confirm"></fa-icon></span>
-            <span>Calculate!</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  }
 </div>
 
 
-<div [ngClass]="{ 'is-hidden': asTable, 'is-loading':isLoading}">
-  <div class="block">
+<div [ngClass]="{ 'd-none': asTable, 'is-loading':isLoading}">
+  <div class="my-3">
     <ia-joyplot [data]="currentResults" [formatValue]="formatValue" [palette]="palette" quantity="frequency"
       [comparedByQuantity]="dateField?.displayName">
     </ia-joyplot>
@@ -228,7 +217,7 @@
 </div>
 
 @if (asTable) {
-  <div class="block">
+  <div class="my-3">
     <ia-freqtable [headers]="tableHeaders" [data]="tableData" [defaultSort]="'date'" [name]="visualizedField.name+'-ngrams'">
     </ia-freqtable>
   </div>

@@ -1,32 +1,36 @@
 <ia-corpus-header [corpus]="corpus" currentPage="info"></ia-corpus-header>
 
-<section class="section pt-0">
-  <div class="container">
-    @if (documentation$ | async; as documentation) {
-      <ia-tabs>
-        @for (page of documentation; track page) {
-          <ng-template iaTabPanel
-            [id]="page.type" [title]="page.type">
-            <div class="content" [innerHTML]="renderMarkdown(page.content)"></div>
-          </ng-template>
+<section class="py-5 pt-0">
+    <div class="container-lg">
+        @if (documentation$ | async; as documentation) {
+            <ul ngbNav #nav="ngbNav" class="nav-tabs mb-4">
+                @for (page of documentation; track page.type) {
+                    <li [ngbNavItem]="page.type">
+                        <button ngbNavLink>{{page.type}}</button>
+                        <ng-template ngbNavContent >
+                            <div [innerHTML]="renderMarkdown(page.content)"></div>
+                        </ng-template>
+                    </li>
+                }
+                @if (corpus?.fields) {
+                    <li ngbNavItem="fields">
+                        <button ngbNavLink>Fields</button>
+                        <ng-template ngbNavContent >
+                            @for (field of corpus.fields; track field) {
+                                <div class="my-3">
+                                    <ia-field-info  [field]="field"
+                                    [coverage]="fieldCoverage ? fieldCoverage[field.name] : undefined"
+                                    [cardinality]="fieldCardinality ? fieldCardinality[field.name] : undefined">
+                                    </ia-field-info>
+                                </div>
+                            }
+                        </ng-template>
+                    </li>
+                }
+            </ul>
+            <div [ngbNavOutlet]="nav"></div>
+        } @else {
+            <div class="is-loading" aria-label="loading documentation"></div>
         }
-        @if (corpus?.fields) {
-          <ng-template iaTabPanel
-            id="fields" title="Fields">
-            @for (field of corpus.fields; track field) {
-              <div class="block">
-                <ia-field-info  [field]="field"
-                  [coverage]="fieldCoverage ? fieldCoverage[field.name] : undefined"
-                  [cardinality]="fieldCardinality ? fieldCardinality[field.name] : undefined">
-                </ia-field-info>
-              </div>
-            }
-          </ng-template>
-        }
-      </ia-tabs>
-    } @else {
-      <div class="is-loading" aria-label="loading documentation"></div>
-    }
-  </div>
+    </div>
 </section>
-

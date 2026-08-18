@@ -1,4 +1,5 @@
-import { Component, ElementRef, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { showLoading } from '@utils/utils';
 import { BehaviorSubject, lastValueFrom, of, Subject, timer } from 'rxjs';
 
@@ -54,17 +55,20 @@ import { BehaviorSubject, lastValueFrom, of, Subject, timer } from 'rxjs';
 export class ConfirmModalComponent implements OnDestroy {
     @Input({required: true}) actionText: string;
     @Input() icon: any;
-    @Input() actionButtonClass: string = 'is-primary';
+    @Input() actionButtonClass: string = 'btn-primary';
     @Input() disableCloseButton: boolean = false;
     @Output() accept = new Subject<any>();
     @Output() reject = new Subject<void>();
 
-    @ViewChild('modalTitle') title: ElementRef<HTMLElement>;
+    @ViewChild('content') content: TemplateRef<HTMLElement>;
 
     confirmAction$ = new BehaviorSubject<{data: any} | undefined>(undefined);
     loading$ = new BehaviorSubject<boolean>(false);
 
     data: any; // for briefer notation, this provides the action data
+
+    private modalService = inject(NgbModal);
+    private modal: NgbModalRef;
 
     constructor() {
         this.confirmAction$.subscribe(data => this.data = data);
@@ -80,21 +84,26 @@ export class ConfirmModalComponent implements OnDestroy {
 
     open(data?: any) {
         this.confirmAction$.next({data});
-        setTimeout(() => this.title.nativeElement.focus());
+        this.modal = this.modalService.open(
+            this.content, { ariaLabelledBy: 'modal-title' }
+        );
     }
 
     confirm(data: any) {
+        console.log(data);
         showLoading(
             this.loading$,
             lastValueFrom(this.handleAsync(data)),
         ).then(res => {
             this.confirmAction$.next(undefined);
+            this.modal.close();
             this.accept.next(res)
         });
     }
 
     cancel() {
         this.confirmAction$.next(undefined);
+        this.modal.dismiss();
         this.reject.next();
     }
 }
