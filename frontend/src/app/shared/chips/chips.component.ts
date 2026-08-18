@@ -41,4 +41,10 @@ export class ChipsComponent {
             this.input = '';
         }
     }
+
+    removeItem(index: number) {
+        this.value.update(value =>
+            value.filter((_, i) => i !== index)
+        );
+    }
 }
