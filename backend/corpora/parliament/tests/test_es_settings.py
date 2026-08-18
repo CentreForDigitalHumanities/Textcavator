@@ -1,7 +1,7 @@
 import pytest
 from addcorpus.language_analyzers import get_analyzer
 
-def test_stopwords():
+def test_stopwords(tmp_nltk_data_directory):
     """
     Check that stopwords results are valid and all languages are included
     """
