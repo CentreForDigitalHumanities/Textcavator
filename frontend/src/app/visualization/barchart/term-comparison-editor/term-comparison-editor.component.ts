@@ -45,6 +45,7 @@ export class TermComparisonEditorComponent implements OnDestroy {
     }
 
     confirmQueries() {
+        console.log(this.queries);
         this.comparedQueries.setParams({compare: this.queries});
     }
 

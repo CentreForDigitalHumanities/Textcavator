@@ -1,6 +1,6 @@
 <form>
     <div class="input-group">
-        <p-autocomplete name="queries" [(ngModel)]="queries" multiple fluid [typeahead]="false" class="flex-grow-1" />
+        <ia-chips [(value)]="queries" inputAriaLabel="add query" />
         <button class="btn btn-primary" (click)="confirmQueries()" [disabled]="!valid(queries)">
             <fa-icon [icon]="formIcons.confirm" aria-hidden="true" class="me-1" />
             Confirm
