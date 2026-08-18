@@ -19,7 +19,7 @@ import _ from 'lodash';
 export class ChipsComponent {
     value = model<string[]>([]);
     input = '';
-    inputAriaLabel = input.required<string>();
+    itemName = input.required<string>();
 
     inputConfirmKeys = ['Enter', ',', ';'];
     actionIcons = actionIcons;

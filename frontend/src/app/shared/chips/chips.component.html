@@ -2,7 +2,7 @@
     @for (item of value(); track item; let index = $index) {
         <li class="bg-secondary-subtle rounded my-1 me-2 ps-2 pe-1 d-flex align-items-center">
             {{item}}
-            <button class="btn btn-sm p-0" aria-label="remove '{{item}}'"
+            <button class="btn btn-sm p-0" aria-label="remove {{itemName()}} '{{item}}'"
                 (click)="removeItem(index)">
                 <fa-icon [icon]="actionIcons.remove" aria-hidden="true" />
             </button>
@@ -10,7 +10,7 @@
     }
     <li class="flex-fill my-1">
         <input class="form-control-plaintext py-0" [(ngModel)]="input"
-            [attr.aria-label]="inputAriaLabel()"
+            aria-label="add {{itemName()}}"
             (keydown)="handleInputKeydown($event)">
     </li>
 </ul>
