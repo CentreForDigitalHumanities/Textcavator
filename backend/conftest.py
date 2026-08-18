@@ -316,3 +316,11 @@ def auto_clear_cache():
     cache.clear()
     yield
     cache.clear()
+
+
+@pytest.fixture(autouse=True)
+def tmp_nltk_data_directory(settings, tmp_path_factory) -> str:
+    data_path = tmp_path_factory.mktemp('nltk')
+    path_str = str(data_path.resolve())
+    settings.NLTK_DATA_PATH = path_str
+    return path_str
