@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, model } from '@angular/core';
+import { Component, computed, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { actionIcons } from '../icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,11 +18,14 @@ import _ from 'lodash';
 })
 export class ChipsComponent {
     value = model<string[]>([]);
-    input = '';
     itemName = input.required<string>();
+    limit = input<number>();
 
+    input = '';
     inputConfirmKeys = ['Enter', ',', ';'];
     actionIcons = actionIcons;
+
+    limitReached = computed(() => this.value().length >= (this.limit() ?? Infinity));
 
     handleInputKeydown(event: KeyboardEvent) {
         console.log(event);

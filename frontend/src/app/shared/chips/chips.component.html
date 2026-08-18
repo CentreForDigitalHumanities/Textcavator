@@ -11,6 +11,7 @@
     <li class="flex-fill my-1">
         <input class="form-control-plaintext py-0" [(ngModel)]="input"
             aria-label="add {{itemName()}}"
-            (keydown)="handleInputKeydown($event)">
+            (keydown)="handleInputKeydown($event)"
+            [disabled]="limitReached()">
     </li>
 </ul>
