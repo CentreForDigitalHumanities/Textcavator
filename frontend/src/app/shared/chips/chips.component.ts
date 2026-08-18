@@ -32,13 +32,13 @@ export class ChipsComponent {
     }
 
     onBlur() {
-        if (this.input.length) {
-            this.confirmInput();
-        }
+        this.confirmInput();
     }
 
     confirmInput() {
-        this.value.update(value => _.uniq([...value, this.input]));
-        this.input = '';
+        if (this.input.length) {
+            this.value.update(value => _.uniq([...value, this.input]));
+            this.input = '';
+        }
     }
 }
