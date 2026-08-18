@@ -25,9 +25,16 @@ export class ChipsComponent {
     actionIcons = actionIcons;
 
     handleInputKeydown(event: KeyboardEvent) {
+        console.log(event);
+        // confirm with enter/comma/semicolon
         if (this.inputConfirmKeys.includes(event.key)) {
             event.preventDefault();
             this.confirmInput();
+        }
+        // if input is empty, backspace removes last item
+        if (event.key == 'Backspace' && !event.repeat && !this.input.length && this.value().length) {
+            event.preventDefault();
+            this.removeItem(this.value().length - 1);
         }
     }
 
