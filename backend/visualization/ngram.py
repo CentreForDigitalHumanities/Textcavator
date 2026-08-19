@@ -306,11 +306,13 @@ def _absolute_frequency(
 ) -> float:
     return ngram_count
 
+
 def _legacy_compensated_frequency(
     ngram_count: int, term_counts: List[int], total_search_term_count, total_collocations, total_word_count
 ) -> float:
     norm = (sum(term_counts) + total_search_term_count / len(term_counts) + 1)
     return ngram_count / norm
+
 
 def _t_value(
     ngram_count: int,
@@ -319,15 +321,12 @@ def _t_value(
     total_collocations: int,
     total_word_count: int
 ):
-    o11 = ngram_count
-    r1 = total_collocations
-    o12 = r1 - o11
-    e11 = total_collocations * prod(
+    other_collocations_count = total_collocations - ngram_count
+    expected_count = total_collocations * prod(
         count / total_word_count
         for count in term_counts
     )
-    t = (o11 - e11) / sqrt(o12)
-    return t
+    return (ngram_count - expected_count) / sqrt(other_collocations_count)
 
 
 def _ngram_frequency(
