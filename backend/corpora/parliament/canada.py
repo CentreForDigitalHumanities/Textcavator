@@ -3,11 +3,9 @@ from glob import glob
 import logging
 import re
 
-from django.conf import settings
-
 from corpora.parliament.parliament import Parliament
 from corpora.utils.constants import document_context
-from ianalyzer_readers.extract import Constant, CSV
+from textcavator_readers.extract import Constant, CSV
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 import corpora.parliament.utils.field_defaults as field_defaults
 from corpora.parliament.uk import format_house
@@ -16,9 +14,8 @@ class ParliamentCanada(Parliament, CSVCorpusDefinition):
     title = 'People & Parliament (Canada)'
     description = "Speeches from House of Commons"
     min_date = datetime(year=1901, month=1, day=1)
-    data_directory = settings.PP_CANADA_DATA
-    es_index = getattr(settings, 'PP_CANADA_INDEX', 'parliament-canada')
-    word_model_path = getattr(settings, 'PP_CANADA_WM', None)
+    es_index = 'parliament-canada'
+
     image = 'canada.jpeg'
     languages = ['en']
     description_page = 'canada.md'

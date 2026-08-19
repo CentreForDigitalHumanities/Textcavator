@@ -35,7 +35,7 @@ class Tag(models.Model):
         return counts
 
     def __str__(self):
-        return f'Tag #{self.id}: "{self.name}" by {self.user.username}'
+        return f'Tag #{self.id}: "{self.name}" by {self.user}'
 
 
 class TaggedDocument(models.Model):

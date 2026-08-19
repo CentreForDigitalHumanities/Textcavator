@@ -81,7 +81,7 @@ class JournauxResistance(Gallica):
         "cb32853253x",
     ]
     category = "periodical"
-    es_index = getattr(settings, 'RESISTANCE_INDEX', 'resistance')
+    es_index = 'resistance'
     image = "resistance.png"
     description_page = "resistance.md"
 

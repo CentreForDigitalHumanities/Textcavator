@@ -11,7 +11,7 @@ import os
 import os.path
 from datetime import datetime, timedelta
 
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from addcorpus.python_corpora.corpus import (FieldDefinition, XMLCorpusDefinition, after,
                               consolidate_start_end_years, string_contains,
                               until)
@@ -22,7 +22,7 @@ from corpora.times.times_scans import compose_absolute_image_path
 from django.conf import settings
 from media.media_url import media_url
 
-from ianalyzer_readers.xml_tag import Tag, ParentTag
+from textcavator_readers.xml_tag import Tag, ParentTag
 
 logger = logging.getLogger(__name__)
 
@@ -32,15 +32,13 @@ class Times(XMLCorpusDefinition):
     description = "Archives from The Times, a British daily newspaper."
     min_date = datetime(year=1785, month=1, day=1)
     max_date = datetime(year=2010, month=12, day=31)
-    data_directory = settings.TIMES_DATA
-    es_index = getattr(settings, 'TIMES_ES_INDEX', 'times')
+    es_index = 'times'
     image = 'times.jpg'
-    scan_image_type = getattr(settings, 'TIMES_SCAN_IMAGE_TYPE', 'image/png')
+    scan_image_type = 'image/png'
     description_page = 'times.md'
     citation_page = 'citation.md'
     languages = ['en']
     category = 'periodical'
-    word_model_path = getattr(settings, "TIMES_WM", None)
 
     @property
     def es_settings(self):

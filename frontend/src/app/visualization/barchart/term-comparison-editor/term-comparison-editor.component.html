@@ -1,24 +1,26 @@
 <form>
-    <div class="field is-grouped">
-        <div class="control is-expanded">
-            <p-autocomplete name="queries" [(ngModel)]="queries" multiple fluid
-                [typeahead]="false" />
-        </div>
-        <div class="control">
-            <button class="button is-primary" (click)="confirmQueries()" [disabled]="!valid(queries)">
-                <span class="icon">
-                    <fa-icon [icon]="formIcons.confirm" aria-hidden="true"></fa-icon>
-                </span>
-                <span>Confirm</span>
-            </button>
-        </div>
-        <div *ngIf="showReset$ | async" class="control">
-            <button class="button" (click)="reset()">
-                <span class="icon">
-                    <fa-icon [icon]="formIcons.reset" aria-hidden="true"></fa-icon>
-                </span>
-                <span>Reset</span>
-            </button>
-        </div>
+  <div class="field is-grouped">
+    <div class="control is-expanded">
+      <p-autocomplete name="queries" [(ngModel)]="queries" multiple fluid
+        [typeahead]="false" />
     </div>
+    <div class="control">
+      <button class="button is-primary" (click)="confirmQueries()" [disabled]="!valid(queries)">
+        <span class="icon">
+          <fa-icon [icon]="formIcons.confirm" aria-hidden="true"></fa-icon>
+        </span>
+        <span>Confirm</span>
+      </button>
+    </div>
+    @if (showReset$ | async) {
+      <div class="control">
+        <button class="button" (click)="reset()">
+          <span class="icon">
+            <fa-icon [icon]="formIcons.reset" aria-hidden="true"></fa-icon>
+          </span>
+          <span>Reset</span>
+        </button>
+      </div>
+    }
+  </div>
 </form>

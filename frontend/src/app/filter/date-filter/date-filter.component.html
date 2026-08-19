@@ -1,10 +1,12 @@
-<div class="daterange" *ngIf="filter.state$ | async as state">
+@if (filter.state$ | async; as state) {
+  <div class="daterange">
     <ia-date-picker unit="date" [value]="state.data.min"
-        (onChange)="update({min: $event, max: state.data.max})"
-        [minDate]="minDate" [maxDate]="maxDate"
-        [default]="minDate" ariaLabel="minimum date" />
+      (onChange)="update({min: $event, max: state.data.max})"
+      [minDate]="minDate" [maxDate]="maxDate"
+      [default]="minDate" ariaLabel="minimum date" />
     <ia-date-picker unit="date" [value]="state.data.max"
-        (onChange)="update({min: state.data.min, max: $event})"
-        [minDate]="minDate" [maxDate]="maxDate"
-        [default]="maxDate" ariaLabel="maximum date" />
-</div>
+      (onChange)="update({min: state.data.min, max: $event})"
+      [minDate]="minDate" [maxDate]="maxDate"
+      [default]="maxDate" ariaLabel="maximum date" />
+  </div>
+}

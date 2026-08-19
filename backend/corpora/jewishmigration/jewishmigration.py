@@ -3,7 +3,7 @@ import json
 import logging
 
 from django.conf import settings
-from ianalyzer_readers.extract import Combined, JSON
+from textcavator_readers.extract import Combined, JSON
 import langcodes
 import requests
 
@@ -42,13 +42,12 @@ class JewishMigration(PeacePortal, JSONCorpusDefinition):
     min_date = datetime(year=1, month=1, day=1)
     max_date = datetime(year=1800, month=12, day=31)
 
-    data_directory = settings.JMIG_DATA_DIR
-    data_filepath = getattr(settings, 'JMIG_DATA', None)
-    data_url = getattr(settings, 'JMIG_DATA_URL', None)
-    data_api_key = getattr(settings, 'JMIG_DATA_API_KEY', None)
+    data_filepath = None
+    data_url = None
+    data_api_key = None
 
-    es_alias = getattr(settings, 'JMIG_ALIAS', None)
-    es_index = getattr(settings, 'JMIG_INDEX', 'jewishmigration')
+    es_alias = None
+    es_index = 'jewishmigration'
     image = 'jewishmigration.jpg'
     languages = ['en']
 

@@ -20,7 +20,7 @@ Start by adding a new Python module `<corpusname>.py` to the `backend/corpora` d
 
 The actual definition is a class that you define in this module. It should subclass the [`CorpusDefinition` class](/backend/addcorpus/python_corpora/corpus.py).  This class includes some default values for attributes and default behaviour.
 
-It also inherits the `Reader` class from [`ianalyzer_readers`](https://ianalyzer-readers.readthedocs.io/en/latest/) which provides very minimal functionality for reading source files. Most corpus definitions also inherit from a more specific `Reader` that provides functionality for the type of source data, e.g. `XMLReader`, `CSVReader`, etc. For convenience, you can use the classes `XMLCorpusDefinition`, `CSVCorpusDefinition`, etc., defined in [corpus.py](/backend/addcorpus/python_corpora/corpus.py). See [the documentation of ianalyzer_readers](https://ianalyzer-readers.readthedocs.io/en/latest/) for the available `Reader` classes and the API for each of them.
+It also inherits the `Reader` class from [`textcavator_readers`](https://textcavator-readers.readthedocs.io/en/latest/) which provides very minimal functionality for reading source files. Most corpus definitions also inherit from a more specific `Reader` that provides functionality for the type of source data, e.g. `XMLReader`, `CSVReader`, etc. For convenience, you can use the classes `XMLCorpusDefinition`, `CSVCorpusDefinition`, etc., defined in [corpus.py](/backend/addcorpus/python_corpora/corpus.py). See [the documentation of textcavator_readers](https://textcavator-readers.readthedocs.io/en/latest/) for the available `Reader` classes and the API for each of them.
 
 Your definition module should now look something like this:
 
@@ -54,7 +54,7 @@ The following attributes are required for a corpus to function.
 
 ### Required methods
 
-The corpus class must define a method `sources(self, **kwargs)`. See the [API documentation of ianalyzer_readers](https://ianalyzer-readers.readthedocs.io/en/stable/api/). When you run the indexing command, Textcavator can provide two named arguments, `start` and `end`, which give a minimum and maximum date to select source files.
+The corpus class must define a method `sources(self, **kwargs)`. See the [API documentation of textcavator_readers](https://textcavator-readers.readthedocs.io/en/stable/api/). When you run the indexing command, Textcavator can provide two named arguments, `start` and `end`, which give a minimum and maximum date to select source files.
 
 ### Optional attributes
 
@@ -113,39 +113,37 @@ See the docstring of `FieldDefinition` for a comprehensive overview of all param
 
 ### Extracting values
 
-The `extractor` attribute of a field should define how it extracts its data from source files. This value should be an instance of `Extractor`, which is defined in the `ianalyzer_readers` package. See [the API documentation of ianalyzer_readers](https://ianalyzer-readers.readthedocs.io/en/latest/api/#extractors) for a list of available extractors and their parameters.
+The `extractor` attribute of a field should define how it extracts its data from source files. This value should be an instance of `Extractor`, which is defined in the `textcavator_readers` package. See [the API documentation of textcavator_readers](https://textcavator-readers.readthedocs.io/en/latest/api/#extractors) for a list of available extractors and their parameters.
 
-These extractors are typically sufficient for new corpora; if they are not, you can create a custom `Extractor` subclass for your corpus, or expand the `ianalyzer_readers` package.
+These extractors are typically sufficient for new corpora; if they are not, you can create a custom `Extractor` subclass for your corpus, or expand the `textcavator_readers` package.
 
 ## Using project settings
 
-Several of the attributes in a corpus definition need to be configurable per environment. This is done by including these values in the project settings.
+The [`CORPUS_SETTINGS` Django setting](./Django-project-settings.md#corpus_settings) can be used to configure a corpus per environment.
 
-Please use the following naming convention when you add settings for your corpus.
+It often makes sense to leave some attributes unimplemented, e.g. `data_directory`, so they must be configured in the settings. Make sure to mention this in the docstring. If possible, it's preferred to set a sensible default value and just highlight the attribute in the docstring.
+
+The `CORPUS_SETTINGS` configuration is new, and some corpora import Django settings directly. This should be phased out, and it should not be used for new corpora.
+
+
+### Advanced usage
+
+`CORPUS_SETTINGS` is applied in [load_corpus.py](/backend/addcorpus/python_corpora/load_corpus.py) by creating a subclass of the original corpus.
+
+If you use the value of an attribute on your corpus class, you should do so in a way that is safe for subclassing. For instance:
 
 ```python
-CORPUSNAME_DATA = '/MyData/CorpusData' # the directory where the xml / html or other files are located
-CORPUSNAME_ES_INDEX = 'dutchbanking' # the name that elasticsearch gives to the index
-CORPUSNAME_SCAN_IMAGE_TYPE = 'image/png' #mimetype of document media
-# etc...
+class MyCorpus(CorpusDefinition):
+    min_year = 1900
+    max_year = 2000
+
+    @property
+    def title(self):
+        return f'My corpus ({self.min_year}-{self.max_year})'
+
+    # Do not do this:
+    # title = f'My corpus ({min_year}-{max_year})'
 ```
-
-These can be retrieved in the corpus definition, for example:
-
-```python
-from django.conf import settings
-
-class Times(XMLCorpus):
-    title = "Times"
-    description = "Newspaper archive, 1785-2010"
-    min_date = datetime(year=1785, month=1, day=1)
-    max_date = datetime(year=2010, month=12, day=31)
-    data_directory = settings.TIMES_DATA
-    es_index = getattr(settings, 'TIMES_ES_INDEX', 'times')
-    # ...
-```
-
-Note that for a property like the elasticsearch index, we define a default value but make it possible to override this in the settings file, while the data directory is required.
 
 ## Unit testing
 

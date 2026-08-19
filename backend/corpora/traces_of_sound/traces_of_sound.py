@@ -4,7 +4,7 @@ import re
 from typing import Dict
 
 from django.conf import settings
-from ianalyzer_readers.extract import Backup, CSV
+from textcavator_readers.extract import Backup, CSV
 
 from addcorpus.es_mappings import keyword_mapping
 from addcorpus.es_settings import es_settings
@@ -38,13 +38,11 @@ class TracesOfSound(CSVCorpusDefinition):
         "corpus."
     min_date = DutchNewspapersPublic.min_date
     max_date = DutchNewspapersPublic.max_date
-    data_directory = settings.TRACES_OF_SOUND_DATA
-    es_index = getattr(settings, 'TRACES_OF_SOUND_ES_INDEX', 'traces-of-sound')
+    es_index = 'traces-of-sound'
     languages = DutchNewspapersPublic.languages
     category = DutchNewspapersPublic.category
     description_page = 'traces_of_sound.md'
     image = 'Oren.webp'
-    word_model_path = getattr(settings, "DUTCHNEWSPAPERS_WM", None)
     delimiter = ';'
 
     @property

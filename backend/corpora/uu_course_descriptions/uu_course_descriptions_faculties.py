@@ -5,8 +5,8 @@ Each faculty corpus is a separate corpus with its own index.
 '''
 
 from typing import Callable
-from ianalyzer_readers.readers.core import Document
-from ianalyzer_readers.extract import CSV
+from textcavator_readers.readers.core import Document
+from textcavator_readers.extract import CSV
 
 from addcorpus.es_mappings import keyword_mapping
 from addcorpus.python_corpora.corpus import FieldDefinition

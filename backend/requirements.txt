@@ -17,7 +17,7 @@ attrs==25.3.0
 beautifulsoup4==4.14.2
     # via
     #   -r requirements.in
-    #   ianalyzer-readers
+    #   textcavator-readers
 billiard==4.2.2
     # via celery
 celery[redis]==5.5.3
@@ -33,7 +33,7 @@ cffi==2.0.0
     # via cryptography
 charset-normalizer==3.4.3
     # via requests
-click==8.3.0
+click==8.4.2
     # via
     #   celery
     #   click-didyoumean
@@ -54,10 +54,11 @@ cryptography==43.0.3
 defusedxml==0.7.1
     # via
     #   djangosaml2
+    #   nltk
     #   pysaml2
 dj-rest-auth[with-social]==7.2.0
     # via -r requirements.in
-django==4.2.30
+django==5.2.16
     # via
     #   -r requirements.in
     #   dj-rest-auth
@@ -94,8 +95,6 @@ gensim==4.3.3
     # via -r requirements.in
 humanize==4.13.0
     # via flower
-ianalyzer-readers==0.4.0
-    # via -r requirements.in
 idna==3.15
     # via requests
 iniconfig==2.1.0
@@ -121,10 +120,10 @@ language-data==1.3.0
 lxml==6.1.0
     # via
     #   -r requirements.in
-    #   ianalyzer-readers
+    #   textcavator-readers
 marisa-trie==1.3.1
     # via language-data
-nltk==3.9.4
+nltk==3.10.0
     # via -r requirements.in
 numpy==1.26.4
     # via
@@ -138,7 +137,7 @@ oauthlib==3.3.1
 openpyxl==3.1.5
     # via
     #   -r requirements.in
-    #   ianalyzer-readers
+    #   textcavator-readers
 packaging==25.0
     # via
     #   kombu
@@ -146,9 +145,9 @@ packaging==25.0
 pandas==2.3.3
     # via
     #   -r requirements.in
-    #   ianalyzer-readers
     #   pyreadr
-pillow==12.2.0
+    #   textcavator-readers
+pillow==12.3.0
     # via -r requirements.in
 pluggy==1.6.0
     # via pytest
@@ -168,10 +167,14 @@ pyopenssl==24.2.1
     # via pysaml2
 pyparsing==3.2.5
     # via rdflib
-pypdf==6.13.0
-    # via -r requirements.in
+pypdf==6.15.0
+    # via
+    #   -r requirements.in
+    #   textcavator-readers
 pyreadr==0.5.4
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   textcavator-readers
 pysaml2==7.5.2
     # via djangosaml2
 pytest==9.0.3
@@ -197,7 +200,7 @@ pytz==2025.2
     #   pandas
     #   pysaml2
 rdflib==7.2.1
-    # via ianalyzer-readers
+    # via textcavator-readers
 redis==5.2.1
     # via kombu
 referencing==0.36.2
@@ -209,8 +212,8 @@ regex==2025.9.18
 requests==2.33.0
     # via
     #   django-allauth
-    #   ianalyzer-readers
     #   pysaml2
+    #   textcavator-readers
 rpds-py==0.27.1
     # via
     #   jsonschema
@@ -227,10 +230,12 @@ six==1.17.0
     #   python-dateutil
 smart-open==7.3.1
     # via gensim
-soupsieve==2.8
+soupsieve==2.8.4
     # via beautifulsoup4
-sqlparse==0.5.4
+sqlparse==0.6.0
     # via django
+textcavator-readers==0.5.1
+    # via -r requirements.in
 textdistance==4.6.3
     # via -r requirements.in
 threadpoolctl==3.6.0

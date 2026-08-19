@@ -28,7 +28,7 @@ export class JoyplotComponent implements OnChanges {
     chartOptions: ChartOptions;
     chart: Chart;
 
-    constructor() { }
+    constructor() {}
 
     get multipleTimeIntervals(): boolean {
         return this.timeLabels && this.timeLabels.length > 1;

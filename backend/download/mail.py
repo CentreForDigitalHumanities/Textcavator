@@ -13,7 +13,7 @@ logger = logging.getLogger()
 def download_url(download_id):
     return settings.BASE_URL + reverse('download-csv', kwargs={'id': download_id})
 
-def send_csv_email(user_email, username, download_id):
+def send_csv_email(user_email, name, download_id):
     '''
     Send an email to the user that their CSV is ready
     '''
@@ -25,7 +25,7 @@ def send_csv_email(user_email, username, download_id):
 
     context = {
         'email_title': 'Download CSV',
-        'username': username,
+        'name': name,
         'link_url': download_url(download_id),
         'message': f"Your file '{filename}' is ready for download.",
         'prompt': 'Click on the link below.',

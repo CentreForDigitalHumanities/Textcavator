@@ -5,7 +5,7 @@ from addcorpus.python_corpora.corpus import CorpusDefinition
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-class ExampleCorpus(CorpusDefinition):
+class ExampleCorpusNoModels(CorpusDefinition):
     """Example corpus class for testing"""
 
     title = "Example"
@@ -17,12 +17,12 @@ class ExampleCorpus(CorpusDefinition):
 
     fields = []
 
-class ExampleCorpusWithWordModels(ExampleCorpus):
+class ExampleCorpusWithModels(ExampleCorpusNoModels):
     word_model_path = here
 
 def test_word_models_present():
-    corpus = ExampleCorpus()
+    corpus = ExampleCorpusNoModels()
     assert corpus.word_models_present == False
 
-    corpus_with_word_models = ExampleCorpusWithWordModels()
+    corpus_with_word_models = ExampleCorpusWithModels()
     assert corpus_with_word_models.word_models_present == True

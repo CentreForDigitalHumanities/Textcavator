@@ -3,20 +3,19 @@ Module contains the base classes from which corpora can derive;
 '''
 
 from typing import Optional, List, Dict, Union
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from datetime import datetime, date
 from os.path import isdir
 import os
-
 from django.conf import settings
 
-from ianalyzer_readers.readers.core import Reader, Field
-from ianalyzer_readers.readers.xml import XMLReader
-from ianalyzer_readers.readers.csv import CSVReader
-from ianalyzer_readers.readers.html import HTMLReader
-from ianalyzer_readers.readers.json import JSONReader
-from ianalyzer_readers.readers.rdf import RDFReader
-from ianalyzer_readers.readers.xlsx import XLSXReader
+from textcavator_readers.readers.core import Reader, Field
+from textcavator_readers.readers.xml import XMLReader
+from textcavator_readers.readers.csv import CSVReader
+from textcavator_readers.readers.html import HTMLReader
+from textcavator_readers.readers.json import JSONReader
+from textcavator_readers.readers.rdf import RDFReader
+from textcavator_readers.readers.xlsx import XLSXReader
 
 from addcorpus.python_corpora.filters import Filter
 

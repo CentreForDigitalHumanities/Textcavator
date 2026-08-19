@@ -1,5 +1,5 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, provideZoneChangeDetection } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 
 import { providePrimeNG } from 'primeng/config';
@@ -50,6 +50,7 @@ import { WordModelsModule } from './word-models/word-models.module';
 import { MatomoConfig, matomoImports } from './routing/matomo';
 import { stylePreset } from './primeng-theme';
 import { CoreModule } from './core/core.module';
+
 
 export const appRoutes: Routes = [
     {
@@ -202,6 +203,7 @@ export const providers: any[] = [
     }),
     CookieService,
     { provide: APP_BASE_HREF, useValue: '/' },
+    provideZoneChangeDetection(),
 ];
 
 @NgModule({

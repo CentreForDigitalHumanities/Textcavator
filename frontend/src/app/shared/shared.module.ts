@@ -19,6 +19,7 @@ import { ToggleComponent } from './toggle/toggle.component';
 import { SlugifyPipe } from './pipes/slugify.pipe';
 import { ToggleButtonDirective } from './toggle-button/toggle-button.directive';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
+import { BackToTopButton } from './back-to-top-button/back-to-top-button.component';
 
 /** this should be imported by all other modules; provides basic building blocks
  * for the whole application
@@ -32,7 +33,6 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
         TabPanelDirective,
         ToggleComponent,
         SlugifyPipe,
-        ToggleButtonDirective,
         ConfirmModalComponent,
     ],
     exports: [
@@ -55,9 +55,12 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
         RouterModule,
         TableModule,
         ToggleComponent,
+        BackToTopButton,
         // Shared pipes
         SlugifyPipe,
     ], imports: [
+        ToggleButtonDirective,
+        BackToTopButton,
         BrowserAnimationsModule,
         BrowserModule,
         CommonModule,

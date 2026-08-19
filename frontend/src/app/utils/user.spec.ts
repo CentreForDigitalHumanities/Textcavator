@@ -46,6 +46,7 @@ describe('user API conversion', () => {
     beforeEach(() => {
         userResponse = {
             id: 1,
+            name: 'Hamlet',
             username: 'Hamlet',
             email: 'hamlet@elsinore.dk',
             download_limit: 10000,
@@ -68,14 +69,15 @@ describe('user API conversion', () => {
     });
 
     it('should define inverse functions', () => {
+        // results have to to be merged with the API data because User does not contain
+        // all API properties
+
         const encoded = encodeUserData(user);
-        const decoded = parseUserData(encoded as UserResponse);
+        const decoded = parseUserData(Object.assign(userResponse, encoded));
         expect(decoded).toEqual(user);
 
         const parsed = parseUserData(userResponse);
         const unparsed = encodeUserData(parsed);
-        // this has to be a partial match because User contains a subset of the information
-        // in the API
-        (expect(unparsed) as any).toBePartialOf(userResponse);
+        expect(Object.assign(userResponse, unparsed)).toEqual(userResponse);
     });
 });

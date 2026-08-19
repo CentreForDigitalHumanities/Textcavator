@@ -4,8 +4,8 @@ import os.path
 import PIL
 from tqdm import tqdm
 
-from ianalyzer_readers.xml_tag import Tag, SiblingTag, ParentTag
-from ianalyzer_readers import extract
+from textcavator_readers.xml_tag import Tag, SiblingTag, ParentTag
+from textcavator_readers import extract
 
 from addcorpus.python_corpora import filters
 from addcorpus.python_corpora.corpus import XLSXCorpusDefinition, XMLCorpusDefinition, FieldDefinition

@@ -1,64 +1,76 @@
 <form>
-    <div class="columns">
-        <div class="column">
-            <div class="field">
-                <p class="label">Normalization</p>
-                <div class="control radios" (change)="onChartParametersChange()">
-                    <label class="radio"
-                        iaBalloon="Number of {{frequencyMeasure === 'documents' ? 'documents' : 'observations of the search term'}}">
-                        <input type="radio" name="normalizer" (click)="currentNormalizer='raw'" [checked]="currentNormalizer==='raw'">
-                        None
-                    </label>
-                    <label *ngIf="frequencyMeasure==='documents'" class="radio"
-                        iaBalloon="Divide by the total amount of documents">
-                        <input type="radio" name="normalizer" (click)="currentNormalizer='percent'" [checked]="currentNormalizer==='percent'">
-                        Percentage
-                    </label>
-                    <ng-container *ngIf="frequencyMeasure==='tokens'">
-                        <label class="radio"
-                            iaBalloon="Divide by the total documents in each bin">
-                            <input type="radio" name="normalizer" (click)="currentNormalizer='documents'" [checked]="currentNormalizer==='documents'">
-                            Documents
-                        </label>
-                        <label class="radio" *ngIf="showTokenCountOption"
-                            iaBalloon="Divide by the total word count in each bin">
-                            <input type="radio" name="normalizer" (click)="currentNormalizer='terms'" [checked]="currentNormalizer==='terms'">
-                            Terms
-                        </label>
-                    </ng-container>
-                </div>
-            </div>
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <p class="label">Normalization</p>
+        <div class="control radios" (change)="onChartParametersChange()">
+          <label class="radio"
+            iaBalloon="Number of {{frequencyMeasure === 'documents' ? 'documents' : 'observations of the search term'}}">
+            <input type="radio" name="normalizer" (click)="currentNormalizer='raw'" [checked]="currentNormalizer==='raw'">
+            None
+          </label>
+          @if (frequencyMeasure==='documents') {
+            <label class="radio"
+              iaBalloon="Divide by the total amount of documents">
+              <input type="radio" name="normalizer" (click)="currentNormalizer='percent'" [checked]="currentNormalizer==='percent'">
+              Percentage
+            </label>
+          }
+          @if (frequencyMeasure==='tokens') {
+            <label class="radio"
+              iaBalloon="Divide by the total documents in each bin">
+              <input type="radio" name="normalizer" (click)="currentNormalizer='documents'" [checked]="currentNormalizer==='documents'">
+              Documents
+            </label>
+            @if (showTokenCountOption) {
+              <label class="radio"
+                iaBalloon="Divide by the total word count in each bin">
+                <input type="radio" name="normalizer" (click)="currentNormalizer='terms'" [checked]="currentNormalizer==='terms'">
+                Terms
+              </label>
+            }
+          }
         </div>
-        <div class="column" *ngIf="!freqTable">
-            <div class="field">
-                <p class="label">Chart Type</p>
-                <div class="control radios" (change)="onChartParametersChange()">
-                    <label class="radio">
-                        <input type="radio" name="chartType" (click)="currentChartType='bar'" [checked]="currentChartType==='bar'">
-                        Bar
-                    </label>
-                    <label class="radio" *ngIf="!histogram">
-                        <input type="radio" name="chartType" (click)="currentChartType='line'" [checked]="currentChartType==='line'">
-                        Line
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="chartType" (click)="currentChartType='scatter'" [checked]="currentChartType==='scatter'">
-                        Scatter
-                    </label>
-                </div>
-            </div>
+      </div>
+    </div>
+    @if (!freqTable) {
+      <div class="column">
+        <div class="field">
+          <p class="label">Chart Type</p>
+          <div class="control radios" (change)="onChartParametersChange()">
+            <label class="radio">
+              <input type="radio" name="chartType" (click)="currentChartType='bar'" [checked]="currentChartType==='bar'">
+              Bar
+            </label>
+            @if (!histogram) {
+              <label class="radio">
+                <input type="radio" name="chartType" (click)="currentChartType='line'" [checked]="currentChartType==='line'">
+                Line
+              </label>
+            }
+            <label class="radio">
+              <input type="radio" name="chartType" (click)="currentChartType='scatter'" [checked]="currentChartType==='scatter'">
+              Scatter
+            </label>
+          </div>
         </div>
+      </div>
+    }
+  </div>
+
+
+
+  <div class="field">
+    @if (!showEdit) {
+      <div class="control">
+        <button class="button" (click)="showEdit = true">Compare with another query...</button>
+      </div>
+    }
+  </div>
+
+  @if (showEdit) {
+    <div class="control">
+      <ia-term-comparison-editor />
     </div>
-
-
-
-    <div class="field">
-        <div class="control" *ngIf="!showEdit">
-            <button class="button" (click)="showEdit = true">Compare with another query...</button>
-        </div>
-    </div>
-
-    <div class="control" *ngIf="showEdit">
-        <ia-term-comparison-editor />
-    </div>
+  }
 </form>

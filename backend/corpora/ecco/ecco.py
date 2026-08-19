@@ -7,12 +7,12 @@ from os.path import join, isfile, split, splitext
 from datetime import datetime
 import logging
 import re
-from ianalyzer_readers.xml_tag import Tag
+from textcavator_readers.xml_tag import Tag
 
 from django.conf import settings
 
 from api.utils import find_media_file
-from ianalyzer_readers.extract import Combined, Metadata, XML
+from textcavator_readers.extract import Combined, Metadata, XML
 from addcorpus.python_corpora import filters
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.es_settings import es_settings
@@ -31,10 +31,9 @@ class Ecco(XMLCorpusDefinition):
     min_date = datetime(year=1700, month=1, day=1)
     max_date = datetime(year=1800, month=12, day=31)
 
-    data_directory = settings.ECCO_DATA
-    es_index = getattr(settings, 'ECCO_ES_INDEX', 'ecco')
+    es_index = 'ecco'
     image = 'ecco.jpg'
-    scan_image_type = getattr(settings, 'ECCO_SCAN_IMAGE_TYPE', 'application/pdf')
+    scan_image_type = 'application/pdf'
     es_settings = None
     languages = ['en', 'fr', 'la', 'grc', 'de',  'it', 'cy', 'ga', 'gd']
     category = 'book'

@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from django.conf import settings
 from corpora.gale.gale import GaleCorpus, GaleMetadata, fix_path_sep
 from addcorpus.python_corpora.corpus import FieldDefinition
@@ -59,8 +59,7 @@ class HeraldTribune(GaleCorpus):
     description = "Archive of the International Herald Tribune, an American globally-focused newspaper."
     min_date = datetime(1887, 11, 11)
     max_date = datetime(2013, 10, 14)
-    data_directory = settings.HERALD_TRIBUNE_DATA
-    es_index = getattr(settings, 'HERALD_TRIBUNE_ES_INDEX', 'heraldtribune')
+    es_index = 'heraldtribune'
     image = 'Neuilly-sur-Seine_International_Herald_Tribune.jpg'
     description_page = 'HeraldTribune.md'
     languages = ['en']

@@ -1,9 +1,11 @@
-<ng-container *ngIf="min !== undefined && max !== undefined">
-    <div class="range" *ngIf="(filter?.state$ | async).data as data">
-        <span>{{data.min}} - {{data.max}}</span>
-        <p-slider [animate]="true" [ngModel]="[data.min, data.max]"
-            [range]="true" [min]="min" [max]="max"
-            (onChange)="sliderValue$.next($event.values)"
-            ariaLabelledBy="legend-filter-{{filter.displayName | slugify}}" />
+@if (min !== undefined && max !== undefined) {
+  @if ((filter?.state$ | async).data; as data) {
+    <div class="range">
+      <span>{{data.min}} - {{data.max}}</span>
+      <p-slider [animate]="true" [ngModel]="[data.min, data.max]"
+        [range]="true" [min]="min" [max]="max"
+        (onChange)="sliderValue$.next($event.values)"
+        ariaLabelledBy="legend-filter-{{filter.displayName | slugify}}" />
     </div>
-</ng-container>
+  }
+}
