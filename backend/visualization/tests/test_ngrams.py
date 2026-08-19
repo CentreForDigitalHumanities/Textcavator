@@ -110,7 +110,7 @@ def test_top_10_ngrams():
         dataset_absolute = next(series for series in output_absolute if series['label'] == word)
         assert dataset_absolute['data'] == ngram_counts[word]
 
-    output_relative, _ = ngram.get_top_n_ngrams(test_results, method='mi')
+    output_relative, _ = ngram.get_top_n_ngrams(test_results, method='t')
 
     for word in ngram_counts:
         dataset_relative = next(
@@ -118,7 +118,7 @@ def test_top_10_ngrams():
         )
         relative_frequencies = {
             w: [
-                ngram._mi(c, ttf[w], search_term_count, totals[i], total_word_count) if c else 0
+                ngram._t_value(c, ttf[w], search_term_count, totals[i], total_word_count) if c else 0
                 for i, c in enumerate(ngram_counts[w])
             ]
             for w in ngram_counts
@@ -330,7 +330,7 @@ def test_number_of_ngrams(small_mock_corpus, index_small_mock_corpus, basic_quer
 def test_freq_compensation(small_mock_corpus, index_small_mock_corpus, basic_query):
     frequent_query = query.set_query_text(basic_query, 'to')
     results = get_binned_results(small_mock_corpus, frequent_query, collect_ttf=True)
-    top_grams, totals = ngram.get_top_n_ngrams(results, method='mi')
+    top_grams, totals = ngram.get_top_n_ngrams(results, method='t')
     assert top_grams
     assert totals
 

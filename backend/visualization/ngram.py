@@ -312,29 +312,6 @@ def _legacy_compensated_frequency(
     norm = (sum(term_counts) + total_search_term_count / len(term_counts) + 1)
     return ngram_count / norm
 
-
-def _expected_collocate_count(
-    term_counts: List[int],
-    total_collocations: int,
-    total_word_count: int
-):
-    return total_collocations * prod(
-        count / total_word_count
-        for count in term_counts
-    )
-
-
-def _mi(
-    ngram_count: int,
-    term_counts: List[int],
-    total_search_term_count: int,
-    total_collocations: int,
-    total_word_count: int
-):
-    expected = _expected_collocate_count(term_counts, total_collocations, total_word_count)
-    return log2(ngram_count / expected)
-
-
 def _t_value(
     ngram_count: int,
     term_counts: List[int],
@@ -345,7 +322,10 @@ def _t_value(
     o11 = ngram_count
     r1 = total_collocations
     o12 = r1 - o11
-    e11 = _expected_collocate_count(term_counts, total_collocations, total_word_count)
+    e11 = total_collocations * prod(
+        count / total_word_count
+        for count in term_counts
+    )
     t = (o11 - e11) / sqrt(o12)
     return t
 
@@ -361,7 +341,6 @@ def _ngram_frequency(
     methods = {
         'absolute': _absolute_frequency,
         'legacy': _legacy_compensated_frequency,
-        'mi': _mi,
         't': _t_value
     }
     func = methods[method]
@@ -369,7 +348,7 @@ def _ngram_frequency(
     total_collocations = ngram_counts.total()
     if not count:
         return 0
-    if method in ['legacy', 'mi', 't']:
+    if method in ['legacy', 't']:
         if not ttfs:
             raise ValueError(f'ttfs dict is required for frequency method {method}')
         term_counts = ttfs.get(ngram)

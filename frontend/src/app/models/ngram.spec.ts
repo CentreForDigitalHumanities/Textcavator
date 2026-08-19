@@ -9,7 +9,7 @@ describe('NgramParameters', ()=> {
         mode: 'ngrams',
         size: 3,
         positions: 'first',
-        freqCompensation: 'mi',
+        freqCompensation: 't',
         analysis: 'clean',
         maxDocuments: 100,
         numberOfNgrams: 20,
