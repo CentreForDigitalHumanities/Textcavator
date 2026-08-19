@@ -1,0 +1,17 @@
+<ul class="list-unstyled d-flex flex-wrap m-0">
+    @for (item of value(); track item; let index = $index) {
+        <li class="bg-secondary-subtle rounded my-1 me-2 ps-2 pe-1 d-flex align-items-center">
+            {{item}}
+            <button class="btn btn-sm p-0" aria-label="remove {{itemName()}} '{{item}}'"
+                (click)="removeItem(index)">
+                <fa-icon [icon]="actionIcons.remove" aria-hidden="true" />
+            </button>
+        </li>
+    }
+    <li class="flex-fill my-1">
+        <input class="form-control-plaintext py-0" [(ngModel)]="input"
+            aria-label="add {{itemName()}}"
+            (keydown)="handleInputKeydown($event)"
+            [disabled]="limitReached()">
+    </li>
+</ul>
