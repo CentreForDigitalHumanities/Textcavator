@@ -9,6 +9,12 @@ on:
       - 'backend/**'
       - '.github/workflows/backend-test.yml'
       - 'docker-compose.yaml'
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+      - 'release/**'
+
 
 jobs:
   backend-test:

@@ -1,8 +1,12 @@
-<div *ngIf="results" [class.is-loading]="results.loading$ | async">
+@if (results) {
+  <div [class.is-loading]="results.loading$ | async">
     <div #chart id="chart" [class.is-hidden]="asTable" [attr.aria-hidden]="asTable"></div>
-
-    <div class="block" *ngIf="asTable">
+    <input iaThemeIndicator >
+    @if (asTable) {
+      <div class="block">
         <ia-freqtable [headers]="tableHeaders" [data]="results.result$ | async" [defaultSort]="'doc_count'" [name]="(results.state$ | async).field?.name">
         </ia-freqtable>
-    </div>
-</div>
+      </div>
+    }
+  </div>
+}

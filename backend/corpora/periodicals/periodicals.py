@@ -9,11 +9,11 @@ from os.path import join, isfile
 from datetime import datetime
 import re
 import openpyxl
-from ianalyzer_readers.xml_tag import Tag, SiblingTag, ParentTag
+from textcavator_readers.xml_tag import Tag, SiblingTag, ParentTag
 
 from django.conf import settings
 
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from addcorpus.python_corpora import filters
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
@@ -28,11 +28,10 @@ class Periodicals(XMLCorpusDefinition):
     title = "Periodicals"
     description = "A collection of 19th century periodicals"
     min_date = datetime(1800,1,1)
-    max_date = datetime(1900,1,1)
-    data_directory = settings.PERIODICALS_DATA
-    es_index = getattr(settings, 'PERIODICALS_ES_INDEX', 'periodicals')
+    max_date = datetime(1900, 1, 1)
+    es_index = 'periodicals'
     image = 'Fleet_Street.jpg'
-    scan_image_type = getattr(settings, 'PERIODICALS_SCAN_IMAGE_TYPE', 'image/jpeg')
+    scan_image_type = 'image/jpeg'
     description_page = '19thCenturyUKPeriodicals.md'
     languages = ['en']
     category = 'periodical'

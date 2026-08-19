@@ -3,11 +3,11 @@ import os
 import os.path as op
 import logging
 from datetime import datetime
-from ianalyzer_readers.xml_tag import Tag, CurrentTag
+from textcavator_readers.xml_tag import Tag, CurrentTag
 
 from django.conf import settings
 
-from ianalyzer_readers.extract import XML
+from textcavator_readers.extract import XML
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter #SliderRangeFilter, BoxRangeFilter
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
@@ -20,8 +20,7 @@ class JewishInscriptions(XMLCorpusDefinition):
     description = "A collection of inscriptions on Jewish burial sites"
     min_date = datetime(year=769, month=1, day=1)
     max_date = datetime(year=849, month=12, day=31)
-    data_directory = settings.JEWISH_INSCRIPTIONS_DATA
-    es_index = getattr(settings, 'JEWISH_INSCRIPTIONS_ES_INDEX', 'jewishinscriptions')
+    es_index = 'jewishinscriptions'
     image = 'jewishinscriptions.jpg'
     visualize = []
     languages = ['heb', 'lat']

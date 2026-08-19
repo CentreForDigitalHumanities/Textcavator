@@ -1,52 +1,56 @@
 <section class="section">
-    <h1 class="title">Search history</h1>
+  <h1 class="title">Search history</h1>
 
-    <p class="block">
-        Here you can see an overview of your search history.
-        You can turn search history on or off in
-        <a [routerLink]="['/settings']">settings</a>.
-    </p>
+  <p class="block">
+    Here you can see an overview of your search history.
+    You can turn search history on or off in
+    <a [routerLink]="['/settings']">settings</a>.
+  </p>
 
-    <p-table #dt *ngIf="queries" [value]="queries" [paginator]="true" [rows]="10">
-        <ng-template pTemplate="caption">
-            <div>
-                Search history
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th rowspan="2">Timestamp</th>
-                <th rowspan="2">Query</th>
-                <th rowspan="2">Filters</th>
-                <th rowspan="2">Results</th>
-                <th>Corpus</th>
-                <th rowspan="2">Link</th>
-            </tr>
-            <tr>
-                <th>
-                    <p-columnFilter field="corpus" matchMode="equals" [showMenu]="false">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                            <p-select [options]="corpusMenuItems" [style]="{'width':'100%'}" placeholder="Any"
-                                [ngModel]="value" (onChange)="filter($event.value)"></p-select>
-                        </ng-template>
-                    </p-columnFilter>
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-query>
-            <tr>
-                <td>{{query.started | date:'medium'}}</td>
-                <td>{{query.queryModel?.queryText }}</td>
-                <td ia-query-filters [queryModel]="query.queryModel"></td>
-                <td>{{query.total_results}}</td>
-                <td>{{corpusTitle(query.corpus)}}</td>
-                <td><a *ngIf="query.queryModel" [routerLink]="routerLink(query)" [queryParams]="queryParams(query)">
-                    <span class="icon" aria-label="open this query">
-                        <fa-icon [icon]="actionIcons.link"></fa-icon>
-                    </span>
-                    </a>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+  @if (queries) {
+    <p-table #dt [value]="queries" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="caption">
+        <div>
+          Search history
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th rowspan="2">Timestamp</th>
+          <th rowspan="2">Query</th>
+          <th rowspan="2">Filters</th>
+          <th rowspan="2">Results</th>
+          <th>Corpus</th>
+          <th rowspan="2">Link</th>
+        </tr>
+        <tr>
+          <th>
+            <p-columnFilter field="corpus" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-select [options]="corpusMenuItems" [style]="{'width':'100%'}" placeholder="Any"
+                [ngModel]="value" (onChange)="filter($event.value)"></p-select>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-query>
+        <tr>
+          <td>{{query.started | date:'medium'}}</td>
+          <td>{{query.queryModel?.queryText }}</td>
+          <td ia-query-filters [queryModel]="query.queryModel"></td>
+          <td>{{query.total_results}}</td>
+          <td>{{corpusTitle(query.corpus)}}</td>
+          <td>@if (query.queryModel) {
+            <a [routerLink]="routerLink(query)" [queryParams]="queryParams(query)">
+              <span class="icon" aria-label="open this query">
+                <fa-icon [icon]="actionIcons.link"></fa-icon>
+              </span>
+            </a>
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+}
 </section>

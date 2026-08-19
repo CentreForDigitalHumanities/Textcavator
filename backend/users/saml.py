@@ -1,16 +1,20 @@
 from djangosaml2.backends import Saml2Backend
 from django.contrib.auth.models import Group
 from django.conf import settings
+from uuid import uuid4
+
 
 class CustomSaml2Backend(Saml2Backend):
     def get_or_create_user(self, *args, **kwargs):
         user, created = super().get_or_create_user(*args, **kwargs)
 
-        saml_group = saml_user_group()
-        if created and saml_group:
+        if created:
             user.saml = True
-            user.save()
-            user.groups.add(saml_group)
+            user.username = uuid4()
+            saml_group = saml_user_group()
+            if saml_group:
+                user.save()
+                user.groups.add(saml_group)
 
         return user, created
 

@@ -8,7 +8,7 @@ from django.conf import settings
 
 from addcorpus.python_corpora.corpus import FieldDefinition, XLSXCorpusDefinition
 from addcorpus.es_mappings import text_mapping, main_content_mapping, keyword_mapping, int_mapping
-from ianalyzer_readers.extract import CSV, Combined, Pass, Constant, Metadata
+from textcavator_readers.extract import CSV, Combined, Pass, Constant, Metadata
 from addcorpus.python_corpora.filters import MultipleChoiceFilter
 from corpora.uu_course_descriptions.utils import html_to_text, language_name, detect_language
 
@@ -76,7 +76,9 @@ def teacher_extractor(role):
     )
 
 class CourseStaffMetadata(XLSXCorpusDefinition):
-    data_directory = settings.HUM_COURSE_DESCRIPTIONS_DATA
+
+    def __init__(self, data_directory: str):
+        self.data_directory = data_directory
 
     def sources(self, **kwargs):
         path = os.path.join(self.data_directory, 'docenten_cursussen2023GW.xlsx')
@@ -115,9 +117,7 @@ class HumCourseDescriptions(XLSXCorpusDefinition):
     max_date = datetime(2023, 8, 31)
     image = 'uu_gw.jpg'
     languages = ['nl', 'en', 'de', 'fr', 'es', 'it']
-    es_index =  getattr(settings, 'HUM_COURSE_DESCRIPTIONS_INDEX', 'hum_course_descriptions')
-
-    data_directory = settings.HUM_COURSE_DESCRIPTIONS_DATA
+    es_index = 'hum_course_descriptions'
 
     def sources(self, *args, **kwargs):
         teacher_roles = self._extract_teacher_data()
@@ -125,7 +125,7 @@ class HumCourseDescriptions(XLSXCorpusDefinition):
         yield path, { 'teacher_roles': teacher_roles }
 
     def _extract_teacher_data(self):
-        reader = CourseStaffMetadata()
+        reader = CourseStaffMetadata(data_directory=self.data_directory)
         roles = reader.documents()
         return list(roles)
 

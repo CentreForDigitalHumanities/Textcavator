@@ -1,12 +1,14 @@
 <section class="section">
-    <div class="container is-readable">
-        <h1 class="title site-header is-2">{{appName}}</h1>
+  <div class="container">
+    <h1 class="title site-header is-2">{{appName}}</h1>
 
-        <div *ngIf="appDescription" class="content" [innerHTML]="appDescription"></div>
-    </div>
+    @if (appDescription) {
+      <div class="content" [innerHTML]="appDescription"></div>
+    }
+  </div>
 </section>
 
 <hr>
 
-<ia-corpus-selection />
+  <ia-corpus-selection />
 

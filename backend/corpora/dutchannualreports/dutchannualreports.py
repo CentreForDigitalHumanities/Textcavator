@@ -4,12 +4,12 @@ import os
 import os.path as op
 import logging
 from datetime import datetime
-from ianalyzer_readers.xml_tag import Tag
+from textcavator_readers.xml_tag import Tag
 
 from django.conf import settings
 
 from api.utils import find_media_file
-from ianalyzer_readers.extract import XML, Metadata, Combined
+from textcavator_readers.extract import XML, Metadata, Combined
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from media.image_processing import get_pdf_info, retrieve_pdf, pdf_pages, build_partial_pdf
@@ -25,13 +25,11 @@ class DutchAnnualReports(XMLCorpusDefinition):
     description = "Annual reports of Dutch financial and non-financial institutes"
     min_date = datetime(year=1957, month=1, day=1)
     max_date = datetime(year=2008, month=12, day=31)
-    data_directory = settings.DUTCHANNUALREPORTS_DATA
-    es_index = getattr(settings, 'DUTCHANNUALREPORTS_ES_INDEX', 'dutchannualreports')
+    es_index = 'dutchannualreports'
     image = 'dutchannualreports.jpg'
-    scan_image_type = getattr(settings, 'DUTCHANNUALREPORTS_SCAN_IMAGE_TYPE', 'application/pdf')
+    scan_image_type = 'application/pdf'
     description_page = 'dutchannualreports.md'
-    allow_image_download = getattr(settings, 'DUTCHANNUALREPORTS_ALLOW_IMAGE_DOWNLOAD', True)
-    word_model_path = getattr(settings, 'DUTCHANNUALREPORTS_WM', None)
+    allow_image_download = True
 
     languages = ['nl']
     category = 'finance'

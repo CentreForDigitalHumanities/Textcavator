@@ -1,35 +1,35 @@
 <div class="contextbox">
-    <div>
-        <h2 class="heading has-text-right">Toggle highlights:</h2>
-    </div>
-    <div class="column is-narrow">
-        <div class="field has-addons is-justify-content-flex-end">
-            <ng-container *ngIf="highlight$ | async as highlight">
-                <div class="control">
-                    <button class="button"
-                        (click)="updateHighlightSize('more')"
-                        [disabled]="highlight>=800"
-                        iaBalloon="increase preview size"
-                        aria-label="increase preview size">
-                        <fa-icon [icon]="actionIcons.more" aria-hidden="true"></fa-icon>
-                    </button>
-                </div>
-                <div class="control">
-                    <button class="button"
-                        (click)="updateHighlightSize('less')"
-                        [disabled]="highlight<=200"
-                        iaBalloon="decrease preview size"
-                        aria-label="decrease preview size">
-                        <fa-icon [icon]="actionIcons.less" aria-hidden="true"></fa-icon>
-                    </button>
-                </div>
-            </ng-container>
-            <div class="control">
-                <button class="button" id="highlight-toggle" [class.is-active]="highlight$ | async"
-                    (click)="updateHighlightSize(highlight ? 'off' : 'on')">
-                    {{ (highlight$ | async) ? 'ON' : 'OFF' }}
-                </button>
-            </div>
+  <div>
+    <h2 class="heading has-text-right">Toggle highlights:</h2>
+  </div>
+  <div class="column is-narrow">
+    <div class="field has-addons is-justify-content-flex-end">
+      @if (highlight$ | async; as highlight) {
+        <div class="control">
+          <button class="button"
+            (click)="updateHighlightSize('more')"
+            [disabled]="highlight>=800"
+            iaBalloon="increase preview size"
+            aria-label="increase preview size">
+            <fa-icon [icon]="actionIcons.more" aria-hidden="true"></fa-icon>
+          </button>
         </div>
+        <div class="control">
+          <button class="button"
+            (click)="updateHighlightSize('less')"
+            [disabled]="highlight<=200"
+            iaBalloon="decrease preview size"
+            aria-label="decrease preview size">
+            <fa-icon [icon]="actionIcons.less" aria-hidden="true"></fa-icon>
+          </button>
+        </div>
+      }
+      <div class="control">
+        <button class="button" id="highlight-toggle" [class.is-active]="highlight$ | async"
+          (click)="updateHighlightSize(highlight ? 'off' : 'on')">
+          {{ (highlight$ | async) ? 'ON' : 'OFF' }}
+        </button>
+      </div>
     </div>
+  </div>
 </div>

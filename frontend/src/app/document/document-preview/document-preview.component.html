@@ -1,57 +1,60 @@
-<ng-container *ngIf="page && document">
-    <table class="table is-fullwidth">
-        <ng-container *ngFor="let field of page.fields">
-            <colgroup>
-                <col style="width: 20%;" />
-                <col style="width: 80%;" />
-            </colgroup>
-            <tr *ngIf="document.hasValue(field)">
-                <th>
-                    <span [iaBalloon]="field.description" iaBalloonPosition="left" iaBalloonLength="medium">
-                        {{field.displayName}}:
-                    </span>
-                </th>
-                <td [attr.lang]="document.language(field)">
-                    <ng-container *ngIf="field.displayType === 'text_content'; else metadataField">
-                        <ia-content-field-preview [field]="field" [document]="document" />
-                    </ng-container>
-                    <ng-template #metadataField>
-                        <ia-metadata-field [field]="field" [document]="document" />
-                    </ng-template>
-                </td>
-            </tr>
-        </ng-container>
-    </table>
-
-
-    <div class="columns is-vcentered">
-        <div class="column is-narrow heading" *ngIf="document.relevance">
-            Relevance: <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
-        </div>
-        <div class="column" role="presentation"></div>
-        <div class="column field is-grouped is-narrow">
-            <div class="control">
-                <button class="button is-primary" (click)="page.focus(document)">
-                    <span class="icon" aria-hidden="true"><fa-icon [icon]="actionIcons.view"></fa-icon></span>
-                    <span>
-                        View
-                    </span>
-                </button>
-            </div>
-            <div class="control" *ngIf="document.fieldValues.image_path">
-                <button class="button" (click)="goToScan(page, document, $event)" aria-label="view scan">
-                    <span class="icon" aria-hidden="true"><fa-icon [icon]="documentIcons.scanAlt"></fa-icon></span>
-                    <span>View scan</span>
-                </button>
-            </div>
-            <div class="control">
-                <a class="button" [routerLink]="documentUrl">
-                    <span class="icon" aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
-                    <span>
-                        Link
-                    </span>
-                </a>
-            </div>
-        </div>
+@if (page && document) {
+  <table class="table is-fullwidth">
+    @for (field of page.fields; track field) {
+      <colgroup>
+      <col style="width: 20%;" />
+      <col style="width: 80%;" />
+    </colgroup>
+    @if (document.hasValue(field)) {
+      <tr>
+        <th>
+          <span [iaBalloon]="field.description" iaBalloonPosition="left" iaBalloonLength="medium">
+            {{field.displayName}}:
+          </span>
+        </th>
+        <td [attr.lang]="document.language(field)">
+          @if (field.displayType === 'text_content') {
+            <ia-content-field-preview [field]="field" [document]="document" />
+          } @else {
+            <ia-metadata-field [field]="field" [document]="document" />
+          }
+        </td>
+      </tr>
+    }
+  }
+</table>
+<div class="columns is-vcentered">
+  @if (document.relevance) {
+    <div class="column is-narrow heading">
+      Relevance: <ia-search-relevance [value]="document.relevance"></ia-search-relevance>
     </div>
-</ng-container>
+  }
+  <div class="column" role="presentation"></div>
+  <div class="column field is-grouped is-narrow">
+    <div class="control">
+      <button class="button is-primary" (click)="page.focus(document)">
+        <span class="icon" aria-hidden="true"><fa-icon [icon]="actionIcons.view"></fa-icon></span>
+        <span>
+          View
+        </span>
+      </button>
+    </div>
+    @if (document.fieldValues.image_path) {
+      <div class="control">
+        <button class="button" (click)="goToScan(page, document, $event)" aria-label="view scan">
+          <span class="icon" aria-hidden="true"><fa-icon [icon]="documentIcons.scanAlt"></fa-icon></span>
+          <span>View scan</span>
+        </button>
+      </div>
+    }
+    <div class="control">
+      <a class="button" [routerLink]="documentUrl">
+        <span class="icon" aria-hidden="true"><fa-icon [icon]="actionIcons.link"></fa-icon></span>
+        <span>
+          Link
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+}

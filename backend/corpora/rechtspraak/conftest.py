@@ -9,10 +9,13 @@ def rechtspraak_test_settings(settings):
     settings.CORPORA = {
         'rechtspraak': 'corpora.rechtspraak.rechtspraak.Rechtspraak'
     }
+    settings.CORPUS_SETTINGS = {
+        'rechtspraak': {
+            'data_directory': op.join(here, 'tests', 'data'),
+            'es_index': 'test-rechtspraak',
+        }
+    }
 
-    settings.RECHTSPRAAK_DATA = op.join(here, 'tests', 'data')
-    settings.RECHTSPRAAK_IMAGE = 'troon.jpg'
-    settings.RECHTSPRAAK_ES_INDEX = 'rechtspraak-test'
 
 @pytest.fixture
 def test_corpus(rechtspraak_test_settings):

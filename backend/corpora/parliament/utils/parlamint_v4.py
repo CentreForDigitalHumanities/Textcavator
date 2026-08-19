@@ -4,8 +4,8 @@ from typing import Iterable
 
 from bs4.element import NavigableString, Tag as Node
 from bs4 import BeautifulSoup
-from ianalyzer_readers.extract import Combined, Metadata, XML
-from ianalyzer_readers.xml_tag import Tag
+from textcavator_readers.extract import Combined, Metadata, XML
+from textcavator_readers.xml_tag import Tag
 
 from addcorpus.es_mappings import non_indexed_text_mapping, keyword_mapping
 from addcorpus.python_corpora.corpus import FieldDefinition

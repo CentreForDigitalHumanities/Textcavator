@@ -7,13 +7,13 @@ import re
 from datetime import datetime
 from os.path import join, split, splitext
 import os
-from ianalyzer_readers.xml_tag import Tag, SiblingTag
+from textcavator_readers.xml_tag import Tag, SiblingTag
 
 from django.conf import settings
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition, consolidate_start_end_years
 from addcorpus.python_corpora import filters
-from ianalyzer_readers.extract import Metadata, XML
+from textcavator_readers.extract import Metadata, XML
 
 from corpora.utils.constants import document_context
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping
@@ -32,14 +32,12 @@ class DutchNewspapersPublic(XMLCorpusDefinition):
     description = "Collection of Dutch newspapers in the public domain, digitised by the Koninklijke Bibliotheek."
     min_date = datetime(year=1600, month=1, day=1)
     max_date = datetime(year=1876, month=12, day=31)
-    data_directory = getattr(settings, 'DUTCHNEWSPAPERS_DATA', None)
-    es_index = getattr(settings, 'DUTCHNEWSPAPERS_ES_INDEX', 'dutchnewspapers-public')
+    es_index = 'dutchnewspapers-public'
     image = 'dutchnewspapers.jpg'
     languages = ['nl']
     category = 'periodical'
     description_page = 'description_public.md'
     citation_page = 'citation_public.md'
-    word_model_path = getattr(settings, "DUTCHNEWSPAPERS_WM", None)
 
     @property
     def es_settings(self):

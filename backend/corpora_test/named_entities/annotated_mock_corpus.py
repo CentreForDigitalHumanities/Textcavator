@@ -3,7 +3,7 @@ import os
 from typing import List
 import csv
 
-from ianalyzer_readers.extract import CSV
+from textcavator_readers.extract import CSV
 from addcorpus.python_corpora.corpus import FieldDefinition, CSVCorpusDefinition
 from addcorpus.es_mappings import (
     date_mapping, main_content_mapping, keyword_mapping, non_indexed_text_mapping,

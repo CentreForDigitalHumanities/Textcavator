@@ -1,33 +1,35 @@
-<ng-container *ngIf="field" [ngSwitch]="field.displayType">
-    <ng-container *ngSwitchCase="'text'">
-        @for (item of document.fieldValue(field) | paragraph; track $index) {
-            <div ia-highlighted-content
-                [content]="item | elasticsearchHighlight:field:document">
-            </div>
-        }
-    </ng-container>
-    <ng-container *ngSwitchCase="'keyword'">
-        @for (item of document.fieldValue(field) | keyword; track $index; let last = $last) {
-            <span ia-highlighted-content
-                [content]="item | elasticsearchHighlight:field:document">
-            </span>@if (!last) {, }
-        }
-    </ng-container>
-    <ng-container *ngSwitchCase="'date'">
-        {{ document.fieldValue(field) | date:'mediumDate' }}
-    </ng-container>
-    <ng-container *ngSwitchCase="'date_range'">
-        {{ document.fieldValue(field) | dateRange:'mediumDate' }}
-    </ng-container>
-    <ng-container *ngSwitchCase="'geo_point'">
-        {{ field | geoData:document }}
-    </ng-container>
-    <ng-container *ngSwitchCase="'url'">
-        <a href={{document.fieldValue(field)}} target="_blank">
-            {{document.fieldValue(field)}}
-        </a>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-        {{ document.fieldValue(field) }}
-    </ng-container>
-</ng-container>
+@if (field) {
+  @switch (field.displayType) {
+    @case ('text') {
+      @for (item of document.fieldValue(field) | paragraph; track $index) {
+        <div ia-highlighted-content
+          [content]="item | elasticsearchHighlight:field:document">
+        </div>
+      }
+    }
+    @case ('keyword') {
+      @for (item of document.fieldValue(field) | keyword; track $index; let last = $last) {
+        <span ia-highlighted-content
+          [content]="item | elasticsearchHighlight:field:document">
+        </span>@if (!last) {, }
+      }
+    }
+    @case ('date') {
+      {{ document.fieldValue(field) | date:'mediumDate' }}
+    }
+    @case ('date_range') {
+      {{ document.fieldValue(field) | dateRange:'mediumDate' }}
+    }
+    @case ('geo_point') {
+      {{ field | geoData:document }}
+    }
+    @case ('url') {
+      <a href={{document.fieldValue(field)}} target="_blank">
+        {{document.fieldValue(field)}}
+      </a>
+    }
+    @default {
+      {{ document.fieldValue(field) }}
+    }
+  }
+}

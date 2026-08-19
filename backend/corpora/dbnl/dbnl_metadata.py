@@ -1,7 +1,6 @@
 import os
-from django.conf import settings
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition, FieldDefinition
-from ianalyzer_readers.extract import CSV, Combined, Pass
+from textcavator_readers.extract import CSV, Combined, Pass
 import corpora.dbnl.utils as utils
 
 class DBNLMetadata(CSVCorpusDefinition):
@@ -10,7 +9,9 @@ class DBNLMetadata(CSVCorpusDefinition):
     Used by the DBNL corpus for CSV extraction utilities -
     not intended as a standalone corpus.'''
 
-    data_directory = settings.DBNL_DATA
+    def __init__(self, data_directory=None):
+        if data_directory:
+            self.data_directory = data_directory
 
     field_entry = 'ti_id'
     delimiter = '|'

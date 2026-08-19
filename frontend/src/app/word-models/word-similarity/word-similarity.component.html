@@ -1,13 +1,15 @@
 <div class="field">
-    <div class="control">
-        <label class="label">Enter one or more terms to compare to "{{queryText}}":</label>
-        <ia-term-comparison-editor
-            [termLimit]="comparisonTermLimit">
-        </ia-term-comparison-editor>
-    </div>
+  <div class="control">
+    <label class="label">Enter one or more terms to compare to "{{queryText}}":</label>
+    <ia-term-comparison-editor
+      [termLimit]="comparisonTermLimit">
+    </ia-term-comparison-editor>
+  </div>
 </div>
 
-<div class="block" *ngIf="timeIntervals">
+@if (timeIntervals) {
+  <div class="block">
     <ia-similarity-chart [timeIntervals]="timeIntervals" [totalData]="data"
     [asTable]="asTable" [palette]="palette" [tableFileName]="tableFileName"></ia-similarity-chart>
-</div>
+  </div>
+}

@@ -13,7 +13,6 @@ import { FormFeedbackComponent } from '../form-feedback/form-feedback.component'
 import { DocumentationFormComponent } from '../documentation-form/documentation-form.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MarkdownEditorComponent } from '../documentation-form/markdown-editor/markdown-editor.component';
-import { QuillModule } from 'ngx-quill';
 import { CorpusServiceMock } from '@mock-data/corpus';
 
 
@@ -29,13 +28,12 @@ describe('MetaFormComponent', () => {
                 ImageUploadComponent,
                 DocumentationFormComponent,
                 FormFeedbackComponent,
-                MarkdownEditorComponent,
             ],
             imports: [
                 SharedModule,
                 ReactiveFormsModule,
                 AutoCompleteModule,
-                QuillModule,
+                MarkdownEditorComponent,
             ],
             providers: [
                 CorpusDefinitionService,

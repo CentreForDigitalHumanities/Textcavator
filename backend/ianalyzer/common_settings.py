@@ -138,7 +138,7 @@ REST_AUTH = {
 
 LOGO_LINK = 'https://dhstatic.hum.uu.nl/logo-cdh/png/UU_CDH_logo_EN_whiteFC.png'
 
-NLTK_DATA_PATH = os.path.join(BASE_DIR, 'addcorpus', 'stopword_data', 'nltk_data')
+NLTK_DATA_PATH = None
 
 DEFAULT_CORPUS_IMAGE = os.path.join(BASE_DIR, 'addcorpus', 'images', 'default.png')
 

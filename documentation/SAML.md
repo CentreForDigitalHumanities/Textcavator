@@ -6,11 +6,13 @@ Textcavator users can register an account directly, or sign in via Utrecht Unive
 
 In order to login with Solis ID, Textcavator has SAML integration with ITS. For this, it uses the [djangosaml2 library](https://djangosaml2.readthedocs.io/). More information on working with SAML, setting up a local environment to test the SAML integration, etc. can be found [here](https://github.com/UUDigitalHumanitieslab/dh-info/blob/master/SAML.md)
 
-The urls exposed by DjangoSaml2 are included as part of our `users` application, e.g., `<hostname>/users/saml2/login`. DjangoSaml2 takes care of consuming the response from the Identity Provider and logging in the user. The `SAML_ATTRIBUTE_MAPPING` variable contains a dictionary of the data coming in from the identity provider, e.g., `uushortid`, and translating that to the corresponding column in the user table, e.g., `username`. Moreover, the setting `SAML_CREATE_UNKNOWN_USER = True` makes sure that we create a user in our database if it's not present yet.
+The urls exposed by DjangoSaml2 are included as part of our `users` application, e.g., `<hostname>/users/saml2/login`. DjangoSaml2 takes care of consuming the response from the Identity Provider and logging in the user. The `SAML_ATTRIBUTE_MAPPING` variable contains a dictionary of the data coming in from the identity provider, e.g., `uuShortID`, and translating that to the corresponding column in the user table, e.g., `saml_username`. The setting `SAML_CREATE_UNKNOWN_USER = True` makes sure that we create a user in our database if it's not present yet.
 
-The only tweaks added on top of the DjangoSaml2 package are:
-- the logic to set the `saml` column to `True` for a user logging in with SAML. The `CustomSaml2Backend` overrides DjangoSaml2's `get_or_create_user` function to take care of this. Note that in the future, we could also turn this field into a `CharField` to keep track of multiple identity providers here.
-- overriding DjangoSaml2's `LogoutView` to make its `post` method `csrf_exempt`. The response from the ITS Identity Provider does not send the csrf cookie in a way that it can be consumed by Django at the moment.
+The tweaks added on top of the DjangoSaml2 package are:
+- The user's ID with the identity provider is stored as `saml_username`. When a new user is created, a UUID is generated for the `username` field of the acount. This UUID only serves as a unique identifier; the user will not use it to log in.
+- The `saml` field is set to `True` when a user signs in via SAML.
+- SAML users are automatically added to a dedicated group (see "Authorisation" below).
+- DjangoSaml2's `LogoutView` is overridden to make its `post` method `csrf_exempt`. The response from the ITS Identity Provider does not send the csrf cookie in a way that it can be consumed by Django at the moment.
 
 ### Authorisation
 
@@ -18,7 +20,7 @@ The setting [SAML_GROUP_NAME](/documentation/Django-project-settings.md#saml_gro
 
 ## Developing with SAML
 
-SAML intergration depends on the [`xmlsec` Python library](https://xmlsec.readthedocs.io/en/stable/) which requires additional libraries. The Docker environment also includes these. If you are not using Docker, follow the installation instructions in the `xmlsec` documentation.
+SAML intergration depends on the [`xmlsec` Python library](https://xmlsec.readthedocs.io/) which requires additional libraries. The Docker environment also includes these. If you are not using Docker, follow the installation instructions in the `xmlsec` documentation.
 
 To use SAML login in a development environment, you can use the CDH [Development Identity Provider](https://centrefordigitalhumanities.github.io/Federated-Authentication-Docs/developmentidp/index.html).
 

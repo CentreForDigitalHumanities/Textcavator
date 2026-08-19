@@ -1,10 +1,9 @@
 from glob import glob
 from datetime import datetime
 import re
-from django.conf import settings
 import os
 
-from ianalyzer_readers.extract import Combined, Constant, CSV
+from textcavator_readers.extract import Combined, Constant, CSV
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 from corpora.utils.constants import document_context
 from corpora.parliament.parliament import Parliament
@@ -24,8 +23,8 @@ class ParliamentNorway(Parliament, CSVCorpusDefinition):
     description = "Speeches from the Storting"
     min_date = datetime(year=1814, month=1, day=1)
     max_date = datetime(year=2004, month=12, day=31)
-    data_directory = settings.PP_NORWAY_DATA
-    es_index = getattr(settings, 'PP_NORWAY_INDEX','parliament-norway')
+    es_index = 'parliament-norway'
+
     image = 'norway.JPG'
     languages = ['no']
     description_page = 'norway.md'

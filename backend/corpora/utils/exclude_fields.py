@@ -1,4 +1,4 @@
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 
 def has_extractor(field):
     if type(field.extractor) != extract.Constant:

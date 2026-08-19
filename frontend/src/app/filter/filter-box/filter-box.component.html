@@ -1,44 +1,63 @@
-<fieldset class="box filter-container" *ngIf="filter"
+@if (filter) {
+  <fieldset class="box filter-container"
     [class.on]="filter.state$.value.active">
     <legend class="label" id="legend-filter-{{filter.displayName | slugify}}">
-        {{ filter.displayName }}
+      {{ filter.displayName }}
     </legend>
     <div class="field has-addons" style="float:right">
-        <div class="control">
-            <span class="icon"
-                *ngIf="filter.description?.length"
-                iaBalloon="{{ filter.description }}"
-                iaBalloonPosition="up-left"
-                iaBalloonLength="medium">
-                <fa-icon [icon]="actionIcons.tooltip" aria-hidden="true" />
-            </span>
-            <button *ngIf="(filter.isDefault$ | async) === false"
-                class="button icon is-ghost"
-                type="button"
-                (click)="filter.reset()" iaBalloon="Reset this filter to its default values"
-                iaBalloonPosition="down-left">
-                <fa-icon [icon]="filterIcons.clear" aria-hidden="true"></fa-icon>
-            </button>
-            <button *ngIf="(filter.isDefault$ | async) === false"
-                class="button is-ghost icon"
-                type="button"
-                (click)="filter.toggle()"
-                iaBalloon="{{filter.state$.value.active ? 'Disable this filter' : 'Enable this filter'}}"
-                iaBalloonPosition="down-left">
-                <fa-icon [icon]="filterIcons.toggle" aria-hidden="true"></fa-icon>
-            </button>
-        </div>
+      <div class="control">
+        @if (filter.description?.length) {
+          <span class="icon"
+            iaBalloon="{{ filter.description }}"
+            iaBalloonPosition="up-left"
+            iaBalloonLength="medium">
+            <fa-icon [icon]="actionIcons.tooltip" aria-hidden="true" />
+          </span>
+        }
+        @if ((filter.isDefault$ | async) === false) {
+          <button
+            class="button icon is-ghost"
+            type="button"
+            (click)="filter.reset()" iaBalloon="Reset this filter to its default values"
+            iaBalloonPosition="down-left">
+            <fa-icon [icon]="filterIcons.clear" aria-hidden="true"></fa-icon>
+          </button>
+        }
+        @if ((filter.isDefault$ | async) === false) {
+          <button
+            class="button is-ghost icon"
+            type="button"
+            (click)="filter.toggle()"
+            iaBalloon="{{filter.state$.value.active ? 'Disable this filter' : 'Enable this filter'}}"
+            iaBalloonPosition="down-left">
+            <fa-icon [icon]="filterIcons.toggle" aria-hidden="true"></fa-icon>
+          </button>
+        }
+      </div>
     </div>
     <div class="block" class="filter-control">
-        <ng-container *ngIf="filter.adHoc">
-            <ia-ad-hoc-filter [filter]="filter" [queryModel]="queryModel"></ia-ad-hoc-filter>
-        </ng-container>
-        <ng-container *ngIf="!filter.adHoc" [ngSwitch]="filter.filterType">
-            <ia-boolean-filter *ngSwitchCase="'BooleanFilter'" [filter]="filter" [queryModel]="queryModel"></ia-boolean-filter>
-            <ia-date-filter *ngSwitchCase="'DateFilter'" [filter]="filter" [queryModel]="queryModel"></ia-date-filter>
-            <ia-multiple-choice-filter *ngSwitchCase="'MultipleChoiceFilter'" [filter]="filter" [queryModel]="queryModel"></ia-multiple-choice-filter>
-            <ia-range-filter *ngSwitchCase="'RangeFilter'" [filter]="filter" [queryModel]="queryModel"></ia-range-filter>
-            <ia-tag-filter *ngSwitchCase="'TagFilter'" [filter]="filter" [queryModel]="queryModel"></ia-tag-filter>
-        </ng-container>
+      @if (filter.adHoc) {
+        <ia-ad-hoc-filter [filter]="filter" [queryModel]="queryModel"></ia-ad-hoc-filter>
+      }
+      @if (!filter.adHoc) {
+        @switch (filter.filterType) {
+          @case ('BooleanFilter') {
+            <ia-boolean-filter [filter]="filter" [queryModel]="queryModel"></ia-boolean-filter>
+          }
+          @case ('DateFilter') {
+            <ia-date-filter [filter]="filter" [queryModel]="queryModel"></ia-date-filter>
+          }
+          @case ('MultipleChoiceFilter') {
+            <ia-multiple-choice-filter [filter]="filter" [queryModel]="queryModel"></ia-multiple-choice-filter>
+          }
+          @case ('RangeFilter') {
+            <ia-range-filter [filter]="filter" [queryModel]="queryModel"></ia-range-filter>
+          }
+          @case ('TagFilter') {
+            <ia-tag-filter [filter]="filter" [queryModel]="queryModel"></ia-tag-filter>
+          }
+        }
+      }
     </div>
-</fieldset>
+  </fieldset>
+}

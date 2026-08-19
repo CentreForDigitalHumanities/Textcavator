@@ -1,37 +1,51 @@
-<div style="text-align: center;" *ngIf="!noImages">
+@if (!noImages) {
+  <div style="text-align: center;">
     <div class="level">
-    <div class="level-left">
+      <div class="level-left">
         <button class="button is-ghost" (click)="zoomIn()"
-            aria-label="zoom in">
-            <span class="icon">
-                <fa-icon [icon]="scanIcons.zoomIn" aria-hidden="true"></fa-icon>
-            </span>
+          aria-label="zoom in">
+          <span class="icon">
+            <fa-icon [icon]="scanIcons.zoomIn" aria-hidden="true"></fa-icon>
+          </span>
         </button>
         <button class="button is-ghost" (click)="zoomOut()"
-            aria-label="zoom out">
-            <span class="icon">
-                <fa-icon [icon]="scanIcons.zoomOut" aria-hidden="true"></fa-icon>
-            </span>
+          aria-label="zoom out">
+          <span class="icon">
+            <fa-icon [icon]="scanIcons.zoomOut" aria-hidden="true"></fa-icon>
+          </span>
         </button>
         <button class="button is-ghost" (click)="resetZoom()"
-            aria-label="reset zoom">
-            <span class="icon">
-                <fa-icon [icon]="scanIcons.zoomReset" aria-hidden="true"></fa-icon>
-            </span>
+          aria-label="reset zoom">
+          <span class="icon">
+            <fa-icon [icon]="scanIcons.zoomReset" aria-hidden="true"></fa-icon>
+          </span>
         </button>
-    </div>
-    <ia-image-navigation *ngIf="pageIndices" class="level-item" [pageIndices]="pageIndices" [initialPage]="initialPage" (pageIndexChange)="pageIndexChange($event)"></ia-image-navigation>
-    <div class="level-right">
-        <button *ngIf="allowDownload" class="button download is-ghost" (click)="download()"
+      </div>
+      @if (pageIndices) {
+        <ia-image-navigation class="level-item" [pageIndices]="pageIndices" [initialPage]="initialPage" (pageIndexChange)="pageIndexChange($event)"></ia-image-navigation>
+      }
+      <div class="level-right">
+        @if (allowDownload) {
+          <button class="button download is-ghost" (click)="download()"
             aria-label="download image">
             <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
-        </button>
+          </button>
+        }
+      </div>
     </div>
-    </div>
-</div>
+  </div>
+}
 
-<p *ngIf="noImages">No scan available for this document.</p>
-<div *ngIf="imagePaths" [ngClass]="{'is-loading':imagePaths===undefined}">
-    <ia-scan-image *ngIf="mediaType!=='application/pdf'" [imagePaths]="imagePaths" [zoomFactor]="zoomFactor" [showPage]="showPage"></ia-scan-image>
-    <ia-scan-pdf *ngIf="mediaType==='application/pdf'" [imagePaths]="imagePaths" [zoomFactor]="zoomFactor" [showPage]="showPage"></ia-scan-pdf>
-</div>
+@if (noImages) {
+  <p>No scan available for this document.</p>
+}
+@if (imagePaths) {
+  <div [ngClass]="{'is-loading':imagePaths===undefined}">
+    @if (mediaType!=='application/pdf') {
+      <ia-scan-image [imagePaths]="imagePaths" [zoomFactor]="zoomFactor" [showPage]="showPage"></ia-scan-image>
+    }
+    @if (mediaType==='application/pdf') {
+      <ia-scan-pdf [imagePaths]="imagePaths" [zoomFactor]="zoomFactor" [showPage]="showPage"></ia-scan-pdf>
+    }
+  </div>
+}

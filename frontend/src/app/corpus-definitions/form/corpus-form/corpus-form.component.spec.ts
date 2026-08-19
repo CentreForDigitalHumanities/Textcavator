@@ -6,7 +6,6 @@ import { ApiService, CorpusService } from '@services';
 import { SlugifyPipe } from '@shared/pipes/slugify.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { ApiServiceMock } from 'mock-data/api';
-import { QuillModule } from 'ngx-quill';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { StepsModule } from 'primeng/steps';
 import { DataFormComponent } from '../data-form/data-form.component';
@@ -35,14 +34,13 @@ describe('CorpusFormComponent', () => {
                 ImageUploadComponent,
                 FormFeedbackComponent,
                 DocumentationFormComponent,
-                MarkdownEditorComponent,
             ],
             imports: [
                 SharedModule,
                 StepsModule,
                 ReactiveFormsModule,
                 AutoCompleteModule,
-                QuillModule,
+                MarkdownEditorComponent,
             ],
             providers: [
                 SlugifyPipe,

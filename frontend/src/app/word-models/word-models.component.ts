@@ -20,10 +20,6 @@ import { pageTitle } from '@utils/app';
     standalone: false
 })
 export class WordModelsComponent extends ParamDirective {
-    @ViewChild('searchSection', { static: false })
-    public searchSection: ElementRef;
-    public isScrolledDown: boolean;
-
     corpus: Corpus;
 
     queryText: string;
@@ -79,13 +75,6 @@ export class WordModelsComponent extends ParamDirective {
 
     get tabNames() {
         return Object.keys(this.tabs);
-    }
-
-    @HostListener('window:scroll', [])
-    onWindowScroll() {
-        // mark that the search results have been scrolled down and we should some border
-        this.isScrolledDown =
-            this.searchSection.nativeElement.getBoundingClientRect().y === 0;
     }
 
     async initialize(): Promise<void> {

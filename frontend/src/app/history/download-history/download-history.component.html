@@ -1,61 +1,65 @@
 <section class="section">
-    <h1 class="title">Downloads</h1>
+  <h1 class="title">Downloads</h1>
 
-    <p-table #dt *ngIf="downloads && corpora" [value]="downloads"
-        [paginator]="downloads.length > 10"
-        [rows]="10">
-        <ng-template pTemplate="caption">
-            <div>
-                Downloads
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th rowspan="2">Timestamp</th>
-                <th rowspan="2">Type</th>
-                <th>Corpus</th>
-                <th rowspan="2">Query</th>
-                <th rowspan="2">Filters</th>
-                <th rowspan="2">Field(s)</th>
-                <th rowspan="2">Status</th>
-                <th rowspan="2">Download</th>
-            </tr>
-            @if (downloads.length > 10) {
-                <tr>
-                    <th>
-                        <p-columnFilter field="corpus" matchMode="equals" [showMenu]="false">
-                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-select [options]="corpusMenuItems" placeholder="Any"
-                                    [ngModel]="value" (onChange)="filter($event.value)">
-                                </p-select>
-                            </ng-template>
-                        </p-columnFilter>
-                    </th>
-                </tr>
+  @if (downloads && corpora) {
+    <p-table #dt [value]="downloads"
+      [paginator]="downloads.length > 10"
+      [rows]="10">
+      <ng-template pTemplate="caption">
+        <div>
+          Downloads
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th rowspan="2">Timestamp</th>
+          <th rowspan="2">Type</th>
+          <th>Corpus</th>
+          <th rowspan="2">Query</th>
+          <th rowspan="2">Filters</th>
+          <th rowspan="2">Field(s)</th>
+          <th rowspan="2">Status</th>
+          <th rowspan="2">Download</th>
+        </tr>
+        @if (downloads.length > 10) {
+          <tr>
+            <th>
+              <p-columnFilter field="corpus" matchMode="equals" [showMenu]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-select [options]="corpusMenuItems" placeholder="Any"
+                    [ngModel]="value" (onChange)="filter($event.value)">
+                  </p-select>
+                </ng-template>
+              </p-columnFilter>
+            </th>
+          </tr>
+        }
+      </ng-template>
+      <ng-template pTemplate="body" let-download>
+        <tr>
+          <td>{{download.started | date:'medium'}}</td>
+          <td>{{downloadType(download.download_type)}}</td>
+          <td>{{corpusTitle(download.corpus)}}</td>
+          <td>{{queryText(download)}}</td>
+          <td ia-query-filters [queryModel]="getQueryModel(download)"></td>
+          <td>{{getFields(download)}}</td>
+          <td>{{download.status}}</td>
+          <td>
+            @if (download.status === 'done') {
+              <a role="button" tabindex="0" (click)="itemToDownload = download"
+                (keydown.enter)="itemToDownload = download">
+                <span class="icon">
+                  <fa-icon [icon]="actionIcons.download"></fa-icon>
+                </span>
+                <span>download file</span>
+              </a>
             }
-        </ng-template>
-        <ng-template pTemplate="body" let-download>
-            <tr>
-                <td>{{download.started | date:'medium'}}</td>
-                <td>{{downloadType(download.download_type)}}</td>
-                <td>{{corpusTitle(download.corpus)}}</td>
-                <td>{{queryText(download)}}</td>
-                <td ia-query-filters [queryModel]="getQueryModel(download)"></td>
-                <td>{{getFields(download)}}</td>
-                <td>{{download.status}}</td>
-                <td>
-                    <a *ngIf="download.status === 'done'" role="button" tabindex="0" (click)="itemToDownload = download"
-                        (keydown.enter)="itemToDownload = download">
-                        <span class="icon">
-                            <fa-icon [icon]="actionIcons.download"></fa-icon>
-                        </span>
-                        <span>download file</span>
-                    </a>
-                </td>
-            </tr>
-        </ng-template>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
+  }
 </section>
 
 <ia-download-options [download]="itemToDownload" (cancel)="itemToDownload = undefined"
-    (confirm)="downloadFile(itemToDownload, $event)"></ia-download-options>
+(confirm)="downloadFile(itemToDownload, $event)"></ia-download-options>
