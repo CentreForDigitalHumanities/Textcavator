@@ -14,6 +14,7 @@ describe('ChipsComponent', () => {
 
         fixture = TestBed.createComponent(ChipsComponent);
         component = fixture.componentInstance;
+        fixture.componentRef.setInput('itemName', 'thingamajig');
         await fixture.whenStable();
     });
 

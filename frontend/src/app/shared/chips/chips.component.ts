@@ -28,7 +28,6 @@ export class ChipsComponent {
     limitReached = computed(() => this.value().length >= (this.limit() ?? Infinity));
 
     handleInputKeydown(event: KeyboardEvent) {
-        console.log(event);
         // confirm with enter/comma/semicolon
         if (this.inputConfirmKeys.includes(event.key)) {
             event.preventDefault();
