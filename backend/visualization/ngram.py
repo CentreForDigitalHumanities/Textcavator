@@ -307,7 +307,7 @@ def _absolute_frequency(
     return ngram_count
 
 
-def _legacy_compensated_frequency(
+def _relative_frequency(
     ngram_count: int, term_counts: List[int], total_search_term_count, total_collocations, total_word_count
 ) -> float:
     norm = (sum(term_counts) + total_search_term_count / len(term_counts) + 1)
@@ -339,7 +339,7 @@ def _ngram_frequency(
 ) -> float | int:
     methods = {
         'absolute': _absolute_frequency,
-        'legacy': _legacy_compensated_frequency,
+        'relative': _relative_frequency,
         't': _t_value
     }
     func = methods[method]
@@ -347,7 +347,7 @@ def _ngram_frequency(
     total_collocations = ngram_counts.total()
     if not count:
         return 0
-    if method in ['legacy', 't']:
+    if method in ['relative', 't']:
         if not ttfs:
             raise ValueError(f'ttfs dict is required for frequency method {method}')
         term_counts = ttfs.get(ngram)

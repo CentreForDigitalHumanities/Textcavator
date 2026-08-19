@@ -67,7 +67,7 @@ These are limitations to offer quick results for exploration. For quantitative r
 
 This option can surface interesting combinations, but can also cause extreme results where collocations with rare terms score extremely high, even when the collocation is only observed a few times.
 
-The "Yes (experimental)" provides a different calculation that we are currently testing. This calculates scores based on the T-value, which provides a more balanced result.
+The "Balanced" provides a different calculation that we are currently testing. This calculates scores based on the T-value, which is less affected by terms with a very low background frequency.
 
 In this mode, the score of the collocate <math><mi>b</mi><mi>b</mi></math> is calculated as
 

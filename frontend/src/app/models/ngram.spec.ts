@@ -14,7 +14,7 @@ describe('NgramParameters', ()=> {
         maxDocuments: 100,
         numberOfNgrams: 20,
     } as NgramSettings;
-    const testParams = {ngramSettings: 'o:n,s:3,p:first,c:mi,a:clean,m:100,n:20'}
+    const testParams = {ngramSettings: 'o:n,s:3,p:first,c:t,a:clean,m:100,n:20'}
 
     beforeEach(() => {
         ngramParameters = new NgramParameters(store);
@@ -45,7 +45,7 @@ describe('NgramParameters', ()=> {
     });
 
     it('should parse partial parameters', () => {
-        const partialParams = {ngramSettings: 's:3,p:first,c:mi,a:clean,m:100,n:20'};
+        const partialParams = {ngramSettings: 's:3,p:first,c:t,a:clean,m:100,n:20'};
         expect(ngramParameters.storeToState(partialParams)).toEqual(testState);
 
     });
