@@ -6,7 +6,7 @@ import { Store } from '../store/types';
 
 export type NgramMode = 'ngrams' | 'collocates';
 
-export type FreqMode = 'absolute' | 'legacy' | 'mi';
+export type FreqMode = 'absolute' | 'legacy' | 'mi' | 't';
 
 export interface NgramSettings {
     mode: NgramMode,
@@ -70,7 +70,8 @@ export class NgramParameters extends StoreSync<NgramSettings> {
         const keys: Record<FreqMode, string> = {
             'absolute': 'abs',
             'legacy': 'leg',
-            'mi': 'mi'
+            'mi': 'mi',
+            't': 't',
         }
         return _.get(keys, value, 'absolute')
     }
@@ -81,7 +82,8 @@ export class NgramParameters extends StoreSync<NgramSettings> {
             'false': 'absolute',
             'abs': 'absolute',
             'leg': 'legacy',
-            'mi': 'mi'
+            'mi': 'mi',
+            't': 't',
         }
         return _.get(keys, value, 'absolute')
     }

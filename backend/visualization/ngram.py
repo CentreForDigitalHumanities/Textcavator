@@ -2,7 +2,7 @@ from collections import Counter
 from typing import Tuple, Dict, List, Literal, Iterable, Optional
 from elasticsearch import Elasticsearch
 from itertools import chain
-from math import log2, prod, factorial
+from math import log2, prod, factorial, sqrt
 
 from addcorpus.models import CorpusConfiguration
 from datetime import datetime
@@ -313,6 +313,17 @@ def _legacy_compensated_frequency(
     return ngram_count / norm
 
 
+def _expected_collocate_count(
+    term_counts: List[int],
+    total_collocations: int,
+    total_word_count: int
+):
+    return total_collocations * prod(
+        count / total_word_count
+        for count in term_counts
+    )
+
+
 def _mi(
     ngram_count: int,
     term_counts: List[int],
@@ -320,11 +331,23 @@ def _mi(
     total_collocations: int,
     total_word_count: int
 ):
-    expected = total_collocations * prod(
-        count / total_word_count
-        for count in term_counts
-    )
+    expected = _expected_collocate_count(term_counts, total_collocations, total_word_count)
     return log2(ngram_count / expected)
+
+
+def _t_value(
+    ngram_count: int,
+    term_counts: List[int],
+    total_search_term_count: int,
+    total_collocations: int,
+    total_word_count: int
+):
+    o11 = ngram_count
+    r1 = total_collocations
+    o12 = r1 - o11
+    e11 = _expected_collocate_count(term_counts, total_collocations, total_word_count)
+    t = (o11 - e11) / sqrt(o12)
+    return t
 
 
 def _ngram_frequency(
@@ -339,13 +362,14 @@ def _ngram_frequency(
         'absolute': _absolute_frequency,
         'legacy': _legacy_compensated_frequency,
         'mi': _mi,
+        't': _t_value
     }
     func = methods[method]
     count = ngram_counts.get(ngram, 0)
     total_collocations = ngram_counts.total()
     if not count:
         return 0
-    if method in ['legacy', 'mi']:
+    if method in ['legacy', 'mi', 't']:
         if not ttfs:
             raise ValueError(f'ttfs dict is required for frequency method {method}')
         term_counts = ttfs.get(ngram)
