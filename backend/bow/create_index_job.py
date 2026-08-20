@@ -4,45 +4,35 @@ from es.client import server_for_corpus
 from es.search import get_index
 from es.models import Index, Server
 from addcorpus.models import Corpus
-from indexing.models import IndexJob, UpdateSettingsTask
-from bow.index_utils import bow_index_name
-from bow.models import CreateBOWIndexTask, PopulateBOWIndexTask
+from indexing.models import IndexJob
+from bow.index_utils import content_fields
+from bow.models import AddBOWFieldTask, PopulateBOWFieldTask
+
+
 
 def create_bow_index_job(
         corpus: Corpus,
-        source_index: Optional[Index] = None,
+        index: Optional[Index] = None,
 ):
     server = Server.objects.get(name=server_for_corpus(corpus))
-    if not source_index:
-        index_name = get_index(corpus.name)
-        source_index, _ = Index.objects.get_or_create(
-            name=index_name, server=server
-        )
-
-    job = IndexJob.objects.create(corpus=corpus)
-    index_name = bow_index_name(source_index.name)
+    index_name = get_index(corpus.name)
     index, _ = Index.objects.get_or_create(
         name=index_name, server=server
     )
 
-    CreateBOWIndexTask.objects.create(
-        job=job,
-        index=index,
-        source_index=source_index,
-        delete_existing=True
-    )
+    job = IndexJob.objects.create(corpus=corpus)
 
-    PopulateBOWIndexTask.objects.create(
-        job=job,
-        index=index,
-        source_index=source_index,
-    )
-
-    UpdateSettingsTask.objects.create(
-        job=job,
-        index=index,
-        settings={'number_of_replicas': 1}
-    )
+    for field in content_fields(corpus):
+        AddBOWFieldTask.objects.create(
+            job=job,
+            index=index,
+            field=field
+        )
+        PopulateBOWFieldTask.objects.create(
+            job=job,
+            index=index,
+            field=field,
+        )
 
     return job
 

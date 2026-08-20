@@ -1,10 +1,10 @@
 from bow import models
 from django.contrib import admin
 
-class CreateBOWIndexTaskAdmin(admin.StackedInline):
-    model = models.CreateBOWIndexTask
+class AddBOWFieldTaskAdmin(admin.StackedInline):
+    model = models.AddBOWFieldTask
     extra = 0
 
-class PopulateBOWIndexTaskAdmin(admin.StackedInline):
-    model = models.PopulateBOWIndexTask
+class PopulateBOWFieldTaskAdmin(admin.StackedInline):
+    model = models.PopulateBOWFieldTask
     extra = 0

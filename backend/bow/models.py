@@ -1,22 +1,21 @@
 from django.db import models
-from indexing.models import IndexTask, Index
+from addcorpus.models import Field
+from indexing.models import IndexTask
 
-class CreateBOWIndexTask(IndexTask):
-    source_index = models.ForeignKey(
-        to=Index,
+
+class AddBOWFieldTask(IndexTask):
+    field = models.ForeignKey(
+        to=Field,
         on_delete=models.CASCADE,
-        help_text='Index containing source data'
-    )
-    delete_existing = models.BooleanField(
-        default=False,
-        help_text='Delete index if it exists already'
+        help_text='Content field for which bag-of-word data is added'
     )
 
-class PopulateBOWIndexTask(IndexTask):
-    source_index = models.ForeignKey(
-        to=Index,
+
+class PopulateBOWFieldTask(IndexTask):
+    field = models.ForeignKey(
+        to=Field,
         on_delete=models.CASCADE,
-        help_text='Index containing source data'
+        help_text='Content field for which bag-of-word data is added'
     )
     threshold = models.IntegerField(
         default=0,

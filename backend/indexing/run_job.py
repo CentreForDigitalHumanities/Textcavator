@@ -12,8 +12,8 @@ from indexing.models import (
     IndexJob, IndexTask, TaskStatus, CreateIndexTask, PopulateIndexTask,
     UpdateSettingsTask, RemoveAliasTask, AddAliasTask, DeleteIndexTask, UpdateIndexTask
 )
-from bow.models import CreateBOWIndexTask, PopulateBOWIndexTask
-from bow.run_index_tasks import create_bow_index, populate_bow_index
+from bow.models import AddBOWFieldTask, PopulateBOWFieldTask
+from bow.run_index_tasks import add_bow_field, populate_bow_field
 from indexing.run_populate_task import populate
 from indexing.run_create_task import create
 from indexing.run_management_tasks import (
@@ -30,8 +30,8 @@ TASK_HANDLERS: Dict[Type[IndexTask], Callable[[IndexTask], None]] = {
     CreateIndexTask: create,
     PopulateIndexTask: populate,
     UpdateIndexTask: run_update_task,
-    CreateBOWIndexTask: create_bow_index,
-    PopulateBOWIndexTask: populate_bow_index,
+    AddBOWFieldTask: add_bow_field,
+    PopulateBOWFieldTask: populate_bow_field,
     UpdateSettingsTask: update_index_settings,
     RemoveAliasTask: remove_alias,
     AddAliasTask: add_alias,

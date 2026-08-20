@@ -1,14 +1,13 @@
 import logging
 from copy import copy
 from elasticsearch.helpers import streaming_bulk
-from typing import Dict
+from time import sleep
 
-from indexing.run_create_task import make_es_settings
 from bow.index_utils import bow_field_name
 from addcorpus.es_mappings import int_mapping, keyword_mapping
-from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
-from bow.models import CreateBOWIndexTask, PopulateBOWIndexTask
-from bow.collect import token_docs
+from addcorpus.models import  Field
+from bow.models import AddBOWFieldTask, PopulateBOWFieldTask
+from bow.collect import token_data
 from indexing.stop_job import raise_if_aborted
 
 logger = logging.getLogger('indexing')
@@ -39,88 +38,68 @@ def nested_bow_mapping(field: Field):
     }
 
 
-def bow_index_mapping(corpus_config: CorpusConfiguration) -> Dict:
-    mappings = {
-        ':id': keyword_mapping(),
-    }
-
-    for field in corpus_config.fields.all():
-        field: Field = field
-        if field.display_type == FieldDisplayTypes.TEXT_CONTENT:
-            mappings[bow_field_name(field.name)] = nested_bow_mapping(field)
-        elif field.display_type == FieldDisplayTypes.TEXT:
-            pass
-        else:
-            # TODO: only include aggregation-relevant fields
-            mappings[field.name] = field.es_mapping
-    return { 'properties': mappings }
-
-def bow_index_settings(task: CreateBOWIndexTask) -> Dict:
-    settings = make_es_settings(task.corpus)
-    settings['index'].update({
-        'number_of_replicas': 0,
-        'number_of_shards': 5
-    })
-    return settings
-
-def create_bow_index(task: CreateBOWIndexTask) -> str:
+def add_bow_field(task: AddBOWFieldTask) -> None:
     client = task.client()
-    corpus_config: CorpusConfiguration = task.corpus.configuration
     index_name = task.index.name
 
-    if client.indices.exists(index=index_name, allow_no_indices=False):
-        if task.delete_existing:
-            logger.info(
-                'Deleting existing index: %s',
-                index_name,
-            )
-            client.indices.delete(index=index_name, allow_no_indices=False)
-        else:
-            logger.error(
-                'Index %s already exists; delete it or set delete_existing on the task',
-                index_name
-            )
-            raise Exception('index already exists')
+    if not client.indices.exists(index=index_name, allow_no_indices=False):
+        logger.error('Index %s does not exist', index_name)
+        raise Exception('Index does not exist')
 
-    settings = bow_index_settings(task)
-    mappings = bow_index_mapping(corpus_config)
+    mapping = { bow_field_name(task.field.name): nested_bow_mapping(task.field)}
 
-    client.indices.create(
+    client.indices.put_mapping(
         index=index_name,
-        settings=settings,
-        mappings=mappings,
+        allow_no_indices=False,
+        properties=mapping,
     )
 
-    return index_name
 
-
-def populate_bow_index(task: PopulateBOWIndexTask):
+def populate_bow_field(task: PopulateBOWFieldTask):
     # Obtain source documents
-    docs = token_docs(task.corpus, task.source_index.name, threshold=task.threshold)
+    docs = token_data(task.corpus, task.index.name, task.field.name, threshold=task.threshold)
 
-    actions = (
-        {
-            "_op_type": "index",
-            "_index": task.index.name,
-            "_source": doc,
-        }
-        for doc in docs
-    )
-
-    server_config = task.index.server.configuration
-
-    raise_if_aborted(task)
-
-    # Do bulk operation
     client = task.client()
-    for success, info in streaming_bulk(
-        client,
-        actions,
-        chunk_size=server_config["chunk_size"],
-        max_chunk_bytes=server_config["max_chunk_bytes"],
-        raise_on_exception=False,
-        raise_on_error=False,
-    ):
-        if not success:
-            logger.error(f"FAILED INDEX: {info}")
+    for doc_id, data in docs:
         raise_if_aborted(task)
+        for bow_field, tokens in data.items():
+            script = 'ctx._source.put("{}", params.tokens)'.format(bow_field)
+            client.update(
+                index=task.index.name,
+                id=doc_id,
+                script={
+                    'source': script,
+                    'params': {'tokens': tokens},
+                },
+            )
+
+    # actions = (
+    #     {
+    #         "_op_type": 'update',
+    #         "_index": task.index.name,
+    #         '_id': doc_id,
+    #         '_source': data,
+    #     }
+    #     for doc_id, data in docs
+    # )
+
+    # server_config = task.index.server.configuration
+
+    # raise_if_aborted(task)
+
+    # # Do bulk operation
+
+    # mapping = client.indices.get_mapping(index=task.index.name).body
+    # print(mapping)
+
+    # for success, info in streaming_bulk(
+    #     client,
+    #     actions,
+    #     chunk_size=server_config["chunk_size"],
+    #     max_chunk_bytes=server_config["max_chunk_bytes"],
+    #     raise_on_exception=False,
+    #     raise_on_error=False,
+    # ):
+    #     if not success:
+    #         logger.error(f"FAILED INDEX: {info}")
+    #     raise_if_aborted(task)

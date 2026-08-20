@@ -1,11 +1,16 @@
+from typing import Iterable, Tuple
 from typing import Optional
-
-
-def bow_index_name(source_index_name: str) -> str:
-    return source_index_name + '.bow'
+from addcorpus.models import Corpus, FieldDisplayTypes, Field
 
 def content_field_name(name: str, multifield: Optional[str] = None):
     return f'{name}.{multifield}' if multifield else name
 
 def bow_field_name(content_field_name: str):
     return content_field_name + ':bow'
+
+def content_fields(corpus: Corpus) -> Iterable[Field]:
+    return corpus.configuration.fields.filter(
+        display_type=FieldDisplayTypes.TEXT_CONTENT
+    ).exclude(
+        name__contains=':', # exclude programmatically generated fields
+    )

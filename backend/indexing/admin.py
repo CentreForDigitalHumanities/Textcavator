@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.db.models import QuerySet
 
 from indexing import models, run_job, stop_job
-from bow.admin import CreateBOWIndexTaskAdmin, PopulateBOWIndexTaskAdmin
+from bow.admin import AddBOWFieldTaskAdmin, PopulateBOWFieldTaskAdmin
 
 
 class CreateIndexAdmin(admin.StackedInline):
@@ -49,9 +49,9 @@ class IndexJobAdmin(admin.ModelAdmin):
         CreateIndexAdmin,
         PopulateIndexAdmin,
         UpdateIndexAdmin,
+        AddBOWFieldTaskAdmin,
+        PopulateBOWFieldTaskAdmin,
         UpdateSettingsAdmin,
-        CreateBOWIndexTaskAdmin,
-        PopulateBOWIndexTaskAdmin,
         RemoveAliasAdmin,
         AddAliasAdmin,
         DeleteIndexAdmin,
