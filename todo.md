@@ -36,10 +36,6 @@ Also, the management of index versions needs to be updated. If you want to delet
 
 Side note: if we do get around to storing word embeddings in ES to, this would use the same pattern, i.e. `my-corpus.wm`. Though for word embeddings, perhaps the index would not be directly related to the specific source index. So `my-corpus-1` with alias `my-corpus` as the original data, then `my-corpus.wm-1` with alias `my-corpus.wm` as the embedding data.
 
-## Shards
-
-The test on production only used 1 shard, this should be higher. In this case, 2-5 would be optimal, so the production setting for 5 shards would be good.
-
 ## Total count
 
 Add a `:total_count` to documents, with the frequency across the corpus (taken from the termvectors). This can be a useful optimisation to filter low-frequency terms, e.g. for the wordcloud.
