@@ -30,9 +30,7 @@ Tag filters use the document id, so filters on `_id` should be converted to use 
 
 The idea is that the bag-of-words index is called `{source_index}.bow`. Currently, this does not make good use of version numbers, so that needs to change.
 
-If you have `my-corpus-1` with alias `my-corpus`, the BOW index is now called `my-corpus.bow`. Should be `my-corpus-1.bow-1`, maybe? or `my-corpus.bow-1`? Either way, with alias `my-corpus.bow`.
-
-(It's good to keep a record of the source index used. But perhaps it would be better to use index metadata for this.)
+I think the most consistent, future-proof way would be to use separate version numbers for the BOW index but store the source index in the metadata.
 
 Also, the management of index versions needs to be updated. If you want to delete an index version `my-corpus-1`, you typically also want to delete attached versions `my-corpus-1.*`.
 
