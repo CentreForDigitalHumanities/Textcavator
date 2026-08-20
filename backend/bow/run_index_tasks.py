@@ -3,7 +3,7 @@ from elasticsearch.helpers import streaming_bulk
 
 from indexing.run_create_task import make_es_settings
 from addcorpus.es_mappings import int_mapping, keyword_mapping
-from addcorpus.models import CorpusConfiguration, Field, FieldDisplayTypes
+from addcorpus.models import Corpus, CorpusConfiguration, Field, FieldDisplayTypes
 from bow.models import CreateBOWIndexTask, PopulateBOWIndexTask
 from bow.collect import token_docs
 from indexing.stop_job import raise_if_aborted
@@ -41,6 +41,13 @@ def bow_index_mapping(corpus_config: CorpusConfiguration):
             mappings[field.name] = field.es_mapping
     return { 'properties': mappings }
 
+def bow_index_settings(task: CreateBOWIndexTask):
+    settings = make_es_settings(task.corpus)
+    settings['index'].update({
+        'number_of_replicas': 0,
+        'number_of_shards': 5
+    })
+    return settings
 
 def create_bow_index(task: CreateBOWIndexTask):
     client = task.client()
@@ -61,7 +68,7 @@ def create_bow_index(task: CreateBOWIndexTask):
             )
             raise Exception('index already exists')
 
-    settings = make_es_settings(task.corpus)
+    settings = bow_index_settings(task)
     mappings = bow_index_mapping(corpus_config)
 
     client.indices.create(

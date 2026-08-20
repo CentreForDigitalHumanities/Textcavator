@@ -4,7 +4,7 @@ from es.client import server_for_corpus
 from es.search import get_index
 from es.models import Index, Server
 from addcorpus.models import Corpus
-from indexing.models import IndexJob
+from indexing.models import IndexJob, UpdateSettingsTask
 from bow.index_utils import bow_index_name
 from bow.models import CreateBOWIndexTask, PopulateBOWIndexTask
 
@@ -36,6 +36,12 @@ def create_bow_index_job(
         job=job,
         index=index,
         source_index=source_index,
+    )
+
+    UpdateSettingsTask.objects.create(
+        job=job,
+        index=index,
+        settings={'number_of_replicas': 1}
     )
 
     return job
