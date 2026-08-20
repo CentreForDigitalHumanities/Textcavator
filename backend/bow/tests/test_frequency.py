@@ -2,6 +2,7 @@ from time import sleep
 from addcorpus.models import Corpus
 from bow.create_index_job import create_bow_index_job
 from es.client import elasticsearch
+from es.search import get_index
 from indexing.run_job import perform_indexing
 from bow.frequency import word_frequency, most_frequent_words
 from visualization.query import make_term_filter
@@ -13,7 +14,7 @@ def test_word_frequency(small_mock_corpus, index_small_mock_corpus):
     perform_indexing(job)
 
     client = elasticsearch(small_mock_corpus)
-    index = 'test-small-mock-corpus.bow'
+    index = get_index(small_mock_corpus)
     assert client.indices.exists(index=index)
     sleep(1)
 
@@ -34,7 +35,7 @@ def test_most_frequent(small_mock_corpus, index_small_mock_corpus):
     perform_indexing(job)
 
     client = elasticsearch(small_mock_corpus)
-    index = 'test-small-mock-corpus.bow'
+    index = get_index(small_mock_corpus)
     assert client.indices.exists(index=index)
     sleep(1)
 

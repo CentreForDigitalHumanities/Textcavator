@@ -3,7 +3,7 @@ from typing import List, Dict, Optional
 from addcorpus.models import Corpus
 from es.client import elasticsearch
 from es.search import get_index
-from bow.index_utils import bow_index_name, content_field_name, bow_field_name
+from bow.index_utils import content_field_name, bow_field_name
 from visualization.query import MATCH_ALL, add_filter, set_query_text, set_search_fields
 
 def word_frequency(
@@ -14,7 +14,7 @@ def word_frequency(
     multifield: Optional[str] = None,
 ):
     client = elasticsearch(corpus.name)
-    index = bow_index_name(get_index(corpus.name))
+    index = get_index(corpus.name)
 
     if not client.indices.exists(index=index):
         return
@@ -65,7 +65,7 @@ def most_frequent_words(
     size: int = 100,
 ):
     client = elasticsearch(corpus.name)
-    index = bow_index_name(get_index(corpus.name))
+    index = get_index(corpus.name)
 
     if not client.indices.exists(index=index):
         return
