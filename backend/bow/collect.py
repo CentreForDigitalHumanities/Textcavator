@@ -33,7 +33,11 @@ def metadata_fields(corpus: Corpus) -> Iterable[str]:
     ]
 
 
-def custom_scan(client: Elasticsearch, index: str, query: Dict):
+def iterate_documents(client: Elasticsearch, index: str, query: Dict):
+    '''
+    Iterate through documents in an index.
+    Unlike download.scroll, this is not affected by scroll timeouts.
+    '''
     body = query | { 'index': index, 'allow_no_indices': False, 'sort': ['_doc'], 'size': 1000, }
     result = client.search(**body)
     docs = hits(result)
@@ -49,7 +53,7 @@ def collect_tokens(
     corpus: Corpus, index_name: str, threshold=0,
 ) -> Iterable[Tuple[str, Dict[str, int], Dict[str, Any], str]]:
     client = elasticsearch(corpus)
-    docs = custom_scan(client, index_name, MATCH_ALL)
+    docs = iterate_documents(client, index_name, MATCH_ALL)
     fields = list(content_fields(corpus))
     field_names = [name for name, _ in fields]
     meta_field_names = list(metadata_fields(corpus))
