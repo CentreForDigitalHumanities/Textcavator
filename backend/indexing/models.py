@@ -57,6 +57,8 @@ class IndexJob(models.Model):
         - `CreateIndexTask`
         - `PopulateIndexTask`
         - `UpdateIndexTask`
+        - `CreateBOWIndexTask`
+        - `PopulateBOWIndexTask`
         - `UpdateSettingsTask`
         - `RemoveAliasTask`
         - `AddAliasTask`
@@ -75,9 +77,9 @@ class IndexJob(models.Model):
             self.createindextasks.all(),
             self.populateindextasks.all(),
             self.updateindextasks.all(),
-            self.updatesettingstasks.all(),
             self.createbowindextasks.all(),
             self.populatebowindextasks.all(),
+            self.updatesettingstasks.all(),
             self.removealiastasks.all(),
             self.addaliastasks.all(),
             self.deleteindextasks.all(),

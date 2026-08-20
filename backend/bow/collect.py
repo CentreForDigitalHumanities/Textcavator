@@ -58,11 +58,15 @@ def collect_tokens(
             field: value for field, value in hit['_source'].items()
             if field in meta_field_names
         }
-        for name, multifields in fields:
+        for name, _multifields in fields:
             terms = get_terms(vectors, name)
             if terms:
                 counts = {
-                    term: data['term_freq'] for term, data in terms.items()
+                    term: {
+                        ':count': data['term_freq'],
+                        ':total_count': data['ttf'],
+                    }
+                    for term, data in terms.items()
                     if data['ttf'] >= threshold
                 }
                 yield name, counts, metadata, hit['_id']
@@ -70,8 +74,11 @@ def collect_tokens(
 
 def token_docs(corpus: Corpus, index_name: str, threshold=0):
     iterator = collect_tokens(corpus, index_name, threshold=threshold)
-    for field, term_counts, metadata, doc_id in iterator:
-        for term, count in term_counts.items():
-            data = {':token': term, ':count': count, ':doc_id': doc_id}
-            content = {field: term}
-            yield data | content | metadata
+    for text_field, term_counts, metadata, doc_id in iterator:
+        for term, term_count_data in term_counts.items():
+            data = {
+                ':token': term,
+                ':doc_id': doc_id
+            }
+            content = {text_field: term}
+            yield data | content | term_count_data | metadata

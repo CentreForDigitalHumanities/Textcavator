@@ -30,12 +30,12 @@ TASK_HANDLERS: Dict[Type[IndexTask], Callable[[IndexTask], None]] = {
     CreateIndexTask: create,
     PopulateIndexTask: populate,
     UpdateIndexTask: run_update_task,
+    CreateBOWIndexTask: create_bow_index,
+    PopulateBOWIndexTask: populate_bow_index,
     UpdateSettingsTask: update_index_settings,
     RemoveAliasTask: remove_alias,
     AddAliasTask: add_alias,
     DeleteIndexTask: delete_index,
-    CreateBOWIndexTask: create_bow_index,
-    PopulateBOWIndexTask: populate_bow_index
 }
 
 

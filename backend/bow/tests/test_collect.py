@@ -9,14 +9,15 @@ def test_collect_tokens(small_mock_corpus, index_small_mock_corpus):
     data = list(collect_tokens(corpus, index))
     assert len(data) == SPECS['total_docs']
     assert sum(
-        sum(term_counts.values())
+        sum(stats[':count'] for stats in term_counts.values())
         for _, term_counts, _, _ in data
     ) == SPECS['total_words']
 
     field, terms, metadata, doc_id = data[1]
     assert field == SPECS['content_field']
-    assert terms['truth'] == 1
-    assert terms['a'] == 4
+    assert terms['truth'] == {':count': 1, ':total_count': 1}
+    assert terms['that'] == {':count': 1, ':total_count': 2}
+    assert terms['a'] == {':count': 4, ':total_count': 4}
     assert metadata['date'] == '1813-01-28'
     assert metadata['genre'] == 'Romance'
 

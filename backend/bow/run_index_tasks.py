@@ -1,5 +1,6 @@
 import logging
 from elasticsearch.helpers import streaming_bulk
+from typing import Dict
 
 from indexing.run_create_task import make_es_settings
 from addcorpus.es_mappings import int_mapping, keyword_mapping
@@ -12,11 +13,12 @@ logger = logging.getLogger('indexing')
 
 
 
-def bow_index_mapping(corpus_config: CorpusConfiguration):
+def bow_index_mapping(corpus_config: CorpusConfiguration) -> Dict:
     mappings = {
         ':token': keyword_mapping(),
         ':count': int_mapping(),
         ':doc_id': keyword_mapping(),
+        ':total_count': int_mapping(),
     }
     for field in corpus_config.fields.all():
         field: Field = field
@@ -41,7 +43,7 @@ def bow_index_mapping(corpus_config: CorpusConfiguration):
             mappings[field.name] = field.es_mapping
     return { 'properties': mappings }
 
-def bow_index_settings(task: CreateBOWIndexTask):
+def bow_index_settings(task: CreateBOWIndexTask) -> Dict:
     settings = make_es_settings(task.corpus)
     settings['index'].update({
         'number_of_replicas': 0,
@@ -49,7 +51,7 @@ def bow_index_settings(task: CreateBOWIndexTask):
     })
     return settings
 
-def create_bow_index(task: CreateBOWIndexTask):
+def create_bow_index(task: CreateBOWIndexTask) -> str:
     client = task.client()
     corpus_config: CorpusConfiguration = task.corpus.configuration
     index_name = task.index.name
