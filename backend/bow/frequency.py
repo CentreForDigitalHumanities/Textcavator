@@ -3,8 +3,8 @@ from typing import List, Dict, Optional
 from addcorpus.models import Corpus
 from es.client import elasticsearch
 from es.search import get_index
-from bow.index_utils import content_field_name, bow_field_name
-from visualization.query import MATCH_ALL, add_filter, set_query_text, set_search_fields
+from bow.index_utils import bow_field_name, token_field_name
+from visualization.query import MATCH_ALL, add_filter
 
 def word_frequency(
     corpus: Corpus,
@@ -21,7 +21,7 @@ def word_frequency(
 
     query = _metadata_query(metadata_filters)
     nested_name = bow_field_name(field)
-    nested_field = bow_field_name(field) + '.' + content_field_name(field, multifield)
+    nested_field = bow_field_name(field) + '.' + token_field_name(field, multifield)
     query['aggs'] = {
         nested_name: {
             'nested': {

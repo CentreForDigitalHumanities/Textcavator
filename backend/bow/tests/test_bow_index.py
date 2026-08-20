@@ -8,12 +8,7 @@ from es.search import get_index, hits, total_hits
 from bow.index_utils import bow_field_name
 from visualization.termvectors import get_terms, request_termvectors_batched
 
-def test_bow_indexing(small_mock_corpus, index_small_mock_corpus):
-    corpus = Corpus.objects.get(name=small_mock_corpus)
-    job = create_bow_index_job(corpus)
-    perform_indexing(job)
-    sleep(1)
-
+def test_bow_indexing(small_mock_corpus, index_small_mock_corpus, index_small_mock_corpus_bow):
     client = elasticsearch(small_mock_corpus)
     index = get_index(small_mock_corpus)
     results = client.search(
@@ -30,4 +25,3 @@ def test_bow_indexing(small_mock_corpus, index_small_mock_corpus):
         for token in tokens:
             term = token[':token']
             assert token[':count'] == term_vectors[term]['term_freq']
-            assert token[':total_count'] == term_vectors[term]['ttf']

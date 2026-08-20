@@ -15,7 +15,6 @@ def nested_bow_mapping(field: Field):
     token_mappings = {
         ':token': keyword_mapping(),
         ':count': int_mapping(),
-        ':total_count': int_mapping(),
     }
 
     field_mapping = copy(field.es_mapping)

@@ -36,10 +36,7 @@ def collect_tokens(
         terms = get_terms(vectors, field_name)
         if terms:
             counts = {
-                term: {
-                    ':count': data['term_freq'],
-                    ':total_count': data['ttf'],
-                }
+                term: data['term_freq']
                 for term, data in terms.items()
                 if data['ttf'] >= threshold
             }
@@ -50,8 +47,8 @@ def token_data(corpus: Corpus, index_name: str, field_name: str,  threshold=0):
     iterator = collect_tokens(corpus, index_name, field_name, threshold=threshold)
     for doc_id, term_counts in iterator:
         data = {bow_field_name(field_name): [
-                {':token': term, field_name: term} | term_count_data
-                for term, term_count_data in term_counts.items()
+                {':token': term, ':count': count, field_name: term}
+                for term, count in term_counts.items()
             ]
         }
         yield doc_id, data
