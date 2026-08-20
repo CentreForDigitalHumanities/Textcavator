@@ -1,7 +1,6 @@
 import logging
 from copy import copy
 from elasticsearch.helpers import streaming_bulk
-from time import sleep
 
 from bow.index_utils import bow_field_name
 from addcorpus.es_mappings import int_mapping, keyword_mapping
@@ -59,47 +58,29 @@ def populate_bow_field(task: PopulateBOWFieldTask):
     # Obtain source documents
     docs = token_data(task.corpus, task.index.name, task.field.name, threshold=task.threshold)
 
+    actions = (
+        {
+            '_op_type': 'update',
+            '_index': task.index.name,
+            '_id': doc_id,
+            'doc': data,
+        }
+        for doc_id, data in docs
+    )
+
     client = task.client()
-    for doc_id, data in docs:
+    server_config = task.index.server.configuration
+    raise_if_aborted(task)
+
+    # Do bulk operation
+    for success, info in streaming_bulk(
+        client,
+        actions,
+        chunk_size=server_config["chunk_size"],
+        max_chunk_bytes=server_config["max_chunk_bytes"],
+        raise_on_exception=False,
+        raise_on_error=False,
+    ):
+        if not success:
+            logger.error(f"FAILED INDEX: {info}")
         raise_if_aborted(task)
-        for bow_field, tokens in data.items():
-            script = 'ctx._source.put("{}", params.tokens)'.format(bow_field)
-            client.update(
-                index=task.index.name,
-                id=doc_id,
-                script={
-                    'source': script,
-                    'params': {'tokens': tokens},
-                },
-            )
-
-    # actions = (
-    #     {
-    #         "_op_type": 'update',
-    #         "_index": task.index.name,
-    #         '_id': doc_id,
-    #         '_source': data,
-    #     }
-    #     for doc_id, data in docs
-    # )
-
-    # server_config = task.index.server.configuration
-
-    # raise_if_aborted(task)
-
-    # # Do bulk operation
-
-    # mapping = client.indices.get_mapping(index=task.index.name).body
-    # print(mapping)
-
-    # for success, info in streaming_bulk(
-    #     client,
-    #     actions,
-    #     chunk_size=server_config["chunk_size"],
-    #     max_chunk_bytes=server_config["max_chunk_bytes"],
-    #     raise_on_exception=False,
-    #     raise_on_error=False,
-    # ):
-    #     if not success:
-    #         logger.error(f"FAILED INDEX: {info}")
-    #     raise_if_aborted(task)
