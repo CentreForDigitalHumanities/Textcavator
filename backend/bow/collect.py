@@ -6,6 +6,7 @@ from es.client import elasticsearch
 from es.search import hits
 from visualization.query import MATCH_ALL
 from visualization.termvectors import request_termvectors_batched, get_terms
+from bow.index_utils import bow_field_name
 
 
 def content_fields(corpus: Corpus) -> Iterable[Tuple[str, Optional[str]]]:
@@ -78,11 +79,10 @@ def collect_tokens(
 
 def token_docs(corpus: Corpus, index_name: str, threshold=0):
     iterator = collect_tokens(corpus, index_name, threshold=threshold)
-    for text_field, term_counts, metadata, doc_id in iterator:
-        for term, term_count_data in term_counts.items():
-            data = {
-                ':token': term,
-                ':doc_id': doc_id
-            }
-            content = {text_field: term}
-            yield data | content | term_count_data | metadata
+    for content_field, term_counts, metadata, doc_id in iterator:
+        doc = metadata | {':id': doc_id}
+        doc[bow_field_name(content_field)] = [
+            {':token': term, content_field: term} | term_count_data
+            for term, term_count_data in term_counts.items()
+        ]
+        yield doc

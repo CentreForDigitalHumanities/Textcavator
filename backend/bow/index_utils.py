@@ -6,3 +6,6 @@ def bow_index_name(source_index_name: str) -> str:
 
 def content_field_name(name: str, multifield: Optional[str] = None):
     return f'{name}.{multifield}' if multifield else name
+
+def bow_field_name(content_field_name: str):
+    return content_field_name + ':bow'

@@ -2,6 +2,7 @@ from addcorpus.models import Corpus
 from corpora_test.small.small_mock_corpus import SPECS
 from es.search import get_index
 from bow.collect import collect_tokens, token_docs
+from bow.index_utils import bow_field_name
 
 def test_collect_tokens(small_mock_corpus, index_small_mock_corpus):
     corpus = Corpus.objects.get(name=small_mock_corpus)
@@ -22,25 +23,43 @@ def test_collect_tokens(small_mock_corpus, index_small_mock_corpus):
     assert metadata['genre'] == 'Romance'
 
 
+def iterate_tokens(data, content_field):
+    return (token for doc in data for token in doc[bow_field_name(content_field)])
+
+
 def test_token_docs(small_mock_corpus, index_small_mock_corpus):
     corpus = Corpus.objects.get(name=small_mock_corpus)
     index = get_index(small_mock_corpus)
     data = list(token_docs(corpus, index))
 
-    assert sum(token[':count'] for token in data) == SPECS['total_words']
+    assert sum(
+        token[':count'] for token in iterate_tokens(data, 'content')
+    ) == SPECS['total_words']
 
-    singleton = [d for d in data if d.get('content') == 'alice']
+    singleton = [
+        token for token in iterate_tokens(data, 'content')
+        if token.get('content') == 'alice'
+    ]
     assert len(singleton) == 1
     assert singleton[0][':token'] == 'alice'
     assert singleton[0][':count'] == 1
-    assert singleton[0]['genre'] == 'Children'
 
-    assert sum(d[':count'] for d in data if d.get('content') == 'to') == 3
+    assert sum(
+        token[':count'] for token in iterate_tokens(data, 'content')
+        if token.get('content') == 'to'
+    ) == 3
+
 
 def test_token_threshold(small_mock_corpus, index_small_mock_corpus):
     corpus = Corpus.objects.get(name=small_mock_corpus)
     index = get_index(small_mock_corpus)
     data = list(token_docs(corpus, index, threshold=2))
 
-    assert sum(d[':count'] for d in data if d.get('content') == 'alice') == 0
-    assert sum(d[':count'] for d in data if d.get('content') == 'to') == 3
+    assert sum(
+        token[':count'] for token in iterate_tokens(data, 'content')
+        if token.get('content') == 'alice'
+    ) == 0
+    assert sum(
+        token[':count'] for token in iterate_tokens(data, 'content')
+        if token.get('content') == 'to'
+    ) == 3
