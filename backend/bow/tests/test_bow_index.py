@@ -1,8 +1,4 @@
-from time import sleep
-from addcorpus.models import Corpus
-from bow.create_index_job import create_bow_index_job
 from es.client import elasticsearch
-from indexing.run_job import perform_indexing
 from visualization.query import MATCH_ALL
 from es.search import get_index, hits, total_hits
 from bow.index_utils import bow_field_name
