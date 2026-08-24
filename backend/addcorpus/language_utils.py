@@ -30,7 +30,8 @@ def get_language_key(language_code):
 SUPPLEMENTARY_STOPWORDS_DIR = os.path.join(settings.BASE_DIR, 'addcorpus', 'stopword_data', 'supplementary_data')
 
 def _stopwords_directory() -> str:
-    stopwords_dir = os.path.join(settings.NLTK_DATA_PATH, 'corpora', 'stopwords')
+    downloader = nltk.downloader.Downloader(download_dir=settings.NLTK_DATA_PATH)
+    stopwords_dir = os.path.join(downloader.download_dir, 'corpora', 'stopwords')
     if not os.path.exists(stopwords_dir):
         nltk.download('stopwords', settings.NLTK_DATA_PATH)
     return stopwords_dir

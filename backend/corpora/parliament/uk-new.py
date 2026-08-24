@@ -8,8 +8,8 @@ import json
 
 from django.conf import settings
 
-from ianalyzer_readers.xml_tag import Tag
-from ianalyzer_readers.extract import Constant, XML, Metadata, Cache, Combined
+from textcavator_readers.xml_tag import Tag
+from textcavator_readers.extract import Constant, XML, Metadata, Cache, Combined
 
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition

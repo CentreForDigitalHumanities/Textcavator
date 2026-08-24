@@ -7,13 +7,13 @@ import re
 from datetime import datetime
 from os.path import join, split, splitext
 import os
-from ianalyzer_readers.xml_tag import Tag, SiblingTag
+from textcavator_readers.xml_tag import Tag, SiblingTag
 
 from django.conf import settings
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition, consolidate_start_end_years
 from addcorpus.python_corpora import filters
-from ianalyzer_readers.extract import Metadata, XML
+from textcavator_readers.extract import Metadata, XML
 
 from corpora.utils.constants import document_context
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping

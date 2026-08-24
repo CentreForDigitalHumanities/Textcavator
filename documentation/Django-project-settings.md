@@ -105,7 +105,7 @@ URL of the logo of your organisation. This is used in emails sent to users.
 
 ### `NLTK_DATA_PATH`
 
-Some functionality on Textcavator will download the stopwords corpus from [NLTK](https://nltk.readthedocs.io/en/latest/). This setting controls the directory where data downloaded from NLTK can be stored.
+Controls where data downloaded through [NLTK](https://www.nltk.org/) is stored. This is used for stopword lists. Set to `None` to use the [default directory](https://www.nltk.org/api/nltk.downloader.html#nltk.downloader.Downloader.default_download_dir).
 
 ### `CSV_FILES_PATH`
 

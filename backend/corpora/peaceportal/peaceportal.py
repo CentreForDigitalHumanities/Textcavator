@@ -2,12 +2,12 @@ from glob import glob
 import datetime
 from langdetect import detect
 from langdetect.lang_detect_exception import LangDetectException
-from ianalyzer_readers.xml_tag import Tag
+from textcavator_readers.xml_tag import Tag
 
 from django.conf import settings
 
 from addcorpus.python_corpora.corpus import ParentCorpusDefinition
-from ianalyzer_readers.extract import XML
+from textcavator_readers.extract import XML
 from addcorpus.es_settings import es_settings
 from corpora.peaceportal.utils import field_defaults
 

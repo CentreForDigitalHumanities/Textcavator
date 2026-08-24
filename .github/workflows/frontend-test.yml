@@ -9,6 +9,11 @@ on:
       - 'frontend/**'
       - '.github/workflows/frontend-test.yml'
       - 'docker-compose.yaml'
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+      - 'release/**'
 
 jobs:
   frontend-test:

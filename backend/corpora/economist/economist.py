@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from django.conf import settings
 from corpora.gale.gale import GaleCorpus, GaleMetadata, when_not_empty, clean_date, fix_path_sep
 from addcorpus.python_corpora.corpus import FieldDefinition

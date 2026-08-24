@@ -11,7 +11,7 @@ import os
 import os.path
 from datetime import datetime, timedelta
 
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from addcorpus.python_corpora.corpus import (FieldDefinition, XMLCorpusDefinition, after,
                               consolidate_start_end_years, string_contains,
                               until)
@@ -22,7 +22,7 @@ from corpora.times.times_scans import compose_absolute_image_path
 from django.conf import settings
 from media.media_url import media_url
 
-from ianalyzer_readers.xml_tag import Tag, ParentTag
+from textcavator_readers.xml_tag import Tag, ParentTag
 
 logger = logging.getLogger(__name__)
 

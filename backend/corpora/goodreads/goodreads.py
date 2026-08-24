@@ -6,7 +6,7 @@ from datetime import datetime
 
 import openpyxl
 
-from ianalyzer_readers.extract import CSV, Metadata
+from textcavator_readers.extract import CSV, Metadata
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition, FieldDefinition
 

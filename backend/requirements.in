@@ -26,7 +26,7 @@ tqdm
 langcodes
 language_data
 flower
-ianalyzer_readers
+textcavator_readers
 jsonschema
 Pillow
 pyreadr

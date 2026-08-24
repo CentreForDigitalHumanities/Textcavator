@@ -1,6 +1,6 @@
 import re
 from copy import copy
-from ianalyzer_readers.xml_tag import Tag, TransformTag
+from textcavator_readers.xml_tag import Tag, TransformTag
 from typing import Iterable, Optional
 import bs4
 
@@ -8,7 +8,7 @@ from django.conf import settings
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition
 from addcorpus.es_mappings import date_mapping
-from ianalyzer_readers.extract import XML, Constant, Combined, Pass
+from textcavator_readers.extract import XML, Constant, Combined, Pass
 from corpora.peaceportal.peaceportal import (
     PeacePortal,
     categorize_material,

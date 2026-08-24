@@ -3,7 +3,7 @@ import os
 from bs4 import BeautifulSoup
 
 from addcorpus.python_corpora.load_corpus import load_corpus_definition
-from ianalyzer_readers.extract import XML
+from textcavator_readers.extract import XML
 from corpora.dbnl.utils import append_to_tag, index_by_id, which_unique, language_name
 
 here = os.path.abspath(os.path.dirname(__file__))
