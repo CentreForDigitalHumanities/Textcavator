@@ -17,9 +17,10 @@ from indexing.models import (
 from indexing.run_populate_task import populate
 from indexing.run_create_task import create
 from indexing.run_management_tasks import (
-    update_index_settings, remove_alias, add_alias, delete_index, reindex
+    update_index_settings, remove_alias, add_alias, delete_index
 )
 from indexing.run_update_task import run_update_task
+from indexing.run_reindex_task import run_reindex_task
 from ianalyzer.celery_utils import warn_if_no_worker
 from indexing.stop_job import mark_tasks_stopped, TaskAborted, raise_if_aborted
 
@@ -34,7 +35,7 @@ TASK_HANDLERS: Dict[Type[IndexTask], Callable[[IndexTask], None]] = {
     RemoveAliasTask: remove_alias,
     AddAliasTask: add_alias,
     DeleteIndexTask: delete_index,
-    ReindexTask: reindex,
+    ReindexTask: run_reindex_task,
 }
 
 
