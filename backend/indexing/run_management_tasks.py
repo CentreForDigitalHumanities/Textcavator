@@ -2,9 +2,11 @@
 Functionality to run indexing tasks too straightforward to warrant a separate module
 '''
 
+from time import sleep
 from indexing.models import (
-    DeleteIndexTask, RemoveAliasTask, AddAliasTask, UpdateSettingsTask,
+    DeleteIndexTask, RemoveAliasTask, AddAliasTask, UpdateSettingsTask, ReindexTask
 )
+from indexing.stop_job import TaskAborted
 
 
 def add_alias(task: AddAliasTask):
@@ -48,5 +50,28 @@ def update_index_settings(task: UpdateSettingsTask):
     )
 
 
+def reindex(task: ReindexTask):
+    client = task.client()
+    response = client.reindex(
+        source={'index': task.source_index.name},
+        dest={'index': task.index.name},
+        wait_for_completion=False,
+        timeout='10s',
+    )
+    # if timeout expired, poll task
+    if 'task' in response.body:
+        task_id = response.body['task']
+        complete = False
+        while not complete:
+            sleep(60)
+            response = client.tasks.get(task_id=task_id)
 
+            # break loop if completed
+            if response.body.get('completed'):
+                complete = True
 
+            # cancel task if aborted
+            task.refresh_from_db()
+            if task.is_aborted():
+                client.tasks.cancel(task_id=task_id)
+                raise TaskAborted()

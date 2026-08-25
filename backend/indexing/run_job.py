@@ -11,12 +11,13 @@ from celery.contrib.abortable import AbortableTask
 from es.client import elasticsearch
 from indexing.models import (
     IndexJob, IndexTask, TaskStatus, CreateIndexTask, PopulateIndexTask,
-    UpdateSettingsTask, RemoveAliasTask, AddAliasTask, DeleteIndexTask, UpdateIndexTask
+    UpdateSettingsTask, RemoveAliasTask, AddAliasTask, DeleteIndexTask, UpdateIndexTask,
+    ReindexTask
 )
 from indexing.run_populate_task import populate
 from indexing.run_create_task import create
 from indexing.run_management_tasks import (
-    update_index_settings, remove_alias, add_alias, delete_index
+    update_index_settings, remove_alias, add_alias, delete_index, reindex
 )
 from indexing.run_update_task import run_update_task
 from ianalyzer.celery_utils import warn_if_no_worker
@@ -33,6 +34,7 @@ TASK_HANDLERS: Dict[Type[IndexTask], Callable[[IndexTask], None]] = {
     RemoveAliasTask: remove_alias,
     AddAliasTask: add_alias,
     DeleteIndexTask: delete_index,
+    ReindexTask: reindex,
 }
 
 
