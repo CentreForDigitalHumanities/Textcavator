@@ -156,6 +156,10 @@ class CreateIndexTask(IndexTask):
         help_text='if an index by this name already exists, delete it, instead of '
             'raising an exception'
     )
+    shard_count = models.IntegerField(
+        default=1,
+        help_text='number of primary shards to use for the index'
+    )
 
     def __str__(self):
         return f'create {self.index} based on {self.corpus}'

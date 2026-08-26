@@ -58,13 +58,11 @@ def create(task: CreateIndexTask):
             raise Exception('index already exists')
 
     settings = make_es_settings(task.corpus)
+    settings.update({'number_of_shards': task.shard_count})
 
     if task.production_settings:
         logger.info('Adding prod settings to index')
-        settings['index'].update({
-            'number_of_replicas': 0,
-            'number_of_shards': 5
-        })
+        settings['index'].update({'number_of_replicas': 0})
 
     logger.info('Attempting to create index `{}`...'.format(index_name))
 
