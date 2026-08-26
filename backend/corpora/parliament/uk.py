@@ -6,7 +6,7 @@ import json
 import csv
 import re
 
-from ianalyzer_readers.extract import Combined, Constant, CSV, Metadata, Pass
+from textcavator_readers.extract import Combined, Constant, CSV, Metadata, Pass
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, DateFilter
 from corpora.parliament.parliament import Parliament
