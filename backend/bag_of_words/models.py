@@ -11,7 +11,7 @@ class AddBOWFieldTask(IndexTask):
         help_text='Content field for which bag-of-word data is added'
     )
 
-    def hande(self):
+    def handle(self):
         add_bow_field(self)
 
 
