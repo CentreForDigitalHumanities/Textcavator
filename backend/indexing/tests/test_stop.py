@@ -1,11 +1,10 @@
 from time import sleep
-from copy import copy
 from elasticsearch import Elasticsearch
 from es import search
 from visualization.query import MATCH_ALL
 
 from addcorpus.models import Corpus
-from indexing import models, create_job, run_job, stop_job
+from indexing import models, create_job, run_job, stop_job, constants
 
 def mock_documents(size):
     for _ in range(size):
@@ -23,9 +22,7 @@ def test_stop_job(transactional_db, mock_corpus, es_index_client: Elasticsearch,
             sleep(1)
         return task.index.name
 
-    mock_handlers = copy(run_job.TASK_HANDLERS)
-    mock_handlers[models.PopulateIndexTask] = mock_populate
-    monkeypatch.setattr(run_job, 'TASK_HANDLERS', mock_handlers)
+    monkeypatch.setattr(models.PopulateIndexTask, 'handle', mock_populate)
 
     # start indexing job asynchronously
     corpus = Corpus.objects.get(name=mock_corpus)
@@ -45,7 +42,7 @@ def test_stop_job(transactional_db, mock_corpus, es_index_client: Elasticsearch,
     result.get() # complete execution
     sleep(1) # make sure ES is done processing
 
-    assert job.status() == models.TaskStatus.ABORTED
+    assert job.status() == constants.TaskStatus.ABORTED
     result = search.search(mock_corpus, MATCH_ALL, es_index_client)
     assert 0 < search.total_hits(result) < 20
 

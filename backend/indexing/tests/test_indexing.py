@@ -3,7 +3,7 @@ from datetime import datetime
 from time import sleep
 
 from addcorpus.models import Corpus
-from indexing.models import TaskStatus
+from indexing.constants import TaskStatus
 from indexing.run_job import perform_indexing
 from indexing.create_job import create_indexing_job
 from es.search import get_index

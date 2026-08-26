@@ -9,7 +9,8 @@ from es.models import Server, Index
 from es.sync import fetch_index_metadata
 from es.es_alias import get_current_index_names
 from es.search import get_index
-from indexing.models import TaskStatus, IndexJob
+from indexing.constants import TaskStatus
+from indexing.models import IndexJob
 from indexing.run_create_task import make_es_mapping, make_es_settings
 from addcorpus.json_corpora.import_json import get_path
 from addcorpus.validation.indexing import CorpusNotIndexableError

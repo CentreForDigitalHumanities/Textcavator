@@ -7,29 +7,13 @@ from django.contrib import admin
 from es.client import elasticsearch
 from addcorpus.models import Corpus
 from es.models import Index
-
-
-class TaskStatus(models.TextChoices):
-    CREATED = 'created'
-    'Task is created, but not scheduled'
-
-    QUEUED = 'queued'
-    'Task has not started, but its job has been started'
-
-    WORKING = 'working'
-    'Task is currently running'
-
-    DONE = 'done'
-    'Task completed successfully'
-
-    ERROR = 'error'
-    'Task ran into an error'
-
-    ABORTED = 'aborted'
-    'Task was started, then aborted by a user'
-
-    CANCELLED = 'cancelled'
-    'Task was cancelled (because a task up-chain was aborted or failed)'
+from indexing.constants import TaskStatus
+from indexing.run_create_task import create
+from indexing.run_populate_task import populate
+from indexing.run_update_task import run_update_task
+from indexing.run_management_tasks import (
+    add_alias, remove_alias, delete_index, update_index_settings
+)
 
 
 class IndexJob(models.Model):
@@ -143,6 +127,9 @@ class IndexTask(models.Model):
         self.refresh_from_db()
         return self.status in [TaskStatus.CANCELLED, TaskStatus.ABORTED]
 
+    def handle(self):
+        raise NotImplementedError('IndexTask child class has no handler function')
+
 
 class CreateIndexTask(IndexTask):
     '''
@@ -162,6 +149,10 @@ class CreateIndexTask(IndexTask):
     def __str__(self):
         return f'create {self.index} based on {self.corpus}'
 
+    def handle(self):
+        create(self)
+
+
 class PopulateIndexTask(IndexTask):
     '''
     Extract documents from a corpus and add them to the index.
@@ -180,6 +171,9 @@ class PopulateIndexTask(IndexTask):
 
     def __str__(self):
         return f'populate {self.index} based on {self.corpus}'
+
+    def handle(self):
+        populate(self)
 
 
 class UpdateIndexTask(IndexTask):
@@ -205,6 +199,9 @@ class UpdateIndexTask(IndexTask):
         return f'update {self.index} based on {self.corpus}'
 
 
+    def handle(self):
+        run_update_task(self)
+
 
 class UpdateSettingsTask(IndexTask):
     '''
@@ -221,6 +218,10 @@ class UpdateSettingsTask(IndexTask):
         return f'update settings of {self.index}'
 
 
+    def handle(self):
+        update_index_settings(self)
+
+
 class RemoveAliasTask(IndexTask):
     '''
     Remove an alias from an index
@@ -232,6 +233,10 @@ class RemoveAliasTask(IndexTask):
 
     def __str__(self):
         return f'remove alias {self.alias} from {self.index}'
+
+
+    def handle(self):
+        remove_alias(self)
 
 
 class AddAliasTask(IndexTask):
@@ -247,6 +252,10 @@ class AddAliasTask(IndexTask):
         return f'add alias {self.alias} to {self.index}'
 
 
+    def handle(self):
+        add_alias(self)
+
+
 class DeleteIndexTask(IndexTask):
     '''
     Delete an index.
@@ -254,3 +263,7 @@ class DeleteIndexTask(IndexTask):
 
     def __str__(self):
         return f'delete {self.index}'
+
+
+    def handle(self):
+        delete_index(self)

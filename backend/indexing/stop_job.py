@@ -1,10 +1,14 @@
-from indexing.models import IndexJob, TaskStatus, IndexTask
+from typing import TYPE_CHECKING
+from indexing.constants import TaskStatus
+
+if TYPE_CHECKING:
+    from indexing.models import IndexJob, IndexTask
 
 
-def is_stoppable(job: IndexJob):
+def is_stoppable(job: 'IndexJob'):
     return job.status() in [TaskStatus.QUEUED, TaskStatus.WORKING]
 
-def mark_tasks_stopped(job: IndexJob):
+def mark_tasks_stopped(job: 'IndexJob'):
     '''
     Mark open tasks as aborted and queued tasks as cancelled.
 
@@ -19,7 +23,7 @@ def mark_tasks_stopped(job: IndexJob):
 class TaskAborted(Exception):
     pass
 
-def raise_if_aborted(task: IndexTask):
+def raise_if_aborted(task: 'IndexTask'):
     '''
     Raise an exception is the index task is aborted.
 

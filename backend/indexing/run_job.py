@@ -3,40 +3,17 @@ Functionality to run an IndexJob
 '''
 
 import logging
-from typing import Callable, Type, Dict
 import celery
 from celery.result import AsyncResult
 
 from es.client import elasticsearch
-from indexing.models import (
-    IndexJob, IndexTask, TaskStatus, CreateIndexTask, PopulateIndexTask,
-    UpdateSettingsTask, RemoveAliasTask, AddAliasTask, DeleteIndexTask, UpdateIndexTask
-)
-from bag_of_words.models import AddBOWFieldTask, PopulateBOWFieldTask
-from bag_of_words.run_index_tasks import add_bow_field, populate_bow_field
-from indexing.run_populate_task import populate
-from indexing.run_create_task import create
-from indexing.run_management_tasks import (
-    update_index_settings, remove_alias, add_alias, delete_index
-)
-from indexing.run_update_task import run_update_task
+from indexing.constants import TaskStatus
+from indexing.models import IndexJob, IndexTask
 from ianalyzer.celery_utils import warn_if_no_worker
 from indexing.stop_job import mark_tasks_stopped, TaskAborted
 
 
 logger = logging.getLogger('indexing')
-
-TASK_HANDLERS: Dict[Type[IndexTask], Callable[[IndexTask], None]] = {
-    CreateIndexTask: create,
-    PopulateIndexTask: populate,
-    UpdateIndexTask: run_update_task,
-    AddBOWFieldTask: add_bow_field,
-    PopulateBOWFieldTask: populate_bow_field,
-    UpdateSettingsTask: update_index_settings,
-    RemoveAliasTask: remove_alias,
-    AddAliasTask: add_alias,
-    DeleteIndexTask: delete_index,
-}
 
 
 @celery.shared_task()
@@ -56,8 +33,7 @@ def run_task(task: IndexTask) -> None:
 
     try:
         task.client().cluster.health(wait_for_status='yellow')
-        handler = TASK_HANDLERS[task.__class__]
-        handler(task)
+        task.handle()
     except TaskAborted:
         # exception raised by the handler if the task is aborted mid-execution
         logger.warning(f'{task_id} aborted')

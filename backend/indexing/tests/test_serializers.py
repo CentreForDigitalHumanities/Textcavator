@@ -2,7 +2,7 @@ from indexing.serializers import IndexHealthSerializer, IndexJobSerializer
 from indexing.health_check import CorpusIndexHealth
 from indexing.create_job import create_indexing_job
 from addcorpus.models import Corpus
-from indexing.models import TaskStatus
+from indexing.constants import TaskStatus
 
 def test_index_heath_serializer_not_indexed(mock_corpus, es_index_client, es_server):
     corpus = Corpus.objects.get(name=mock_corpus)

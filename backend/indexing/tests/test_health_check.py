@@ -1,5 +1,5 @@
 from addcorpus.models import Corpus
-from indexing.models import TaskStatus
+from indexing.constants import TaskStatus
 from indexing.health_check import CorpusIndexHealth
 
 def test_health_check_not_indexed(mock_corpus, es_index_client, es_server):

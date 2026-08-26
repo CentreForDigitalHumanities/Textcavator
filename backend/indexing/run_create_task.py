@@ -2,15 +2,15 @@
 Defines functionality to execute a CreateIndexTask
 '''
 
-from typing import Dict
+from typing import Dict, TYPE_CHECKING
 import logging
 
 from addcorpus.es_settings import es_settings
 from addcorpus.models import Corpus, CorpusConfiguration
 from addcorpus.python_corpora.load_corpus import load_corpus_definition
-from indexing.models import (
-    CreateIndexTask
-)
+
+if TYPE_CHECKING:
+        from indexing.models import CreateIndexTask
 
 
 logger = logging.getLogger('indexing')
@@ -39,7 +39,7 @@ def make_es_mapping(corpus_configuration: CorpusConfiguration) -> Dict:
     }
 
 
-def create(task: CreateIndexTask):
+def create(task: 'CreateIndexTask'):
     client = task.client()
 
     corpus_config = task.corpus.configuration

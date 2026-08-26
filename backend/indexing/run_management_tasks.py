@@ -2,12 +2,15 @@
 Functionality to run indexing tasks too straightforward to warrant a separate module
 '''
 
-from indexing.models import (
-    DeleteIndexTask, RemoveAliasTask, AddAliasTask, UpdateSettingsTask,
-)
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from indexing.models import (
+        DeleteIndexTask, RemoveAliasTask, AddAliasTask, UpdateSettingsTask,
+    )
 
 
-def add_alias(task: AddAliasTask):
+def add_alias(task: 'AddAliasTask'):
     '''
     Add an alias to an Elasticsearch index, as defined by an AddAliasTask
     '''
@@ -18,7 +21,7 @@ def add_alias(task: AddAliasTask):
     )
 
 
-def remove_alias(task: RemoveAliasTask):
+def remove_alias(task: 'RemoveAliasTask'):
     '''
     Remove an alias from an Elasticsearch index, as defined by a RemoveAliasTask
     '''
@@ -29,7 +32,7 @@ def remove_alias(task: RemoveAliasTask):
     )
 
 
-def delete_index(task: DeleteIndexTask):
+def delete_index(task: 'DeleteIndexTask'):
     '''
     Delete an Elasticsearch index, as defined by a DeleteIndexTask
     '''
@@ -39,7 +42,7 @@ def delete_index(task: DeleteIndexTask):
     )
 
 
-def update_index_settings(task: UpdateSettingsTask):
+def update_index_settings(task: 'UpdateSettingsTask'):
     client = task.client()
     client.indices.put_settings(
         settings=task.settings,

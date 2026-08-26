@@ -1,15 +1,17 @@
+from typing import TYPE_CHECKING
+import logging
 from django.conf import settings
 
 from addcorpus.python_corpora.corpus import CorpusDefinition
 from es.client import elasticsearch
-from indexing.models import UpdateIndexTask
 from addcorpus.python_corpora.load_corpus import load_corpus_definition
 from addcorpus.exceptions import PythonDefinitionRequired
+if TYPE_CHECKING:
+    from indexing.models import UpdateIndexTask
 
-import logging
 logger = logging.getLogger('indexing')
 
-def run_update_task(task: UpdateIndexTask) -> None:
+def run_update_task(task: 'UpdateIndexTask') -> None:
     if not task.corpus.has_python_definition:
         raise PythonDefinitionRequired(task.corpus, 'Update task not applicable')
 

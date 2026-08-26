@@ -1,14 +1,16 @@
 import logging
+from typing import TYPE_CHECKING
 import elasticsearch.helpers as es_helpers
 
 from addcorpus.reader import make_reader
-from indexing.models import PopulateIndexTask
 from indexing.stop_job import raise_if_aborted
+if TYPE_CHECKING:
+    from indexing.models import PopulateIndexTask
 
 logger = logging.getLogger('indexing')
 
 
-def populate(task: PopulateIndexTask):
+def populate(task: 'PopulateIndexTask'):
     '''
     Populate an ElasticSearch index from the corpus' source files.
     '''

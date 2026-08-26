@@ -4,7 +4,8 @@ from sys import stdout
 
 from django.core.management import BaseCommand
 
-from indexing.models import IndexJob, TaskStatus
+from indexing.constants import TaskStatus
+from indexing.models import IndexJob
 from indexing.command_utils import run_job, add_async_argument
 from indexing.stop_job import is_stoppable, mark_tasks_stopped
 

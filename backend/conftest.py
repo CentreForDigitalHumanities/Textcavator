@@ -13,12 +13,12 @@ from django.test import Client
 from es.client import client_from_config
 from addcorpus.python_corpora.save_corpus import load_and_save_single_corpus
 from es import sync
-from indexing.models import TaskStatus
+from indexing.constants import TaskStatus
 from indexing.create_job import create_indexing_job
 from indexing.run_job import perform_indexing
 from django.conf import settings
 from django.contrib.auth.models import Group
-from addcorpus.models import Corpus, CorpusDataFile
+from addcorpus.models import Corpus
 from addcorpus.serializers import CorpusJSONDefinitionSerializer, CorpusDataFileSerializer
 from es.models import Server
 from django.core.cache import cache

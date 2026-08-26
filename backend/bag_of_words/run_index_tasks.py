@@ -1,13 +1,16 @@
 import logging
 from copy import copy
 from elasticsearch.helpers import streaming_bulk
+from typing import TYPE_CHECKING
 
 from bag_of_words.index_utils import bow_field_name
 from addcorpus.es_mappings import int_mapping, keyword_mapping
 from addcorpus.models import  Field
-from bag_of_words.models import AddBOWFieldTask, PopulateBOWFieldTask
 from bag_of_words.collect import token_data
 from indexing.stop_job import raise_if_aborted
+
+if TYPE_CHECKING:
+    from bag_of_words.models import AddBOWFieldTask, PopulateBOWFieldTask
 
 logger = logging.getLogger('indexing')
 
@@ -36,7 +39,7 @@ def nested_bow_mapping(field: Field):
     }
 
 
-def add_bow_field(task: AddBOWFieldTask) -> None:
+def add_bow_field(task: 'AddBOWFieldTask') -> None:
     client = task.client()
     index_name = task.index.name
 
@@ -53,7 +56,7 @@ def add_bow_field(task: AddBOWFieldTask) -> None:
     )
 
 
-def populate_bow_field(task: PopulateBOWFieldTask):
+def populate_bow_field(task: 'PopulateBOWFieldTask'):
     # Obtain source documents
     docs = token_data(task.corpus, task.index.name, task.field.name)
 
