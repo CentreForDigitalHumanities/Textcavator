@@ -24,6 +24,7 @@ The backend consists of the following packages:
 - `media`: return media attachments for documents
 - `corpora`: corpus definitions
 - `corpora_test`: corpus definitions for unit tests
+- `bag_of_words`: functionality for bag-of-words based analysis (term frequencies)
 - `ianalyzer`: central project app
 
 The following graph defines a rough map of the dependencies between packages.
@@ -41,6 +42,8 @@ graph TD;
     addcorpus-->indexing;
     media-->corpora;
     media-->corpora_test;
+    indexing-->bag_of_words
+    bag_of_words-->visualisation;
 ```
 
 To avoid circular imports, it's preferred that you follow the directions laid out in the graph. For example, if you want to write a function that will have something to do with tags and visualisations, add a module in `visualizations` that imports modules from `tag`, rather than vice versa.
