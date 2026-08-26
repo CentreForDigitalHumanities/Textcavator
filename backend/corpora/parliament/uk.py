@@ -115,7 +115,8 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
             metadata = {}
             metadata_this_year = {}
             for speaker_name in conversion_dict:
-                metadata_this_year[speaker_name] = all_person_metadata[conversion_dict[speaker_name]]
+                if speaker_name in metadata_this_year:
+                    metadata_this_year[speaker_name] = all_person_metadata[conversion_dict[speaker_name]]
             metadata['metadata_this_year'] = metadata_this_year
 
             with open(csv_file, 'r', encoding='utf-8') as file:
