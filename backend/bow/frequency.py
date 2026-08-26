@@ -1,14 +1,14 @@
-from typing import List, Dict, Optional
+from typing import Dict, Optional
 
 from addcorpus.models import Corpus
 from es.client import elasticsearch
 from es.search import get_index
 from bow.index_utils import bow_field_name, token_field_name, has_bow_field
-from visualization.query import MATCH_ALL, add_filter
+from visualization.query import add_filter
 
 def word_frequency(
     corpus: Corpus,
-    metadata_filters: List[Dict],
+    query: Dict,
     term: str,
     field: str,
     multifield: Optional[str] = None,
@@ -19,7 +19,6 @@ def word_frequency(
     if not has_bow_field(client, index, field):
         return None
 
-    query = _metadata_query(metadata_filters)
     nested_name = bow_field_name(field)
     nested_field = bow_field_name(field) + '.' + token_field_name(field, multifield)
     query['aggs'] = {
@@ -50,9 +49,9 @@ def word_frequency(
             }
         }
     }
+    query['size'] = 0
     results = client.search(
         index=index,
-        size=0,
         **query,
     )
     return int(results['aggregations'][nested_name]['match_tokens']['token_count']['value'])
@@ -60,7 +59,7 @@ def word_frequency(
 
 def most_frequent_words(
     corpus: Corpus,
-    metadata_filters: List[Dict],
+    query: Dict,
     field: str,
     size: int = 100,
 ):
@@ -70,7 +69,6 @@ def most_frequent_words(
     if not has_bow_field(client, index, field):
         return None
 
-    query = _metadata_query(metadata_filters)
     add_filter(query, { 'exists': { 'field': field }})
     nested_name = bow_field_name(field)
     query['aggs'] = {
@@ -83,20 +81,12 @@ def most_frequent_words(
             }
         }
     }
+    query['size'] = 0
     results = client.search(
         index=index,
-        size=0,
         **query,
     )
     return results['aggregations'][nested_name]['most_frequent']
-
-
-def _metadata_query(metadata_filters: List[Dict]):
-    query = MATCH_ALL
-    for f in metadata_filters:
-        query = add_filter(query, f)
-    return query
-
 
 
 def _most_frequent_aggregation(nested_field, size: int = 100):
