@@ -3,7 +3,7 @@ from typing import Dict, Optional
 from addcorpus.models import Corpus
 from es.client import elasticsearch
 from es.search import get_index
-from bow.index_utils import bow_field_name, token_field_name, has_bow_field
+from bag_of_words.index_utils import bow_field_name, token_field_name, has_bow_field
 from visualization.query import add_filter
 
 def word_frequency(

@@ -1,7 +1,7 @@
 from time import sleep
 import pytest
 from addcorpus.models import Corpus
-from bow.create_index_job import create_bow_index_job
+from bag_of_words.create_index_job import create_bow_index_job
 from indexing.run_job import perform_indexing
 from indexing.create_job import create_indexing_job
 

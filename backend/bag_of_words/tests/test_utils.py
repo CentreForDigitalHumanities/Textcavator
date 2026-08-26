@@ -1,4 +1,4 @@
-from bow.index_utils import has_bow_field
+from bag_of_words.index_utils import has_bow_field
 from es.search import get_index
 
 def test_has_bow_field(

@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.db.models import QuerySet
 
 from indexing import models, run_job, stop_job
-from bow.admin import AddBOWFieldTaskAdmin, PopulateBOWFieldTaskAdmin
+from bag_of_words.admin import AddBOWFieldTaskAdmin, PopulateBOWFieldTaskAdmin
 
 
 class CreateIndexAdmin(admin.StackedInline):

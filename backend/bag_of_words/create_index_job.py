@@ -5,8 +5,8 @@ from es.search import get_index
 from es.models import Index, Server
 from addcorpus.models import Corpus
 from indexing.models import IndexJob
-from bow.index_utils import content_fields
-from bow.models import AddBOWFieldTask, PopulateBOWFieldTask
+from bag_of_words.index_utils import content_fields
+from bag_of_words.models import AddBOWFieldTask, PopulateBOWFieldTask
 
 
 

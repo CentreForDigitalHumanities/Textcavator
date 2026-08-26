@@ -1,8 +1,8 @@
 from addcorpus.models import Corpus
 from corpora_test.small.small_mock_corpus import SPECS
 from es.search import get_index
-from bow.collect import collect_tokens, token_data
-from bow.index_utils import bow_field_name
+from bag_of_words.collect import collect_tokens, token_data
+from bag_of_words.index_utils import bow_field_name
 
 def test_collect_tokens(small_mock_corpus, index_small_mock_corpus):
     corpus = Corpus.objects.get(name=small_mock_corpus)

@@ -2,11 +2,11 @@ import logging
 from copy import copy
 from elasticsearch.helpers import streaming_bulk
 
-from bow.index_utils import bow_field_name
+from bag_of_words.index_utils import bow_field_name
 from addcorpus.es_mappings import int_mapping, keyword_mapping
 from addcorpus.models import  Field
-from bow.models import AddBOWFieldTask, PopulateBOWFieldTask
-from bow.collect import token_data
+from bag_of_words.models import AddBOWFieldTask, PopulateBOWFieldTask
+from bag_of_words.collect import token_data
 from indexing.stop_job import raise_if_aborted
 
 logger = logging.getLogger('indexing')

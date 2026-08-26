@@ -12,8 +12,8 @@ from indexing.models import (
     IndexJob, IndexTask, TaskStatus, CreateIndexTask, PopulateIndexTask,
     UpdateSettingsTask, RemoveAliasTask, AddAliasTask, DeleteIndexTask, UpdateIndexTask
 )
-from bow.models import AddBOWFieldTask, PopulateBOWFieldTask
-from bow.run_index_tasks import add_bow_field, populate_bow_field
+from bag_of_words.models import AddBOWFieldTask, PopulateBOWFieldTask
+from bag_of_words.run_index_tasks import add_bow_field, populate_bow_field
 from indexing.run_populate_task import populate
 from indexing.run_create_task import create
 from indexing.run_management_tasks import (

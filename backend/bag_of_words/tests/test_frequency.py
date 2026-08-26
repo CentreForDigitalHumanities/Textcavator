@@ -2,7 +2,7 @@ from time import sleep
 from addcorpus.models import Corpus
 from es.client import elasticsearch
 from es.search import get_index
-from bow.frequency import word_frequency, most_frequent_words
+from bag_of_words.frequency import word_frequency, most_frequent_words
 from visualization.query import MATCH_ALL, add_filter, make_term_filter
 
 

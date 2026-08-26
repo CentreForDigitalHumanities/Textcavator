@@ -1,7 +1,7 @@
 from es.client import elasticsearch
 from visualization.query import MATCH_ALL
 from es.search import get_index, hits, total_hits
-from bow.index_utils import bow_field_name
+from bag_of_words.index_utils import bow_field_name
 from visualization.termvectors import get_terms, request_termvectors_batched
 
 def test_bow_indexing(small_mock_corpus, index_small_mock_corpus, index_small_mock_corpus_bow):

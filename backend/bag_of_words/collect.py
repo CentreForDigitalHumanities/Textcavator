@@ -6,7 +6,7 @@ from es.client import elasticsearch
 from es.search import hits
 from visualization.query import MATCH_ALL
 from visualization.termvectors import request_termvectors_batched, get_terms
-from bow.index_utils import bow_field_name
+from bag_of_words.index_utils import bow_field_name
 
 
 

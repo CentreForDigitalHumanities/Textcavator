@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class BOWConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'bow'
+    name = 'bag_of_words'

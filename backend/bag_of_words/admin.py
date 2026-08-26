@@ -1,4 +1,4 @@
-from bow import models
+from bag_of_words import models
 from django.contrib import admin
 
 class AddBOWFieldTaskAdmin(admin.StackedInline):
