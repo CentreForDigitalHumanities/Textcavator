@@ -17,7 +17,3 @@ class PopulateBOWFieldTask(IndexTask):
         on_delete=models.CASCADE,
         help_text='Content field for which bag-of-word data is added'
     )
-    threshold = models.IntegerField(
-        default=0,
-        help_text='Minimum frequency threshold (across the whole corpus) for tokens',
-    )

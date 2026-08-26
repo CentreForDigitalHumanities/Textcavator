@@ -45,17 +45,3 @@ def test_token_docs(small_mock_corpus, index_small_mock_corpus):
         if token.get('content') == 'to'
     ) == 3
 
-
-def test_token_threshold(small_mock_corpus, index_small_mock_corpus):
-    corpus = Corpus.objects.get(name=small_mock_corpus)
-    index = get_index(small_mock_corpus)
-    data = list(token_data(corpus, index, 'content', threshold=2))
-
-    assert sum(
-        token[':count'] for token in iterate_tokens(data, 'content')
-        if token.get('content') == 'alice'
-    ) == 0
-    assert sum(
-        token[':count'] for token in iterate_tokens(data, 'content')
-        if token.get('content') == 'to'
-    ) == 3

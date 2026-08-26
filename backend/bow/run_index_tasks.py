@@ -55,7 +55,7 @@ def add_bow_field(task: AddBOWFieldTask) -> None:
 
 def populate_bow_field(task: PopulateBOWFieldTask):
     # Obtain source documents
-    docs = token_data(task.corpus, task.index.name, task.field.name, threshold=task.threshold)
+    docs = token_data(task.corpus, task.index.name, task.field.name)
 
     actions = (
         {

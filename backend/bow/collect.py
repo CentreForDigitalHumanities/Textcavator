@@ -28,7 +28,7 @@ def iterate_documents(client: Elasticsearch, index: str, query: Dict):
 
 
 def collect_tokens(
-    corpus: Corpus, index_name: str, field_name: str, threshold=0,
+    corpus: Corpus, index_name: str, field_name: str,
 ) -> Iterable[Tuple[str, Dict[str, int], Dict[str, Any], str]]:
     client = elasticsearch(corpus)
     docs = iterate_documents(client, index_name, MATCH_ALL)
@@ -38,13 +38,12 @@ def collect_tokens(
             counts = {
                 term: data['term_freq']
                 for term, data in terms.items()
-                if data['ttf'] >= threshold
             }
             yield hit['_id'], counts
 
 
-def token_data(corpus: Corpus, index_name: str, field_name: str,  threshold=0):
-    iterator = collect_tokens(corpus, index_name, field_name, threshold=threshold)
+def token_data(corpus: Corpus, index_name: str, field_name: str):
+    iterator = collect_tokens(corpus, index_name, field_name)
     for doc_id, term_counts in iterator:
         data = {bow_field_name(field_name): [
                 {':token': term, ':count': count, field_name: term}
