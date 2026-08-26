@@ -11,6 +11,9 @@ class AddBOWFieldTask(IndexTask):
         help_text='Content field for which bag-of-word data is added'
     )
 
+    def __str__(self):
+        return f'add bag-of-words field for {self.field} to {self.index}'
+
     def handle(self):
         add_bow_field(self)
 
@@ -21,6 +24,9 @@ class PopulateBOWFieldTask(IndexTask):
         on_delete=models.CASCADE,
         help_text='Content field for which bag-of-word data is added'
     )
+
+    def __str__(self):
+        return f'populate bag-of-words field for {self.field} to {self.index}'
 
     def handle(self):
         populate_bow_field(self)
