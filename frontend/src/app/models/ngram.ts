@@ -6,11 +6,13 @@ import { Store } from '../store/types';
 
 export type NgramMode = 'ngrams' | 'collocates';
 
+export type FreqMode = 'absolute' | 'relative' | 't';
+
 export interface NgramSettings {
     mode: NgramMode,
     size: number;
     positions?: string;
-    freqCompensation: boolean;
+    freqCompensation: FreqMode;
     analysis: string;
     maxDocuments: number;
     numberOfNgrams: number;
@@ -30,7 +32,7 @@ export class NgramParameters extends StoreSync<NgramSettings> {
             `o:${state.mode == 'collocates' ? 'c' : 'n'}`,
             `s:${state.size}`,
             `p:${state.positions}`,
-            `c:${state.freqCompensation}`,
+            `c:${this.formatFreqCompensation(state.freqCompensation)}`,
             `a:${state.analysis}`,
             `m:${state.maxDocuments}`,
             `n:${state.numberOfNgrams}`
@@ -47,7 +49,7 @@ export class NgramParameters extends StoreSync<NgramSettings> {
             mode: _.get(parsed, 'o') === 'c' ? 'collocates' : 'ngrams',
             size: this.parseInt(_.get(parsed, 's'), 2),
             positions: _.get(parsed, 'p', 'any'),
-            freqCompensation: _.get(parsed, 'c') === 'true',
+            freqCompensation: this.parseFreqCompenstation(_.get(parsed, 'c', '')),
             analysis: _.get(parsed, 'a', 'none'),
             maxDocuments: this.parseInt(_.get(parsed, 'm'), 50),
             numberOfNgrams: this.parseInt(_.get(parsed, 'n'), 10),
@@ -60,7 +62,27 @@ export class NgramParameters extends StoreSync<NgramSettings> {
     }
 
     private parseInt(value: string | undefined, defaultValue: number): number {
-        const parsed = parseInt(value, 10);
+        const parsed = parseInt(value ?? '', 10);
         return _.isNaN(parsed) ? defaultValue : parsed;
+    }
+
+    private formatFreqCompensation(value: FreqMode): string {
+        const keys: Record<FreqMode, string> = {
+            'absolute': 'abs',
+            'relative': 'rel',
+            't': 't',
+        }
+        return _.get(keys, value, 'absolute')
+    }
+
+    private parseFreqCompenstation(value: string): FreqMode {
+        const keys: Record<string, FreqMode> = {
+            'true': 'relative',
+            'false': 'absolute',
+            'abs': 'absolute',
+            'relative': 'relative',
+            't': 't',
+        }
+        return _.get(keys, value, 'absolute')
     }
 }
