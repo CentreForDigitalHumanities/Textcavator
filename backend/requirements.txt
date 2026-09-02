@@ -73,7 +73,7 @@ django-livereload-server==0.5.1
     # via -r requirements.in
 django-revproxy==0.13.0
     # via -r requirements.in
-djangorestframework==3.16.1
+djangorestframework==3.17.2
     # via
     #   -r requirements.in
     #   dj-rest-auth
