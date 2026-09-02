@@ -58,7 +58,7 @@ defusedxml==0.7.1
     #   pysaml2
 dj-rest-auth[with-social]==7.2.0
     # via -r requirements.in
-django==5.2.16
+django==5.2.17
     # via
     #   -r requirements.in
     #   dj-rest-auth
