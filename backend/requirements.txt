@@ -240,7 +240,7 @@ textdistance==4.6.3
     # via -r requirements.in
 threadpoolctl==3.6.0
     # via scikit-learn
-tornado==6.5.7
+tornado==6.5.8
     # via
     #   django-livereload-server
     #   flower
