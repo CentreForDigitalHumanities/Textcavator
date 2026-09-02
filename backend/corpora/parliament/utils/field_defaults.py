@@ -11,9 +11,6 @@ from addcorpus.es_mappings import keyword_mapping, text_mapping, date_mapping, m
 
 # Corpora that include a `foo` field should initialise it with `foo()` and then modify attributes as needed.
 
-MIN_DATE = datetime(year=1800, month=1, day=1)
-MAX_DATE = datetime(year=2022, month=12, day=31)
-
 
 def book_id():
     """Unique ID of the book in which the speech was recorded"""
@@ -405,6 +402,15 @@ def speaker_academic_title():
         name='speaker_academic_title',
         display_name='Speaker academic title',
         description='Academic title of the speaker',
+        es_mapping=keyword_mapping(),
+    )
+
+def speaker_wikidata():
+    """Link to the wikidata entry for the speaker"""
+    return FieldDefinition(
+        name = 'speaker_wikidata',
+        display_name = 'Speaker Wikidata URI',
+        description= 'URI for the Wikidata page for this speaker',
         es_mapping=keyword_mapping(),
     )
 

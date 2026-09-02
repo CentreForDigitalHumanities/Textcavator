@@ -73,7 +73,7 @@ django-livereload-server==0.5.1
     # via -r requirements.in
 django-revproxy==0.13.0
     # via -r requirements.in
-djangorestframework==3.16.1
+djangorestframework==3.17.2
     # via
     #   -r requirements.in
     #   dj-rest-auth
@@ -123,7 +123,7 @@ lxml==6.1.0
     #   textcavator-readers
 marisa-trie==1.3.1
     # via language-data
-nltk==3.10.0
+nltk==3.10.3
     # via -r requirements.in
 numpy==1.26.4
     # via
@@ -167,7 +167,7 @@ pyopenssl==24.2.1
     # via pysaml2
 pyparsing==3.2.5
     # via rdflib
-pypdf==6.15.0
+pypdf==6.16.1
     # via
     #   -r requirements.in
     #   textcavator-readers
@@ -240,7 +240,7 @@ textdistance==4.6.3
     # via -r requirements.in
 threadpoolctl==3.6.0
     # via scikit-learn
-tornado==6.5.7
+tornado==6.5.8
     # via
     #   django-livereload-server
     #   flower
