@@ -5,12 +5,12 @@ import re
 from bs4 import BeautifulSoup
 import json
 import csv
-from ianalyzer_readers.xml_tag import Tag, PreviousSiblingTag
+from textcavator_readers.xml_tag import Tag, PreviousSiblingTag
 
 from addcorpus.python_corpora.corpus import (
     CorpusDefinition, CSVCorpusDefinition, XMLCorpusDefinition
 )
-from ianalyzer_readers.extract import Constant, CSV, XML, Metadata, Combined, Backup
+from textcavator_readers.extract import Constant, CSV, XML, Metadata, Combined, Backup
 from corpora.parliament.parliament import Parliament
 import corpora.parliament.utils.field_defaults as field_defaults
 import corpora.utils.formatting as formatting

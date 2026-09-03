@@ -4,7 +4,7 @@ import re
 from typing import Dict
 
 from django.conf import settings
-from ianalyzer_readers.extract import Backup, CSV
+from textcavator_readers.extract import Backup, CSV
 
 from addcorpus.es_mappings import keyword_mapping
 from addcorpus.es_settings import es_settings

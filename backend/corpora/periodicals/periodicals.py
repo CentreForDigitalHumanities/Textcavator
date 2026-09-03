@@ -9,11 +9,11 @@ from os.path import join, isfile
 from datetime import datetime
 import re
 import openpyxl
-from ianalyzer_readers.xml_tag import Tag, SiblingTag, ParentTag
+from textcavator_readers.xml_tag import Tag, SiblingTag, ParentTag
 
 from django.conf import settings
 
-from ianalyzer_readers import extract
+from textcavator_readers import extract
 from addcorpus.python_corpora import filters
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition, FieldDefinition
 from addcorpus.es_mappings import keyword_mapping, main_content_mapping

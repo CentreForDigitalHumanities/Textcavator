@@ -1,11 +1,11 @@
 from copy import copy
 from os.path import join, split
-from ianalyzer_readers.xml_tag import Tag
+from textcavator_readers.xml_tag import Tag
 from typing import Optional
 from django.conf import settings
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition
-from ianalyzer_readers.extract import Combined, Constant, ExternalFile, XML
+from textcavator_readers.extract import Combined, Constant, ExternalFile, XML
 from addcorpus.serializers import LanguageField
 from corpora.peaceportal.peaceportal import PeacePortal, categorize_material, clean_newline_characters, \
     clean_commentary, join_commentaries, get_text_in_language, \

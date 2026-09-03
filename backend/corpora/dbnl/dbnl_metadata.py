@@ -1,6 +1,6 @@
 import os
 from addcorpus.python_corpora.corpus import CSVCorpusDefinition, FieldDefinition
-from ianalyzer_readers.extract import CSV, Combined, Pass
+from textcavator_readers.extract import CSV, Combined, Pass
 import corpora.dbnl.utils as utils
 
 class DBNLMetadata(CSVCorpusDefinition):

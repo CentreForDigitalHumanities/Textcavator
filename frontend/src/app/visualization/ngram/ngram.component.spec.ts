@@ -17,12 +17,12 @@ describe('NgramComponent', () => {
     let fixture: ComponentFixture<NgramComponent>;
     let apiService: ApiServiceMock;
     let visualizationService: VisualizationService;
-    let cacheKey = 'o:n,s:2,p:any,c:false,a:none,m:50,n:10';
+    let cacheKey = 'o:n,s:2,p:any,c:abs,a:none,m:50,n:10';
     let defaultSettings: NgramSettings = {
         mode: 'ngrams',
         size: 2,
         positions: 'any',
-        freqCompensation: false,
+        freqCompensation: 'absolute',
         analysis: 'none',
         maxDocuments: 50,
         numberOfNgrams: 10,

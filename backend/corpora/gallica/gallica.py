@@ -5,8 +5,8 @@ from time import sleep
 from typing import Union
 
 from bs4 import BeautifulSoup
-from ianalyzer_readers.xml_tag import Tag
-from ianalyzer_readers.extract import Metadata, XML
+from textcavator_readers.xml_tag import Tag
+from textcavator_readers.extract import Metadata, XML
 import requests
 from requests.exceptions import ConnectionError as RequestsConnectionError
 
