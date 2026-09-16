@@ -30,13 +30,7 @@ yarn django migrate
 ```
 
 > [!NOTE]
-> With Postgresql 15 later, you may need to grant privileges on the schema too. Use the `psql` command in the terminal, and run the following:
->
-> ```
-> \c ianalyzer
-> grant all privileges on all tables in schema public to ianalyzer;
-> ```
->
+> For historical reasons, the development database is called "ianalyzer". You chan change this if you want.
 
 5. Make a superuser account with `yarn django createsuperuser`
 
@@ -67,6 +61,12 @@ These instructions will add a tiny example corpus to your environment. Use this 
 ```py
 CORPORA = {
     'example': 'corpora_test.basic.corpus.ExampleCorpus',
+}
+
+CORPUS_SETTINGS = {
+    'example': {
+        'es_index': 'example-corpus'
+    }
 }
 ```
 
