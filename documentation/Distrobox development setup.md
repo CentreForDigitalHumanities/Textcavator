@@ -24,16 +24,10 @@ You need to install [distrobox](https://distrobox.it/). You may also consider in
 
 ## Container setup
 
-If your container will include PostgreSQL (see below), create it with:
+Create the container with:
 
 ```sh
-distrobox create --name textcavator --image ubuntu:24.04 --init --pre-init-hooks "mkdir /var/run/postgresql && chown postgres /var/run/postgresql"
-```
-
-Otherwise, you can leave out the pre-init hook:
-
-```sh
-distrobox create --name textcavator --image ubuntu:24.04 --init
+distrobox create --name textcavator --image ubuntu:26.04 --init
 ```
 
 After creating, enter the container with
@@ -60,6 +54,8 @@ Running PostgreSQL is the most precarious part of the setup. If you're developin
 
 If you are going to use PostgreSQL, make sure you included the pre-init hook when creating the container (see above). Enter the container to install postgresql.
 
+Another note: if you will be running PostreSQL in the container alongside other instances (on the host or in other distrobox containers), start the other service first, so PostreSQL will detect that the port is occupied and use a different one. (This is different from a regular docker container, which would not expose the database port on the host system.) Also, make sure that Django actually connects to the container database in this scenario.
+
 To prevent an error in installation, run the following:
 
 ```sh
@@ -68,7 +64,7 @@ sudo nano /usr/sbin/policy-rc.d
 
 Change the file contents to `exit 0`, save and close.
 
-Then install PostgreSQL 16 with:
+Then install PostgreSQL 18 with:
 
 ```sh
 sudo apt install postgresql
@@ -90,20 +86,19 @@ alter user johndoe superuser;
 
 Use `exit` to quit.
 
-
 To check that everything it working, stop the container, restart, and type `psql` in the command line. This should open the psql prompt.
 
 The default port for PostgreSQL is 5432, but if that port is occupied (usually because PostgreSQL is already running on the host), it will use a different port. Check the port with:
 
 ```sh
-cat /etc/postgresql/16/main/postgresql.conf | grep "port ="
+cat /etc/postgresql/18/main/postgresql.conf | grep "port ="
 ```
 
 If this is not 5432, open (or create) `backend/ianalyzer/local_settings.py` in this repository to override your database configuration. Copy the `DATABASES` declaration from `backend/ianalyzer/settings.py` and change the port number.
 
 ## Node and yarn
 
-See [nodejs.org](https://nodejs.org/en/download) for instructions. Choose Node 22 / Linux / nvm / yarn in the options, and execute the instructions.
+See [nodejs.org](https://nodejs.org/en/download) for instructions. Choose Node 24 / Linux / nvm / yarn in the options, and execute the instructions.
 
 ## ElasticSearch
 
@@ -155,7 +150,7 @@ Now run:
 sudo nano /etc/kibana/kibana.yaml
 ```
 
-Edit the setting `pid.file:` to `/var/run/kibana.pid`
+Edit the setting `pid.file:` to `/tmp/kibana.pid`
 
 When your container is running, you can open Kibana by going to `https://localhost:5601` in your browser.
 
@@ -176,11 +171,28 @@ sudo apt-get install redis
 
 Chrome is used for browser testing in the frontend. Install with:
 
-```sh
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+```bash
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb
+sudo apt update
+sudo apt install google-chrome-stable
+```
+
+## Python
+
+Ubuntu 26.04 uses Python 3.14, which is not compatible with Textcavator. Install Python 3.12 for your virtual environment:
+
+```bash
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
-sudo apt-get install google-chrome-stable
+sudo apt-get install python3.12 python3.12-dev
+```
+
+Then create the virtual environment:
+
+```bash
+virtualenv .env -p python3.12
 ```
 
 ## IDE (optional)
