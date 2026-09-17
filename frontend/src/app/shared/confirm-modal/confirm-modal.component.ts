@@ -90,7 +90,6 @@ export class ConfirmModalComponent implements OnDestroy {
     }
 
     confirm(data: any) {
-        console.log(data);
         showLoading(
             this.loading$,
             lastValueFrom(this.handleAsync(data)),
