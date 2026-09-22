@@ -6,11 +6,8 @@ from textcavator_readers.extract import CSV, XML, Metadata
 from textcavator_readers.xml_tag import Tag
 from textcavator_readers.readers.core import Field
 
-# TODO: do not hardcode
-DATA_DIR = os.path.join(
-    os.path.abspath(os.path.dirname(__file__)),
-    'tests/data'
-)
+from addcorpus.es_mappings import keyword_mapping, text_mapping, int_mapping, main_content_mapping
+from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 
 
 class EmblemsIndexReader(CSVReader):
@@ -46,8 +43,13 @@ class EmblemsIndexReader(CSVReader):
 
 
 
-class EmblemsDataReader(XMLReader):
-    data_directory = DATA_DIR
+class Emblems(CorpusDefinition, XMLReader):
+    title = 'Emblem Project Utrecht'
+    description = 'Dutch Love Emblems of the Seventeenth Century'
+    category = 'poetry'
+    min_date = 1601
+    max_date = 1724
+
     tag_top = Tag('TEI.2')
     tag_entry = Tag('text', attrs={'type': ['front', 'emblem']})
 
@@ -59,47 +61,56 @@ class EmblemsDataReader(XMLReader):
             yield path, doc
 
     fields = [
-        Field(
+        FieldDefinition(
             name='title',
+            display_name='Title',
+            es_mapping=keyword_mapping(True),
             extractor=XML(
                 Tag('teiHeader'), Tag('sourceDesc'), Tag('title'),
                 toplevel=True,
             ),
         ),
-        Field(
+        FieldDefinition(
             name='author',
+            es_mapping=keyword_mapping(False),
             extractor=XML(
                 Tag('teiHeader'), Tag('sourceDesc'), Tag('author'), Tag('name'),
                 toplevel=True,
             )
         ),
-        Field(
+        FieldDefinition(
             name='editor',
+            es_mapping=keyword_mapping(False),
             extractor=XML(
                 Tag('teiHeader'), Tag('sourceDesc'), Tag('editor'), Tag('name'),
                 toplevel=True,
             )
         ),
-        Field(
+        FieldDefinition(
             name='pub_year',
+            es_mapping=int_mapping(),
             extractor=Metadata('year'),
         ),
-        Field(
+        FieldDefinition(
             name='pub_place',
+            es_mapping=keyword_mapping(False),
             extractor=XML(
                 Tag('teiHeader'), Tag('sourceDesc'), Tag('imprint'), Tag('pubPlace'),
                 toplevel=True,
             )
         ),
-        Field(
+        FieldDefinition(
             name='body',
+            display_type='text_content',
+            es_mapping=main_content_mapping(True, False, False),
             extractor=XML(
                 Tag('body'),
                 flatten=True,
             )
         ),
-        Field(
+        FieldDefinition(
             name='body_langs',
+            es_mapping=keyword_mapping(False),
             extractor=XML(
                 Tag('body'),
                 Tag(lambda tag: tag.has_attr('lang')),
@@ -108,8 +119,11 @@ class EmblemsDataReader(XMLReader):
                 transform=lambda values: list(set(values))
             )
         ),
-        Field(
+        FieldDefinition(
             name='translation_nl',
+            display_type='text_content',
+            es_mapping=main_content_mapping(True, False, False, 'nl'),
+            language='nl',
             extractor=XML(
                 Tag('back'),
                 Tag(attrs={'type': 'translations'}),
@@ -118,8 +132,11 @@ class EmblemsDataReader(XMLReader):
                 multiple=True,
             )
         ),
-        Field(
+        FieldDefinition(
             name='translation_en',
+            display_type='text_content',
+            es_mapping=main_content_mapping(True, False, False, 'en'),
+            language='en',
             extractor=XML(
                 Tag('back'),
                 Tag(attrs={'type': 'translations'}),
