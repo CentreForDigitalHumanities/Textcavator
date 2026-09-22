@@ -5,8 +5,8 @@ from textcavator_readers.readers.xml import XMLReader
 from textcavator_readers.extract import CSV, XML, Metadata
 from textcavator_readers.readers.core import Field
 
-# TODO: make test data
-DATA_DIR = '../../corpora/emblems/'
+# TODO: do not hardcode
+DATA_DIR = 'corpora/emblems/tests/data'
 
 class EmblemsIndexReader(CSVReader):
     data_directory = None
