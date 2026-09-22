@@ -1,4 +1,7 @@
-from corpora.emblems.emblems import EmblemsIndexReader, DATA_DIR, EmblemsDataReader
+import os
+from corpora.emblems.emblems import EmblemsIndexReader, Emblems
+
+DATA_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 def test_emblems_index_reader():
     reader = EmblemsIndexReader(DATA_DIR)
@@ -6,8 +9,9 @@ def test_emblems_index_reader():
     assert len(docs) == 1
 
 
-def test_emblems_data_reader():
-    reader = EmblemsDataReader()
+def test_emblems_data_reader(monkeypatch):
+    monkeypatch.setattr(Emblems, 'data_directory', DATA_DIR)
+    reader = Emblems()
     docs = list(reader.documents())
     assert len(docs) == 26
 
