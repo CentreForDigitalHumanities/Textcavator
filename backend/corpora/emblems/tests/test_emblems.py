@@ -3,7 +3,7 @@ from corpora.emblems.emblems import EmblemsIndexReader, DATA_DIR, EmblemsDataRea
 def test_emblems_index_reader():
     reader = EmblemsIndexReader(DATA_DIR)
     docs = list(reader.documents())
-    assert len(docs)
+    assert len(docs) == 1
 
 
 def test_emblems_data_reader():
