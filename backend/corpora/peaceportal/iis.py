@@ -1,21 +1,27 @@
 from copy import copy
 from os.path import join, split
-from textcavator_readers.xml_tag import Tag
 from typing import Optional
-from django.conf import settings
 
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition
-from textcavator_readers.extract import Combined, Constant, ExternalFile, XML
 from addcorpus.serializers import LanguageField
-from corpora.peaceportal.peaceportal import PeacePortal, categorize_material, clean_newline_characters, \
-    clean_commentary, join_commentaries, get_text_in_language, \
-    transform_to_date, transform_to_date_range
+from textcavator_readers.extract import XML, Combined, Constant, ExternalFile
+from textcavator_readers.xml_tag import Tag
+
+from corpora.peaceportal.peaceportal import (
+    PeacePortal,
+    categorize_material,
+    clean_commentary,
+    clean_newline_characters,
+    get_text_in_language,
+    join_commentaries,
+    transform_to_date,
+    transform_to_date_range,
+)
 from corpora.utils.exclude_fields import exclude_fields_without_extractor
 
 
 class PeaceportalIIS(PeacePortal, XMLCorpusDefinition):
-    data_directory = settings.PEACEPORTAL_IIS_DATA
-    es_index = getattr(settings, 'PEACEPORTAL_IIS_ES_INDEX', 'peaceportal-iis')
+    es_index = 'peace-iis'
 
     def add_metadata(self, filename):
         return {
@@ -24,7 +30,7 @@ class PeaceportalIIS(PeacePortal, XMLCorpusDefinition):
 
     def __init__(self):
         super().__init__()
-        self.external_file_folder = settings.PEACEPORTAL_IIS_TXT_DATA
+        self.external_file_folder = self.iis_text_data
         self.source_database.extractor = Constant(
             value='Inscriptions of Israel/Palestine (Brown University)'
         )

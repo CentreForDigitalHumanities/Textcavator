@@ -1,6 +1,5 @@
-from django.conf import settings
-
 from corpora.peaceportal.peaceportal import PeacePortal
+
 
 class FIJISEPARATE(PeacePortal):
 
