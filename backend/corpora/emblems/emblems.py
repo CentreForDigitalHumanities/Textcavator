@@ -54,6 +54,16 @@ class Emblems(CorpusDefinition, XMLReader):
     tag_top = Tag('TEI.2')
     tag_entry = Tag('text', attrs={'type': ['front', 'emblem']})
 
+
+    def data_from_file(self, filename):
+        # override to remove <!DOCTYPE section from XML content before parsing;
+        # (otherwise the file does not parse)
+        with open(filename, 'r') as f:
+            content = f.read()
+            clean = re.sub(r'<!DOCTYPE .*\[.*\]>', '', content, 1, flags=re.DOTALL)
+            return bs4.BeautifulSoup(clean, 'lxml-xml')
+
+
     def sources(self, **kwargs):
         index_reader = EmblemsIndexReader(self.data_directory)
         for doc in index_reader.documents():
