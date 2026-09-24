@@ -1,4 +1,5 @@
 import os
+from datetime import date
 
 from textcavator_readers.readers.csv import CSVReader
 from textcavator_readers.readers.xml import XMLReader
@@ -47,8 +48,8 @@ class Emblems(CorpusDefinition, XMLReader):
     title = 'Emblem Project Utrecht'
     description = 'Dutch Love Emblems of the Seventeenth Century'
     category = 'poetry'
-    min_date = 1601
-    max_date = 1724
+    min_date = date(1601, 1, 1)
+    max_date = date(1724, 12, 31)
 
     tag_top = Tag('TEI.2')
     tag_entry = Tag('text', attrs={'type': ['front', 'emblem']})
@@ -84,6 +85,13 @@ class Emblems(CorpusDefinition, XMLReader):
             extractor=XML(
                 Tag('teiHeader'), Tag('sourceDesc'), Tag('editor'), Tag('name'),
                 toplevel=True,
+            )
+        ),
+        FieldDefinition(
+            name='id',
+            es_mapping=keyword_mapping(),
+            extractor=XML(
+                attribute='id',
             )
         ),
         FieldDefinition(
