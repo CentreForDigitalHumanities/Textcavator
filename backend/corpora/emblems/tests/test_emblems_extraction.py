@@ -19,6 +19,7 @@ def test_emblems_data_reader(monkeypatch):
     assert first['title'] == 'Quaeris quid sit Amor'
     assert first['author'] == 'Heinsius, Daniël'
     assert first['editor'] == 'De Gheyn, Jacques'
+    assert first['id'] == 'he1601front1'
     assert first['pub_year'] == 1601
     assert first['pub_place'] == 'Amsterdam'
     assert first['body'] == 'Quris quid sit Amor, quid amare, cupidinis et quid Castra sequi? chartam hanc inspice, doctus eris. Hc tibi delicias hortumque ostendit Amorum: Inspice; sculptori est ingeniosa manus.'
