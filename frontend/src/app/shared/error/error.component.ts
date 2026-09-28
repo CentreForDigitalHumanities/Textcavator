@@ -1,4 +1,4 @@
-import { Component, inject, input, OnDestroy, OnInit, TemplateRef, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, input, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 export interface ErrorDetails {
@@ -15,13 +15,13 @@ export interface ErrorDetails {
 })
 export class ErrorComponent implements OnInit, OnDestroy {
     public readonly errorDetails = input.required<ErrorDetails>();
-    public readonly errorModal = viewChild.required<TemplateRef<HTMLElement>>('errorModal');
+    private readonly errorModal = viewChild.required<ElementRef>('errorModal');
 
     private modal: NgbModalRef;
     private modalService = inject(NgbModal);
 
     public ngOnInit(): void {
-        this.modal = this.modalService.open(this.errorModal, {
+        this.modal = this.modalService.open(this.errorModal(), {
             ariaLabelledBy: 'error-modal-title',
             role: 'alertdialog',
             centered: true,
