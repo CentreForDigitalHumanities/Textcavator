@@ -1,52 +1,84 @@
-@if (document) {
-<p-dialog [(visible)]="visible" width="100%" [maximizable]="true" [dismissableMask]="true" [blockScroll]="true"
-    [modal]="true">
-    <ng-template #header>
-        <span>Document {{documentPosition(document, page)}} of {{page.total}}</span>
+<ng-template #modalTemplate>
+    <div class="modal-header">
+        <h1 class="modal-title h4" id="dialog-title">
+            Document {{ documentPosition(document, page) }} of {{ page.total }}
+        </h1>
         @if (showNEROption) {
-        <ia-entity-toggle (toggleNER)="toggleNER($event)"></ia-entity-toggle>
+            <ia-entity-toggle (toggleNER)="toggleNER($event)" />
         }
-    </ng-template>
-    <div class="mt-4 mb-4">
-        <ia-document-view [document]="document" [queryModel]="queryModel" [corpus]="document.corpus" [view]="view"
-            [showEntities]="showNamedEntities" />
+        <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="close()"
+        ></button>
     </div>
-    <ng-template #footer>
+    <div class="modal-body">
+        <ia-document-view
+            [document]="document"
+            [queryModel]="queryModel"
+            [corpus]="document.corpus"
+            [view]="view"
+            [showEntities]="showNamedEntities"
+        />
+    </div>
+    <div class="modal-footer">
         <div class="col">
             @if (document.position > 1) {
-                <a class="btn btn-ghost" ngbTooltip="view previous document"
-                    (click)="page.focusPrevious(document)" (keydown.enter)="page.focusPrevious(document)" role="button"
-                    tabindex="0">
+                <a
+                    class="btn btn-ghost"
+                    aria-label="View previous document"
+                    ngbTooltip="view previous document"
+                    (click)="page.focusPrevious(document)"
+                    (keydown.enter)="page.focusPrevious(document)"
+                    role="button"
+                    tabindex="0"
+                >
                     <fa-icon [icon]="actionIcons.prev" aria-hidden="true" />
                 </a>
             }
         </div>
         <div class="col-auto">
             <div class="hstack gap-2">
-                <a class="btn btn-ghost " [routerLink]="documentPageLink" ngbTooltip="view this document on its own page"
-                    tabindex="0">
+                <a
+                    class="btn btn-ghost"
+                    [routerLink]="documentPageLink"
+                    ngbTooltip="view this document on its own page"
+                    tabindex="0"
+                >
                     <fa-icon [icon]="actionIcons.link"></fa-icon>
                     Link
                 </a>
                 @if (document.hasContext) {
-                    <a class="btn btn-ghost" [routerLink]="['/search', document.corpus.name]"
+                    <a
+                        class="btn btn-ghost"
+                        [routerLink]="['/search', document.corpus.name]"
                         [queryParams]="document.contextQueryParams"
-                        ngbTooltip="view all documents from this {{contextDisplayName}}" tabindex="0">
+                        ngbTooltip="view all documents from this {{
+                            contextDisplayName
+                        }}"
+                        tabindex="0"
+                    >
                         <fa-icon [icon]="documentIcons.context"></fa-icon>
-                        View {{contextDisplayName}}
-                    </a>
+                        View {{ contextDisplayName }}
+                    </a> 
                 }
             </div>
         </div>
         <div class="col text-end">
             @if (document.position < page.documents.length) {
-                <a class="btn btn-ghost"
-                    ngbTooltip="view next document" (click)="page.focusNext(document)"
-                    (keydown.enter)="page.focusNext(document)" role="button" tabindex="0">
+                <a
+                    class="btn btn-ghost"
+                    ngbTooltip="view next document"
+                    aria-label="View next document"
+                    (click)="page.focusNext(document)"
+                    (keydown.enter)="page.focusNext(document)"
+                    role="button"
+                    tabindex="0"
+                >
                     <fa-icon [icon]="actionIcons.next" aria-hidden="true" />
                 </a>
             }
         </div>
-    </ng-template>
-</p-dialog>
-}
+    </div>
+</ng-template>

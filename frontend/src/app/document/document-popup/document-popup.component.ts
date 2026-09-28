@@ -1,11 +1,20 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+    TemplateRef,
+    ViewChild,
+} from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {
     DocumentFocus,
     DocumentPage,
     DocumentView,
 } from '@models/document-page';
 import { takeUntil } from 'rxjs/operators';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { FoundDocument, QueryModel } from '@models';
 import { Subject } from 'rxjs';
 import { actionIcons, documentIcons } from '@shared/icons';
@@ -19,11 +28,12 @@ import { actionIcons, documentIcons } from '@shared/icons';
 export class DocumentPopupComponent implements OnChanges, OnDestroy {
     @Input() page: DocumentPage;
     @Input() queryModel: QueryModel;
+    @ViewChild('modalTemplate', { static: true }) modalTemplate: TemplateRef<HTMLElement>;
 
     document: FoundDocument;
     view: DocumentView;
-
-    visible = true;
+    
+    public documentPageLink: string[];
 
     actionIcons = actionIcons;
     documentIcons = documentIcons;
@@ -32,12 +42,9 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
     showNEROption = false;
 
     private refresh$ = new Subject<void>();
+    private modal: NgbModalRef;
 
-    get documentPageLink(): string[] {
-        if (this.document) {
-            return ['/document', this.document.corpus.name, this.document.id];
-        }
-    }
+    constructor(private modalService: NgbModal) { }
 
     get contextDisplayName(): string {
         if (this.document.corpus.documentContext) {
@@ -62,17 +69,25 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.refresh$.next();
         this.refresh$.complete();
+        this.close();
     }
 
     focusUpdate(focus?: DocumentFocus): void {
         if (focus) {
             this.document = focus.document;
             this.view = focus.view;
-            this.visible = true;
+            this.documentPageLink = ['/document', this.document.corpus.name, this.document.id];
+            this.open();
         } else {
             this.document = undefined;
-            this.visible = false;
+            this.documentPageLink = undefined;
+            this.close();
         }
+    }
+
+    close(): void {
+        this.modal?.close();
+        this.modal = undefined;
     }
 
     toggleNER(active: boolean): void {
@@ -81,5 +96,22 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
 
     documentPosition(document: FoundDocument, page: DocumentPage) {
         return page.from + document.position;
+    }
+
+    private open(): void {
+        if (!this.document || this.modal) {
+            return;
+        }
+
+        this.modal = this.modalService.open(this.modalTemplate, {
+            ariaLabelledBy: 'dialog-title',
+            backdrop: true,
+            keyboard: true,
+            scrollable: true,
+            size: 'xl',
+        });
+        this.modal.result.finally(() => {
+            this.modal = undefined;
+        });
     }
 }
