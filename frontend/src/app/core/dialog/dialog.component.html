@@ -1,16 +1,33 @@
-@if (showDialog) {
-  <p-dialog [(visible)]="showDialog" positionTop="50" width="800"
-    [header]="title" [modal]="true">
-    <div class="content container" [iaLoading]="isLoading" [innerHTML]="innerHtml"></div>
-    @if (!isLoading && footerButtonLabel) {
-      <ng-template #footer>
-        <a [routerLink]="footerRouterLink" autofocus tabindex="0">
-          <span  aria-hidden="true">
-            <fa-icon [icon]="navIcons.manual"></fa-icon>
-          </span>
-          <span>{{footerButtonLabel}}</span>
-        </a>
-      </ng-template>
+<ng-template #content>
+    <div class="modal-header">
+        <h1 class="modal-title h4" id="dialog-title">{{ title }}</h1>
+        <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="close()"
+        ></button>
+    </div>
+    <div class="modal-body">
+        <div
+            class="content container"
+            [iaLoading]="isLoading"
+            [innerHTML]="innerHtml"
+        ></div>
+    </div>
+    @if (!isLoading && footerDetails) {
+        <div class="modal-footer">
+            <a
+                [routerLink]="footerDetails.link"
+                (click)="close()"
+                tabindex="0"
+                autofocus
+            >
+                <span aria-hidden="true">
+                    <fa-icon [icon]="navIcons.manual"></fa-icon>
+                </span>
+                <span>{{ footerDetails.label }}</span>
+            </a>
+        </div>
     }
-  </p-dialog>
-}
+</ng-template>
