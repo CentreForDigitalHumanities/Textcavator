@@ -1,18 +1,15 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import {
     Component,
-    ElementRef,
-    HostListener,
     Input,
     OnChanges,
     OnDestroy,
     SimpleChanges,
-    ViewChild,
 } from '@angular/core';
 
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { ShowError } from '@shared/error/error.component';
+import { ErrorDetails } from '@shared/error/error.component';
 import { QueryModel, SearchResults, User } from '@models/index';
 import { PageResults, PageResultsParameters } from '@models/page-results';
 import { SearchService } from '@services';
@@ -42,7 +39,7 @@ export class SearchResultsComponent implements OnChanges, OnDestroy {
 
     public resultsPerPage = 20;
 
-    error$: Observable<ShowError>;
+    error$: Observable<ErrorDetails>;
 
     /** tab on which the focused document should be opened */
     public documentTabIndex: number;
@@ -52,7 +49,7 @@ export class SearchResultsComponent implements OnChanges, OnDestroy {
     constructor(
         private routerStoreService: RouterStoreService,
         private searchService: SearchService,
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.queryModel) {
@@ -83,7 +80,7 @@ export class SearchResultsComponent implements OnChanges, OnDestroy {
         return Math.min(totalResults, MAXIMUM_DISPLAYED);
     }
 
-    private parseError(error): ShowError {
+    private parseError(error): ErrorDetails {
         if (error) {
             return {
                 date: new Date().toISOString(),
