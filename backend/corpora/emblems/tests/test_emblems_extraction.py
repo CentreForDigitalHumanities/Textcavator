@@ -43,8 +43,5 @@ Uit VENUS gouden tuyn, my docht ick was een man,
 Maer als ick weet wat tis, en can ick daer niet van.
 
 [H. Grotius]
-
 Frustr tento oneri me jam subducere: frustra
 Jam juga detrectant, qu subiere boves'''
-
-    assert False
