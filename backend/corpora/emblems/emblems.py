@@ -12,7 +12,7 @@ from textcavator_readers.readers.core import Field
 from addcorpus.es_mappings import keyword_mapping, text_mapping, int_mapping, main_content_mapping
 from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
-
+from corpora.emblems.xml_utils import extract_text
 
 class EmblemsIndexReader(CSVReader):
     data_directory = None
@@ -138,13 +138,13 @@ class Emblems(CorpusDefinition, XMLReader):
             search_filter=MultipleChoiceFilter(),
         ),
         FieldDefinition(
-            name='body',
+            name='content',
             display_name='Content',
             display_type='text_content',
             es_mapping=main_content_mapping(True, False, False),
             extractor=XML(
                 Tag('body'),
-                flatten=True,
+                extract_soup_func=extract_text,
             ),
             results_overview=True,
             search_field_core=True,
