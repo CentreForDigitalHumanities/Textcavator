@@ -12,7 +12,9 @@ from textcavator_readers.readers.core import Field
 from addcorpus.es_mappings import keyword_mapping, int_mapping, main_content_mapping
 from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
-from corpora.emblems.xml_utils import extract_text, replace_ampersands, remove_doctype
+from corpora.emblems.xml_utils import (
+    extract_text, replace_ampersands, remove_doctype, format_language_list
+)
 
 class EmblemsIndexReader(CSVReader):
     data_directory = None
@@ -153,7 +155,7 @@ class Emblems(CorpusDefinition, XMLReader):
             visualizations=['wordcloud']
         ),
         FieldDefinition(
-            name='body_langs',
+            name='langs',
             display_name='Languages',
             es_mapping=keyword_mapping(False),
             extractor=XML(
@@ -161,7 +163,7 @@ class Emblems(CorpusDefinition, XMLReader):
                 Tag(lambda tag: tag.has_attr('lang')),
                 multiple=True,
                 attribute='lang',
-                transform=lambda values: list(set(values))
+                transform=format_language_list,
             ),
             search_filter=MultipleChoiceFilter(),
         ),
@@ -196,4 +198,3 @@ class Emblems(CorpusDefinition, XMLReader):
             search_field_core=True,
         )
     ]
-

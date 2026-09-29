@@ -1,6 +1,8 @@
 import re
 import html
+from typing import List
 import bs4
+from langcodes import Language, standardize_tag
 
 def extract_text(node: bs4.element.Tag):
     content = _extract_plain_text(node)
@@ -91,3 +93,13 @@ _additional_ampersands = {
     'omacron': 'ō',
     'umacron': 'ū',
 }
+
+
+def parse_language(value: str) -> str:
+    language = Language.make(standardize_tag(value))
+    return language.display_name()
+
+
+def format_language_list(values: List[str]) -> List[str]:
+    unique = set(values)
+    return list(sorted(map(parse_language, unique)))
