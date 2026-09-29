@@ -44,7 +44,6 @@ def _extract_plain_text(node: bs4.element.Tag, parse_string=False):
                     return f'[{content}]'
                 case other:
                     print('Unexpected element type:', other)
-                    print(el)
                     text.append(_extract_plain_text(el, True))
 
     return ''.join(text)
