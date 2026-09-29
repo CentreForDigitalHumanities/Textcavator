@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, DestroyRef, viewChild, inject, ElementRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, DestroyRef, viewChild, inject } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SafeHtml } from '@angular/platform-browser';
 
@@ -18,15 +18,15 @@ interface FooterDetails {
     standalone: false
 })
 export class DialogComponent implements OnDestroy, OnInit {
-    content = viewChild<ElementRef>('content');
+    modalTemplate = viewChild.required<TemplateRef<unknown>>('modalTemplate');
 
     public title: string;
     public innerHtml: SafeHtml;
     public footerDetails: FooterDetails;
     public isLoading = false;
-    
+
     navIcons = navIcons;
-    
+
     private modal: NgbModalRef;
     private dialogService = inject(DialogService);
     private modalService = inject(NgbModal);
@@ -75,9 +75,9 @@ export class DialogComponent implements OnDestroy, OnInit {
     }
 
     private open(): void {
-        const modalContent = this.content();
-        if (!this.modal && modalContent) {
-            this.modal = this.modalService.open(modalContent, {
+        const template = this.modalTemplate();
+        if (!this.modal && template) {
+            this.modal = this.modalService.open(template, {
                 ariaLabelledBy: 'dialog-title',
                 size: 'lg',
                 scrollable: true,

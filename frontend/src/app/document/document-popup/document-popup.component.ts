@@ -1,11 +1,12 @@
 import {
     Component,
+    TemplateRef,
+    inject,
     Input,
     OnChanges,
     OnDestroy,
     SimpleChanges,
-    TemplateRef,
-    ViewChild,
+    viewChild,
 } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -28,12 +29,12 @@ import { actionIcons, documentIcons } from '@shared/icons';
 export class DocumentPopupComponent implements OnChanges, OnDestroy {
     @Input() page: DocumentPage;
     @Input() queryModel: QueryModel;
-    @ViewChild('modalTemplate', { static: true }) modalTemplate: TemplateRef<HTMLElement>;
+    modalTemplate = viewChild.required<TemplateRef<unknown>>('modalTemplate');
 
     document: FoundDocument;
     view: DocumentView;
-    
-    public documentPageLink: string[];
+    documentPageLink: string[];
+    contextDisplayName: string;
 
     actionIcons = actionIcons;
     documentIcons = documentIcons;
@@ -43,14 +44,7 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
 
     private refresh$ = new Subject<void>();
     private modal: NgbModalRef;
-
-    constructor(private modalService: NgbModal) { }
-
-    get contextDisplayName(): string {
-        if (this.document.corpus.documentContext) {
-            return this.document.corpus.documentContext.displayName;
-        }
-    }
+    private modalService = inject(NgbModal);
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.queryModel) {
@@ -77,10 +71,12 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
             this.document = focus.document;
             this.view = focus.view;
             this.documentPageLink = ['/document', this.document.corpus.name, this.document.id];
+            this.contextDisplayName = this.document.corpus.documentContext?.displayName;
             this.open();
         } else {
             this.document = undefined;
             this.documentPageLink = undefined;
+            this.contextDisplayName = undefined;
             this.close();
         }
     }
@@ -94,7 +90,7 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
         this.showNamedEntities = active;
     }
 
-    documentPosition(document: FoundDocument, page: DocumentPage) {
+    documentPosition(document: FoundDocument, page: DocumentPage): number {
         return page.from + document.position;
     }
 
@@ -103,7 +99,7 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
             return;
         }
 
-        this.modal = this.modalService.open(this.modalTemplate, {
+        this.modal = this.modalService.open(this.modalTemplate(), {
             ariaLabelledBy: 'dialog-title',
             backdrop: true,
             keyboard: true,
