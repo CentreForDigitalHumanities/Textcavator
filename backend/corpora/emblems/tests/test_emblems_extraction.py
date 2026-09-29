@@ -13,7 +13,7 @@ def test_emblems_data_reader(monkeypatch):
     monkeypatch.setattr(Emblems, 'data_directory', DATA_DIR)
     reader = Emblems()
     docs = list(reader.documents())
-    assert len(docs) == 26
+    assert len(docs) == 4
 
     first = docs[0]
     assert first['title'] == 'Quaeris quid sit Amor'
@@ -33,19 +33,18 @@ Inspice; sculptori est ingeniosa manus.'''
     e23 = docs[-2]
     assert e23['content'] == '''23. Ser detrectat onus qui subijt.
 
-Hier voortijdts als ick placht Van minnen thooren
-spreken,
-En van dat bitter soet end Van die loose
-treken,
+Hier voortijdts als ick placht Van minnen thooren spreken,
+En van dat bitter soet end Van die loose treken,
 My docht het was zoo moy, men coster uyt end in,
 Dat heeft my eerst ghebroght het minnen in de sin.
-Ick sach het jock wel aen, maer tdocht my licht
-te wesen,
+Ick sach het jock wel aen, maer tdocht my licht te wesen,
 Ghevlochten end ghebreyt, Van rooskens tsaem ghelesen
-Ui tVENU S gouden tuyn, my docht ick was een man,
-Maer als ick weet
-wat tis, en can ick daer niet
-van.
+Uit VENUS gouden tuyn, my docht ick was een man,
+Maer als ick weet wat tis, en can ick daer niet van.
+
+[H. Grotius]
 
 Frustr tento oneri me jam subducere: frustra
 Jam juga detrectant, qu subiere boves'''
+
+    assert False
