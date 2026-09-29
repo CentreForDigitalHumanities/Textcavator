@@ -5,7 +5,7 @@ import re
 import bs4
 from textcavator_readers.readers.csv import CSVReader
 from textcavator_readers.readers.xml import XMLReader
-from textcavator_readers.extract import CSV, XML, Metadata
+from textcavator_readers.extract import CSV, XML, Metadata, Order
 from textcavator_readers.xml_tag import Tag
 from textcavator_readers.readers.core import Field
 
@@ -79,8 +79,8 @@ class Emblems(CorpusDefinition, XMLReader):
 
     fields = [
         FieldDefinition(
-            name='title',
-            display_name='Title',
+            name='book_title',
+            display_name='Book Title',
             es_mapping=keyword_mapping(True),
             extractor=XML(
                 Tag('teiHeader'), Tag('sourceDesc'), Tag('title'),
@@ -89,6 +89,15 @@ class Emblems(CorpusDefinition, XMLReader):
             results_overview=True,
             visualizations=['resultscount', 'termfrequency'],
             search_filter=MultipleChoiceFilter(),
+            csv_core=True,
+        ),
+        FieldDefinition(
+            name='book_id',
+            display_name='Book ID',
+            es_mapping=keyword_mapping(),
+            searchable=False,
+            extractor=Metadata('id'),
+            csv_core=True,
         ),
         FieldDefinition(
             name='author',
@@ -118,7 +127,16 @@ class Emblems(CorpusDefinition, XMLReader):
             es_mapping=keyword_mapping(),
             extractor=XML(
                 attribute='id',
-            )
+            ),
+            searchable=False,
+            csv_core=True,
+        ),
+        FieldDefinition(
+            name='order',
+            display_name='Order in book',
+            es_mapping=int_mapping(),
+            extractor=Order(),
+            sortable=True,
         ),
         FieldDefinition(
             name='pub_year',
@@ -128,6 +146,7 @@ class Emblems(CorpusDefinition, XMLReader):
             results_overview=True,
             visualizations=['resultscount', 'termfrequency'],
             search_filter=RangeFilter(lower=1601, upper=1724),
+            sortable=True,
         ),
         FieldDefinition(
             name='pub_place',
@@ -157,6 +176,7 @@ class Emblems(CorpusDefinition, XMLReader):
         FieldDefinition(
             name='langs',
             display_name='Languages',
+            description='Languages used in the original text',
             es_mapping=keyword_mapping(False),
             extractor=XML(
                 Tag('body'),
@@ -181,6 +201,7 @@ class Emblems(CorpusDefinition, XMLReader):
                 multiple=True,
             ),
             search_field_core=True,
+            visualizations=['wordcloud'],
         ),
         FieldDefinition(
             name='translation_en',
@@ -196,5 +217,6 @@ class Emblems(CorpusDefinition, XMLReader):
                 multiple=True,
             ),
             search_field_core=True,
+            visualizations=['wordcloud'],
         )
     ]
