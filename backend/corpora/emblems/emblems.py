@@ -9,10 +9,10 @@ from textcavator_readers.extract import CSV, XML, Metadata
 from textcavator_readers.xml_tag import Tag
 from textcavator_readers.readers.core import Field
 
-from addcorpus.es_mappings import keyword_mapping, text_mapping, int_mapping, main_content_mapping
+from addcorpus.es_mappings import keyword_mapping, int_mapping, main_content_mapping
 from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
-from corpora.emblems.xml_utils import extract_text
+from corpora.emblems.xml_utils import extract_text, replace_ampersands, remove_doctype
 
 class EmblemsIndexReader(CSVReader):
     data_directory = None
@@ -63,8 +63,9 @@ class Emblems(CorpusDefinition, XMLReader):
         # (otherwise the file does not parse)
         with open(filename, 'r') as f:
             content = f.read()
-            clean = re.sub(r'<!DOCTYPE .*\[.*\]>', '', content, 1, flags=re.DOTALL)
-            return bs4.BeautifulSoup(clean, 'lxml-xml')
+            clean = remove_doctype(content)
+            unescaped = replace_ampersands(clean)
+            return bs4.BeautifulSoup(unescaped, 'lxml-xml')
 
 
     def sources(self, **kwargs):

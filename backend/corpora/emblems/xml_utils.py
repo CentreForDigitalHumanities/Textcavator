@@ -1,4 +1,5 @@
 import re
+import html
 import bs4
 
 def extract_text(node: bs4.element.Tag):
@@ -20,9 +21,9 @@ def _extract_plain_text(node: bs4.element.Tag, parse_string=False):
                 case 'lb': # line break
                     text.append('\n')
                 case 'lg': # line group
-                    contents = [_extract_plain_text(line, True).strip() for line in el.find_all('l')]
-                    text.append('\n'.join(contents))
-                    text.append('\n\n')
+                    text.append(_extract_plain_text(el) + '\n')
+                case 'l':
+                    text.append(_extract_plain_text(el, True).strip() + '\n')
                 case 'p' | 'cit' | 'titlePart': # paragraphs etc.
                     content = _extract_plain_text(el, True).strip()
                     if content:
@@ -34,7 +35,7 @@ def _extract_plain_text(node: bs4.element.Tag, parse_string=False):
                 case 'sic': # idem
                     text.append(el.attrs.get('corr', _extract_plain_text(el, True)))
                 case 'c': # punctuation
-                    text.append(el.string)
+                    text.append(el.string or '')
                 case 'hi' | 'seg' | 'num' | 'name' | 'title' | 'q' | 'quote' | 'foreign' | 'mentioned' | 'author': # inline text elements
                     text.append(_extract_plain_text(el, True))
                 case 'figure' | 'pb' | 'ref' | 'xref': # figures / page breaks / references
@@ -43,7 +44,7 @@ def _extract_plain_text(node: bs4.element.Tag, parse_string=False):
                     content = _extract_plain_text(el, True)
                     text.append(f'[{content}]\n')
                 case other:
-                    print('Unexpected element type:', other)
+                    # print('Unexpected element type:', other)
                     text.append(_extract_plain_text(el, True))
 
     return ''.join(text)
@@ -62,3 +63,31 @@ def _extract_string(node: bs4.element.NavigableString):
 
     return content
 
+
+def remove_doctype(content: str):
+    return re.sub(r'<!DOCTYPE .*\[.*\]>', '', content, 1, flags=re.DOTALL)
+
+
+def replace_ampersands(content: str):
+    content = html.unescape(content)
+
+    for code, character in _additional_ampersands.items():
+        content = content.replace(f'&{code};', character)
+
+    return content
+
+
+# additional ampersand codes used in the source data that are not HTML standard
+_additional_ampersands = {
+    'apost': '\'',
+    'lsquot': '“',
+    'aelig': 'æ',
+    'oelig': 'œ',
+    'eacute': 'é',
+    'ograve': 'ò',
+    'amacron': 'ā',
+    'emacron': 'ē',
+    'nmacron': 'n',
+    'omacron': 'ō',
+    'umacron': 'ū',
+}
