@@ -1,41 +1,66 @@
+import re
 import bs4
 
 def extract_text(node: bs4.element.Tag):
-    children = node.find_all(['p', 'titlePart', 'lg'])
-
-    paragraphs = [
-        _extract_lg_text(child) if child.name == 'lg' else _extract_plain_text(child)
-        for child in children
-    ]
-
-    result = '\n\n'.join(filter(len, paragraphs))
-    return result
+    content = _extract_plain_text(node)
+    cleaned = re.sub('  +', ' ', content) # remove double spaces
+    return cleaned.strip()
 
 
-def _extract_plain_text(node: bs4.element.Tag):
+def _extract_plain_text(node: bs4.element.Tag, parse_string=False):
     text = []
     for el in node.contents:
         if isinstance(el, bs4.element.NavigableString):
-            if len(text) and not text[-1].endswith('\n'):
-                text.append(' ')
-            text.append(el.string.strip())
+            if parse_string:
+                text.append(_extract_string(el))
         elif isinstance(el, bs4.element.Tag):
-            if el.name == 'lb':
-                text.append('\n')
-            elif el.name == 'note':
-                continue
-            elif el.name == 'orig':
-                if el.has_attr('reg'):
-                    text.append(el.attrs['reg'])
-                else:
+            match el.name:
+                # passthrough structural elements
+                case 'div' | 'titleBlock' | 'docTitle' | 'signed':
                     text.append(_extract_plain_text(el))
-            else:
-                content = _extract_plain_text(el)
-                text.append(content)
-    return ''.join(text).strip()
+                case 'lb':
+                    text.append('\n')
+                case 'lg':
+                    contents = [_extract_plain_text(line, True).strip() for line in el.find_all('l')]
+                    text.append('\n'.join(contents))
+                    text.append('\n\n')
+                case 'p' | 'cit' | 'titlePart':
+                    content = _extract_plain_text(el, True).strip()
+                    if content:
+                        text.append(content + '\n\n')
+                case 'note':
+                    pass
+                case 'orig':
+                    text.append(el.attrs.get('reg', _extract_plain_text(el, True)))
+                case 'sic':
+                    text.append(el.attrs.get('corr', _extract_plain_text(el, True)))
+                case 'c':
+                    text.append(el.string)
+                case 'hi' | 'seg' | 'num' | 'name' | 'title' | 'q' | 'quote' | 'foreign' | 'mentioned' | 'author':
+                    text.append(_extract_plain_text(el, True))
+                case 'figure' | 'pb' | 'ref' | 'xref':
+                    pass
+                case 'bibl':
+                    content = _extract_plain_text(el, True)
+                    return f'[{content}]'
+                case other:
+                    print('Unexpected element type:', other)
+                    print(el)
+                    text.append(_extract_plain_text(el, True))
+
+    return ''.join(text)
 
 
-def _extract_lg_text(node: bs4.element.Tag):
-    lines = node.find_all('l')
-    line_contents = map(_extract_plain_text, lines)
-    return '\n'.join(line_contents)
+def _extract_string(node: bs4.element.NavigableString):
+    content = node.string
+
+    # strip leading / final newlines
+    if not node.previous_sibling or node.previous_sibling.name == 'lb':
+        content = re.sub(r'^\s*(\n\s*)+', '', content)
+    content = re.sub(r'\s*(\n\s*)+$', '', content)
+
+    # strip linebreaks
+    content = re.sub(r'\s*\n\s*', ' ', content)
+
+    return content
+
