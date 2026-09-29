@@ -1,13 +1,21 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    TemplateRef,
+    inject,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+    viewChild,
+} from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import {
     DocumentFocus,
     DocumentPage,
     DocumentView,
 } from '@models/document-page';
-import { takeUntil } from 'rxjs/operators';
-import * as _ from 'lodash';
 import { FoundDocument, QueryModel } from '@models';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { actionIcons, documentIcons } from '@shared/icons';
 
 @Component({
@@ -19,11 +27,12 @@ import { actionIcons, documentIcons } from '@shared/icons';
 export class DocumentPopupComponent implements OnChanges, OnDestroy {
     @Input() page: DocumentPage;
     @Input() queryModel: QueryModel;
+    modalTemplate = viewChild.required<TemplateRef<unknown>>('modalTemplate');
 
     document: FoundDocument;
     view: DocumentView;
-
-    visible = true;
+    documentPageLink: string[];
+    contextDisplayName: string;
 
     actionIcons = actionIcons;
     documentIcons = documentIcons;
@@ -32,18 +41,8 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
     showNEROption = false;
 
     private refresh$ = new Subject<void>();
-
-    get documentPageLink(): string[] {
-        if (this.document) {
-            return ['/document', this.document.corpus.name, this.document.id];
-        }
-    }
-
-    get contextDisplayName(): string {
-        if (this.document.corpus.documentContext) {
-            return this.document.corpus.documentContext.displayName;
-        }
-    }
+    private modal: NgbModalRef;
+    private modalService = inject(NgbModal);
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.queryModel) {
@@ -62,24 +61,51 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.refresh$.next();
         this.refresh$.complete();
+        this.close();
     }
 
     focusUpdate(focus?: DocumentFocus): void {
         if (focus) {
             this.document = focus.document;
             this.view = focus.view;
-            this.visible = true;
+            this.documentPageLink = ['/document', this.document.corpus.name, this.document.id];
+            this.contextDisplayName = this.document.corpus.documentContext?.displayName;
+            this.open();
         } else {
             this.document = undefined;
-            this.visible = false;
+            this.documentPageLink = undefined;
+            this.contextDisplayName = undefined;
+            this.close();
         }
+    }
+
+    close(): void {
+        this.modal?.close();
+        this.modal = undefined;
     }
 
     toggleNER(active: boolean): void {
         this.showNamedEntities = active;
     }
 
-    documentPosition(document: FoundDocument, page: DocumentPage) {
+    documentPosition(document: FoundDocument, page: DocumentPage): number {
         return page.from + document.position;
+    }
+
+    private open(): void {
+        if (!this.document || this.modal) {
+            return;
+        }
+
+        this.modal = this.modalService.open(this.modalTemplate(), {
+            ariaLabelledBy: 'dialog-title',
+            backdrop: true,
+            keyboard: true,
+            scrollable: true,
+            size: 'xl',
+        });
+        this.modal.result.finally(() => {
+            this.modal = undefined;
+        });
     }
 }
