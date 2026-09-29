@@ -26,7 +26,7 @@ def test_emblems_data_reader(monkeypatch):
 Castra sequi? chartam hanc inspice, doctus eris.
 Hæc tibi delicias hortumque ostendit Amorum:
 Inspice; sculptori est ingeniosa manus.'''
-    assert first['body_langs'] == ['lat']
+    assert first['langs'] == ['Latin']
     assert first['translation_nl'] == ['''Wat liefde is vraag je, en wat het is te beminnen en het kamp der Begeerte te volgen? Kijk goed naar deze kaart, je zult dan een expert zijn. Deze toont je de genoegens en de tuin der Eroten. Ja, kijk eens goed. De graveur heeft een getalenteerde hand.''']
     assert first['translation_en'] == ['''What love is do you ask, what it is to love and what it is to Follow desire's camp? Have a look at this map, you will become an expert. This shows you the delights and the garden of the Cupids. Have a look. The engraver has a talented hand.''']
 
@@ -45,3 +45,4 @@ Maer als ick weet wat 'tis, en can ick daer niet van.
 [H. Grotius]
 Frustrà tento oneri me jam subducere: frustra
 Jam juga detrectant, quæ subiere boves'''
+    assert e23['langs'] == ['Dutch', 'Latin']
