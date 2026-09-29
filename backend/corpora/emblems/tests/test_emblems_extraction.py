@@ -16,7 +16,8 @@ def test_emblems_data_reader(monkeypatch):
     assert len(docs) == 3
 
     first = docs[0]
-    assert first['title'] == 'Quaeris quid sit Amor'
+    assert first['book_title'] == 'Quaeris quid sit Amor'
+    assert first['book_id'] == 'he1601'
     assert first['author'] == 'Heinsius, Daniël'
     assert first['editor'] == 'De Gheyn, Jacques'
     assert first['id'] == 'he1601front1'
