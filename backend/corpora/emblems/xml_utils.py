@@ -41,7 +41,7 @@ def _extract_plain_text(node: bs4.element.Tag, parse_string=False):
                     pass
                 case 'bibl': # bibliographical references
                     content = _extract_plain_text(el, True)
-                    return f'[{content}]'
+                    text.append(f'[{content}]\n')
                 case other:
                     print('Unexpected element type:', other)
                     text.append(_extract_plain_text(el, True))
