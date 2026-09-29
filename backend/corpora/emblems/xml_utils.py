@@ -15,32 +15,31 @@ def _extract_plain_text(node: bs4.element.Tag, parse_string=False):
                 text.append(_extract_string(el))
         elif isinstance(el, bs4.element.Tag):
             match el.name:
-                # passthrough structural elements
-                case 'div' | 'titleBlock' | 'docTitle' | 'signed':
+                case 'div' | 'titleBlock' | 'docTitle' | 'signed': # structural elements
                     text.append(_extract_plain_text(el))
-                case 'lb':
+                case 'lb': # line break
                     text.append('\n')
-                case 'lg':
+                case 'lg': # line group
                     contents = [_extract_plain_text(line, True).strip() for line in el.find_all('l')]
                     text.append('\n'.join(contents))
                     text.append('\n\n')
-                case 'p' | 'cit' | 'titlePart':
+                case 'p' | 'cit' | 'titlePart': # paragraphs etc.
                     content = _extract_plain_text(el, True).strip()
                     if content:
                         text.append(content + '\n\n')
-                case 'note':
+                case 'note': # footnotes (not part of original)
                     pass
-                case 'orig':
+                case 'orig': # corrections - use if available
                     text.append(el.attrs.get('reg', _extract_plain_text(el, True)))
-                case 'sic':
+                case 'sic': # idem
                     text.append(el.attrs.get('corr', _extract_plain_text(el, True)))
-                case 'c':
+                case 'c': # punctuation
                     text.append(el.string)
-                case 'hi' | 'seg' | 'num' | 'name' | 'title' | 'q' | 'quote' | 'foreign' | 'mentioned' | 'author':
+                case 'hi' | 'seg' | 'num' | 'name' | 'title' | 'q' | 'quote' | 'foreign' | 'mentioned' | 'author': # inline text elements
                     text.append(_extract_plain_text(el, True))
-                case 'figure' | 'pb' | 'ref' | 'xref':
+                case 'figure' | 'pb' | 'ref' | 'xref': # figures / page breaks / references
                     pass
-                case 'bibl':
+                case 'bibl': # bibliographical references
                     content = _extract_plain_text(el, True)
                     return f'[{content}]'
                 case other:
