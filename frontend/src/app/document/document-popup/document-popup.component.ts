@@ -14,10 +14,8 @@ import {
     DocumentPage,
     DocumentView,
 } from '@models/document-page';
-import { takeUntil } from 'rxjs/operators';
-import _ from 'lodash';
 import { FoundDocument, QueryModel } from '@models';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { actionIcons, documentIcons } from '@shared/icons';
 
 @Component({

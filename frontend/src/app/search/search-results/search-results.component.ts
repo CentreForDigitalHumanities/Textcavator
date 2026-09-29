@@ -7,8 +7,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
 import { ErrorDetails } from '@shared/error/error.component';
 import { QueryModel, SearchResults, User } from '@models/index';
 import { PageResults, PageResultsParameters } from '@models/page-results';
