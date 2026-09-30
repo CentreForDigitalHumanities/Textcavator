@@ -5,7 +5,7 @@ import re
 import bs4
 from textcavator_readers.readers.csv import CSVReader
 from textcavator_readers.readers.xml import XMLReader
-from textcavator_readers.extract import CSV, XML, Metadata, Order
+from textcavator_readers.extract import CSV, XML, Metadata, Order, Combined, Pass
 from textcavator_readers.xml_tag import Tag
 from textcavator_readers.readers.core import Field
 
@@ -13,7 +13,8 @@ from addcorpus.es_mappings import keyword_mapping, int_mapping, main_content_map
 from addcorpus.python_corpora.corpus import CorpusDefinition, FieldDefinition
 from addcorpus.python_corpora.filters import MultipleChoiceFilter, RangeFilter
 from corpora.emblems.xml_utils import (
-    extract_text, replace_ampersands, remove_doctype, format_language_list
+    extract_text, replace_ampersands, remove_doctype, format_language_list,
+    noop, extract_translation
 )
 
 class EmblemsIndexReader(CSVReader):
@@ -48,6 +49,38 @@ class EmblemsIndexReader(CSVReader):
     ]
 
 
+def _content_element_extractor():
+    return XML(
+        Tag('body', recursive=False),
+        Tag(lambda tag: tag.has_attr('id'), recursive=False),
+        multiple=True,
+        extract_soup_func=noop,
+    )
+
+
+def _translation_extractor(language: str):
+    return Combined(
+        # extract the original elements, the translations, and the links
+        _content_element_extractor(),
+        XML(
+            Tag('back', recursive=False),
+            Tag('div', attrs={'type': 'translations'}, recursive=False),
+            Tag('note', attrs={'lang': language, 'type': 'translation'}),
+            multiple=True,
+            extract_soup_func=noop,
+        ),
+        XML(
+            Tag('back', recursive=False),
+            Tag('div', attrs={'type': 'translations'}, recursive=False),
+            Tag('linkGrp'),
+            Tag('link'),
+            multiple=True,
+            attribute='targets',
+        ),
+        transform=lambda values: extract_translation(*values),
+    )
+
+
 class Emblems(CorpusDefinition, XMLReader):
     title = 'Emblem Project Utrecht'
     description = 'Dutch Love Emblems of the Seventeenth Century'
@@ -76,6 +109,7 @@ class Emblems(CorpusDefinition, XMLReader):
             filename = doc['id'] + '.xml'
             path = os.path.join(self.data_directory, 'xml', filename)
             yield path, doc
+
 
     fields = [
         FieldDefinition(
@@ -164,9 +198,9 @@ class Emblems(CorpusDefinition, XMLReader):
             display_name='Content',
             display_type='text_content',
             es_mapping=main_content_mapping(True, False, False),
-            extractor=XML(
-                Tag('body'),
-                extract_soup_func=extract_text,
+            extractor=Pass(
+                _content_element_extractor(),
+                transform=extract_text,
             ),
             results_overview=True,
             search_field_core=True,
@@ -179,7 +213,7 @@ class Emblems(CorpusDefinition, XMLReader):
             description='Languages used in the original text',
             es_mapping=keyword_mapping(False),
             extractor=XML(
-                Tag('body'),
+                Tag('body', recursive=False),
                 Tag(lambda tag: tag.has_attr('lang')),
                 multiple=True,
                 attribute='lang',
@@ -193,13 +227,7 @@ class Emblems(CorpusDefinition, XMLReader):
             display_type='text_content',
             es_mapping=main_content_mapping(True, False, False, 'nl'),
             language='nl',
-            extractor=XML(
-                Tag('back'),
-                Tag(attrs={'type': 'translations'}),
-                Tag(attrs={'lang': 'dut', 'type': 'translation'}),
-                flatten=True,
-                multiple=True,
-            ),
+            extractor=_translation_extractor('dut'),
             search_field_core=True,
             visualizations=['wordcloud'],
         ),
@@ -209,13 +237,7 @@ class Emblems(CorpusDefinition, XMLReader):
             display_type='text_content',
             es_mapping=main_content_mapping(True, False, False, 'en'),
             language='en',
-            extractor=XML(
-                Tag('back'),
-                Tag(attrs={'type': 'translations'}),
-                Tag(attrs={'lang': 'eng', 'type': 'translation'}),
-                flatten=True,
-                multiple=True,
-            ),
+            extractor=_translation_extractor('eng'),
             search_field_core=True,
             visualizations=['wordcloud'],
         )
