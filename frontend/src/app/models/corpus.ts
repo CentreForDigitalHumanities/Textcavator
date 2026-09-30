@@ -106,6 +106,7 @@ export interface ApiCorpusField {
     searchable: boolean;
     downloadable: boolean;
     language: string;
+    normalize_whitespace: boolean;
 }
 
 export class CorpusField {
@@ -131,6 +132,7 @@ export class CorpusField {
     filterOptions: FieldFilterOptions;
     mappingType: 'text' | 'keyword' | 'boolean' | 'date' | 'integer' | 'geo_point';
     language: string | undefined;
+    normalizeWhitespace?: boolean;
 
     constructor(data: ApiCorpusField) {
         this.description = data.description;
@@ -153,6 +155,7 @@ export class CorpusField {
         this.filterOptions = data['search_filter'];
         this.mappingType = data.es_mapping.type;
         this.language = data.language || undefined;
+        this.normalizeWhitespace = data.normalize_whitespace;
     }
 
     /** make a SearchFilter for this field */

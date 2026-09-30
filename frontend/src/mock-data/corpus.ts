@@ -29,6 +29,7 @@ export const keywordFieldFactory = (searchable = false): CorpusField =>
         sortable: false,
         indexed: true,
         required: false,
+        normalize_whitespace: true,
     });
 
 
@@ -60,6 +61,7 @@ export const contentFieldFactory = (): CorpusField =>
         indexed: true,
         required: false,
         language: 'eng',
+        normalize_whitespace: true,
     });
 
 
@@ -88,6 +90,7 @@ export const dateFieldFactory = () =>
         indexed: true,
         required: false,
         language: '',
+        normalize_whitespace: true,
     });
 
 
@@ -116,6 +119,7 @@ export const intFieldFactory = () =>
         indexed: true,
         required: false,
         language: '',
+        normalize_whitespace: true,
     });
 
 export const booleanFieldFactory = () =>
@@ -141,6 +145,7 @@ export const booleanFieldFactory = () =>
         indexed: true,
         required: false,
         language: '',
+        normalize_whitespace: true,
     });
 
 
