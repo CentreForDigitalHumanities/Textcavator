@@ -213,7 +213,8 @@ class Emblems(CorpusDefinition, XMLReader):
             results_overview=True,
             search_field_core=True,
             csv_core=True,
-            visualizations=['wordcloud']
+            visualizations=['wordcloud'],
+            normalize_whitespace=False,
         ),
         FieldDefinition(
             name='langs',
@@ -238,6 +239,7 @@ class Emblems(CorpusDefinition, XMLReader):
             extractor=_translation_extractor('dut'),
             search_field_core=True,
             visualizations=['wordcloud'],
+            normalize_whitespace=False,
         ),
         FieldDefinition(
             name='translation_en',
@@ -248,5 +250,6 @@ class Emblems(CorpusDefinition, XMLReader):
             extractor=_translation_extractor('eng'),
             search_field_core=True,
             visualizations=['wordcloud'],
+            normalize_whitespace=False,
         )
     ]
