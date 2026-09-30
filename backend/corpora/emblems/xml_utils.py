@@ -161,9 +161,15 @@ _additional_ampersands = {
 
 def parse_language(value: str) -> str:
     'Parse a language tag into a display name'
+    if value in _additional_languages:
+        return _additional_languages[value]
     language = Language.make(standardize_tag(value))
     return language.display_name()
 
+# nonstandard language codes used
+_additional_languages = {
+    'esp': 'Spanish'
+}
 
 def format_language_list(values: List[str]) -> List[str]:
     'Assemble non-overlapping list of language names from tags'
