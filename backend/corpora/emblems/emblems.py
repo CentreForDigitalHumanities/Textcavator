@@ -83,11 +83,12 @@ def _translation_extractor(language: str):
 
 class Emblems(CorpusDefinition, XMLReader):
     title = 'Emblem Project Utrecht'
-    description = 'Dutch Love Emblems of the Seventeenth Century'
+    description = 'Dutch love emblems of the seventeenth century'
     category = 'poetry'
     min_date = date(1601, 1, 1)
     max_date = date(1724, 12, 31)
     languages = ['nl', 'lat', 'fr', 'it', 'en', 'es', 'de']
+    image = 'emblems.jpg'
 
     tag_top = Tag('TEI.2')
     tag_entry = Tag('text', attrs={'type': ['front', 'emblem']})
