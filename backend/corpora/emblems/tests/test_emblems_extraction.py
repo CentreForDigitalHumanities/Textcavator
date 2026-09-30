@@ -28,8 +28,8 @@ Castra sequi? chartam hanc inspice, doctus eris.
 Hæc tibi delicias hortumque ostendit Amorum:
 Inspice; sculptori est ingeniosa manus.'''
     assert first['langs'] == ['Latin']
-    assert first['translation_nl'] == ['''Wat liefde is vraag je, en wat het is te beminnen en het kamp der Begeerte te volgen? Kijk goed naar deze kaart, je zult dan een expert zijn. Deze toont je de genoegens en de tuin der Eroten. Ja, kijk eens goed. De graveur heeft een getalenteerde hand.''']
-    assert first['translation_en'] == ['''What love is do you ask, what it is to love and what it is to Follow desire's camp? Have a look at this map, you will become an expert. This shows you the delights and the garden of the Cupids. Have a look. The engraver has a talented hand.''']
+    assert first['translation_nl'] == '''Wat liefde is vraag je, en wat het is te beminnen en het kamp der Begeerte te volgen? Kijk goed naar deze kaart, je zult dan een expert zijn. Deze toont je de genoegens en de tuin der Eroten. Ja, kijk eens goed. De graveur heeft een getalenteerde hand.'''
+    assert first['translation_en'] == '''What love is do you ask, what it is to love and what it is to Follow desire's camp? Have a look at this map, you will become an expert. This shows you the delights and the garden of the Cupids. Have a look. The engraver has a talented hand.'''
 
     e23 = docs[-2]
     assert e23['content'] == '''23. Serò detrectat onus qui subijt.
@@ -47,3 +47,15 @@ Maer als ick weet wat 'tis, en can ick daer niet van.
 Frustrà tento oneri me jam subducere: frustra
 Jam juga detrectant, quæ subiere boves'''
     assert e23['langs'] == ['Dutch', 'Latin']
+    assert e23['translation_nl'] == '''Wie een last op zich heeft genomen, is te laat om hem nog te weigeren.
+
+Vroeger als ik over de liefde hoorde spreken, van het bittere zoet en de doortrapte streken, dacht ik dat het heel mooi was. Je kon er uit en er weer in, dat trok mij tot de liefde aan. Ik zag het juk wel, maar dacht dat het licht was, gevlochten van rozen uit Venus' gouden tuin. Ik dacht dat ik een echte vent was. Maar nu ik weet wat liefde is, kan ik me er niet meer van verlossen.
+
+Nu probeer ik me vergeefs van de last te bevrijden, zoals runderen
+zich vergeefs aan de last onttrekken die ze op zich hebben genomen.'''
+    assert e23['translation_en'] == '''Who has accepted a burden is too late to refuse it.
+
+[...]
+
+Now in vain I try to rid myself of the burden, just as oxen
+in vain try to withdraw from the burden they have accepted.'''
