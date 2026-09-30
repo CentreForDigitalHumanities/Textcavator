@@ -120,9 +120,10 @@ def _map_translations(links: List[str]) -> Dict[str, List[str]]:
     'Create dict mapping from translation target strings'
     mapping = dict()
     for link in links:
-        orig_id, tr_id = link.split()
-        existing = mapping.get(orig_id, [])
-        mapping[orig_id] = existing + [tr_id]
+        if len(link.split()) == 2:
+            orig_id, tr_id = link.split()
+            existing = mapping.get(orig_id, [])
+            mapping[orig_id] = existing + [tr_id]
     return mapping
 
 
