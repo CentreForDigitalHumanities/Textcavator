@@ -16,6 +16,7 @@ from corpora.emblems.xml_utils import (
     extract_text, replace_ampersands, remove_doctype, format_language_list,
     noop, extract_translation
 )
+from corpora.emblems.analyzer import CustomEmblemsAnalyzer, es_settings_with_custom_analyzers
 
 class EmblemsIndexReader(CSVReader):
     data_directory = None
@@ -93,16 +94,7 @@ class Emblems(CorpusDefinition, XMLReader):
     tag_top = Tag('TEI.2')
     tag_entry = Tag('text', attrs={'type': ['front', 'emblem']})
 
-
-    def data_from_file(self, filename):
-        # override to remove <!DOCTYPE section from XML content before parsing;
-        # (otherwise the file does not parse)
-        with open(filename, 'r') as f:
-            content = f.read()
-            clean = remove_doctype(content)
-            unescaped = replace_ampersands(clean)
-            return bs4.BeautifulSoup(unescaped, 'lxml-xml')
-
+    es_settings = es_settings_with_custom_analyzers(['nl', 'en'], [CustomEmblemsAnalyzer()])
 
     def sources(self, **kwargs):
         index_reader = EmblemsIndexReader(self.data_directory)
@@ -110,6 +102,17 @@ class Emblems(CorpusDefinition, XMLReader):
             filename = doc['id'] + '.xml'
             path = os.path.join(self.data_directory, 'xml', filename)
             yield path, doc
+
+
+    def data_from_file(self, filename):
+        # override to clean up file before XML parsing:
+        # - remove DOCTYPE section (causes parsing error)
+        # - replace ampersand escaped characters
+        with open(filename, 'r') as f:
+            content = f.read()
+            clean = remove_doctype(content)
+            unescaped = replace_ampersands(clean)
+            return bs4.BeautifulSoup(unescaped, 'lxml-xml')
 
 
     fields = [
@@ -198,7 +201,11 @@ class Emblems(CorpusDefinition, XMLReader):
             name='content',
             display_name='Content',
             display_type='text_content',
-            es_mapping=main_content_mapping(True, False, False),
+            es_mapping={
+                'type': 'text',
+                'analyzer': 'standard_unk',
+                'term_vector': 'with_positions_offsets'
+            },
             extractor=Pass(
                 _content_element_extractor(),
                 transform=extract_text,
