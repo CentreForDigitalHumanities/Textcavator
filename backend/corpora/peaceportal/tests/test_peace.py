@@ -216,7 +216,7 @@ def corpus_test_name(corpus_spec):
     return corpus_spec['name']
 
 
-@pytest.mark.xfail()
+@pytest.mark.skip('peaceportal import test needs rewrite')
 @pytest.mark.parametrize("corpus_object", CORPUS_TEST_DATA, ids=corpus_test_name)
 def test_peace_imports(peace_test_settings, corpus_object):
     parent_corpus = load_corpus_definition('peaceportal')

@@ -1,32 +1,26 @@
 import re
 from copy import copy
-from textcavator_readers.xml_tag import Tag, TransformTag
 from typing import Iterable, Optional
+
 import bs4
-
-from django.conf import settings
-
-from addcorpus.python_corpora.corpus import XMLCorpusDefinition
 from addcorpus.es_mappings import date_mapping
-from textcavator_readers.extract import XML, Constant, Combined, Pass
+from addcorpus.python_corpora.corpus import XMLCorpusDefinition
+from textcavator_readers.extract import XML, Combined, Constant, Pass
+from textcavator_readers.xml_tag import Tag, TransformTag
+
 from corpora.peaceportal.peaceportal import (
     PeacePortal,
     categorize_material,
-    clean_newline_characters,
     clean_commentary,
-    join_commentaries,
+    clean_newline_characters,
     get_text_in_language,
+    join_commentaries,
 )
-
 from corpora.utils.exclude_fields import exclude_fields_without_extractor
 
 
 class PeaceportalEpidat(PeacePortal, XMLCorpusDefinition):
-
-    data_directory = settings.PEACEPORTAL_EPIDAT_DATA
-    es_index = getattr(
-        settings, 'PEACEPORTAL_EPIDAT_ES_INDEX', 'peaceportal-epidat')
-
+    es_index = 'peace-epidat'
     languages = ['de', 'he', 'en', 'nl']
 
     def __init__(self):
