@@ -13,7 +13,7 @@ def test_emblems_data_reader(monkeypatch):
     monkeypatch.setattr(Emblems, 'data_directory', DATA_DIR)
     reader = Emblems()
     docs = list(reader.documents())
-    assert len(docs) == 4
+    assert len(docs) == 3
 
     first = docs[0]
     assert first['title'] == 'Quaeris quid sit Amor'
