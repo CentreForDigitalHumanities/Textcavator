@@ -360,10 +360,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/router@^21.2.19":
-  version "21.2.22"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-21.2.22.tgz#5e83cf35ca46c662e497332e7b71774d48b2fd23"
-  integrity sha512-S3Fl6jWjm4DfkaY6ikDDcd7d8J0BiDNjB3+rFarqD0t58UP/ER6Jv4kamPIAKAV2DfQvCnYE8ks1dY1xFlf7Hg==
+"@angular/router@^21.2.24":
+  version "21.2.24"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-21.2.24.tgz#f7d0b9794338e39649a928c6bf53566da8a7d35d"
+  integrity sha512-E72AvyTRGv5rDa/SlfSztThJ+9SemjnblzB9jTb8LJOFPo7u4GlfytvRE8DnxwmTfnlZcA6Sr10zlSDnL4pmyw==
   dependencies:
     tslib "^2.3.0"
 
