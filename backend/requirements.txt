@@ -161,7 +161,7 @@ pycparser==2.23
     # via cffi
 pygments==2.20.0
     # via pytest
-pyjwt[crypto]==2.13.0
+pyjwt[crypto]==2.15.0
     # via django-allauth
 pyopenssl==24.2.1
     # via pysaml2
@@ -230,7 +230,7 @@ six==1.17.0
     #   python-dateutil
 smart-open==7.3.1
     # via gensim
-soupsieve==2.8.4
+soupsieve==2.9
     # via beautifulsoup4
 sqlparse==0.6.0
     # via django
@@ -240,7 +240,7 @@ textdistance==4.6.3
     # via -r requirements.in
 threadpoolctl==3.6.0
     # via scikit-learn
-tornado==6.5.8
+tornado==6.5.9
     # via
     #   django-livereload-server
     #   flower
@@ -257,7 +257,7 @@ tzdata==2025.2
     # via
     #   kombu
     #   pandas
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   django-revproxy
     #   elastic-transport
