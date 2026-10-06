@@ -17,7 +17,7 @@ export class TablePaginator<Row extends object> {
         this.data$ = new BehaviorSubject<Row[]>(data);
         this.totalSize$ = this.data$.pipe(
             filter(data => !_.isUndefined(data)),
-            map(data => data.length)
+            map(data => data?.length)
         );
         this.hasPages$ = this.totalSize$.pipe(
             map(size => size > this.pageSize),

@@ -97,7 +97,7 @@ export class FreqtableComponent implements OnChanges {
             this.tableData.data$.next(filteredData);
         }
 
-        if (this.formattedHeaders.length) {
+        if (this.formattedHeaders?.length) {
             this.tableData.sortBy$.next(this.formattedHeaders[0].key)
         }
     }
