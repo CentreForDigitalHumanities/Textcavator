@@ -1,5 +1,5 @@
 <div class="my-3">
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 @for (col of formattedHeaders; track col.key) {
@@ -31,7 +31,7 @@
                 }
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
             @for (entry of tableData.pageData$ | async; track entry) {
                 <tr>
                     @for (col of formattedHeaders; track col.key) {
@@ -49,12 +49,14 @@
     </table>
 </div>
 
-<ngb-pagination [collectionSize]="tableData.totalSize$ | async"
-    [pageSize]="tableData.pageSize"
-    [page]="tableData.page$ | async"
-    (pageChange)="tableData.page$.next($event)"
-    class="d-flex justify-content-center"
-/>
+@if (tableData.hasPages$ | async) {
+    <ngb-pagination [collectionSize]="tableData.totalSize$ | async"
+        [pageSize]="tableData.pageSize"
+        [page]="tableData.page$ | async"
+        (pageChange)="tableData.page$.next($event)"
+        class="d-flex justify-content-center"
+    />
+}
 
 <div class="row g-2">
     @if (wideFormatAvailable) {

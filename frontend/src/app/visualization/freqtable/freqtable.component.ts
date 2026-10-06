@@ -24,7 +24,7 @@ export class FreqtableComponent implements OnChanges {
 
     formattedHeaders: FreqTableHeaders;
 
-    tableData = new TablePaginator([], 10);
+    tableData = new TablePaginator([], 20);
 
     wideFormatAvailable: boolean = false;
     format: 'long'|'wide' = 'long';

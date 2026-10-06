@@ -8,6 +8,7 @@ export class TablePaginator<Row extends object> {
     sortAscending$ = new BehaviorSubject<boolean>(true);
 
     totalSize$: Observable<number>;
+    hasPages$: Observable<boolean>;
     pageData$: Observable<Row[]>;
 
     private sortedData$: Observable<Row[]>;
@@ -17,7 +18,10 @@ export class TablePaginator<Row extends object> {
         this.totalSize$ = this.data$.pipe(
             filter(data => !_.isUndefined(data)),
             map(data => data.length)
-        )  ;
+        );
+        this.hasPages$ = this.totalSize$.pipe(
+            map(size => size > this.pageSize),
+        );
         this.sortedData$ = combineLatest([this.data$, this.sortBy$, this.sortAscending$]).pipe(
             filter(([data, sortBy, sortAsc]) => !_.isUndefined(data)),
             map(([data, sortBy, sortAsc]) => this.sort(data, sortBy, sortAsc)),
