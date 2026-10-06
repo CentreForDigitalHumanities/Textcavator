@@ -10,9 +10,9 @@
             </tr>
         </thead>
         <tbody>
-            @for (entry of formattedData; track $index) {
+            @for (entry of tableData.pageData$ | async; track entry) {
                 <tr>
-                    @for (col of formattedHeaders; track col) {
+                    @for (col of formattedHeaders; track col.key) {
                         <td>
                             @if (entry[col.key] === undefined) {
                                 <span class="text-secondary">none</span>
@@ -26,6 +26,13 @@
         </tbody>
     </table>
 </div>
+
+<ngb-pagination [collectionSize]="tableData.totalSize$ | async"
+    [pageSize]="tableData.pageSize"
+    [page]="tableData.page$ | async"
+    (pageChange)="tableData.page$.next($event)"
+    class="d-flex justify-content-center"
+/>
 
 <div class="row g-2">
     @if (wideFormatAvailable) {

@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver';
 import { FreqTableHeaders } from '@models';
 import { actionIcons } from '@shared/icons';
 import { formatValue, getValue, transformWideFormat, wideFormatAvailable } from './freqtable-utils';
+import { TablePaginator } from './paginator';
 
 @Component({
     selector: 'ia-freqtable',
@@ -22,7 +23,8 @@ export class FreqtableComponent implements OnChanges {
     public defaultSortOrder = '-1';
 
     formattedHeaders: FreqTableHeaders;
-    formattedData: any[];
+
+    tableData = new TablePaginator([], 10);
 
     wideFormatAvailable: boolean = false;
     format: 'long'|'wide' = 'long';
@@ -85,18 +87,18 @@ export class FreqtableComponent implements OnChanges {
                 this.headers,
             );
             this.formattedHeaders = headers;
-            this.formattedData = data;
+            this.tableData.data$.next(data);
         } else if (this.fullTableToggle === true || this.headers === undefined) {  // also checks if no data is present to avoid error
             this.formattedHeaders = this.headers;
-            this.formattedData = filteredData;
+            this.tableData.data$.next(filteredData);
         } else {
             this.formattedHeaders = this.headers.filter(header => !header.isOptional);
-            this.formattedData = filteredData;
+            this.tableData.data$.next(filteredData);
         }
     }
 
     parseTableData(): string[] {
-        const data = this.formattedData.map(row => {
+        const data = this.tableData.data$.value.map(row => {
             const values = this.formattedHeaders.map(col => this.getValue(row, col, true));
             return  `${_.join(values, ',')}\n`;
         });
