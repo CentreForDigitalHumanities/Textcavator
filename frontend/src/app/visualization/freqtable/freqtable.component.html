@@ -28,7 +28,7 @@
 </div>
 
 <div class="row g-2">
-    @if (wideFormatColumn !== undefined) {
+    @if (wideFormatAvailable) {
       <div class="col-md-auto">
             <div class="input-group" ngbTooltip="change the format for the table">
                 <button class="btn btn-body" iaToggleButton [active]="format === 'long'"
