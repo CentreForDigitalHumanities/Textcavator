@@ -1,10 +1,11 @@
 import _ from "lodash";
-import { BehaviorSubject, combineLatest, filter, map, Observable, shareReplay, tap, withLatestFrom } from "rxjs";
+import { BehaviorSubject, combineLatest, filter, map, Observable, shareReplay } from "rxjs";
 
 export class TablePaginator<Row extends object> {
     data$: BehaviorSubject<Row[]>;
     page$ = new BehaviorSubject<number>(1);
-    sort$ = new BehaviorSubject<string | null>(null);
+    sortBy$ = new BehaviorSubject<string | null>(null);
+    sortAscending$ = new BehaviorSubject<boolean>(true);
 
     totalSize$: Observable<number>;
     pageData$: Observable<Row[]>;
@@ -17,9 +18,9 @@ export class TablePaginator<Row extends object> {
             filter(data => !_.isUndefined(data)),
             map(data => data.length)
         )  ;
-        this.sortedData$ = combineLatest([this.data$, this.sort$]).pipe(
-            filter(([data, sort]) => !_.isUndefined(data)),
-            map(([data, sort]) => sort ? _.sortBy(data, sort) : data),
+        this.sortedData$ = combineLatest([this.data$, this.sortBy$, this.sortAscending$]).pipe(
+            filter(([data, sortBy, sortAsc]) => !_.isUndefined(data)),
+            map(([data, sortBy, sortAsc]) => this.sort(data, sortBy, sortAsc)),
             shareReplay(1), // replay as sorting may be expensive
         );
         this.pageData$ = combineLatest([this.sortedData$, this.page$]).pipe(
@@ -27,9 +28,30 @@ export class TablePaginator<Row extends object> {
         );
     }
 
+    toggleSort(key: string) {
+        if (this.sortBy$.value === key) {
+            this.sortAscending$.next(!this.sortAscending$.value);
+        } else {
+            this.sortBy$.next(key);
+            this.sortAscending$.next(true);
+        }
+    }
+
     slicePage(data: Row[], page: number): Row[] {
         const start = (page - 1) * this.pageSize;
         const end = page * this.pageSize;
         return data.slice(start, end);
+    }
+
+    private sort(data: Row[], sortBy: string | null, ascending: boolean): Row[] {
+        if (sortBy) {
+            const sorted = _.sortBy(data, sortBy);
+            if (ascending) {
+                return sorted;
+            } else {
+                return sorted.reverse();
+            }
+        }
+        return data;
     }
 }

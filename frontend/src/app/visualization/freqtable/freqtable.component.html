@@ -3,8 +3,30 @@
         <thead>
             <tr>
                 @for (col of formattedHeaders; track col.key) {
+                    @let isActiveSort = (tableData.sortBy$ | async) === col.key;
                     <th>
-                        {{col.label}}
+                        <div class="d-flex justify-content-between">
+                            <span>
+                                {{col.label}}
+                            </span>
+                            <button class="btn btn-sm"
+                                [class.btn-primary]="isActiveSort"
+                                [class.btn-ghost]="!isActiveSort"
+                                [attr.aria-pressed]="isActiveSort"
+                                attr.aria-label="sort by {{col.label}}"
+                                ngbTooltip="sort by {{col.label}}"
+                                (click)="tableData.toggleSort(col.key)">
+                                @if (isActiveSort) {
+                                    @if (tableData.sortAscending$ | async) {
+                                        <fa-icon aria-hidden="true" [icon]="sortIcons.genericAsc" />
+                                    } @else {
+                                        <fa-icon aria-hidden="true" [icon]="sortIcons.genericDesc" />
+                                    }
+                                } @else {
+                                    <fa-icon aria-hidden="true" [icon]="sortIcons.toggle" />
+                                }
+                            </button>
+                        </div>
                     </th>
                 }
             </tr>

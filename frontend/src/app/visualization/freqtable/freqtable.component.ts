@@ -2,7 +2,7 @@ import { Input, Component, OnChanges, ViewEncapsulation, SimpleChanges } from '@
 import * as _ from 'lodash';
 import { saveAs } from 'file-saver';
 import { FreqTableHeaders } from '@models';
-import { actionIcons } from '@shared/icons';
+import { actionIcons, sortIcons } from '@shared/icons';
 import { formatValue, getValue, transformWideFormat, wideFormatAvailable } from './freqtable-utils';
 import { TablePaginator } from './paginator';
 
@@ -33,6 +33,7 @@ export class FreqtableComponent implements OnChanges {
     disableFullTable = false;
 
     actionIcons = actionIcons;
+    sortIcons = sortIcons;
 
     getValue = getValue;
     formatValue = formatValue;
@@ -94,6 +95,10 @@ export class FreqtableComponent implements OnChanges {
         } else {
             this.formattedHeaders = this.headers.filter(header => !header.isOptional);
             this.tableData.data$.next(filteredData);
+        }
+
+        if (this.formattedHeaders.length) {
+            this.tableData.sortBy$.next(this.formattedHeaders[0].key)
         }
     }
 
