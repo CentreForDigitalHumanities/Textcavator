@@ -1,30 +1,30 @@
 <div class="my-3">
-  <p-table [value]="formattedData" [paginator]="true" [rows]="15" sortField={{defaultSort}} sortOrder={{defaultSortOrder}}>
-    <ng-template pTemplate="header">
-      <tr class="is-selected">
-        @for (col of formattedHeaders; track col) {
-          <th [pSortableColumn]="col.key">
-            {{col.label}}
-            <p-sortIcon [field]="col.key"></p-sortIcon>
-          </th>
-        }
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-entry>
-      <tr>
-        @for (col of formattedHeaders; track col) {
-          <td>
-            {{col.format !== undefined ? col.format(entry[col.key]) : entry[col.key]}}
-            @if (entry[col.key] === undefined) {
-              <span class="text-secondary">
-                none
-              </span>
+    <table class="table">
+        <thead>
+            <tr>
+                @for (col of formattedHeaders; track col.key) {
+                    <th>
+                        {{col.label}}
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (entry of formattedData; track $index) {
+                <tr>
+                    @for (col of formattedHeaders; track col) {
+                        <td>
+                            @if (entry[col.key] === undefined) {
+                                <span class="text-secondary">none</span>
+                            } @else {
+                                {{ formatValue(entry[col.key], col) }}
+                            }
+                        </td>
+                    }
+                </tr>
             }
-          </td>
-        }
-      </tr>
-    </ng-template>
-  </p-table>
+        </tbody>
+    </table>
 </div>
 
 <div class="row g-2">
