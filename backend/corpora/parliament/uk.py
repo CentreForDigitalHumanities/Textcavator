@@ -38,7 +38,7 @@ def lookup_variable(metadata_tuple):
     name, lookup_dict, variable = metadata_tuple
     if name in lookup_dict and variable in lookup_dict[name]:
         return lookup_dict[name][variable]
-    
+
 def transform_date_to_year(date):
     if date:
         return date[0:4]
@@ -76,7 +76,7 @@ def lookup_current_parliamentary_position(lookup_tuple):
         for position in current_positions:
             if position['member_parliament']:
                 return position['positionLabel']
-            
+
 def lookup_current_party(lookup_tuple):
     name, metadata, date = lookup_tuple
     if name in metadata:
@@ -105,9 +105,9 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
         logger = logging.getLogger('indexing')
         with open(os.path.join(self.data_directory, 'merged_metadata_twfy_keys.json'), 'r', encoding='utf-8') as file:
              all_person_metadata = json.load(file)
-            
-        for csv_file in glob('{}/*.csv'.format(self.data_directory)):
-            year = re.search(r'\d{4}', csv_file)[0]
+
+        for csv_file in sorted(glob('{}/*.csv'.format(self.data_directory))):
+            year = re.search(r'(\d{4})\.csv$', csv_file)[1]
 
             with open(os.path.join(self.data_directory, 'metadata_conversion_per_year/conversion_dict_{}.json'.format(year))) as file:
                 conversion_dict = json.load(file)
@@ -196,7 +196,7 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
         transform=transform_date_to_year
     )
     speaker_birth_year.visualizations = ['resultscount', 'termfrequency']
-    
+
     speaker_death_year = field_defaults.speaker_death_year()
     speaker_death_year.extractor = Pass(
         Combined(
@@ -208,7 +208,7 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
         transform=transform_date_to_year
     )
     speaker_death_year.visualizations = ['resultscount', 'termfrequency']
-    
+
     speaker_birthplace = field_defaults.speaker_birthplace()
     speaker_birthplace.extractor = Combined(
         CSV('speaker_name'),
@@ -272,8 +272,8 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
             self.speaker, self.speaker_id,
             self.speaker_gender, self.speaker_birth_year,
             self.speaker_death_year, self.speaker_birthplace,
-            self.speaker_wikidata, 
+            self.speaker_wikidata,
             self.ministerial_role,
-            self.parliamentary_role, 
+            self.parliamentary_role,
             self.party,
         ]
