@@ -1,27 +1,214 @@
-The "neighbouring words" graph shows the most frequent [n-grams](https://en.wikipedia.org/wiki/N-gram) that include the search term. An n-gram is a sequence of words of a particular length, that occurs in the text. For example, you can search for _democracy_ and discover common two-word phrases (bigrams) that contain _democracy_, such as _parliamentary democracy_, or _democracy demands_.
+The "neighbouring words" graph provides an overview of the words that most commonly surround the search term. This can be useful to narrow down a search, or to understand the context in which the search term is used.
 
-The figure searches the corpus for the search term and counts the surrounding n-grams that the search term occurred in. It displays the most common n-grams, showing their frequency over time and compared to each other.
+The graph offers two modes: collocates and n-grams:
 
-### Options
+- **N-grams** are sequences of words. In this mode, you search for phrases that contain the search term. For example, if you search for two-word phrases (bigrams) containing _democrat_, you may find the n-grams _democrat party_ and _social democrat_.
+- **Collocates** are individual words that are used within the specified distance of the search term. For example, if you search for _democrat_, you may find the collocates _party_ and _social_: these terms often appear around _democrat_ in the corpus.
 
-How the frequency of an n-gram is calculated depends on what options are chosen. The graph provides the following options:
+## Options
 
-- **Length of n-gram:** Search for _bigrams_ (two words), _trigrams_ (three words), or _fourgrams_ (four words).
-- **Position of search term:** Specify the position that the search term should have within the n-gram. Choose "any" to include all positions, or choose a specific position. For instance, "first" will only include n-grams where the search term is the first word.
-- **Compensate for frequency**: This option determines how n-grams are scored. When "no" is selected, the score equals the number of times the n-gram was observed. When "yes" is selected, this count is divided by the average frequency of the words in the n-gram across the entire corpus. Thus, n-grams that score high are common relative to the general frequency of the individual words. (For both options, n-grams are counted in a limited set of documents, see _document limit_ below.)
-- **Language processing**: This option is not available for all corpora. If available, it selects what kind of processing should be done on the text before extracting n-grams. Options are:
+There are several options to control how frequencies are calculated:
+
+- **Mode:** Search for _n-grams_ or _collocates_ (see above).
+- **Length of n-gram:** Only available in n-gram mode. Search for _bigrams_ (two words), _trigrams_ (three words), or _fourgrams_ (four words).
+- **Maximum distance:** Only available in collocates mode. Maximum distance from the search term. A distance of 1 searches for directly adjacent words.
+- **Position of search term:** Only available in n-gram mode. Specify the position that the search term should have within the n-gram. Choose "any" to include all positions, or choose a specific position. For instance, "first" will only include n-grams where the search term is the first word.
+- **Compensate for frequency**: This option determines how results are scored: you can choose whether to compensate for the overall frequency of terms in the corpus. See "scoring" below for details.
+- **Language processing**: This option is not available for all corpora. If available, it selects what kind of processing should be done on the text before counting. Options are:
     - _None:_ Use the original text, without any processing. (This is selected if the dropdown does not appear.)
-    - _Remove stopwords:_ Remove stopwords (highly common words), as well as numbers.
-    - _Stem and remove stopwords_: Remove stopwords and numbers (as above), and apply [stemming](https://en.wikipedia.org/wiki/Stemming) to all words.
-- **Document limit:** By default, the graph is based on the top 100 documents for the search query per time interval. (The time intervals are shown on the horizontal axis.) You can select a smaller limit for faster results, or a greater limit to include more documents.
-- **Number of n-grams:** The number of ngrams to display in the results.
+    - _Remove stopwords:_ Remove [stopwords](/manual/glossary#stopword).
+    - _Stem and remove stopwords_: Remove stopwords and apply [stemming](https://en.wikipedia.org/wiki/Stemming) to all words.
+- **Document limit:** How many results are analysed per time interval. A small limit will provide faster results, but a high limit provides more reliable data.
+- **Number of n-grams:** The number of n-grams to display in the results.
 
-### Visualisation
+## Scoring
 
-Each row of the graph shows the frequency of a single n-gram.
+If *compensate for frequency* is turned off, the visualisation shows the absolute number of times the n-gram or collocate was observed in the search results.
 
-The line graph for each row shows how the frequency of that n-gram varies over time. You can hover over a point to see the frequency at that point in time. (Depending on whether you choice choice in "compensate for frequency", this either an absolute or relative number.)
+This often reflects terms that are common across the entire corpus. In an English-language corpus, words like *the* and *for* may be very common collocates, but not very helpful for your research. You can turn on *compensate for frequency* to get terms that are unusually common in the neighbourhood of the search term, compared to their overall frequency.
 
-By default, all the line graphs use the same scale. This can mean that for the lower (less frequent) n-grams, the development over time can be difficult to make out. You can select "fixed height for line graphs" at the bottom of the graph. If this is selected, each line graph is scaled separately to fit the row.
+If you select "Yes", the frequency of the n-gram is divided by the average frequency (across the entire corpus) of the individual terms. The score of a collocate between the words <math><mi>a</mi></math> and <math><mi>b</mi></math> is calculated as:
 
-The bar chart on the right shows the total frequency of the n-gram. This is calculated as the sum of each of the frequencies per time period.
+<math display="block" class="block">
+    <mi>score</mi>
+    <mo>(</mo>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mo>)</mo>
+    <mo>=</mo>
+    <mfrac>
+        <mrow>
+            <mi>freq</mi>
+            <mo>(</mo>
+            <mi>a</mi>
+            <mi>b</mi>
+            <mo>)</mo>
+        </mrow>
+        <mrow>
+            <mi>avg</mi>
+            <mo>(</mo>
+            <mi>freq</mi>
+            <mo>(</mo>
+            <mi>a</mi>
+            <mo>)</mo>
+            <mo>,</mo>
+            <mi>freq</mi>
+            <mo>(</mo>
+            <mi>b</mi>
+            <mo>)</mo>
+            <mo>)</mo>
+        </mrow>
+    </mfrac>
+</math>
+
+The frequency of the pair is counted per interval. The background frequency of co-occuring terms is always based on the entire corpus, not the interval. This is also not affected by active search filters. However, the background frequency of the search term itself is counted while collecting collocations from the results. This frequency represents the entire time period (not the interval) but it is affected by search filters and the document limit setting.
+
+These are limitations to offer quick results for exploration. For quantitative research on collocations, we recommend downloading the corpus and using tools like AntConc or NLTK.
+
+This option can surface interesting combinations, but can also cause extreme results where collocations with rare terms score extremely high, even when the collocation is only observed a few times.
+
+The "Balanced" provides a different calculation that we are currently testing. This calculates scores based on the T-value, which is less affected by terms with a very low background frequency.
+
+In this mode, the score of the collocate <math><mi>b</mi><mi>b</mi></math> is calculated as
+
+<math display="block" class="block">
+    <mi>score</mi>
+    <mo>(</mo>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mo>)</mo>
+    <mo>=</mo>
+    <mfrac>
+        <mrow>
+            <mrow>
+                <mi>freq</mi>
+                <mo>(</mo>
+                <mi>a</mi>
+                <mi>b</mi>
+                <mo>)</mo>
+            </mrow>
+            <mo>-</mo>
+            <mrow>
+                <mo>(</mo>
+                <munder>
+                    <mi>&sum;</mi>
+                    <mrow>
+                        <mi>w</mi>
+                        <mo>&Element;</mo>
+                        <mi>V</mi>
+                    </mrow>
+                </munder>
+                <mrow>
+                    <mi>freq</mi>
+                    <mo>(</mo>
+                    <mi>a</mi>
+                    <mi>w</mi>
+                    <mo>)</mo>
+                </mrow>
+                <mo>)</mo>
+            </mrow>
+            <mo>*</mo>
+            <mfrac>
+                <mrow>
+                    <mi>freq</mi>
+                    <mo>(</mo>
+                    <mi>b</mi>
+                    <mo>)</mo>
+                </mrow>
+                <mrow>
+                    <munder>
+                        <mi>&sum;</mi>
+                        <mrow>
+                            <mi>w</mi>
+                            <mo>&Element;</mo>
+                            <mi>V</mi>
+                        </mrow>
+                    </munder>
+                    <mrow>
+                        <mi>freq</mi>
+                        <mo>(</mo>
+                        <mi>w</mi>
+                        <mo>)</mo>
+                    </mrow>
+                </mrow>
+            </mfrac>
+        </mrow>
+        <mrow>
+            <msqrt>
+                <mrow>
+                    <mo>(</mo>
+                    <munder>
+                        <mi>&sum;</mi>
+                        <mrow>
+                            <mi>w</mi>
+                            <mo>&Element;</mo>
+                            <mi>V</mi>
+                        </mrow>
+                    </munder>
+                    <mrow>
+                        <mi>freq</mi>
+                        <mo>(</mo>
+                        <mi>a</mi>
+                        <mi>w</mi>
+                        <mo>)</mo>
+                    </mrow>
+                    <mo>)</mo>
+                </mrow>
+                <mo>-</mo>
+                <mrow>
+                    <mi>freq</mi>
+                    <mo>(</mo>
+                    <mi>a</mi>
+                    <mi>b</mi>
+                    <mo>)</mo>
+                </mrow>
+            </msqrt>
+        </mrow>
+    </mfrac>
+</math>
+
+where <math><mi>V</mi></math> is the vocabulary of the corpus. As with the original formula, the frequency of the individual terms is based on the entire corpus, not the time interval.
+
+## Visualisation
+
+Each row of the graph shows the frequency of a single collocate or n-gram.
+
+The line graph for each row shows how the frequency of that co-occurence varies over time. You can hover over a point to see the score at that point in time. (Depending on your choice in "compensate for frequency", this either an absolute frequency or calculated score.)
+
+By default, all the line graphs use the same scale. This can mean that for the lower (less frequent) items, the development over time can be difficult to make out. You can select "fixed height for line graphs" at the bottom of the graph. If this is selected, each line graph is scaled separately to fit the row.
+
+The bar chart on the right shows the total score of the n-gram or collocate across the entire period.
+
+## Complex queries
+
+The recommended way to use the neighbouring words graph is to search for a single term. The visualisation supports most complex queries, but some options are not supported, and the results for complex queries are more difficult to interpret.
+
+Below, we explain how different types of complex queries are handled.
+
+### Multiple search terms
+
+You can search for multiple terms, e.g. _democratic autocratic_ or _democratic + autocratic_. Documents are only counted if they match the full query - meaning they would also appear in your search results.
+
+Within the document, we look for matches to any of the search terms. In collocates mode, this means you find words surrounding "democratic" or "autocratic". If we see 50 occurrences of "democratic state" and 50 occurrences of "autocratic state", then "state" is counted 100 times as a collocate.
+
+In n-grams mode, we find n-grams containing either word. Here, "democratic state" and "autocratic state" would be counted as *separate* n-grams.
+
+If you use the "compensate for frequency" option, the formula will use the background frequency of the collocate (e.g. "state") and the background frequency of the *query* (e.g. "autocratic democratic"), i.e. the number of matches for the query.
+
+### Phrase search
+
+You can search for phrases, e.g. _"social democrat"_. In this case, distances are always counted from the phrase as a whole, as if it's a single term. So selecting bigrams (in n-grams mode) or a distance of 1 (in collocates mode) would find a phrase like "social democrat party".
+
+### Negative search terms
+
+Negative search terms (e.g. _"-republic"_) can be used to exclude documents containing search terms. Depending on how you build your query, your results might still include these terms, for example with _"democratic -republic"_. This will find documents that contain "democratic" and/or do *not* contain "republic". (Use _"democratic + -republic"_ if you want a hard exclude.)
+
+Negative terms like this will affect what documents are returned and how they are ranked, but they are not considered query terms for the purpose of identifying neighbouring words. So in the example query, the results would include n-grams/collocates for "democratic" but not for "republic".
+
+### Wildcard and fuzzy search
+
+You can use wildcard of fuzzy search terms, like _democrat*_ or _democracy~2_. This is handled like searching for multiple search terms. (As if you listed all matching words in a query like "democrat democratic democrats democratical democratically".)
+
+### Proximity search
+
+Proximity search is not supported in this visualisation.

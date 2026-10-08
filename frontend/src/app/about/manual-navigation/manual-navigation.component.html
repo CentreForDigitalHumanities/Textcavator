@@ -1,5 +1,5 @@
 <nav class="" aria-labelledby="topics-header">
-  <h2 class="" id="topics-header">Manual topics</h2>
+  <h2 class="mb-4" id="topics-header">Manual topics</h2>
   @for (section of (manifest$ | async); track section) {
     @if (hasPermission(section) | async) {
       <h3 class="h4">{{section.title}}</h3>
@@ -9,7 +9,7 @@
             <a [routerLink]="['/manual', page.id]"
               routerLinkActive="active"
               ariaCurrentWhenActive="page"
-              class="nav-link">
+              class="nav-link py-1">
               {{page.title}}
             </a>
           </li>

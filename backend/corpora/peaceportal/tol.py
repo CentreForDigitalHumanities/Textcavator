@@ -1,21 +1,28 @@
 import re
 from copy import copy
-from textcavator_readers.xml_tag import Tag, TransformTag
 from typing import Optional
-import bs4
-from django.conf import settings
 
+import bs4
 from addcorpus.python_corpora.corpus import XMLCorpusDefinition
-from textcavator_readers.extract import XML, Constant, Combined
-from corpora.peaceportal.peaceportal import PeacePortal, categorize_material, \
-    clean_newline_characters, clean_commentary, join_commentaries, get_text_in_language, \
-    transform_to_date_range, not_before_extractor, not_after_extractor
+from textcavator_readers.extract import XML, Combined, Constant
+from textcavator_readers.xml_tag import Tag, TransformTag
+
+from corpora.peaceportal.peaceportal import (
+    PeacePortal,
+    categorize_material,
+    clean_commentary,
+    clean_newline_characters,
+    get_text_in_language,
+    join_commentaries,
+    not_after_extractor,
+    not_before_extractor,
+    transform_to_date_range,
+)
 from corpora.utils.exclude_fields import exclude_fields_without_extractor
 
 
 class PeaceportalTOL(PeacePortal, XMLCorpusDefinition):
-    data_directory = settings.PEACEPORTAL_TOL_DATA
-    es_index = getattr(settings, 'PEACEPORTAL_TOL_ES_INDEX', 'peaceportal-tol')
+    es_index = 'peace-tol'
 
     languages = ['en', 'nl', 'he']
 

@@ -70,6 +70,11 @@ export interface NgramResults {
         label: string;
         data: number[];
     }[];
+    totals: {
+        x: number,
+        y: number,
+        ngram: string,
+    }[]
     time_points: string[];
 }
 

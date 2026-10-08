@@ -47,7 +47,6 @@ export class DialogService {
 
         const path = this.getLocalizedPath(`manual`, `manifest.json`);
         return this.manifest = fetch(path).then(response => {
-            console.log(response);
             return response.json();
         });
     }
