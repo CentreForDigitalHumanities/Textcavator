@@ -1,4 +1,7 @@
 <ng-template #modalTemplate>
+    @let isFirstDocument = document.position <= 1;
+    @let isLastDocument = document.position >= page.documents.length;
+
     <div class="modal-header justify-content-between align-items-center">
         <h1 class="modal-title h4" id="dialog-title">
             Document {{ documentPosition(document, page) }} of {{ page.total }}
@@ -45,19 +48,18 @@
     </div>
     <div class="modal-footer">
         <div class="col">
-            @if (document.position > 1) {
-                <a
-                    class="btn btn-ghost"
-                    aria-label="View previous document"
-                    ngbTooltip="view previous document"
-                    (click)="page.focusPrevious(document)"
-                    (keydown.enter)="page.focusPrevious(document)"
-                    role="button"
-                    tabindex="0"
-                >
-                    <fa-icon [icon]="actionIcons.prev" aria-hidden="true" />
-                </a>
-            }
+            <button
+                type="button"
+                class="btn btn-ghost border-0"
+                [class.disabled]="isFirstDocument"
+                [attr.aria-disabled]="isFirstDocument"
+                aria-label="View previous document"
+                ngbTooltip="view previous document"
+                (click)="!isFirstDocument && page.focusPrevious(document)"
+                tabindex="0"
+            >
+                <fa-icon [icon]="actionIcons.prev" aria-hidden="true" />
+            </button>
         </div>
         <div class="col-auto">
             <div class="hstack gap-2">
@@ -87,19 +89,18 @@
             </div>
         </div>
         <div class="col text-end">
-            @if (document.position < page.documents.length) {
-                <a
-                    class="btn btn-ghost"
-                    ngbTooltip="view next document"
-                    aria-label="View next document"
-                    (click)="page.focusNext(document)"
-                    (keydown.enter)="page.focusNext(document)"
-                    role="button"
-                    tabindex="0"
-                >
-                    <fa-icon [icon]="actionIcons.next" aria-hidden="true" />
-                </a>
-            }
+            <button
+                type="button"
+                class="btn btn-ghost border-0"
+                [class.disabled]="isLastDocument"
+                [attr.aria-disabled]="isLastDocument"
+                ngbTooltip="view next document"
+                aria-label="View next document"
+                (click)="!isLastDocument && page.focusNext(document)"
+                tabindex="0"
+            >
+                <fa-icon [icon]="actionIcons.next" aria-hidden="true" />
+            </button>
         </div>
     </div>
 </ng-template>
