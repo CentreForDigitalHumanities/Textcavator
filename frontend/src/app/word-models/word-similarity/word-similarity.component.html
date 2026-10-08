@@ -1,14 +1,12 @@
 <div class="field">
-  <div class="control">
-    <label class="label">Enter one or more terms to compare to "{{queryText}}":</label>
+    <label class="form-label">Enter one or more terms to compare to "{{queryText}}":</label>
     <ia-term-comparison-editor
       [termLimit]="comparisonTermLimit">
     </ia-term-comparison-editor>
-  </div>
 </div>
 
 @if (timeIntervals) {
-  <div class="block">
+  <div class="my-3">
     <ia-similarity-chart [timeIntervals]="timeIntervals" [totalData]="data"
     [asTable]="asTable" [palette]="palette" [tableFileName]="tableFileName"></ia-similarity-chart>
   </div>

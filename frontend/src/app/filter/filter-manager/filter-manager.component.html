@@ -1,35 +1,32 @@
 <form aria-labelledby="header-filters">
-  <div class="field is-grouped">
-    <div class="control is-expanded">
-      <h2 class="title" id="header-filters">Filters</h2>
+    <div class="row">
+        <h2 class="col" id="header-filters">Filters</h2>
+        <div class="col-auto">
+            @if (anyActiveFilters$ | async) {
+            <button
+                class="btn btn-ghost px-2 btn-lg"
+                (click)="resetAllFilters()"
+                ngbTooltip="Reset all filters to their default values"
+                aria-label="reset all"
+                type="button">
+                <fa-icon [icon]="filterIcons.clear" aria-hidden="true"></fa-icon>
+            </button>
+            }
+            @if (anyNonDefaultFilters$ | async) {
+            <button
+                class="btn btn-ghost px-2 btn-lg"
+                (click)="toggleActiveFilters()"
+                ngbTooltip="{{(anyActiveFilters$ | async) ? ('Disable active filters') : ('Enable deactivated filters')}}"
+                aria-label="toggle all"
+                type="button">
+                <fa-icon [icon]="filterIcons.toggle" aria-hidden="true"></fa-icon>
+            </button>
+            }
+        </div>
     </div>
-    <p class="control" style="float:right">
-      @if (anyActiveFilters$ | async) {
-        <button
-          class="button icon is-ghost is-medium"
-          (click)="resetAllFilters()" iaBalloon="Reset all filters to their default values"
-          iaBalloonPosition="down-left"
-          type="button">
-          <span class="icon">
-            <fa-icon [icon]="filterIcons.clear" aria-hidden="true"></fa-icon>
-          </span>
-        </button>
-      }
-      @if (anyNonDefaultFilters$ | async) {
-        <button
-          class="button icon is-ghost is-medium"
-          (click)="toggleActiveFilters()"
-          iaBalloon="{{(anyActiveFilters$ | async) ? ('Disable active filters') : ('Enable deactivated filters')}}"
-          iaBalloonPosition="down-left"
-          type="button">
-          <fa-icon [icon]="filterIcons.toggle" aria-hidden="true"></fa-icon>
-        </button>
-      }
-    </p>
-  </div>
   @for (filter of filters; track filter) {
-    @if (!filter.adHoc || filter.state$.value.active) {
-      <div class="block">
+    @if (!filter['adHoc'] || filter.state$.value.active) {
+      <div class="my-3">
         <ia-filter-box [filter]="filter" [queryModel]="queryModel"></ia-filter-box>
       </div>
     }

@@ -1,10 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnDestroy, OnInit, TemplateRef, DestroyRef, viewChild, inject } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SafeHtml } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
 
 import { navIcons } from '@shared/icons';
 import { DialogService } from '@services';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+interface FooterDetails {
+    label: string;
+    link: string[];
+}
 
 @Component({
     selector: 'ia-dialog',
@@ -13,52 +18,73 @@ import { DialogService } from '@services';
     standalone: false
 })
 export class DialogComponent implements OnDestroy, OnInit {
-    public title: string = undefined;
-    public innerHtml: SafeHtml | undefined;
-    public footerButtonLabel: string;
-    public footerRouterLink: string[];
-    public showDialog = false;
+    modalTemplate = viewChild.required<TemplateRef<unknown>>('modalTemplate');
+
+    public title: string;
+    public innerHtml: SafeHtml;
+    public footerDetails: FooterDetails;
     public isLoading = false;
 
     navIcons = navIcons;
 
-    private dialogEventSubscription: Subscription;
-
-    constructor(private dialogService: DialogService, private router: Router) {
-        this.dialogEventSubscription = dialogService.pageEvent.subscribe(event => {
-            switch (event.status) {
-            case 'hide':
-                this.innerHtml = undefined;
-                this.showDialog = false;
-                break;
-
-            case 'loading':
-                this.innerHtml = undefined;
-                this.showDialog = true;
-                this.isLoading = true;
-                break;
-
-            case 'show':
-                this.innerHtml = event.html;
-                this.title = event.title;
-                this.showDialog = true;
-                this.isLoading = false;
-                if (event.footer){
-                this.footerButtonLabel = event.footer.buttonLabel;
-                this.footerRouterLink = event.footer.routerLink;
-                } else {
-                this.footerButtonLabel = null;
-                }
-                break;
-            }
-        });
-    }
+    private modal: NgbModalRef;
+    private dialogService = inject(DialogService);
+    private modalService = inject(NgbModal);
+    private destroyRef = inject(DestroyRef);
 
     ngOnInit(): void {
+        this.dialogService.pageEvent
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(event => {
+                switch (event.status) {
+                    case 'hide':
+                        this.innerHtml = undefined;
+                        this.isLoading = false;
+                        this.close();
+                        break;
+
+                    case 'loading':
+                        this.innerHtml = undefined;
+                        this.isLoading = true;
+                        this.open();
+                        break;
+
+                    case 'show':
+                        this.innerHtml = event.html;
+                        this.title = event.title;
+                        this.isLoading = false;
+                        this.footerDetails = event.footer ? {
+                            label: event.footer.buttonLabel,
+                            link: event.footer.routerLink
+                        } : undefined;
+                        this.open();
+                        break;
+                }
+            });
+
         this.dialogService.closePage();
     }
 
     ngOnDestroy(): void {
-        this.dialogEventSubscription.unsubscribe();
+        this.close();
+    }
+
+    public close(): void {
+        this.modal?.close();
+        this.modal = undefined;
+    }
+
+    private open(): void {
+        const template = this.modalTemplate();
+        if (!this.modal && template) {
+            this.modal = this.modalService.open(template, {
+                ariaLabelledBy: 'dialog-title',
+                size: 'lg',
+                scrollable: true,
+            });
+            this.modal.result.finally(() => {
+                this.modal = undefined;
+            });
+        }
     }
 }
