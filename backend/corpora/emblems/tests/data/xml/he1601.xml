@@ -1,0 +1,1666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE TEI.2 SYSTEM "../dtd/vaentei.dtd" [
+	<!ENTITY % notations SYSTEM "../dtd/notations.dtd">
+	%notations;
+	<!ENTITY % charrefs SYSTEM "../dtd/charrefs.dtd">
+	%charrefs;
+	<!ENTITY % he1601figs SYSTEM "../dtd/he1601figs.dtd">
+	%he1601figs;
+	<!ENTITY % extxml SYSTEM "../dtd/extxml.dtd">
+	%extxml;
+]>
+<TEI.2 TEIform="TEI.2">
+	<teiHeader type="text" status="new" TEIform="teiHeader">
+		<fileDesc TEIform="fileDesc">
+			<titleStmt TEIform="titleStmt">
+				<title TEIform="title">Quaeris quid sit Amor (c. 1601)</title>
+				<author status="certain" TEIform="author">Dani&euml;l Heinsius</author>
+				<editor role="editor" TEIform="editor"><name id="ds" TEIform="name">EPU</name></editor>
+			</titleStmt>
+			<editionStmt TEIform="editionStmt">
+				<edition TEIform="edition">a web edition</edition>
+			</editionStmt>
+			<publicationStmt TEIform="publicationStmt">
+				<pubPlace TEIform="pubPlace">Utrecht</pubPlace>
+				<date TEIform="date">March 2004</date>
+				<publisher TEIform="publisher">Emblem Project Utrecht</publisher>
+			</publicationStmt>
+			<sourceDesc default="NO" TEIform="sourceDesc">
+				<biblStruct id="he1601bibl" default="NO" TEIform="biblStruct">
+					<monogr TEIform="monogr">
+						<author status="certain" TEIform="author"><name key="heinsi01" TEIform="name">Heinsius, Daniël</name>
+							<idno type="VIAF">http://viaf.org/viaf/56635500</idno></author>
+						<editor TEIform="author"><name TEIform="name">De Gheyn, Jacques</name>
+							<idno type="VIAF">http://viaf.org/viaf/29688669</idno></editor>
+						<title TEIform="title">Quaeris quid sit Amor</title>
+						<imprint TEIform="imprint">
+							<pubPlace TEIform="pubPlace">Amsterdam</pubPlace>
+							<date TEIform="date">1601</date>
+						</imprint>
+					</monogr>
+					<idno TEIform="idno" type="shelfno">1121 F 61</idno>
+					<owner countryCode="NL" institutionCode="kb-dh"/>
+				</biblStruct>
+			</sourceDesc>
+		</fileDesc>
+		<encodingDesc TEIform="encodingDesc">
+			<editorialDecl default="NO" TEIform="editorialDecl">
+				<p TEIform="p">Verantwoording:</p>
+			</editorialDecl>
+		</encodingDesc>
+		<profileDesc TEIform="profileDesc">
+			<langUsage default="NO" TEIform="langUsage">
+				<language id="lat" TEIform="language">Latin</language>
+				<language id="ita" TEIform="language">Italian</language>
+				<language id="dut" TEIform="language">Dutch</language>
+				<language id="fra" TEIform="language">French</language>
+				<language id="eng" TEIform="language">English</language>
+			</langUsage>
+		</profileDesc>
+		<revisionDesc TEIform="revisionDesc">
+			<change TEIform="change"><!--                                                hier nog uit te voeren zaken opnemen -->
+
+				<date TEIform="date">future</date>
+				<respStmt TEIform="respStmt">
+					<name TEIform="name">PB</name>
+				</respStmt>
+				<item TEIform="item">...</item>
+			</change>
+			<change TEIform="change">
+				<date TEIform="date">2004-03-12</date>
+				<respStmt TEIform="respStmt">
+					<name TEIform="name">PB</name>
+				</respStmt>
+				<item TEIform="item">notes h+s -&gt; hs</item>
+			</change>
+			<change TEIform="change">
+				<date TEIform="date">2001-12-27</date>
+				<respStmt TEIform="respStmt">
+					<name TEIform="name">PB</name>
+				</respStmt>
+				<item TEIform="item">kleine correctie biblScope type</item>
+			</change>
+			<change TEIform="change">
+				<date TEIform="date">2001-12-13</date>
+				<respStmt TEIform="respStmt">
+					<name TEIform="name">PB</name>
+				</respStmt>
+				<item TEIform="item">change log geopend</item>
+			</change>
+		</revisionDesc>
+	</teiHeader>
+	<text id="he1601" TEIform="text">
+		<front TEIform="front">
+			<div id="he1601ei" type="edintro" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+
+				<p TEIform="p" />
+				<divGen type="subtoc" TEIform="divGen" />
+				<div status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+
+					<div id="he1601_div1" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+
+						<p TEIform="p">This is our edition of <title TEIform="title">Quaeris quid sit amor?</title>,
+						(later titled: <title TEIform="title">Emblemata amatoria</title>)) of c. 1601, the
+			very first love emblem book ever written in Dutch. In this introduction, we have
+			limited ourselves to the essentials.</p>
+					</div>
+
+<!-- content emitted for testing -->
+
+				</div>
+			</div>
+		</front>
+		<group TEIform="group">
+			<text id="he1601front1" type="front" TEIform="text">
+				<body TEIform="body">
+					<div lang="lat" id="he1601frontispiece1div" type="pictura" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<pb id="frontispiecelarge01" n="[titlepage]" doc="frontispiecelarge01" docthumb="frontispiecethumb" TEIform="pb" />
+						<p TEIform="p">
+							<figure id="titelplaat01" entity="titlepage" TEIform="figure" />
+						</p>
+					</div>
+					<div id="he1601titlepage" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<titleBlock TEIform="titlePage">
+							<docTitle TEIform="docTitle">
+								<titlePart type="main" TEIform="titlePart">
+									Qu&aelig;ris quid sit Amor, quid amare, cupidinis et quid<lb TEIform="lb" />
+									Castra sequi? chartam hanc inspice, doctus eris.<lb TEIform="lb" />
+									H&aelig;c tibi delicias hortumque ostendit Amorum:<lb TEIform="lb" />
+									Inspice; sculptori est ingeniosa manus.<lb TEIform="lb" />
+								</titlePart>
+							</docTitle>
+						</titleBlock>
+						<pb n="[titlepage verso]" id="foltitle" doc="pbtitle" docthumb="pbtitlethumb" TEIform="pb" />
+						<pb n="A1r" id="folA1a" doc="pbA1a" docthumb="pbA1athumb" TEIform="pb" />
+						<pb n="A1v" id="folA1b" doc="pbA1b" docthumb="pbA1bthumb" TEIform="pb" />
+					</div>
+				</body>
+				<back TEIform="back">
+					<div type="translations" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<note lang="dut" status="ready" type="translation" id="he1601titlepage_tr_nl" place="unspecified" anchored="yes" TEIform="note">
+							<p TEIform="p">Wat liefde is vraag je, en wat het is te beminnen en het kamp der
+Begeerte te volgen? Kijk goed naar deze kaart, je zult dan een expert zijn.
+Deze toont je de genoegens en de tuin der Eroten.
+Ja, kijk eens goed. De graveur heeft een getalenteerde hand.</p>
+						</note>
+						<note lang="eng" status="ready" type="translation" id="he1601titlepage_tr_en" place="unspecified" anchored="yes" TEIform="note">
+							<p TEIform="p">What love is do you ask, what it is to love and what it is to Follow desire&apos;s camp? Have a look at this map, you will become an expert.
+							This shows you the delights and the garden of the Cupids. Have a look. The engraver has a talented hand.</p>
+						</note>
+						<linkGrp targOrder="Y" targFunc="translated translation" type="translation" TEIform="linkGrp">
+							<link targets="he1601titlepage he1601titlepage_tr_nl" targOrder="U" TEIform="link" />
+							<link targets="he1601titlepage he1601titlepage_tr_en" targOrder="U" TEIform="link" />
+						</linkGrp>
+					</div>
+				</back>
+			</text>
+
+<!-- texts omitted for testing -->
+
+			<text id="he1601023" type="emblem" thumb="thumbH1a" TEIform="text">
+				<body TEIform="body">
+					<pb n="G4v" id="folG4b" doc="pbG4b" docthumb="pbG4bthumb" TEIform="pb" />
+					<div type="motto" lang="lat" id="he16010231" status="ready" org="uniform" sample="complete" part="N" TEIform="div"><p TEIform="p"><num type="textno" TEIform="num">23. </num>
+							Ser&ograve;<note type="annot" place="unspecified" anchored="yes" status="ready" TEIform="note">The motto along the pictura reads: Sero instead of
+
+Ser&oacute;.</note> detrectat onus qui subijt.</p>
+					</div>
+					<div type="subscriptio" lang="dut" id="he16010232" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<lg org="uniform" sample="complete" part="N" TEIform="lg">
+							<l id="he1601023201" part="N" TEIform="l">Hier voortijdts als ick placht Van minnen t&apost;hooren
+spreken<orig type="interpunction" reg="," TEIform="orig">/</orig></l>
+							<l id="he1601023202" part="N" TEIform="l">En van dat bitter soet end&apost; Van die loose
+treken<note type="annot" resp="jb" place="unspecified" anchored="yes" status="ready" TEIform="note">streken</note><orig type="interpunction" reg="," TEIform="orig">/</orig></l>
+							<l id="he1601023203" part="N" TEIform="l">My docht het was zoo moy<orig type="interpunction" reg="," TEIform="orig">/</orig> men coster uyt end in<orig type="interpunction" reg="," TEIform="orig">/</orig></l>
+							<l id="he1601023204" part="N" TEIform="l">Dat heeft my eerst ghebroght het minnen in de sin.</l>
+							<l id="he1601023205" part="N" TEIform="l">Ick sach het jock<note type="annot" resp="jb" place="unspecified" anchored="yes" status="ready" TEIform="note">juk</note>
+wel aen<orig type="interpunction" reg="," TEIform="orig">/</orig> maer &apost;tdocht my licht
+te wesen<orig type="interpunction" reg="," TEIform="orig">/</orig></l>
+							<l id="he1601023206" part="N" TEIform="l">Ghevlochten end&apost; ghebreyt<orig type="interpunction" reg="," TEIform="orig">/</orig> Van rooskens tsaem ghelesen<note type="annot" resp="jb" place="unspecified" anchored="yes" status="ready" TEIform="note">
+									verzameld</note></l>
+							<l id="he1601023207" part="N" TEIform="l"><orig type="spelling" reg="Ui" TEIform="orig">W</orig>t <hi rend="" TEIform="hi">
+									VEN<orig type="spelling" reg="U" TEIform="orig">V</orig>S</hi><note type="annot" resp="jb" place="unspecified" anchored="yes" status="ready" TEIform="note">
+									Godin van de liefde</note> gouden tuyn<orig type="interpunction" reg="," TEIform="orig">/</orig> my docht ick was een man<orig type="interpunction" reg="," TEIform="orig">/</orig></l>
+							<l id="he1601023208" part="N" TEIform="l">Maer als<note type="annot" resp="jb" place="unspecified" anchored="yes" status="ready" TEIform="note">nu</note> ick weet
+wat &apost;tis<orig type="interpunction" reg="," TEIform="orig">/</orig> en can ick daer niet
+van.</l>
+						</lg>
+					</div>
+					<div type="subscriptio" lang="lat" id="he16010233" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<cit TEIform="cit">
+							<bibl default="NO" TEIform="bibl">
+								<author status="certain" TEIform="author"><name reg="Hugo Grotius" TEIform="name">H. Grotius</name></author>
+							</bibl>
+							<q direct="unspecified" TEIform="q">
+								<lg org="uniform" sample="complete" part="N" TEIform="lg">
+									<l id="he1601023301" part="N" TEIform="l">Frustr&agrave; tento oneri me jam subducere: frustra </l>
+									<l id="he1601023302" part="N" TEIform="l">Jam juga detrectant, qu&aelig; subiere boves</l>
+								</lg>
+							</q>
+						</cit>
+					</div>
+					<pb n="H1r" id="folH1a" doc="pbH1a" docthumb="pbH1athumb" TEIform="pb" />
+					<div type="pictura" id="he16010234" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<p TEIform="p">
+							<figure entity="picH1a" ana="ip010079 ip010275 ip010276 ip010277 ip010031" TEIform="figure">
+							</figure>
+						</p>
+					</div>
+				</body>
+				<back TEIform="back">
+					<div type="translations" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<note type="translation" lang="dut" id="he16010232_tr_nl" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							Vroeger als ik over de liefde hoorde spreken, van het bittere zoet en de
+doortrapte streken, dacht ik dat het heel mooi was. Je kon er uit en er weer
+in, dat trok mij tot de liefde aan. Ik zag het juk wel, maar dacht dat het
+licht was, gevlochten van rozen uit Venus&apos; gouden tuin. Ik dacht dat ik een
+echte vent was. Maar nu ik weet wat liefde is, kan ik me er niet meer van
+verlossen.
+						</note>
+						<note type="translation" lang="dut" id="he16010231_tr_nl" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							Wie een last op zich heeft genomen, is te laat om hem nog te weigeren.
+						</note>
+						<note type="translation" lang="eng" id="he16010231_tr_en" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							Who has accepted a burden is too late to refuse it.
+						</note>
+						<note type="translation" lang="dut" id="he16010233_tr_nl" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							Nu probeer ik me vergeefs van de last te bevrijden, zoals runderen<lb TEIform="lb" />
+							zich vergeefs aan de last onttrekken die ze op zich hebben genomen.
+						</note>
+						<note type="translation" lang="eng" id="he16010233_tr_en" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							Now in vain I try to rid myself of the burden, just as oxen<lb TEIform="lb" />
+							in vain try to withdraw from the burden they have accepted.
+						</note>
+						<linkGrp targOrder="Y" targFunc="translated translation" type="translation" TEIform="linkGrp">
+							<link targets="he16010232 he16010232_tr_nl" targOrder="U" TEIform="link" />
+							<link targets="he16010231 he16010231_tr_nl" targOrder="U" TEIform="link" />
+							<link targets="he16010231 he16010231_tr_en" targOrder="U" TEIform="link" />
+							<link targets="he16010233 he16010233_tr_nl" targOrder="U" TEIform="link" />
+							<link targets="he16010233 he16010233_tr_en" targOrder="U" TEIform="link" />
+						</linkGrp>
+					</div>
+					<div type="comment" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<note type="lit" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							<list type="simple" TEIform="list">
+								<item TEIform="item">
+									<xref rend="ref" doc="biblio" from="id (henkel011976a)" targOrder="U" to="DITTO" TEIform="xref">
+										<bibl default="NO" TEIform="bibl">
+											<biblScope type="col" TEIform="biblScope">1439</biblScope>
+										</bibl>
+									</xref>
+								</item>
+								<item TEIform="item">
+									<xref rend="ref" doc="biblio" from="id (praz--011975a)" targOrder="U" to="DITTO" TEIform="xref">
+										<bibl default="NO" TEIform="bibl">
+											<biblScope type="p" TEIform="biblScope">97</biblScope>
+										</bibl>
+									</xref>
+								</item>
+							</list>
+						</note>
+						<note type="parallel" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							<list type="simple" TEIform="list">
+								<item TEIform="item">Same emblem in 1608 edition: <xptr rend="ref" doc="he1608" type="parallel" from="id (he1608023)" targOrder="U" to="DITTO" TEIform="xptr" /></item>
+								<item TEIform="item">Ripa&apos;s connotation of &apos;marriage&apos; in: <xref doc="biblio" rend="ref" type="source" from="id (dbnl_pers1644astart)" TEIform="xref" to="DITTO" targOrder="U"><bibl TEIform="bibl" default="NO">
+											<biblScope type="" TEIform="biblScope">387</biblScope></bibl></xref>
+								</item>
+								<item TEIform="item">Source for the motto: <xref source="praz--011975a" rend="ref" doc="biblio" type="source" from="id (junius012000a)" targOrder="U" to="DITTO" TEIform="xref"><bibl default="NO" TEIform="bibl"><biblScope type="embl" TEIform="biblScope">30</biblScope></bibl></xref></item>
+								<item TEIform="item">Source for the metaphor used in this emblem: <xref rend="ref" doc="biblio" type="source" from="id (ovidiu011957a)" targOrder="U" to="DITTO" TEIform="xref"><bibl default="NO" TEIform="bibl"><biblScope type="bk/l" TEIform="biblScope">II/184</biblScope></bibl></xref></item>
+								<item TEIform="item">Source for the metaphor used in this emblem: <xref rend="ref" doc="biblio" type="source" from="id (proper011990a)" targOrder="U" to="DITTO" TEIform="xref"><bibl default="NO" TEIform="bibl"><biblScope type="bk/ch/l" TEIform="biblScope">II/3/47</biblScope></bibl></xref></item>
+								<item TEIform="item">Source for the Latin subscriptio: Grotius?</item>
+								<item TEIform="item">
+									Parallel in the 1616 edition: motto and subscriptio the same, pictura is mirrored: <xptr doc="he1616" from="id (he1616045)" targOrder="U" to="DITTO" TEIform="xptr" /></item><item TEIform="item">
+									Parallel, via Vaenius&apos; Amorum Emblemata: <xptr doc="v1615" from="id (v161540)" targOrder="U" to="DITTO" TEIform="xptr" /></item><item TEIform="item">
+									Parallel, probably adaptation, for the pictura: <xptr doc="v1608" from="id (v1608014)" targOrder="U" to="DITTO" TEIform="xptr" /></item>
+							</list>
+						</note>
+						<note type="hs" place="unspecified" anchored="yes" status="ready" TEIform="note">Gew&ouml;hnung an die Liebe</note>
+						<note type="hspict" place="unspecified" anchored="yes" status="ready" TEIform="note">Joch das Amor einem Stier auflegt</note>
+						<linkGrp type="petrarchan elements" targOrder="U" TEIform="linkGrp">
+							<ptr target="he16010232" targOrder="U" TEIform="ptr"><ana refers="ip04211" /><ana refers="ip04241" /></ptr>
+						</linkGrp>
+					</div>
+				</back>
+			</text>
+			<text id="he1601024" type="emblem" thumb="thumbH2a" TEIform="text">
+				<body TEIform="body">
+					<pb n="H1v" id="folH1b" doc="pbH1b" docthumb="pbH1bthumb" TEIform="pb" />
+					<div type="motto" lang="lat" id="he16010241" status="ready" org="uniform" sample="complete" part="N" TEIform="div"><p TEIform="p"><num type="textno" TEIform="num">24. </num>
+							Noctua ut in tumulis, super ut&apost;que cadavera Bubo.<note type="annot" place="unspecified" anchored="yes" status="ready" TEIform="note">Dit
+is het enige motto dat deels gelijk is aan de latijnse subscriptio.</note></p>
+					</div>
+					<div type="subscriptio" lang="dut" id="he16010242" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<lg org="uniform" sample="complete" part="N" TEIform="lg">
+							<l id="he1601024201" part="N" TEIform="l">Ick ben een levend&apost; lijck<orig type="interpunction" reg="," TEIform="orig">/</orig> nu dinck ick eerst om minnen</l>
+							<l id="he1601024202" part="N" TEIform="l">Als ander houden op<orig type="interpunction" reg="," TEIform="orig">/</orig> zoo gae ick maer beginnen<orig type="interpunction" reg="," TEIform="orig">/</orig>
+							</l>
+							<l id="he1601024203" part="N" TEIform="l">De doot is voor de poort<orig type="interpunction" reg="," TEIform="orig">/</orig> de minne woont int hert</l>
+							<l id="he1601024204" part="N" TEIform="l">Ick smaeck noch voor mijn doot de liefelicke smert<orig type="interpunction" reg="," TEIform="orig">/</orig></l>
+							<l id="he1601024205" part="N" TEIform="l">De doodt end&apost; ic zijn een<orig type="interpunction" reg="," TEIform="orig">/</orig> nu dinck ick om te leven:</l>
+							<l id="he1601024206" part="N" TEIform="l">Mijn leven dat beghint<orig type="interpunction" reg="," TEIform="orig">/</orig> alst my wilt gaen begheven.</l>
+							<l id="he1601024207" part="N" TEIform="l">Het comt oft vroech oft laet<orig type="interpunction" reg="," TEIform="orig">/</orig> ick vreesde Voor de doot.</l>
+							<l id="he1601024208" part="N" TEIform="l">En cryghe voor mijn graff mijns alderliefste schoot<note type="annot" resp="jb" place="unspecified" anchored="yes" status="ready" TEIform="note">de schoot van mijn allerliefste</note>.</l>
+						</lg>
+					</div>
+					<div type="subscriptio" lang="lat" id="he16010243" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<lg org="uniform" sample="complete" part="N" TEIform="lg">
+							<l id="he1601024301" part="N" TEIform="l">Noctua ut in tumulis, super utque cadavera bubo</l>
+							<l id="he1601024302" part="N" TEIform="l">Talis erit: Virgo nubere parce seni.</l>
+						</lg>
+					</div>
+					<pb n="H2r" id="folH2a" doc="pbH2a" docthumb="pbH2athumb" TEIform="pb" />
+					<div type="pictura" id="he16010244" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<p TEIform="p">
+							<figure entity="picH2a" ana="ip010253 ip010278 ip010279 ip010280" TEIform="figure">
+							</figure>
+						</p>
+						<pb n="H2v" id="folH2b" TEIform="pb" />
+					</div>
+				</body>
+				<back TEIform="back">
+					<div type="translations" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<note type="translation" lang="dut" id="he16010242_tr_nl" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							Ik ben een levend lijk en denk nu pas aan beminnen. Als anderen ophouden, moet
+ik nog beginnen. De dood staat voor de poort, de liefde woont in het hart. Ik
+proef nog voor mijn dood de liefelijke smart. De dood en ik zijn verenigd, nu
+denk ik pas aan het leven. Mijn leven begint als het mij wil gaan verlaten. Het
+komt vroeg of laat: ik vreesde voor de dood en krijg nu als graf de schoot van
+mijn allerliefste.
+						</note>
+						<note type="translation" lang="dut" id="he16010241_tr_nl" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							Als een nachtuil in de graven en een oehoe boven de kadavers.
+						</note>
+						<note type="translation" lang="eng" id="he16010241_tr_en" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							As a nightowl in burial chambers and an eagle owl over dead bodies.
+						</note>
+						<note type="translation" lang="dut" id="he16010243_tr_nl" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							Als een nachtuil in de graven en een oehoe boven de kadavers,<lb TEIform="lb" />
+							zo zal zij zijn. Meisje trouw niet met een oude man.
+						</note>
+						<note type="translation" lang="eng" id="he16010243_tr_en" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							As a nightowl in burial chambers and an eagle owl over dead bodies,<lb TEIform="lb" />
+							thus she will be. Girl, do not marry an old man.
+						</note>
+						<linkGrp targOrder="Y" targFunc="translated translation" type="translation" TEIform="linkGrp">
+							<link targets="he16010242 he16010242_tr_nl" targOrder="U" TEIform="link" />
+							<link targets="he16010241 he16010241_tr_nl" targOrder="U" TEIform="link" />
+							<link targets="he16010241 he16010241_tr_en" targOrder="U" TEIform="link" />
+							<link targets="he16010243 he16010243_tr_nl" targOrder="U" TEIform="link" />
+							<link targets="he16010243 he16010243_tr_en" targOrder="U" TEIform="link" />
+						</linkGrp>
+					</div>
+					<div type="comment" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+						<note type="lit" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							<list type="simple" TEIform="list">
+								<item TEIform="item">
+									<xref rend="ref" doc="biblio" from="id (henkel011976a)" targOrder="U" to="DITTO" TEIform="xref">
+										<bibl default="NO" TEIform="bibl">
+											<biblScope type="col" TEIform="biblScope">891</biblScope>
+										</bibl>
+									</xref>
+								</item>
+								<item TEIform="item">
+									<xref rend="ref" doc="biblio" from="id (praz--011975a)" targOrder="U" to="DITTO" TEIform="xref">
+										<bibl default="NO" TEIform="bibl">
+											<biblScope type="p" TEIform="biblScope">98</biblScope>
+										</bibl>
+									</xref>
+								</item>
+							</list>
+						</note>
+						<note type="parallel" place="unspecified" anchored="yes" status="ready" TEIform="note">
+							<list type="simple" TEIform="list">
+								<item TEIform="item">Same emblem in 1608 edition: <xptr rend="ref" doc="he1608" type="parallel" from="id (he1608024)" targOrder="U" to="DITTO" TEIform="xptr" /></item>
+								<item TEIform="item">Source for the motto, latin subscriptio, pictura and entire emblem: <xref source="praz--011975a" rend="ref" doc="biblio" type="source" from="id  (alciat011995a)" targOrder="U" to="DITTO" TEIform="xref"><bibl default="NO" TEIform="bibl"><biblScope type="embl" TEIform="biblScope">117</biblScope></bibl></xref>
+								</item>
+								<item TEIform="item">The same emblem as above, but with another pictura (better resemblance):
+									<xref rend="ref" doc="biblio" type="source" from="id (alciat011996a)" targOrder="U" to="DITTO" TEIform="xref"><bibl default="NO" TEIform="bibl">
+											<biblScope type="embl" TEIform="biblScope">117</biblScope></bibl></xref></item>
+								<item TEIform="item">Source for the metaphor of an aged lover: <xref rend="ref" doc="biblio" type="source" from="id (ovidiu011973a)" targOrder="U" to="DITTO" TEIform="xref"><bibl default="NO" TEIform="bibl"><biblScope type="bk/poem" TEIform="biblScope">
+												I/9</biblScope></bibl></xref></item>
+								<item TEIform="item">
+									Parallel in the 1616 edition (motto the same, subscriptio more or less the same, modified pictura (an addition of a castle, the shrubs are clearly visible)): <xptr doc="he1616" from="id (he1616048)" targOrder="U" to="DITTO" TEIform="xptr" /></item><item TEIform="item">
+									Use of the same latin subscriptio:  <xptr doc="c1627" from="id (c162747)" targOrder="U" to="DITTO" TEIform="xptr" /></item><item TEIform="item">
+									Parallel for the pictura (corpse): <xptr doc="c1627" from="id (c162751)" targOrder="U" to="DITTO" TEIform="xptr" /></item><item TEIform="item">
+									Parallel for the pictura (corpse): <xptr doc="c1618" from="id (c161850)" targOrder="U" to="DITTO" TEIform="xptr" /></item></list>
+						</note>
+						<note type="hs" place="unspecified" anchored="yes" status="ready" TEIform="note">Liebeswahn des Greisses</note>
+						<note type="hspict" place="unspecified" anchored="yes" status="ready" TEIform="note">Eule auf einem Toten</note>
+						<linkGrp type="petrarchan elements" targOrder="U" TEIform="linkGrp">
+							<ptr target="he1601024204" targOrder="U" TEIform="ptr"><ana refers="ip04211" /></ptr>
+							<ptr target="he1601024201" targOrder="U" TEIform="ptr"><ana refers="ip04285" /></ptr>
+							<ptr target="he1601024208" targOrder="U" TEIform="ptr"><ana refers="ip04286" /></ptr>
+						</linkGrp>
+					</div>
+				</back>
+			</text>
+		</group>
+		<back TEIform="back">
+			<!--                                               <div type="pictlist">
+<p>
+<figure id="A2a" entity="A2a"/>
+<figure id="A2b" entity="A2b"/>
+<figure id="A3a" entity="A3a"/>
+<figure id="A3b" entity="A3b"/>
+<figure id="A4a" entity="A4a"/>
+<figure id="A4b" entity="A4b"/>
+<figure id="B1a" entity="B1a"/>
+<figure id="B1b" entity="B1b"/>
+<figure id="B2a" entity="B2a"/>
+<figure id="B2b" entity="B2b"/>
+<figure id="B3a" entity="B3a"/>
+<figure id="B3b" entity="B3b"/>
+<figure id="B4a" entity="B4a"/>
+<figure id="B4b" entity="B4b"/>
+<figure id="C1a" entity="C1a"/>
+<figure id="C1b" entity="C1b"/>
+<figure id="C2a" entity="C2a"/>
+<figure id="C2b" entity="C2b"/>
+<figure id="C3a" entity="C3a"/>
+<figure id="C3b" entity="C3b"/>
+<figure id="C4a" entity="C4a"/>
+<figure id="C4b" entity="C4b"/>
+<figure id="D1a" entity="D1a"/>
+<figure id="D1b" entity="D1b"/>
+<figure id="D2a" entity="D2a"/>
+<figure id="D2b" entity="D2b"/>
+<figure id="D3a" entity="D3a"/>
+<figure id="D3b" entity="D3b"/>
+<figure id="D4a" entity="D4a"/>
+<figure id="D4b" entity="D4b"/>
+<figure id="E1a" entity="E1a"/>
+<figure id="E1b" entity="E1b"/>
+<figure id="E2a" entity="E2a"/>
+<figure id="E2b" entity="E2b"/>
+<figure id="E3a" entity="E3a"/>
+<figure id="E3b" entity="E3b"/>
+<figure id="E4a" entity="E4a"/>
+<figure id="E4b" entity="E4b"/>
+<figure id="F1a" entity="F1a"/>
+<figure id="F1b" entity="F1b"/>
+<figure id="F2a" entity="F2a"/>
+<figure id="F2b" entity="F2b"/>
+<figure id="F3a" entity="F3a"/>
+<figure id="F3b" entity="F3b"/>
+<figure id="F4a" entity="F4a"/>
+<figure id="F4b" entity="F4b"/>
+<figure id="G1a" entity="G1a"/>
+<figure id="G1b" entity="G1b"/>
+<figure id="G2a" entity="G2a"/>
+<figure id="G2b" entity="G2b"/>
+<figure id="G3a" entity="G3a"/>
+<figure id="G3b" entity="G3b"/>
+<figure id="G4a" entity="G4a"/>
+<figure id="G4b" entity="G4b"/>
+<figure id="H1a" entity="H1a"/>
+<figure id="H1b" entity="H1b"/>
+<figure id="H2a" entity="H2a"/>
+<figure id="H2b" entity="H2b"/>
+<figure id="H3a" entity="H3a"/>
+<figure id="H3b" entity="H3b"/>
+<figure id="H4a" entity="H4a"/>
+<figure id="H4b" entity="H4b"/>
+<figure id="thumbB3a" entity="thumbB3a"/>
+<figure id="thumbB4a" entity="thumbB4a"/>
+<figure id="thumbC1a" entity="thumbC1a"/>
+<figure id="thumbC2a" entity="thumbC2a"/>
+<figure id="thumbC3a" entity="thumbC3a"/>
+<figure id="thumbC4a" entity="thumbC4a"/>
+<figure id="thumbD1a" entity="thumbD1a"/>
+<figure id="thumbD2a" entity="thumbD2a"/>
+<figure id="thumbD3a" entity="thumbD3a"/>
+<figure id="thumbD4a" entity="thumbD4a"/>
+<figure id="thumbE1a" entity="thumbE1a"/>
+<figure id="thumbE2a" entity="thumbE2a"/>
+<figure id="thumbE3a" entity="thumbE3a"/>
+<figure id="thumbE4a" entity="thumbE4a"/>
+<figure id="thumbF1a" entity="thumbF1a"/>
+<figure id="thumbF2a" entity="thumbF2a"/>
+<figure id="thumbF3a" entity="thumbF3a"/>
+<figure id="thumbF4a" entity="thumbF4a"/>
+<figure id="thumbG1a" entity="thumbG1a"/>
+<figure id="thumbG2a" entity="thumbG2a"/>
+<figure id="thumbG3a" entity="thumbG3a"/>
+<figure id="thumbG4a" entity="thumbG4a"/>
+<figure id="thumbH1a" entity="thumbH1a"/>
+<figure id="thumbH2a" entity="thumbH2a"/>
+<linkGrp type="facsimile" targOrder="Y" targFunc="page facsimile" targType="pb
+figure">
+		<link targets="folA2a A2a"/>
+		<link targets="folA2b A2b"/>
+		<link targets="folA3a A3a"/>
+		<link targets="folA3b A3b"/>
+		<link targets="folA4a A4a"/>
+		<link targets="folA4b A4b"/>
+		<link targets="folB1a B1a"/>
+		<link targets="folB1b B1b"/>
+		<link targets="folB2a B2a"/>
+		<link targets="folB2b B2b"/>
+		<link targets="folB3a B3a"/>
+		<link targets="folB3b B3b"/>
+		<link targets="folB4a B4a"/>
+		<link targets="folB4b B4b"/>
+		<link targets="folC1a C1a"/>
+		<link targets="folC1b C1b"/>
+		<link targets="folC2a C2a"/>
+		<link targets="folC2b C2b"/>
+		<link targets="folC3a C3a"/>
+		<link targets="folC3b C3b"/>
+		<link targets="folC4a C4a"/>
+		<link targets="folC4b C4b"/>
+		<link targets="folD1a D1a"/>
+		<link targets="folD1b D1b"/>
+		<link targets="folD2a D2a"/>
+		<link targets="folD2b D2b"/>
+		<link targets="folD3a D3a"/>
+		<link targets="folD3b D3b"/>
+		<link targets="folD4a D4a"/>
+		<link targets="folD4b D4b"/>
+		<link targets="folE1a E1a"/>
+		<link targets="folE1b E1b"/>
+		<link targets="folE2a E2a"/>
+		<link targets="folE2b E2b"/>
+		<link targets="folE3a E3a"/>
+		<link targets="folE3b E3b"/>
+		<link targets="folE4a E4a"/>
+		<link targets="folE4b E4b"/>
+		<link targets="folF1a F1a"/>
+		<link targets="folF1b F1b"/>
+		<link targets="folF2a F2a"/>
+		<link targets="folF2b F2b"/>
+		<link targets="folF3a F3a"/>
+		<link targets="folF3b F3b"/>
+		<link targets="folF4a F4a"/>
+		<link targets="folF4b F4b"/>
+		<link targets="folG1a G1a"/>
+		<link targets="folG1b G1b"/>
+		<link targets="folG2a G2a"/>
+		<link targets="folG2b G2b"/>
+		<link targets="folG3a G3a"/>
+		<link targets="folG3b G3b"/>
+		<link targets="folG4a G4a"/>
+		<link targets="folG4b G4b"/>
+		<link targets="folH1a H1a"/>
+		<link targets="folH1b H1b"/>
+		<link targets="folH2a H2a"/>
+</linkGrp>
+<linkGrp type="thumb" targOrder="Y" targFunc="emblem thumbnail" targType="text
+figure">
+		<link targets="he1601001 thumbB3a"/>
+		<link targets="he1601002 thumbB4a"/>
+		<link targets="he1601003 thumbC1a"/>
+		<link targets="he1601004 thumbC2a"/>
+		<link targets="he1601005 thumbC3a"/>
+		<link targets="he1601006 thumbC4a"/>
+		<link targets="he1601007 thumbD1a"/>
+		<link targets="he1601008 thumbD2a"/>
+		<link targets="he1601009 thumbD3a"/>
+		<link targets="he1601010 thumbD4a"/>
+		<link targets="he1601011 thumbE1a"/>
+		<link targets="he1601012 thumbE2a"/>
+		<link targets="he1601013 thumbE3a"/>
+		<link targets="he1601014 thumbE4a"/>
+		<link targets="he1601015 thumbF1a"/>
+		<link targets="he1601016 thumbF2a"/>
+		<link targets="he1601017 thumbF3a"/>
+		<link targets="he1601018 thumbF4a"/>
+		<link targets="he1601019 thumbG1a"/>
+		<link targets="he1601020 thumbG2a"/>
+		<link targets="he1601021 thumbG3a"/>
+		<link targets="he1601022 thumbG4a"/>
+		<link targets="he1601023 thumbH1a"/>
+		<link targets="he1601024 thumbH2a"/>
+</linkGrp>
+</p>
+</div>
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<div type="titlelist" status="ready" org="uniform" sample="complete" part="N" TEIform="div">
+				<p TEIform="p">
+					<list type="simple" TEIform="list">
+						<item id="titlehe1601front1" TEIform="item">[Titlepage]</item>
+						<item id="titlehe1601front001" TEIform="item">Aen de Joncvrouwen van Hollandt</item>
+						<item id="titlehe1601001" TEIform="item">Omnia vincit amor</item>
+						<item id="titlehe1601002" TEIform="item">Au dedans je me consume</item>
+						<item id="titlehe1601003" TEIform="item">Mes pleurs mon feu decelent</item>
+						<item id="titlehe1601004" TEIform="item">Ardo d&apost;appresso, &amp; da longhi mi struggo</item>
+						<item id="titlehe1601005" TEIform="item">Qui me nourrist, m&apost;estaind</item>
+						<item id="titlehe1601006" TEIform="item">A autruy mort, a moy vie</item>
+						<item id="titlehe1601007" TEIform="item">Je ne le puis celer</item>
+						<item id="titlehe1601008" TEIform="item">Cosi de ben amar porto tormento</item>
+						<item id="titlehe1601009" TEIform="item">Ni spirat, immota</item>
+						<item id="titlehe1601010" TEIform="item">Inter omnes</item>
+						<item id="titlehe1601011" TEIform="item">Je reviens de mon gr&eacute; aux doulx lacqs qui me serrent</item>
+						<item id="titlehe1601012" TEIform="item">O l&apost;estroit eslargir</item>
+						<item id="titlehe1601013" TEIform="item">De douceur amertume</item>
+						<item id="titlehe1601014" TEIform="item">Te stante virebo</item>
+						<item id="titlehe1601015" TEIform="item">Et piu dolsi</item>
+						<item id="titlehe1601016" TEIform="item">Solatium, non auxilium</item>
+						<item id="titlehe1601017" TEIform="item">Ni mesme la mort</item>
+						<item id="titlehe1601018" TEIform="item">C&apost;est tard avis&eacute;</item>
+						<item id="titlehe1601019" TEIform="item">Les deux sont un</item>
+						<item id="titlehe1601020" TEIform="item">Il mal mi preme, &amp; mi spaventa il peggio</item>
+						<item id="titlehe1601021" TEIform="item">Perch&apost; io stesso mi strinsi</item>
+						<item id="titlehe1601022" TEIform="item">Mon mal me suit</item>
+						<item id="titlehe1601023" TEIform="item">Ser&ograve; detrectat onus qui subijt</item>
+						<item id="titlehe1601024" TEIform="item">Noctua ut in tumulis, super utque cadavera bubo</item>
+					</list>
+					<linkGrp type="toctitel" targType="text item" targOrder="Y" targFunc="embleem verwijsnaam" TEIform="linkGrp">
+						<link targets="he1601front1 titlehe1601front1" targOrder="U" TEIform="link" />
+						<link targets="he1601front001 titlehe1601front001" targOrder="U" TEIform="link" />
+						<link targets="he1601001 titlehe1601001" targOrder="U" TEIform="link" />
+						<link targets="he1601002 titlehe1601002" targOrder="U" TEIform="link" />
+						<link targets="he1601003 titlehe1601003" targOrder="U" TEIform="link" />
+						<link targets="he1601004 titlehe1601004" targOrder="U" TEIform="link" />
+						<link targets="he1601005 titlehe1601005" targOrder="U" TEIform="link" />
+						<link targets="he1601006 titlehe1601006" targOrder="U" TEIform="link" />
+						<link targets="he1601007 titlehe1601007" targOrder="U" TEIform="link" />
+						<link targets="he1601008 titlehe1601008" targOrder="U" TEIform="link" />
+						<link targets="he1601009 titlehe1601009" targOrder="U" TEIform="link" />
+						<link targets="he1601010 titlehe1601010" targOrder="U" TEIform="link" />
+						<link targets="he1601011 titlehe1601011" targOrder="U" TEIform="link" />
+						<link targets="he1601012 titlehe1601012" targOrder="U" TEIform="link" />
+						<link targets="he1601013 titlehe1601013" targOrder="U" TEIform="link" />
+						<link targets="he1601014 titlehe1601014" targOrder="U" TEIform="link" />
+						<link targets="he1601015 titlehe1601015" targOrder="U" TEIform="link" />
+						<link targets="he1601016 titlehe1601016" targOrder="U" TEIform="link" />
+						<link targets="he1601017 titlehe1601017" targOrder="U" TEIform="link" />
+						<link targets="he1601018 titlehe1601018" targOrder="U" TEIform="link" />
+						<link targets="he1601019 titlehe1601019" targOrder="U" TEIform="link" />
+						<link targets="he1601020 titlehe1601020" targOrder="U" TEIform="link" />
+						<link targets="he1601021 titlehe1601021" targOrder="U" TEIform="link" />
+						<link targets="he1601022 titlehe1601022" targOrder="U" TEIform="link" />
+						<link targets="he1601023 titlehe1601023" targOrder="U" TEIform="link" />
+						<link targets="he1601024 titlehe1601024" targOrder="U" TEIform="link" />
+					</linkGrp>
+				</p>
+				<p TEIform="p" />
+				<interpGrp id="ip01" typedut="pictorial motifs" type="pictorial motifs" TEIform="interpGrp">
+					<interp id="ip010001" valuedut="opening in de wolken" value="opening in  clouds" TEIform="interp" />
+					<interp id="ip010002" valuedut="tekst" value="text" TEIform="interp" />
+					<interp id="ip010003" valuedut="wind" value="wind" TEIform="interp" />
+					<interp id="ip010004" valuedut="onweer" value="tempest" TEIform="interp" />
+					<interp id="ip010005" valuedut="zon" value="sun" TEIform="interp" />
+					<interp id="ip010006" valuedut="schip" value="ship" TEIform="interp" />
+					<interp id="ip010007" valuedut="Jezus" value="Jesus" TEIform="interp" />
+					<interp id="ip010008" valuedut="paslood" value="plummet" TEIform="interp" />
+					<interp id="ip010009" valuedut="ouroboros" value="ouroboros" TEIform="interp" />
+					<interp id="ip010010" valuedut="slang" value="serpent" TEIform="interp" />
+					<interp id="ip010012" valuedut="zonnestraal, straal van liefde?" value="sunbeam, beam of love?" TEIform="interp" />
+					<interp id="ip010013" valuedut="lessenaar" value="lectern" TEIform="interp" />
+					<interp id="ip010014" valuedut="boek" value="book" TEIform="interp" />
+					<interp id="ip010015" valuedut="loon (op aarde)" value="reward (on earth)" TEIform="interp" />
+					<interp id="ip010016" valuedut="loon (in de hemel)" value="reward (in  heaven)" TEIform="interp" />
+					<interp id="ip010017" valuedut="lauriertak?" value="laurel branch" TEIform="interp" />
+					<interp id="ip010018" valuedut="onderwijs" value="instruction" TEIform="interp" />
+					<interp id="ip010019" valuedut="schatkist" value="thesaurus" TEIform="interp" />
+					<interp id="ip010020" valuedut="spiegel" value="mirror" TEIform="interp" />
+					<interp id="ip010021" valuedut="getal" value="number" TEIform="interp" />
+					<interp id="ip010022" valuedut="medaillon" value="medaillon" TEIform="interp" />
+					<interp id="ip010024" valuedut="strijd" value="contest" TEIform="interp" />
+					<interp id="ip010026" valuedut="psyche, schietend" value="psyche, shooting  arrow" TEIform="interp" />
+					<interp id="ip010030" valuedut="weegschaal" value="balance" TEIform="interp" />
+					<interp id="ip010031" valuedut="toom?" value="bridle" TEIform="interp" />
+					<interp id="ip010032" valuedut="spiegel? (prudentia)" value="mirror?  (prudentia)" TEIform="interp" />
+					<interp id="ip010033" valuedut="zuil" value="pillar" TEIform="interp" />
+					<interp id="ip010034" valuedut="anker" value="anchor" TEIform="interp" />
+					<interp id="ip010035" valuedut="zuil met vlam (vroomheid?)" value="pillar with  flame (piety)" TEIform="interp" />
+					<interp id="ip010036" valuedut="wagen" value="wagon" TEIform="interp" />
+					<interp id="ip010037" valuedut="zonnebloem" value="sunflower" TEIform="interp" />
+					<interp id="ip010038" valuedut="vuur" value="fire" TEIform="interp" />
+					<interp id="ip010039" valuedut="ooievaar" value="stork" TEIform="interp" />
+					<interp id="ip010040" valuedut="crucifix" value="crucifix" TEIform="interp" />
+					<interp id="ip010041" valuedut="knoop" value="knot" TEIform="interp" />
+					<interp id="ip010042" valuedut="natuur (personificatie)" value="nature  (personified)" TEIform="interp" />
+					<interp id="ip010043" valuedut="palmtak" value="palm branch" TEIform="interp" />
+					<interp id="ip010044" valuedut="mens" value="human being(s)" TEIform="interp" />
+					<interp id="ip010045" valuedut="geweld, verwoesting" value="violence,  destruction" TEIform="interp" />
+					<interp id="ip010046" valuedut="schild" value="shield" TEIform="interp" />
+					<interp id="ip010047" valuedut="zaaien" value="sowing" TEIform="interp" />
+					<interp id="ip010048" valuedut="water" value="water" TEIform="interp" />
+					<interp id="ip010049" valuedut="eend" value="duck" TEIform="interp" />
+					<interp id="ip010050" valuedut="lamme" value="lame" TEIform="interp" />
+					<interp id="ip010051" valuedut="geld" value="money" TEIform="interp" />
+					<interp id="ip010052" valuedut="tak (eik?)" value="branch (oak?)" TEIform="interp" />
+					<interp id="ip010053" valuedut="schaduw" value="shadow" TEIform="interp" />
+					<interp id="ip010054" valuedut="haar (slangvormig), afgunst" value="hair  (serpents), envy" TEIform="interp" />
+					<interp id="ip010055" valuedut="runderschedel" value="ox skull" TEIform="interp" />
+					<interp id="ip010056" valuedut="spade" value="spade" TEIform="interp" />
+					<interp id="ip010057" valuedut="mand" value="basket" TEIform="interp" />
+					<interp id="ip010058" valuedut="roe" value="birch" TEIform="interp" />
+					<interp id="ip010059" valuedut="twee personen houden samen iets vast" value="two persons holding one object" TEIform="interp" />
+					<interp id="ip010060" valuedut="hoop (personificatie)" value="hope  (personified)" TEIform="interp" />
+					<interp id="ip010061" valuedut="voeden" value="feeding" TEIform="interp" />
+					<interp id="ip010062" valuedut="schildpad" value="tortoise" TEIform="interp" />
+					<interp id="ip010063" valuedut="voortgeselen" value="lash forth" TEIform="interp" />
+					<interp id="ip010064" valuedut="meetlat" value="measure" TEIform="interp" />
+					<interp id="ip010065" valuedut="weg (naar God)" value="road (to God)" TEIform="interp" />
+					<interp id="ip010066" valuedut="kruik" value="jar" TEIform="interp" />
+					<interp id="ip010067" valuedut="bron" value="source" TEIform="interp" />
+					<interp id="ip010068" valuedut="bloem (van type?)" value="flower (which sort  of flower?)" TEIform="interp" />
+					<interp id="ip010069" valuedut="brandstapel" value="stake" TEIform="interp" />
+					<interp id="ip010070" valuedut="mes" value="knife" TEIform="interp" />
+					<interp id="ip010071" valuedut="metselwerk" value="bricklaying" TEIform="interp" />
+					<interp id="ip010072" valuedut="specie" value="mortar (in masonry)" TEIform="interp" />
+					<interp id="ip010073" valuedut="geloof? (zuil met kruis)" value="faith?  (column with cross)" TEIform="interp" />
+					<interp id="ip010074" valuedut="reukwater (vaatje met)" value="eau de cologne  (vessel with)" TEIform="interp" />
+					<interp id="ip010075" valuedut="gevangenis (personificatie)" value="jail  (personified)" TEIform="interp" />
+					<interp id="ip010076" valuedut="dood (personificatie?)" value="death  (personified)" TEIform="interp" />
+					<interp id="ip010077" valuedut="autoriteiten (personificatie)" value="authorities (personified)" TEIform="interp" />
+					<interp id="ip010078" valuedut="put" value="well" TEIform="interp" />
+					<interp id="ip010079" valuedut="juk" value="yoke" TEIform="interp" />
+					<interp id="ip010080" valuedut="lauwerkrans" value="laurel-wreath" TEIform="interp" />
+					<interp id="ip010081" valuedut="borstkuras" value="breastplate" TEIform="interp" />
+					<interp id="ip010082" valuedut="boom" value="tree" TEIform="interp" />
+					<interp id="ip010083" valuedut="trommel??" value="drum??" TEIform="interp" />
+					<interp id="ip010084" valuedut="rijkdom" value="riches" TEIform="interp" />
+					<interp id="ip010085" valuedut="wapenschild" value="coat of arms" TEIform="interp" />
+					<interp id="ip010086" valuedut="stamboom" value="pedigree" TEIform="interp" />
+					<interp id="ip010087" valuedut="zien" value="see" TEIform="interp" />
+					<interp id="ip010088" valuedut="oversteken (water)" value="crossing (water)" TEIform="interp" />
+					<interp id="ip010089" valuedut="zout (vaatje met)" value="salt (vessel with)" TEIform="interp" />
+					<interp id="ip010090" valuedut="haas" value="hare" TEIform="interp" />
+					<interp id="ip010091" valuedut="schoen" value="shoe" TEIform="interp" />
+					<interp id="ip010092" valuedut="verstelwerk" value="mending (of clothes)" TEIform="interp" />
+					<interp id="ip010093" valuedut="lamp" value="lamp" TEIform="interp" />
+					<interp id="ip010094" valuedut="globe" value="globe" TEIform="interp" />
+					<interp id="ip010095" valuedut="duif" value="pigeon" TEIform="interp" />
+					<interp id="ip010096" valuedut="Babylon" value="Babylon" TEIform="interp" />
+					<interp id="ip010097" valuedut="Jeruzalem" value="Jerusalem" TEIform="interp" />
+					<interp id="ip010098" valuedut="kruis" value="cross" TEIform="interp" />
+					<interp id="ip010099" valuedut="Cupido?" value="Cupido?" TEIform="interp" />
+					<interp id="ip010100" valuedut="pauw" value="peacock" TEIform="interp" />
+					<interp id="ip010101" valuedut="schedel" value="skull" TEIform="interp" />
+					<interp id="ip010102" valuedut="vleugels, gebonden" value="wings, bound" TEIform="interp" />
+					<interp id="ip010103" valuedut="annunciatie" value="annunciation" TEIform="interp" />
+					<interp id="ip010104" valuedut="lont, brandend" value="wick, burning" TEIform="interp" />
+					<interp id="ip010105" valuedut="twee tot een geworden" value="two become one" TEIform="interp" />
+					<interp id="ip010106" valuedut="obelisk" value="obelisk" TEIform="interp" />
+					<interp id="ip010107" valuedut="enten van tak op boom" value="grafting branch  on tree" TEIform="interp" />
+					<interp id="ip010108" valuedut="Cupido (meer dan &eacute;&eacute;n)" value="Cupid (more than one)" TEIform="interp" />
+					<interp id="ip010109" valuedut="Fortuin (personificatie)" value="Fortuna  (personified)" TEIform="interp" />
+					<interp id="ip010110" valuedut="drinkbeker" value="drinking cup" TEIform="interp" />
+					<interp id="ip010111" valuedut="zon en onweer" value="sun and tempest" TEIform="interp" />
+					<interp id="ip010112" valuedut="dragen (&eacute;&eacute;n persoon draagt de  ander)" value="carrying (one person ~ another)" TEIform="interp" />
+					<interp id="ip010113" valuedut="blindheid" value="blindness" TEIform="interp" />
+					<interp id="ip010114" valuedut="omhelzing" value="embrace" TEIform="interp" />
+					<interp id="ip010115" valuedut="Terminus" value="Terminus" TEIform="interp" />
+					<interp id="ip010116" valuedut="Apollo" value="Apollo" TEIform="interp" />
+					<interp id="ip010117" valuedut="Python" value="Python" TEIform="interp" />
+					<interp id="ip010118" valuedut="hond" value="dog" TEIform="interp" />
+					<interp id="ip010119" valuedut="jachtscene" value="hunting scene" TEIform="interp" />
+					<interp id="ip010120" valuedut="stier" value="bull" TEIform="interp" />
+					<interp id="ip010121" valuedut="minnaar, getroffen, vluchtend" value="lover,  hit, fleeing" TEIform="interp" />
+					<interp id="ip010122" valuedut="maat voor droge waren?" value="measure for dry  goods?" TEIform="interp" />
+					<interp id="ip010123" valuedut="Hercules" value="Hercules" TEIform="interp" />
+					<interp id="ip010124" valuedut="Hydra" value="Hydra" TEIform="interp" />
+					<interp id="ip010125" valuedut="universum bijeengehouden door pijlen" value="universe held together by arrows" TEIform="interp" />
+					<interp id="ip010126" valuedut="universum gedragen door Cupido" value="universe borne by Cupid" TEIform="interp" />
+					<interp id="ip010127" valuedut="kompas" value="compass" TEIform="interp" />
+					<interp id="ip010128" valuedut="ster" value="star" TEIform="interp" />
+					<interp id="ip010129" valuedut="kwadrant" value="quadrant" TEIform="interp" />
+					<interp id="ip010130" valuedut="beminde" value="beloved" TEIform="interp" />
+					<interp id="ip010131" valuedut="Icarus" value="Icarus" TEIform="interp" />
+					<interp id="ip010132" valuedut="passer" value="compasses, pair of" TEIform="interp" />
+					<interp id="ip010133" valuedut="vuurproef" value="ordeal by fire?" TEIform="interp" />
+					<interp id="ip010134" valuedut="gouden munten" value="gold coins" TEIform="interp" />
+					<interp id="ip010135" valuedut="toetssteen" value="touchstone" TEIform="interp" />
+					<interp id="ip010136" valuedut="hart, doorschoten" value="heart, hit" TEIform="interp" />
+					<interp id="ip010137" valuedut="hand op staf " value="hand on staff" TEIform="interp" />
+					<interp id="ip010138" valuedut="staf" value="staff" TEIform="interp" />
+					<interp id="ip010139" valuedut="helm" value="helmet" TEIform="interp" />
+					<interp id="ip010140" valuedut="leiding (&eacute;&eacute;n persoon leidt de  ander)" value="guidance (one person guiding another)" TEIform="interp" />
+					<interp id="ip010141" valuedut="ring van Gyges" value="ring (Gyges)" TEIform="interp" />
+					<interp id="ip010142" valuedut="masker" value="mask" TEIform="interp" />
+					<interp id="ip010143" valuedut="beer, likt haar jong" value="bear licking its  cub" TEIform="interp" />
+					<interp id="ip010144" valuedut="lelie?" value="lily?" TEIform="interp" />
+					<interp id="ip010145" valuedut="staf (Mercurius)" value="staff (Mercurius)" TEIform="interp" />
+					<interp id="ip010146" valuedut="schild (Minerva)" value="shield (Minerva)" TEIform="interp" />
+					<interp id="ip010147" valuedut="kameleon" value="chameleon" TEIform="interp" />
+					<interp id="ip010148" valuedut="Fama" value="Fama" TEIform="interp" />
+					<interp id="ip010149" valuedut="oren (bedekken om niet te horen)" value="ears  (covered so as not to hear)" TEIform="interp" />
+					<interp id="ip010150" valuedut="geselen" value="lash" TEIform="interp" />
+					<interp id="ip010151" valuedut="gans, steen in snavel" value="goose, stone in  beak" TEIform="interp" />
+					<interp id="ip010152" valuedut="pruimetak?" value="plum-tree branch?" TEIform="interp" />
+					<interp id="ip010153" valuedut="vinger op mond (stilte)" value="finger on  mouth (silence)" TEIform="interp" />
+					<interp id="ip010154" valuedut="hoed (vrijheid)" value="cap (liberty)" TEIform="interp" />
+					<interp id="ip010155" valuedut="begieten" value="watering (plants, crops)" TEIform="interp" />
+					<interp id="ip010156" valuedut="minnaar, getroffen" value="lover, hit" TEIform="interp" />
+					<interp id="ip010157" valuedut="spinnen (werkwoord)" value="spinning" TEIform="interp" />
+					<interp id="ip010158" valuedut="muziek" value="music" TEIform="interp" />
+					<interp id="ip010159" valuedut="eten (heimelijk)" value="eating  (surreptitiously)" TEIform="interp" />
+					<interp id="ip010160" valuedut="drinken" value="drinking" TEIform="interp" />
+					<interp id="ip010161" valuedut="spel" value="play" TEIform="interp" />
+					<interp id="ip010162" valuedut="strik" value="snare, wire" TEIform="interp" />
+					<interp id="ip010163" valuedut="Leander?" value="Leander?" TEIform="interp" />
+					<interp id="ip010164" valuedut="pijlkoker als vaartuig" value="quiver as  vessel or craft" TEIform="interp" />
+					<interp id="ip010165" valuedut="stoel" value="chair" TEIform="interp" />
+					<interp id="ip010166" valuedut="rusteloosheid" value="restlessness" TEIform="interp" />
+					<interp id="ip010167" valuedut="treeft" value="trivet" TEIform="interp" />
+					<interp id="ip010168" valuedut="blaasbalg" value="bellows" TEIform="interp" />
+					<interp id="ip010169" valuedut="kookpot" value="pot (for cooking)" TEIform="interp" />
+					<interp id="ip010170" valuedut="mot" value="moth" TEIform="interp" />
+					<interp id="ip010171" valuedut="kaars" value="candle" TEIform="interp" />
+					<interp id="ip010172" valuedut="buitensluiten" value="shut out" TEIform="interp" />
+					<interp id="ip010173" valuedut="fakkel" value="torch" TEIform="interp" />
+					<interp id="ip010174" valuedut="afgunst (personificatie)" value="envy  (personified)" TEIform="interp" />
+					<interp id="ip010175" valuedut="roer" value="rudder" TEIform="interp" />
+					<interp id="ip010176" valuedut="hand, gevleugeld" value="hand, winged" TEIform="interp" />
+					<interp id="ip010177" valuedut="duisternis" value="darkness" TEIform="interp" />
+					<interp id="ip010178" valuedut="ezel met vleugels" value="donkey with wings" TEIform="interp" />
+					<interp id="ip010179" valuedut="karnton" value="churn" TEIform="interp" />
+					<interp id="ip010180" valuedut="ziekte" value="illness" TEIform="interp" />
+					<interp id="ip010181" valuedut="medicijn" value="medicine" TEIform="interp" />
+					<interp id="ip010182" valuedut="geschenken" value="gifts" TEIform="interp" />
+					<interp id="ip010183" valuedut="hert" value="deer" TEIform="interp" />
+					<interp id="ip010184" valuedut="brief" value="letter (epistle)" TEIform="interp" />
+					<interp id="ip010185" valuedut="bode" value="messenger" TEIform="interp" />
+					<interp id="ip010186" valuedut="vuurmaken" value="fire (lighting of)" TEIform="interp" />
+					<interp id="ip010187" valuedut="vuurtang?" value="fire-tongs?" TEIform="interp" />
+					<interp id="ip010188" valuedut="Venus" value="Venus" TEIform="interp" />
+					<interp id="ip010189" valuedut="Jupiter" value="Jove" TEIform="interp" />
+					<interp id="ip010190" valuedut="eed afleggen" value="oath" TEIform="interp" />
+					<interp id="ip010191" valuedut="zee" value="sea" TEIform="interp" />
+					<interp id="ip010192" valuedut="rots in zee" value="rock in the sea" TEIform="interp" />
+					<interp id="ip010193" valuedut="ton met gat" value="barrel with hole" TEIform="interp" />
+					<interp id="ip010194" valuedut="brandhout" value="firewood" TEIform="interp" />
+					<interp id="ip010195" valuedut="nacht" value="night" TEIform="interp" />
+					<interp id="ip010196" valuedut="pijl uit oog" value="arrow shot from eye" TEIform="interp" />
+					<interp id="ip010197" valuedut="doelwit" value="target" TEIform="interp" />
+					<interp id="ip010198" valuedut="dictamnum" value="dittany" TEIform="interp" />
+					<interp id="ip010199" valuedut="vuursteen" value="flint" TEIform="interp" />
+					<interp id="ip010200" valuedut="roos" value="rose" TEIform="interp" />
+					<interp id="ip010201" valuedut="doorn" value="thorn" TEIform="interp" />
+					<interp id="ip010202" valuedut="Cupido, smekend" value="Cupid, imploring" TEIform="interp" />
+					<interp id="ip010203" valuedut="Cupido, hardvochtig" value="Cupid,  hard-hearted" TEIform="interp" />
+					<interp id="ip010204" valuedut="Cupido, vertrekkend" value="Cupid, leaving" TEIform="interp" />
+					<interp id="ip010205" valuedut="droom" value="dream" TEIform="interp" />
+					<interp id="ip010206" valuedut="hyacint" value="hyacinth" TEIform="interp" />
+					<interp id="ip010207" valuedut="liguster (zien we die?)" value="liguster (is  it there?)" TEIform="interp" />
+					<interp id="ip010208" valuedut="occasio (gelegenheid)" value="opportunity  (occasio)" TEIform="interp" />
+					<interp id="ip010209" valuedut="hoorn des overvloeds" value="cornucopia" TEIform="interp" />
+					<interp id="ip010210" valuedut="klimop" value="ivy" TEIform="interp" />
+					<interp id="ip010211" valuedut="handenschudden (in mand)" value="handshake  (two hands in basket)" TEIform="interp" />
+					<interp id="ip010212" valuedut="rivaliteit" value="rivalry" TEIform="interp" />
+					<interp id="ip010213" valuedut="Cupido, huilend" value="Cupid, weeping" TEIform="interp" />
+					<interp id="ip010214" valuedut="lambiek?" value="(a)lambic?" TEIform="interp" />
+					<interp id="ip010215" valuedut="fakkel, omgekeerd" value="torch, head down" TEIform="interp" />
+					<interp id="ip010216" valuedut="beminde, afbeelding van" value="beloved, image  of" TEIform="interp" />
+					<interp id="ip010217" valuedut="reiziger" value="traveler" TEIform="interp" />
+					<interp id="ip010218" valuedut="Cupido als herbergier" value="Cupid as  inn-keeper" TEIform="interp" />
+					<interp id="ip010219" valuedut="schelp" value="shell" TEIform="interp" />
+					<interp id="ip010220" valuedut="gierigheid (personificatie)" value="avarice  (personified)" TEIform="interp" />
+					<interp id="ip010221" valuedut="kroon" value="crown" TEIform="interp" />
+					<interp id="ip010222" valuedut="zwaard" value="sword" TEIform="interp" />
+					<interp id="ip010223" valuedut="Mars" value="Mars" TEIform="interp" />
+					<interp id="ip010224" valuedut="bijl" value="axe" TEIform="interp" />
+					<interp id="ip010225" valuedut="omhakken van boom" value="cutting down tree" TEIform="interp" />
+					<interp id="ip010226" valuedut="plukken van bloemen" value="gathering  flowers" TEIform="interp" />
+					<interp id="ip010227" valuedut="borst vol pijlen" value="breast full of  arrows" TEIform="interp" />
+					<interp id="ip010228" valuedut="krokodil, huilend" value="crocodile, weeping" TEIform="interp" />
+					<interp id="ip010229" valuedut="Cupido afwezig" value="Cupid absent" TEIform="interp" />
+					<interp id="ip010230" valuedut="strovuur" value="strawfire?" TEIform="interp" />
+					<interp id="ip010231" valuedut="zon, opkomend" value="sun, rising" TEIform="interp" />
+					<interp id="ip010232" valuedut="rivier, ingedamd" value="river with dam" TEIform="interp" />
+					<interp id="ip010233" valuedut="salamander" value="salamander" TEIform="interp" />
+					<interp id="ip010234" valuedut="bloemen, verwelkt" value="flowers, withered" TEIform="interp" />
+					<interp id="ip010235" valuedut="bloemen, vers" value="flowers, fresh" TEIform="interp" />
+					<interp id="ip010236" valuedut="vos" value="fox" TEIform="interp" />
+					<interp id="ip010237" valuedut="Tijd (met vleugels)" value="Time (winged)" TEIform="interp" />
+					<interp id="ip010238" valuedut="vleugels bijsnijden" value="wings clipped" TEIform="interp" />
+					<interp id="ip010239" valuedut="list" value="wile" TEIform="interp" />
+					<interp id="ip010240" valuedut="Mercurius" value="Mercurius" TEIform="interp" />
+					<interp id="ip010241" valuedut="Io" value="Io" TEIform="interp" />
+					<interp id="ip010242" valuedut="Argus" value="Argus" TEIform="interp" />
+					<interp id="ip010243" valuedut="minnaar" value="lover" TEIform="interp" />
+					<interp id="ip010244" valuedut="wijnrank" value="vine" TEIform="interp" />
+					<interp id="ip010245" valuedut="olm" value="elm" TEIform="interp" />
+					<interp id="ip010246" valuedut="minnaar, dood" value="lover, dead" TEIform="interp" />
+					<interp id="ip010247" valuedut="handenschudden (op staf)" value="handshake (on  staff)" TEIform="interp" />
+					<interp id="ip010248" valuedut="beminde, huilend" value="beloved, weeping" TEIform="interp" />
+					<interp id="ip010250" valuedut="leeuw, getemd" value="lion, tamed" TEIform="interp" />
+					<interp id="ip010251" valuedut="temmen (werkwoord)" value="tame (verb)" TEIform="interp" />
+					<interp id="ip010252" valuedut="molen" value="mill" TEIform="interp" />
+					<interp id="ip010253" valuedut="geliefden" value="lovers" TEIform="interp" />
+					<interp id="ip010254" valuedut="destileerkolf" value="still?" TEIform="interp" />
+					<interp id="ip010255" valuedut="kasteel" value="castle" TEIform="interp" />
+					<interp id="ip010256" valuedut="tuin" value="garden" TEIform="interp" />
+					<interp id="ip010257" valuedut="maan" value="moon" TEIform="interp" />
+					<interp id="ip010258" valuedut="valk" value="falcon" TEIform="interp" />
+					<interp id="ip010259" valuedut="valkenier" value="falconeer?" TEIform="interp" />
+					<interp id="ip010260" valuedut="vogel(s)" value="bird(s)" TEIform="interp" />
+					<interp id="ip010261" valuedut="kooi" value="cage" TEIform="interp" />
+					<interp id="ip010262" valuedut="gevangen" value="captured" TEIform="interp" />
+					<interp id="ip010263" valuedut="bijenkorf" value="beehive" TEIform="interp" />
+					<interp id="ip010264" valuedut="rivier" value="river" TEIform="interp" />
+					<interp id="ip010265" valuedut="drinken (werkwoord)" value="drink (verb)" TEIform="interp" />
+					<interp id="ip010266" valuedut="vluchten" value="escape (verb)" TEIform="interp" />
+					<interp id="ip010267" valuedut="pijl, getroffen door" value="arrow, hit by" TEIform="interp" />
+					<interp id="ip010268" valuedut="boer" value="farmer" TEIform="interp" />
+					<interp id="ip010269" valuedut="paard" value="horse" TEIform="interp" />
+					<interp id="ip010270" valuedut="begraven (werkwoord)" value="bury (verb)" TEIform="interp" />
+					<interp id="ip010271" valuedut="vruchten" value="fruits" TEIform="interp" />
+					<interp id="ip010272" valuedut="kat" value="cat" TEIform="interp" />
+					<interp id="ip010273" valuedut="muis" value="mouse" TEIform="interp" />
+					<interp id="ip010274" valuedut="molensteen" value="millstone" TEIform="interp" />
+					<interp id="ip010275" valuedut="ploeg" value="plough" TEIform="interp" />
+					<interp id="ip010276" valuedut="rund" value="ox" TEIform="interp" />
+					<interp id="ip010277" valuedut="akker" value="field" TEIform="interp" />
+					<interp id="ip010278" valuedut="lijk" value="corpse" TEIform="interp" />
+					<interp id="ip010279" valuedut="uil" value="owl" TEIform="interp" />
+					<interp id="ip010280" valuedut="graf" value="grave" TEIform="interp" />
+					<interp id="ip010281" valuedut="vuur, gedoofd" value="fire, extinguished" TEIform="interp" />
+					<interp id="ip010282" valuedut="alsem?" value="wormwood" TEIform="interp" />
+					<interp id="ip010283" valuedut="wijzend gebaar" value="pointing gesture" TEIform="interp" />
+					<interp id="ip010301" valuedut="aal" value="eel" TEIform="interp" />
+					<interp id="ip010302" valuedut="aap" value="ape" TEIform="interp" />
+					<interp id="ip010303" valuedut="alpheus" value="alpheus" TEIform="interp" />
+					<interp id="ip010304" valuedut="appel" value="apple" TEIform="interp" />
+					<interp id="ip010305" valuedut="bliksem" value="lightning" TEIform="interp" />
+					<interp id="ip010306" valuedut="blinddoek" value="blindfold" TEIform="interp" />
+					<interp id="ip010307" valuedut="blussen" value="extinguish" TEIform="interp" />
+					<interp id="ip010309" valuedut="boot" value="boat" TEIform="interp" />
+					<interp id="ip010310" valuedut="borduren" value="embroider" TEIform="interp" />
+					<interp id="ip010313" valuedut="bij" value="bee" TEIform="interp" />
+					<interp id="ip010314" valuedut="cocon" value="cocoon" TEIform="interp" />
+					<interp id="ip010315" valuedut="cupido" value="cupid" TEIform="interp" />
+					<interp id="ip010316" valuedut="dodona" value="dodona" TEIform="interp" />
+					<interp id="ip010317" valuedut="doedelzakspeler" value="man playing the  bagpipes" TEIform="interp" />
+					<interp id="ip010319" valuedut="echo" value="echo" TEIform="interp" />
+					<interp id="ip010320" valuedut="ei" value="egg" TEIform="interp" />
+					<interp id="ip010322" valuedut="egel" value="hedgehog" TEIform="interp" />
+					<interp id="ip010325" valuedut="ezelsbot(fluit)" value="bone of donkey  (flute)" TEIform="interp" />
+					<interp id="ip010327" valuedut="fret" value="ferret" TEIform="interp" />
+					<interp id="ip010330" valuedut="huis" value="house" TEIform="interp" />
+					<interp id="ip010331" valuedut="insecten" value="insects" TEIform="interp" />
+					<interp id="ip010333" valuedut="jager" value="hunter" TEIform="interp" />
+					<interp id="ip010334" valuedut="jongen(s)" value="boy(s)" TEIform="interp" />
+					<interp id="ip010336" valuedut="kikker" value="frog" TEIform="interp" />
+					<interp id="ip010338" valuedut="konijn" value="rabbit" TEIform="interp" />
+					<interp id="ip010340" valuedut="krokodil" value="crocodile" TEIform="interp" />
+					<interp id="ip010341" valuedut="kuiken" value="chicken" TEIform="interp" />
+					<interp id="ip010342" valuedut="lamprei" value="lamprey?" TEIform="interp" />
+					<interp id="ip010343" valuedut="leeuw, geblinddoekt" value="lion,  blindfolded" TEIform="interp" />
+					<interp id="ip010344" valuedut="lindeboom" value="limetree" TEIform="interp" />
+					<interp id="ip010345" valuedut="luis" value="louse" TEIform="interp" />
+					<interp id="ip010346" valuedut="luit" value="lute" TEIform="interp" />
+					<interp id="ip010347" valuedut="magneet" value="magnet" TEIform="interp" />
+					<interp id="ip010348" valuedut="man" value="man" TEIform="interp" />
+					<interp id="ip010350" valuedut="matroos" value="sailor" TEIform="interp" />
+					<interp id="ip010351" valuedut="meeuw" value="seagull" TEIform="interp" />
+					<interp id="ip010353" valuedut="mossel" value="mussel" TEIform="interp" />
+					<interp id="ip010355" valuedut="naaien" value="sewing" TEIform="interp" />
+					<interp id="ip010356" valuedut="naald" value="needle" TEIform="interp" />
+					<interp id="ip010357" valuedut="nar" value="fool" TEIform="interp" />
+					<interp id="ip010358" valuedut="noot" value="nut" TEIform="interp" />
+					<interp id="ip010359" valuedut="os (gildeos)" value="ox (guild ox)" TEIform="interp" />
+					<interp id="ip010360" valuedut="paar" value="couple" TEIform="interp" />
+					<interp id="ip010361" valuedut="pan" value="pan" TEIform="interp" />
+					<interp id="ip010362" valuedut="papegaai" value="parrot" TEIform="interp" />
+					<interp id="ip010363" valuedut="patrijs" value="partridge" TEIform="interp" />
+					<interp id="ip010364" valuedut="pieterman" value="??" TEIform="interp" />
+					<interp id="ip010365" valuedut="pompoen" value="pumpkin" TEIform="interp" />
+					<interp id="ip010366" valuedut="pyramide" value="pyramid" TEIform="interp" />
+					<interp id="ip010367" valuedut="rat" value="rat" TEIform="interp" />
+					<interp id="ip010368" valuedut="rechtvaardigheid" value="justice" TEIform="interp" />
+					<interp id="ip010369" valuedut="roken" value="smoking" TEIform="interp" />
+					<interp id="ip010373" valuedut="schillen" value="peeling" TEIform="interp" />
+					<interp id="ip010374" valuedut="schrift" value=".[writing" TEIform="interp" />
+					<interp id="ip010375" valuedut="slachter" value="slaughterer" TEIform="interp" />
+					<interp id="ip010377" valuedut="slijpsteen" value="grindstone" TEIform="interp" />
+					<interp id="ip010378" valuedut="smidse" value="smithy" TEIform="interp" />
+					<interp id="ip010379" valuedut="specht" value="woodpecker" TEIform="interp" />
+					<interp id="ip010380" valuedut="speellieden" value="musicians" TEIform="interp" />
+					<interp id="ip010382" valuedut="spin" value="spider" TEIform="interp" />
+					<interp id="ip010383" valuedut="spinneweb" value="spider&apos;s web" TEIform="interp" />
+					<interp id="ip010384" valuedut="staal" value="steel" TEIform="interp" />
+					<interp id="ip010385" valuedut="stemmen" value="tuning" TEIform="interp" />
+					<interp id="ip010386" valuedut="stro" value="straw" TEIform="interp" />
+					<interp id="ip010387" valuedut="strodraad" value="strawthread" TEIform="interp" />
+					<interp id="ip010388" valuedut="stroom(god)" value="river(god)" TEIform="interp" />
+					<interp id="ip010389" valuedut="toren" value="tower" TEIform="interp" />
+					<interp id="ip010390" valuedut="trochilus" value="trochilus?" TEIform="interp" />
+					<interp id="ip010391" valuedut="ui" value="onion" TEIform="interp" />
+					<interp id="ip010392" valuedut="val" value="trap" TEIform="interp" />
+					<interp id="ip010393" valuedut="vis" value="fish" TEIform="interp" />
+					<interp id="ip010394" valuedut="visser" value="fisherman" TEIform="interp" />
+					<interp id="ip010395" valuedut="vlinder" value="butterfly" TEIform="interp" />
+					<interp id="ip010396" valuedut="voedster" value="nurse" TEIform="interp" />
+					<interp id="ip010398" valuedut="vrouw" value="woman" TEIform="interp" />
+					<interp id="ip010401" valuedut="windhaan" value="weathercock." TEIform="interp" />
+					<interp id="ip010402" valuedut="wolkenhand" value="hand in clouds" TEIform="interp" />
+					<interp id="ip010405" valuedut="cupido met bordurende vrouw" value="cupid and  embroidering woman" TEIform="interp" />
+					<interp id="ip010406" valuedut="cupido op geblinddoekte leeuw" value="cupid on  blindfolded lion" TEIform="interp" />
+					<interp id="ip010407" valuedut="cupido, appels rapend" value="cupid, gathering  apples" TEIform="interp" />
+					<interp id="ip010408" valuedut="cupido met pijpen" value="cupid holding  pipes" TEIform="interp" />
+					<interp id="ip010409" valuedut="man, schreeuwend" value="man, shouting" TEIform="interp" />
+					<interp id="ip010410" valuedut="man met gebroken zwaard" value="man with  broken sword" TEIform="interp" />
+					<interp id="ip010411" valuedut="man, rokend" value="man, smoking" TEIform="interp" />
+					<interp id="ip010412" valuedut="man op schip" value="man on a boat" TEIform="interp" />
+					<interp id="ip010413" valuedut="man, toekijkend" value="man, watching" TEIform="interp" />
+					<interp id="ip010414" valuedut="man, doedelzak spelend" value="man, playing  the bagpipes" TEIform="interp" />
+					<interp id="ip010415" valuedut="man, een luit stemmend" value="man, tuning a  lute" TEIform="interp" />
+					<interp id="ip010416" valuedut="man met aanstaande schoonzoon" value="man and  his future son-in-law" TEIform="interp" />
+					<interp id="ip010417" valuedut="man, spelend op een fluit" value="man, playing  the flute" TEIform="interp" />
+					<interp id="ip010418" valuedut="man, dood" value="man, dead" TEIform="interp" />
+					<interp id="ip010419" valuedut="man (muzikant)" value="man (musician)" TEIform="interp" />
+					<interp id="ip010420" valuedut="man (boer)" value="man (farmer)" TEIform="interp" />
+					<interp id="ip010421" valuedut="vrouw, bordurend" value="woman, embroidering" TEIform="interp" />
+					<interp id="ip010422" valuedut="vrouw met vogel" value="woman and a bird" TEIform="interp" />
+					<interp id="ip010423" valuedut="vrouw met fakkels" value="woman holding  torches" TEIform="interp" />
+					<interp id="ip010430" valuedut="Abundance" value="Abundance" TEIform="interp" />
+					<interp id="ip010431" valuedut="Actaeon" value="Actaeon" TEIform="interp" />
+					<interp id="ip010432" valuedut="air" value="air" TEIform="interp" />
+					<interp id="ip010433" valuedut="Ajax" value="Ajax" TEIform="interp" />
+					<interp id="ip010434" valuedut="altar" value="altar" TEIform="interp" />
+					<interp id="ip010435" valuedut="anemone" value="anemone" TEIform="interp" />
+					<interp id="ip010436" valuedut="angle iron" value="angle iron" TEIform="interp" />
+					<interp id="ip010437" valuedut="animal" value="animal" TEIform="interp" />
+					<interp id="ip010438" valuedut="anvil" value="anvil" TEIform="interp" />
+					<interp id="ip010439" valuedut="Ariadne&apos;s crown" value="Ariadne&apos;s crown" TEIform="interp" />
+					<interp id="ip010440" valuedut="Aries" value="Aries" TEIform="interp" />
+					<interp id="ip010441" valuedut="Aristomenes" value="Aristomenes" TEIform="interp" />
+					<interp id="ip010442" valuedut="ark of Noah" value="ark of Noah" TEIform="interp" />
+					<interp id="ip010443" valuedut="armillary sphere" value="armillary sphere" TEIform="interp" />
+					<interp id="ip010444" valuedut="armour" value="armour" TEIform="interp" />
+					<interp id="ip010445" valuedut="arms" value="arms" TEIform="interp" />
+					<interp id="ip010446" valuedut="arrow(s)" value="arrow(s)" TEIform="interp" />
+					<interp id="ip010447" valuedut="Atlas" value="Atlas" TEIform="interp" />
+					<interp id="ip010448" valuedut="award" value="award" TEIform="interp" />
+					<interp id="ip010449" valuedut="bag" value="bag" TEIform="interp" />
+					<interp id="ip010450" valuedut="balloon" value="balloon" TEIform="interp" />
+					<interp id="ip010451" valuedut="balloon, pierced" value="balloon, pierced" TEIform="interp" />
+					<interp id="ip010452" valuedut="balm" value="balm" TEIform="interp" />
+					<interp id="ip010453" valuedut="basil" value="basil" TEIform="interp" />
+					<interp id="ip010454" valuedut="bat" value="bat" TEIform="interp" />
+					<interp id="ip010455" valuedut="baton" value="baton" TEIform="interp" />
+					<interp id="ip010456" valuedut="battlefield" value="battlefield" TEIform="interp" />
+					<interp id="ip010457" valuedut="beak" value="beak" TEIform="interp" />
+					<interp id="ip010458" valuedut="bear" value="bear" TEIform="interp" />
+					<interp id="ip010459" valuedut="beaver" value="beaver" TEIform="interp" />
+					<interp id="ip010460" valuedut="bed" value="bed" TEIform="interp" />
+					<interp id="ip010461" valuedut="bell" value="bell" TEIform="interp" />
+					<interp id="ip010462" valuedut="bell tower" value="bell tower" TEIform="interp" />
+					<interp id="ip010463" valuedut="Bellerophon" value="Bellerophon" TEIform="interp" />
+					<interp id="ip010464" valuedut="bird of paradise" value="bird of paradise" TEIform="interp" />
+					<interp id="ip010465" valuedut="board" value="board" TEIform="interp" />
+					<interp id="ip010466" valuedut="bomb" value="bomb" TEIform="interp" />
+					<interp id="ip010467" valuedut="bow" value="bow" TEIform="interp" />
+					<interp id="ip010468" valuedut="bowling game" value="bowling game" TEIform="interp" />
+					<interp id="ip010469" valuedut="branch" value="branch" TEIform="interp" />
+					<interp id="ip010470" valuedut="branch, dry" value="branch, dry" TEIform="interp" />
+					<interp id="ip010471" valuedut="breakers" value="breakers" TEIform="interp" />
+					<interp id="ip010472" valuedut="bridge" value="bridge" TEIform="interp" />
+					<interp id="ip010473" valuedut="broom" value="broom" TEIform="interp" />
+					<interp id="ip010474" valuedut="bucket" value="bucket" TEIform="interp" />
+					<interp id="ip010475" valuedut="bud" value="bud" TEIform="interp" />
+					<interp id="ip010476" valuedut="building(s)" value="building(s)" TEIform="interp" />
+					<interp id="ip010477" valuedut="bundle" value="bundle" TEIform="interp" />
+					<interp id="ip010478" valuedut="burrow" value="burrow" TEIform="interp" />
+					<interp id="ip010479" valuedut="cabbage" value="cabbage" TEIform="interp" />
+					<interp id="ip010480" valuedut="calabash" value="calabash" TEIform="interp" />
+					<interp id="ip010481" valuedut="caltrop" value="caltrop" TEIform="interp" />
+					<interp id="ip010482" valuedut="camel" value="camel" TEIform="interp" />
+					<interp id="ip010483" valuedut="candlestick" value="candlestick" TEIform="interp" />
+					<interp id="ip010484" valuedut="cannon" value="cannon" TEIform="interp" />
+					<interp id="ip010485" valuedut="cannon, firing" value="cannon, firing" TEIform="interp" />
+					<interp id="ip010486" valuedut="canopy" value="canopy" TEIform="interp" />
+					<interp id="ip010487" valuedut="canvas (painter&apos;s)" value="canvas  (painter&apos;s)" TEIform="interp" />
+					<interp id="ip010488" valuedut="caper" value="caper" TEIform="interp" />
+					<interp id="ip010489" valuedut="Capricorn" value="Capricorn" TEIform="interp" />
+					<interp id="ip010490" valuedut="cardinal&apos;s hat" value="cardinal&apos;s hat" TEIform="interp" />
+					<interp id="ip010491" valuedut="carriage" value="carriage" TEIform="interp" />
+					<interp id="ip010492" valuedut="carrying (one bird ~ another)" value="carrying  (one bird ~ another)" TEIform="interp" />
+					<interp id="ip010493" valuedut="case" value="case" TEIform="interp" />
+					<interp id="ip010494" valuedut="cassolette" value="cassolette" TEIform="interp" />
+					<interp id="ip010495" valuedut="cassolette, burning" value="cassolette,  burning" TEIform="interp" />
+					<interp id="ip010496" valuedut="caterpillar" value="caterpillar" TEIform="interp" />
+					<interp id="ip010497" valuedut="cereal" value="cereal" TEIform="interp" />
+					<interp id="ip010498" valuedut="chain" value="chain" TEIform="interp" />
+					<interp id="ip010499" valuedut="champignon" value="champignon" TEIform="interp" />
+					<interp id="ip010500" valuedut="charity" value="charity" TEIform="interp" />
+					<interp id="ip010501" valuedut="cherry" value="cherry" TEIform="interp" />
+					<interp id="ip010502" valuedut="chestnut" value="chestnut" TEIform="interp" />
+					<interp id="ip010503" valuedut="chick" value="chick" TEIform="interp" />
+					<interp id="ip010504" valuedut="child" value="child" TEIform="interp" />
+					<interp id="ip010505" valuedut="chimney" value="chimney" TEIform="interp" />
+					<interp id="ip010506" valuedut="church" value="church" TEIform="interp" />
+					<interp id="ip010507" valuedut="circle" value="circle" TEIform="interp" />
+					<interp id="ip010508" valuedut="Clytie" value="Clytie" TEIform="interp" />
+					<interp id="ip010509" valuedut="clock, pendulum" value="clock, pendulum" TEIform="interp" />
+					<interp id="ip010510" valuedut="cloth" value="cloth" TEIform="interp" />
+					<interp id="ip010511" valuedut="cloud" value="cloud" TEIform="interp" />
+					<interp id="ip010512" valuedut="clover" value="clover" TEIform="interp" />
+					<interp id="ip010513" valuedut="club" value="club" TEIform="interp" />
+					<interp id="ip010514" valuedut="coffin" value="coffin" TEIform="interp" />
+					<interp id="ip010515" valuedut="collar (dog&apos;s)" value="collar (dog&apos;s)" TEIform="interp" />
+					<interp id="ip010516" valuedut="comet" value="comet" TEIform="interp" />
+					<interp id="ip010517" valuedut="concordia" value="concordia" TEIform="interp" />
+					<interp id="ip010518" valuedut="convent" value="convent" TEIform="interp" />
+					<interp id="ip010519" valuedut="coral" value="coral" TEIform="interp" />
+					<interp id="ip010520" valuedut="Coronis" value="Coronis" TEIform="interp" />
+					<interp id="ip010521" valuedut="cradle" value="cradle" TEIform="interp" />
+					<interp id="ip010522" valuedut="crane" value="crane" TEIform="interp" />
+					<interp id="ip010523" valuedut="crane (mechanical)" value="crane  (mechanical)" TEIform="interp" />
+					<interp id="ip010524" valuedut="crocodile" value="crocodile" TEIform="interp" />
+					<interp id="ip010525" valuedut="crossbones" value="crossbones" TEIform="interp" />
+					<interp id="ip010526" valuedut="crow" value="crow" TEIform="interp" />
+					<interp id="ip010527" valuedut="crucible" value="crucible" TEIform="interp" />
+					<interp id="ip010528" valuedut="cuirasse" value="cuirasse" TEIform="interp" />
+					<interp id="ip010529" valuedut="Cupid above altar" value="Cupid above altar" TEIform="interp" />
+					<interp id="ip010530" valuedut="Cupid above straw in flames" value="Cupid  above straw in flames" TEIform="interp" />
+					<interp id="ip010531" valuedut="Cupid and beloved" value="Cupid and beloved" TEIform="interp" />
+					<interp id="ip010532" valuedut="Cupid and hare" value="Cupid and hare" TEIform="interp" />
+					<interp id="ip010533" valuedut="Cupid and heliotrope" value="Cupid and  heliotrope" TEIform="interp" />
+					<interp id="ip010534" valuedut="Cupid and pillar" value="Cupid and pillar" TEIform="interp" />
+					<interp id="ip010535" valuedut="Cupid and thorns" value="Cupid and thorns" TEIform="interp" />
+					<interp id="ip010536" valuedut="Cupid and Time" value="Cupid and Time" TEIform="interp" />
+					<interp id="ip010537" valuedut="Cupid and Venus" value="Cupid and Venus" TEIform="interp" />
+					<interp id="ip010538" valuedut="Cupid at gate of garden" value="Cupid at gate  of garden" TEIform="interp" />
+					<interp id="ip010539" valuedut="Cupid in flaming heart" value="Cupid in  flaming heart" TEIform="interp" />
+					<interp id="ip010540" valuedut="Cupid with mask" value="Cupid with mask" TEIform="interp" />
+					<interp id="ip010541" valuedut="Cupid, battering Jove" value="Cupid, battering  Jove" TEIform="interp" />
+					<interp id="ip010542" valuedut="Cupid, blindfolded" value="Cupid,  blindfolded" TEIform="interp" />
+					<interp id="ip010543" valuedut="Cupid, bound at stake" value="Cupid, bound at  stake" TEIform="interp" />
+					<interp id="ip010544" valuedut="Cupid, breaking rock" value="Cupid, breaking  rock" TEIform="interp" />
+					<interp id="ip010545" valuedut="Cupid, burning wood" value="Cupid, burning  wood" TEIform="interp" />
+					<interp id="ip010546" valuedut="Cupid, carrying pillar" value="Cupid, carrying  pillar" TEIform="interp" />
+					<interp id="ip010547" valuedut="Cupid, coming at night" value="Cupid, coming  at night" TEIform="interp" />
+					<interp id="ip010548" valuedut="Cupid, conquerring dragon" value="Cupid,  conquerring dragon" TEIform="interp" />
+					<interp id="ip010549" valuedut="Cupid, conquerring Envy" value="Cupid,  conquerring Envy" TEIform="interp" />
+					<interp id="ip010550" valuedut="Cupid, conquerring Mars" value="Cupid,  conquerring Mars" TEIform="interp" />
+					<interp id="ip010551" valuedut="Cupid, controlling ship" value="Cupid,  controlling ship" TEIform="interp" />
+					<interp id="ip010552" valuedut="Cupid, cutting tree" value="Cupid, cutting  tree" TEIform="interp" />
+					<interp id="ip010553" valuedut="Cupid, cutting rose" value="Cupid, cutting  rose" TEIform="interp" />
+					<interp id="ip010554" valuedut="Cupid, directing arrow at heart" value="Cupid,  directing arrow at heart" TEIform="interp" />
+					<interp id="ip010555" valuedut="Cupid, disdaining measure" value="Cupid,  disdaining measure" TEIform="interp" />
+					<interp id="ip010556" valuedut="Cupid, disdaining riches" value="Cupid,  disdaining riches" TEIform="interp" />
+					<interp id="ip010557" valuedut="Cupid, driving turtle" value="Cupid, driving  turtle" TEIform="interp" />
+					<interp id="ip010558" valuedut="Cupid, extinguishing torch" value="Cupid,  extinguishing torch" TEIform="interp" />
+					<interp id="ip010559" valuedut="Cupid, fastening wings on donkey" value="Cupid, fastening wings on donkey" TEIform="interp" />
+					<interp id="ip010560" valuedut="Cupid, fastening wings on tortoise" value="Cupid, fastening wings on tortoise" TEIform="interp" />
+					<interp id="ip010561" valuedut="Cupid, fishing" value="Cupid, fishing" TEIform="interp" />
+					<interp id="ip010562" valuedut="Cupid, fleeing from monster" value="Cupid,  fleeing from monster" TEIform="interp" />
+					<interp id="ip010563" valuedut="Cupid, forging heart" value="Cupid, forging  heart" TEIform="interp" />
+					<interp id="ip010564" valuedut="Cupid, forging hot iron" value="Cupid, forging  hot iron" TEIform="interp" />
+					<interp id="ip010565" valuedut="Cupid, grafting branch on tree" value="Cupid,  grafting branch on tree" TEIform="interp" />
+					<interp id="ip010566" valuedut="Cupid, heating arrow points in fire" value="Cupid, heating arrow points in fire" TEIform="interp" />
+					<interp id="ip010567" valuedut="Cupid, hiding torch" value="Cupid, hiding  torch" TEIform="interp" />
+					<interp id="ip010568" valuedut="Cupid, hit by arrow" value="Cupid, hit by  arrow" TEIform="interp" />
+					<interp id="ip010569" valuedut="Cupid, hitting heart" value="Cupid, hitting  heart" TEIform="interp" />
+					<interp id="ip010570" valuedut="Cupid, holding branch" value="Cupid, holding  branch" TEIform="interp" />
+					<interp id="ip010571" valuedut="Cupid, holding candle" value="Cupid, holding  candle" TEIform="interp" />
+					<interp id="ip010572" valuedut="Cupid, holding chameleon" value="Cupid,  holding chameleon" TEIform="interp" />
+					<interp id="ip010573" valuedut="Cupid, holding fish and flowers" value="Cupid,  holding fish and flowers" TEIform="interp" />
+					<interp id="ip010574" valuedut="Cupid, holding flag" value="Cupid, holding  flag" TEIform="interp" />
+					<interp id="ip010575" valuedut="Cupid, holding flowers" value="Cupid, holding  flowers" TEIform="interp" />
+					<interp id="ip010576" valuedut="Cupid, holding heart" value="Cupid, holding  heart" TEIform="interp" />
+					<interp id="ip010577" valuedut="Cupid, holding mirror" value="Cupid, holding  mirror" TEIform="interp" />
+					<interp id="ip010578" valuedut="Cupid, holding palm branch" value="Cupid,  holding palm branch" TEIform="interp" />
+					<interp id="ip010579" valuedut="Cupid, holding plummet" value="Cupid, holding  plummet" TEIform="interp" />
+					<interp id="ip010580" valuedut="Cupid, holding tablet" value="Cupid, holding  tablet" TEIform="interp" />
+					<interp id="ip010581" valuedut="Cupid, holding torch" value="Cupid, holding  torch" TEIform="interp" />
+					<interp id="ip010582" valuedut="Cupid, holding tray with hearts" value="Cupid,  holding tray with hearts" TEIform="interp" />
+					<interp id="ip010583" valuedut="Cupid, holding yoke" value="Cupid, holding  yoke" TEIform="interp" />
+					<interp id="ip010584" valuedut="Cupid, holding woman by hand" value="Cupid,  holding woman by hand" TEIform="interp" />
+					<interp id="ip010585" valuedut="Cupid, hunting" value="Cupid, hunting" TEIform="interp" />
+					<interp id="ip010586" valuedut="Cupid, ill" value="Cupid, ill" TEIform="interp" />
+					<interp id="ip010587" valuedut="Cupid, kissing" value="Cupid, kissing" TEIform="interp" />
+					<interp id="ip010588" valuedut="Cupid, lighting fire" value="Cupid, lighting  fire" TEIform="interp" />
+					<interp id="ip010589" valuedut="Cupid, looking in mirror" value="Cupid,  looking in mirror" TEIform="interp" />
+					<interp id="ip010590" valuedut="Cupid, making butter" value="Cupid, making  butter" TEIform="interp" />
+					<interp id="ip010591" valuedut="Cupid, overturning statue" value="Cupid,  overturning statue" TEIform="interp" />
+					<interp id="ip010592" valuedut="Cupid, peeing" value="Cupid, peeing" TEIform="interp" />
+					<interp id="ip010593" valuedut="Cupid, playing flute" value="Cupid, playing  flute" TEIform="interp" />
+					<interp id="ip010594" valuedut="Cupid, sharpening arrow" value="Cupid,  sharpening arrow" TEIform="interp" />
+					<interp id="ip010595" valuedut="Cupid, shut out" value="Cupid, shut out" TEIform="interp" />
+					<interp id="ip010596" valuedut="Cupid, sitting and emptying a bag with golden  coins" value="Cupid, sitting and emptying a bag with golden coins" TEIform="interp" />
+					<interp id="ip010597" valuedut="Cupid, slain by Death" value="Cupid, slain by  Death" TEIform="interp" />
+					<interp id="ip010598" valuedut="Cupid, sowing poppy" value="Cupid, sowing  poppy" TEIform="interp" />
+					<interp id="ip010599" valuedut="Cupid, spinning cord" value="Cupid, spinning  cord" TEIform="interp" />
+					<interp id="ip010600" valuedut="Cupid, steering a quiver" value="Cupid,  steering a quiver" TEIform="interp" />
+					<interp id="ip010601" valuedut="Cupid, taking oath" value="Cupid, taking  oath" TEIform="interp" />
+					<interp id="ip010602" valuedut="Cupid, taming lion" value="Cupid, taming  lion" TEIform="interp" />
+					<interp id="ip010603" valuedut="Cupid, tearing purse" value="Cupid, tearing  purse" TEIform="interp" />
+					<interp id="ip010604" valuedut="Cupid, trampling on ox skin and spade" value="Cupid, trampling on ox skin and spade" TEIform="interp" />
+					<interp id="ip010605" valuedut="Cupid, using tongs on fire" value="Cupid,  using tongs on fire" TEIform="interp" />
+					<interp id="ip010606" valuedut="Cupid, watching sunrise" value="Cupid,  watching sunrise" TEIform="interp" />
+					<interp id="ip010607" valuedut="Cupid, watering plants" value="Cupid, watering  plants" TEIform="interp" />
+					<interp id="ip010608" valuedut="Cupid, waving at ship in tempest" value="Cupid, waving at ship in tempest" TEIform="interp" />
+					<interp id="ip010609" valuedut="Cupid, with winged hand" value="Cupid, with  winged hand" TEIform="interp" />
+					<interp id="ip010610" valuedut="Cupid, wounding man" value="Cupid, wounding  man" TEIform="interp" />
+					<interp id="ip010611" valuedut="cypress" value="cypress" TEIform="interp" />
+					<interp id="ip010612" valuedut="dagger" value="dagger" TEIform="interp" />
+					<interp id="ip010613" valuedut="danger" value="danger" TEIform="interp" />
+					<interp id="ip010614" valuedut="Daphne" value="Daphne" TEIform="interp" />
+					<interp id="ip010615" valuedut="dead" value="dead" TEIform="interp" />
+					<interp id="ip010616" valuedut="deception, optical" value="deception,  optical" TEIform="interp" />
+					<interp id="ip010617" valuedut="dial" value="dial" TEIform="interp" />
+					<interp id="ip010618" valuedut="diamond" value="diamond" TEIform="interp" />
+					<interp id="ip010619" valuedut="Diana" value="Diana" TEIform="interp" />
+					<interp id="ip010620" valuedut="Dog (constellation)" value="Dog  (constellation)" TEIform="interp" />
+					<interp id="ip010621" valuedut="dog in flames" value="dog in flames" TEIform="interp" />
+					<interp id="ip010622" valuedut="dolphin" value="dolphin" TEIform="interp" />
+					<interp id="ip010623" valuedut="donkey" value="donkey" TEIform="interp" />
+					<interp id="ip010624" valuedut="doorway" value="doorway" TEIform="interp" />
+					<interp id="ip010625" valuedut="dove" value="dove" TEIform="interp" />
+					<interp id="ip010626" valuedut="dragon" value="dragon" TEIform="interp" />
+					<interp id="ip010627" valuedut="eagle" value="eagle" TEIform="interp" />
+					<interp id="ip010628" valuedut="ear of corn" value="ear of corn" TEIform="interp" />
+					<interp id="ip010629" valuedut="easel" value="easel" TEIform="interp" />
+					<interp id="ip010630" valuedut="Echo" value="Echo" TEIform="interp" />
+					<interp id="ip010631" valuedut="eclipse" value="eclipse" TEIform="interp" />
+					<interp id="ip010632" valuedut="elephant" value="elephant" TEIform="interp" />
+					<interp id="ip010633" valuedut="Etruria" value="Etruria" TEIform="interp" />
+					<interp id="ip010634" valuedut="eye(s)" value="eye(s)" TEIform="interp" />
+					<interp id="ip010635" valuedut="fern (plant)" value="fern (plant)" TEIform="interp" />
+					<interp id="ip010636" valuedut="fig (tree)" value="fig (tree)" TEIform="interp" />
+					<interp id="ip010637" valuedut="fire ship" value="fire ship" TEIform="interp" />
+					<interp id="ip010638" valuedut="fireball" value="fireball" TEIform="interp" />
+					<interp id="ip010639" valuedut="firewood" value="firewood" TEIform="interp" />
+					<interp id="ip010640" valuedut="firmament" value="firmament" TEIform="interp" />
+					<interp id="ip010641" valuedut="fishing net" value="fishing net" TEIform="interp" />
+					<interp id="ip010642" valuedut="fish trap" value="fish trap" TEIform="interp" />
+					<interp id="ip010643" valuedut="flag" value="flag" TEIform="interp" />
+					<interp id="ip010644" valuedut="flail" value="flail" TEIform="interp" />
+					<interp id="ip010645" valuedut="flea" value="flea" TEIform="interp" />
+					<interp id="ip010646" valuedut="flower" value="flower" TEIform="interp" />
+					<interp id="ip010647" valuedut="flower bed" value="flower bed" TEIform="interp" />
+					<interp id="ip010648" valuedut="flute" value="flute" TEIform="interp" />
+					<interp id="ip010649" valuedut="fly" value="fly" TEIform="interp" />
+					<interp id="ip010650" valuedut="fort" value="fort" TEIform="interp" />
+					<interp id="ip010651" valuedut="fountain" value="fountain" TEIform="interp" />
+					<interp id="ip010652" valuedut="fox tied up to pillar" value="fox tied up to  pillar" TEIform="interp" />
+					<interp id="ip010653" valuedut="fritillary" value="fritillary" TEIform="interp" />
+					<interp id="ip010654" valuedut="galley" value="galley" TEIform="interp" />
+					<interp id="ip010655" valuedut="game" value="game" TEIform="interp" />
+					<interp id="ip010656" valuedut="Ganymedes" value="Ganymedes" TEIform="interp" />
+					<interp id="ip010657" valuedut="garlic" value="garlic" TEIform="interp" />
+					<interp id="ip010658" valuedut="gate" value="gate" TEIform="interp" />
+					<interp id="ip010659" valuedut="genitals" value="genitals" TEIform="interp" />
+					<interp id="ip010660" valuedut="glass" value="glass" TEIform="interp" />
+					<interp id="ip010661" valuedut="goat" value="goat" TEIform="interp" />
+					<interp id="ip010662" valuedut="god(s)" value="god(s)" TEIform="interp" />
+					<interp id="ip010663" valuedut="gold" value="gold" TEIform="interp" />
+					<interp id="ip010664" valuedut="Golden Age" value="Golden Age" TEIform="interp" />
+					<interp id="ip010665" valuedut="goose" value="goose" TEIform="interp" />
+					<interp id="ip010666" valuedut="grain" value="grain" TEIform="interp" />
+					<interp id="ip010667" valuedut="grass" value="grass" TEIform="interp" />
+					<interp id="ip010668" valuedut="greyhound" value="greyhound" TEIform="interp" />
+					<interp id="ip010669" valuedut="gun" value="gun" TEIform="interp" />
+					<interp id="ip010670" valuedut="gunpowder" value="gunpowder" TEIform="interp" />
+					<interp id="ip010671" valuedut="hammer" value="hammer" TEIform="interp" />
+					<interp id="ip010672" valuedut="hand in clouds (more than one)" value="hand in  clouds (more than one)" TEIform="interp" />
+					<interp id="ip010673" valuedut="handshake" value="handshake" TEIform="interp" />
+					<interp id="ip010674" valuedut="harbour" value="harbour" TEIform="interp" />
+					<interp id="ip010675" valuedut="harpe" value="harpe" TEIform="interp" />
+					<interp id="ip010676" valuedut="harrow" value="harrow" TEIform="interp" />
+					<interp id="ip010677" valuedut="hat" value="hat" TEIform="interp" />
+					<interp id="ip010678" valuedut="hawthorn" value="hawthorn" TEIform="interp" />
+					<interp id="ip010679" valuedut="hay" value="hay" TEIform="interp" />
+					<interp id="ip010680" valuedut="headles" value="headles" TEIform="interp" />
+					<interp id="ip010681" valuedut="heart" value="heart" TEIform="interp" />
+					<interp id="ip010682" valuedut="heart, flaming" value="heart, flaming" TEIform="interp" />
+					<interp id="ip010683" valuedut="heart, winged" value="heart, winged" TEIform="interp" />
+					<interp id="ip010684" valuedut="heavens" value="heavens" TEIform="interp" />
+					<interp id="ip010685" valuedut="Hebrews" value="Hebrews" TEIform="interp" />
+					<interp id="ip010686" valuedut="heliotrope" value="heliotrope" TEIform="interp" />
+					<interp id="ip010687" valuedut="hen" value="hen" TEIform="interp" />
+					<interp id="ip010688" valuedut="herb(s)" value="herb(s)" TEIform="interp" />
+					<interp id="ip010689" valuedut="Hercules (infant)" value="Hercules (infant)" TEIform="interp" />
+					<interp id="ip010690" valuedut="heron" value="heron" TEIform="interp" />
+					<interp id="ip010691" valuedut="hole" value="hole" TEIform="interp" />
+					<interp id="ip010692" valuedut="holly" value="holly" TEIform="interp" />
+					<interp id="ip010693" valuedut="horn" value="horn" TEIform="interp" />
+					<interp id="ip010694" valuedut="horse (Trojan)" value="horse (Trojan)" TEIform="interp" />
+					<interp id="ip010695" valuedut="horse shoe" value="horse shoe" TEIform="interp" />
+					<interp id="ip010696" valuedut="hourglass" value="hourglass" TEIform="interp" />
+					<interp id="ip010697" valuedut="houseleek" value="houseleek" TEIform="interp" />
+					<interp id="ip010698" valuedut="houses on rock" value="houses on rock" TEIform="interp" />
+					<interp id="ip010699" valuedut="hunt" value="hunt" TEIform="interp" />
+					<interp id="ip010700" valuedut="ice" value="ice" TEIform="interp" />
+					<interp id="ip010701" valuedut="illuminating" value="illuminating" TEIform="interp" />
+					<interp id="ip010702" valuedut="immortelle" value="immortelle" TEIform="interp" />
+					<interp id="ip010703" valuedut="imprint" value="imprint" TEIform="interp" />
+					<interp id="ip010704" valuedut="incense" value="incense" TEIform="interp" />
+					<interp id="ip010705" valuedut="island" value="island" TEIform="interp" />
+					<interp id="ip010706" valuedut="jack" value="jack" TEIform="interp" />
+					<interp id="ip010707" valuedut="jet of water" value="jet of water" TEIform="interp" />
+					<interp id="ip010708" valuedut="key" value="key" TEIform="interp" />
+					<interp id="ip010709" valuedut="keyhole" value="keyhole" TEIform="interp" />
+					<interp id="ip010710" valuedut="king" value="king" TEIform="interp" />
+					<interp id="ip010711" valuedut="labyrinth" value="labyrinth" TEIform="interp" />
+					<interp id="ip010712" valuedut="lamb" value="lamb" TEIform="interp" />
+					<interp id="ip010713" valuedut="lance" value="lance" TEIform="interp" />
+					<interp id="ip010714" valuedut="lance growing twigs" value="lance growing  twigs" TEIform="interp" />
+					<interp id="ip010715" valuedut="land" value="land" TEIform="interp" />
+					<interp id="ip010716" valuedut="lasso" value="lasso" TEIform="interp" />
+					<interp id="ip010717" valuedut="laurel" value="laurel" TEIform="interp" />
+					<interp id="ip010718" valuedut="leaf" value="leaf" TEIform="interp" />
+					<interp id="ip010719" valuedut="lemon" value="lemon" TEIform="interp" />
+					<interp id="ip010720" valuedut="leopard, conquered by lion" value="leopard,  conquered by lion" TEIform="interp" />
+					<interp id="ip010721" valuedut="letters" value="letters" TEIform="interp" />
+					<interp id="ip010722" valuedut="Leucotho&euml;" value="Leucotho&euml;" TEIform="interp" />
+					<interp id="ip010723" valuedut="level" value="level" TEIform="interp" />
+					<interp id="ip010724" valuedut="licorice" value="licorice" TEIform="interp" />
+					<interp id="ip010725" valuedut="lighthouse" value="lighthouse" TEIform="interp" />
+					<interp id="ip010726" valuedut="lion" value="lion" TEIform="interp" />
+					<interp id="ip010727" valuedut="lion before broken mirror" value="lion before  broken mirror" TEIform="interp" />
+					<interp id="ip010728" valuedut="lion&apos;s head" value="lion&apos;s head" TEIform="interp" />
+					<interp id="ip010729" valuedut="lion&apos;s skin" value="lion&apos;s skin" TEIform="interp" />
+					<interp id="ip010730" valuedut="lion, conquering leopard" value="lion,  conquering leopard" TEIform="interp" />
+					<interp id="ip010731" valuedut="lion, dead" value="lion, dead" TEIform="interp" />
+					<interp id="ip010732" valuedut="lion, devouring ape" value="lion, devouring  ape" TEIform="interp" />
+					<interp id="ip010733" valuedut="lion, escaping" value="lion, escaping" TEIform="interp" />
+					<interp id="ip010734" valuedut="lion, holding scepter (heraldry)" value="lion,  holding scepter (heraldry)" TEIform="interp" />
+					<interp id="ip010735" valuedut="lion(s), pulling carriage" value="lion(s),  pulling carriage" TEIform="interp" />
+					<interp id="ip010736" valuedut="lion, serene" value="lion, serene" TEIform="interp" />
+					<interp id="ip010737" valuedut="lion, suspended" value="lion, suspended" TEIform="interp" />
+					<interp id="ip010738" valuedut="lion, wounded" value="lion, wounded" TEIform="interp" />
+					<interp id="ip010739" valuedut="load" value="load" TEIform="interp" />
+					<interp id="ip010740" valuedut="lobster" value="lobster" TEIform="interp" />
+					<interp id="ip010741" valuedut="locket" value="locket" TEIform="interp" />
+					<interp id="ip010742" valuedut="love&apos;s knot" value="love&apos;s knot" TEIform="interp" />
+					<interp id="ip010743" valuedut="Lucretia" value="Lucretia" TEIform="interp" />
+					<interp id="ip010744" valuedut="Maltese cross" value="Maltese cross" TEIform="interp" />
+					<interp id="ip010745" valuedut="man" value="man" TEIform="interp" />
+					<interp id="ip010746" valuedut="man at fountain" value="man at fountain" TEIform="interp" />
+					<interp id="ip010747" valuedut="man in bed" value="man in bed" TEIform="interp" />
+					<interp id="ip010748" valuedut="man in carriage" value="man in carriage" TEIform="interp" />
+					<interp id="ip010749" valuedut="man of Justice" value="man of Justice" TEIform="interp" />
+					<interp id="ip010750" valuedut="man with crocodile" value="man with  crocodile" TEIform="interp" />
+					<interp id="ip010751" valuedut="man, armoured" value="man, armoured" TEIform="interp" />
+					<interp id="ip010752" valuedut="man, carrying globe" value="man, carrying  globe" TEIform="interp" />
+					<interp id="ip010753" valuedut="man, embracing cloud" value="man, embracing  cloud" TEIform="interp" />
+					<interp id="ip010754" valuedut="man, hit by arrow" value="man, hit by arrow" TEIform="interp" />
+					<interp id="ip010755" valuedut="man, holding lion" value="man, holding lion" TEIform="interp" />
+					<interp id="ip010756" valuedut="man, holding lion&apos;s head" value="man, holding  lion&apos;s head" TEIform="interp" />
+					<interp id="ip010757" valuedut="man, looking in fountain" value="man, looking  in fountain" TEIform="interp" />
+					<interp id="ip010758" valuedut="man, rejecting Cupid" value="man, rejecting  Cupid" TEIform="interp" />
+					<interp id="ip010759" valuedut="man, riding horse" value="man, riding horse" TEIform="interp" />
+					<interp id="ip010760" valuedut="man, sleeping" value="man, sleeping" TEIform="interp" />
+					<interp id="ip010761" valuedut="marble" value="marble" TEIform="interp" />
+					<interp id="ip010762" valuedut="marjoram" value="marjoram" TEIform="interp" />
+					<interp id="ip010763" valuedut="Marsyas" value="Marsyas" TEIform="interp" />
+					<interp id="ip010764" valuedut="melon" value="melon" TEIform="interp" />
+					<interp id="ip010765" valuedut="mistletoe?" value="mistletoe?" TEIform="interp" />
+					<interp id="ip010766" valuedut="mole" value="mole" TEIform="interp" />
+					<interp id="ip010767" valuedut="monster" value="monster" TEIform="interp" />
+					<interp id="ip010768" valuedut="mountain" value="mountain" TEIform="interp" />
+					<interp id="ip010769" valuedut="mulberry" value="mulberry" TEIform="interp" />
+					<interp id="ip010770" valuedut="mushroom" value="mushroom" TEIform="interp" />
+					<interp id="ip010771" valuedut="musket" value="musket" TEIform="interp" />
+					<interp id="ip010772" valuedut="myrtle" value="myrtle" TEIform="interp" />
+					<interp id="ip010773" valuedut="Narcissus" value="Narcissus" TEIform="interp" />
+					<interp id="ip010774" valuedut="nest" value="nest" TEIform="interp" />
+					<interp id="ip010775" valuedut="nettle" value="nettle" TEIform="interp" />
+					<interp id="ip010776" valuedut="nightingale" value="nightingale" TEIform="interp" />
+					<interp id="ip010777" valuedut="number one" value="number one" TEIform="interp" />
+					<interp id="ip010778" valuedut="nun" value="nun" TEIform="interp" />
+					<interp id="ip010779" valuedut="nymph" value="nymph" TEIform="interp" />
+					<interp id="ip010780" valuedut="oak" value="oak" TEIform="interp" />
+					<interp id="ip010781" valuedut="oak wreath" value="oak wreath" TEIform="interp" />
+					<interp id="ip010782" valuedut="oar" value="oar" TEIform="interp" />
+					<interp id="ip010783" valuedut="oil" value="oil" TEIform="interp" />
+					<interp id="ip010784" valuedut="olive" value="olive" TEIform="interp" />
+					<interp id="ip010785" valuedut="orange" value="orange" TEIform="interp" />
+					<interp id="ip010786" valuedut="orb" value="orb" TEIform="interp" />
+					<interp id="ip010787" valuedut="ostrich" value="ostrich" TEIform="interp" />
+					<interp id="ip010788" valuedut="ownerless hand" value="ownerless hand" TEIform="interp" />
+					<interp id="ip010789" valuedut="ox skin" value="ox skin" TEIform="interp" />
+					<interp id="ip010790" valuedut="oyster" value="oyster" TEIform="interp" />
+					<interp id="ip010791" valuedut="palette" value="palette" TEIform="interp" />
+					<interp id="ip010792" valuedut="palm" value="palm" TEIform="interp" />
+					<interp id="ip010793" valuedut="palm wreath" value="palm wreath" TEIform="interp" />
+					<interp id="ip010794" valuedut="pansy" value="pansy" TEIform="interp" />
+					<interp id="ip010795" valuedut="parterre" value="parterre" TEIform="interp" />
+					<interp id="ip010796" valuedut="Patience" value="Patience" TEIform="interp" />
+					<interp id="ip010797" valuedut="pearl" value="pearl" TEIform="interp" />
+					<interp id="ip010798" valuedut="pedestal" value="pedestal" TEIform="interp" />
+					<interp id="ip010799" valuedut="Pegasus" value="Pegasus" TEIform="interp" />
+					<interp id="ip010800" valuedut="pelican" value="pelican" TEIform="interp" />
+					<interp id="ip010801" valuedut="persea (avocado)" value="persea (avocado)" TEIform="interp" />
+					<interp id="ip010802" valuedut="Phoenix" value="Phoenix" TEIform="interp" />
+					<interp id="ip010803" valuedut="Phryxus" value="Phryxus" TEIform="interp" />
+					<interp id="ip010804" valuedut="pick" value="pick" TEIform="interp" />
+					<interp id="ip010805" valuedut="pig" value="pig" TEIform="interp" />
+					<interp id="ip010806" valuedut="pike" value="pike" TEIform="interp" />
+					<interp id="ip010807" valuedut="pillow" value="pillow" TEIform="interp" />
+					<interp id="ip010808" valuedut="pincers" value="pincers" TEIform="interp" />
+					<interp id="ip010809" valuedut="pine" value="pine" TEIform="interp" />
+					<interp id="ip010810" valuedut="pine cone" value="pine cone" TEIform="interp" />
+					<interp id="ip010811" valuedut="plant" value="plant" TEIform="interp" />
+					<interp id="ip010812" valuedut="Polaris" value="Polaris" TEIform="interp" />
+					<interp id="ip010813" valuedut="pomegranate" value="pomegranate" TEIform="interp" />
+					<interp id="ip010814" valuedut="pool" value="pool" TEIform="interp" />
+					<interp id="ip010815" valuedut="poppy" value="poppy" TEIform="interp" />
+					<interp id="ip010816" valuedut="porcupine" value="porcupine" TEIform="interp" />
+					<interp id="ip010817" valuedut="portrait" value="portrait" TEIform="interp" />
+					<interp id="ip010818" valuedut="pot" value="pot" TEIform="interp" />
+					<interp id="ip010819" valuedut="prey" value="prey" TEIform="interp" />
+					<interp id="ip010820" valuedut="princess" value="princess" TEIform="interp" />
+					<interp id="ip010821" valuedut="pruning" value="pruning" TEIform="interp" />
+					<interp id="ip010822" valuedut="purple" value="purple" TEIform="interp" />
+					<interp id="ip010823" valuedut="pyre" value="pyre" TEIform="interp" />
+					<interp id="ip010824" valuedut="quiver" value="quiver" TEIform="interp" />
+					<interp id="ip010825" valuedut="rabbit" value="rabbit" TEIform="interp" />
+					<interp id="ip010826" valuedut="rain" value="rain" TEIform="interp" />
+					<interp id="ip010827" valuedut="rainbow" value="rainbow" TEIform="interp" />
+					<interp id="ip010828" valuedut="rake" value="rake" TEIform="interp" />
+					<interp id="ip010829" valuedut="ram" value="ram" TEIform="interp" />
+					<interp id="ip010830" valuedut="ram (hammer)" value="ram (hammer)" TEIform="interp" />
+					<interp id="ip010831" valuedut="rays of light" value="rays of light" TEIform="interp" />
+					<interp id="ip010832" valuedut="reed" value="reed" TEIform="interp" />
+					<interp id="ip010833" valuedut="rhinoceros" value="rhinoceros" TEIform="interp" />
+					<interp id="ip010834" valuedut="ring" value="ring" TEIform="interp" />
+					<interp id="ip010835" valuedut="rock" value="rock" TEIform="interp" />
+					<interp id="ip010836" valuedut="rod" value="rod" TEIform="interp" />
+					<interp id="ip010837" valuedut="roe deer" value="roe deer" TEIform="interp" />
+					<interp id="ip010838" valuedut="roll of fabric" value="roll of fabric" TEIform="interp" />
+					<interp id="ip010839" valuedut="roof" value="roof" TEIform="interp" />
+					<interp id="ip010840" valuedut="rooster" value="rooster" TEIform="interp" />
+					<interp id="ip010841" valuedut="rostral column" value="rostral column" TEIform="interp" />
+					<interp id="ip010842" valuedut="rowers" value="rowers" TEIform="interp" />
+					<interp id="ip010843" valuedut="sail" value="sail" TEIform="interp" />
+					<interp id="ip010844" valuedut="Samson" value="Samson" TEIform="interp" />
+					<interp id="ip010845" valuedut="sand" value="sand" TEIform="interp" />
+					<interp id="ip010846" valuedut="Satyr" value="Satyr" TEIform="interp" />
+					<interp id="ip010847" valuedut="scales" value="scales" TEIform="interp" />
+					<interp id="ip010848" valuedut="scent" value="scent" TEIform="interp" />
+					<interp id="ip010849" valuedut="scepter" value="scepter" TEIform="interp" />
+					<interp id="ip010850" valuedut="scissors" value="scissors" TEIform="interp" />
+					<interp id="ip010851" valuedut="Scorpio" value="Scorpio" TEIform="interp" />
+					<interp id="ip010852" valuedut="scorpion" value="scorpion" TEIform="interp" />
+					<interp id="ip010853" valuedut="scourge" value="scourge" TEIform="interp" />
+					<interp id="ip010854" valuedut="seadling" value="seadling" TEIform="interp" />
+					<interp id="ip010855" valuedut="seal" value="seal" TEIform="interp" />
+					<interp id="ip010856" valuedut="sheaf" value="sheaf" TEIform="interp" />
+					<interp id="ip010857" valuedut="sheep" value="sheep" TEIform="interp" />
+					<interp id="ip010858" valuedut="shepherd" value="shepherd" TEIform="interp" />
+					<interp id="ip010859" valuedut="shepherd&apos;s crook" value="shepherd&apos;s crook" TEIform="interp" />
+					<interp id="ip010860" valuedut="shoot on dead tree" value="shoot on dead  tree" TEIform="interp" />
+					<interp id="ip010861" valuedut="shore" value="shore" TEIform="interp" />
+					<interp id="ip010862" valuedut="shrub" value="shrub" TEIform="interp" />
+					<interp id="ip010863" valuedut="sickle" value="sickle" TEIform="interp" />
+					<interp id="ip010864" valuedut="Simson" value="Simson" TEIform="interp" />
+					<interp id="ip010865" valuedut="Sirene" value="Sirene" TEIform="interp" />
+					<interp id="ip010866" valuedut="skeleton" value="skeleton" TEIform="interp" />
+					<interp id="ip010867" valuedut="skin" value="skin" TEIform="interp" />
+					<interp id="ip010868" valuedut="sky" value="sky" TEIform="interp" />
+					<interp id="ip010869" valuedut="sleeping" value="sleeping" TEIform="interp" />
+					<interp id="ip010870" valuedut="sling" value="sling" TEIform="interp" />
+					<interp id="ip010871" valuedut="slip" value="slip" TEIform="interp" />
+					<interp id="ip010872" valuedut="smell" value="smell" TEIform="interp" />
+					<interp id="ip010873" valuedut="snail" value="snail" TEIform="interp" />
+					<interp id="ip010874" valuedut="snout" value="snout" TEIform="interp" />
+					<interp id="ip010875" valuedut="snow" value="snow" TEIform="interp" />
+					<interp id="ip010876" valuedut="Spanish Cross award" value="Spanish Cross  award" TEIform="interp" />
+					<interp id="ip010877" valuedut="sparrow" value="sparrow" TEIform="interp" />
+					<interp id="ip010878" valuedut="spear" value="spear" TEIform="interp" />
+					<interp id="ip010879" valuedut="spoils of war" value="spoils of war" TEIform="interp" />
+					<interp id="ip010880" valuedut="sponge" value="sponge" TEIform="interp" />
+					<interp id="ip010881" valuedut="sprout" value="sprout" TEIform="interp" />
+					<interp id="ip010882" valuedut="squirrel" value="squirrel" TEIform="interp" />
+					<interp id="ip010883" valuedut="stag" value="stag" TEIform="interp" />
+					<interp id="ip010884" valuedut="stand" value="stand" TEIform="interp" />
+					<interp id="ip010885" valuedut="star, single" value="star, single" TEIform="interp" />
+					<interp id="ip010886" valuedut="statue" value="statue" TEIform="interp" />
+					<interp id="ip010887" valuedut="stick" value="stick" TEIform="interp" />
+					<interp id="ip010888" valuedut="stone" value="stone" TEIform="interp" />
+					<interp id="ip010889" valuedut="stork, carrying parent" value="stork, carrying  parent" TEIform="interp" />
+					<interp id="ip010890" valuedut="streams of water" value="streams of water" TEIform="interp" />
+					<interp id="ip010891" valuedut="suicide" value="suicide" TEIform="interp" />
+					<interp id="ip010892" valuedut="summerhouse" value="summerhouse" TEIform="interp" />
+					<interp id="ip010893" valuedut="sundial" value="sundial" TEIform="interp" />
+					<interp id="ip010894" valuedut="sunset" value="sunset" TEIform="interp" />
+					<interp id="ip010895" valuedut="swallow" value="swallow" TEIform="interp" />
+					<interp id="ip010896" valuedut="swan" value="swan" TEIform="interp" />
+					<interp id="ip010897" valuedut="swarm" value="swarm" TEIform="interp" />
+					<interp id="ip010898" valuedut="switch" value="switch" TEIform="interp" />
+					<interp id="ip010899" valuedut="sword, entwined by twig (olive)" value="sword,  entwined by twig (olive)" TEIform="interp" />
+					<interp id="ip010900" valuedut="table" value="table" TEIform="interp" />
+					<interp id="ip010901" valuedut="tablet, calculating" value="tablet,  calculating" TEIform="interp" />
+					<interp id="ip010902" valuedut="tail" value="tail" TEIform="interp" />
+					<interp id="ip010903" valuedut="tears" value="tears" TEIform="interp" />
+					<interp id="ip010904" valuedut="telescope" value="telescope" TEIform="interp" />
+					<interp id="ip010905" valuedut="temple" value="temple" TEIform="interp" />
+					<interp id="ip010906" valuedut="tent" value="tent" TEIform="interp" />
+					<interp id="ip010907" valuedut="throne" value="throne" TEIform="interp" />
+					<interp id="ip010908" valuedut="thunderbolt of Jove" value="thunderbolt of  Jove" TEIform="interp" />
+					<interp id="ip010909" valuedut="thunderbolt" value="thunderbolt" TEIform="interp" />
+					<interp id="ip010910" valuedut="tiara" value="tiara" TEIform="interp" />
+					<interp id="ip010911" valuedut="tie" value="tie" TEIform="interp" />
+					<interp id="ip010912" valuedut="tomb" value="tomb" TEIform="interp" />
+					<interp id="ip010913" valuedut="tombstone" value="tombstone" TEIform="interp" />
+					<interp id="ip010914" valuedut="tray" value="tray" TEIform="interp" />
+					<interp id="ip010915" valuedut="tree, trunk of" value="tree, trunk of" TEIform="interp" />
+					<interp id="ip010916" valuedut="triumphal arch" value="triumphal arch" TEIform="interp" />
+					<interp id="ip010917" valuedut="Trojan Horse" value="Trojan Horse" TEIform="interp" />
+					<interp id="ip010918" valuedut="trumpet" value="trumpet" TEIform="interp" />
+					<interp id="ip010919" valuedut="tuberose" value="tuberose" TEIform="interp" />
+					<interp id="ip010920" valuedut="tulip" value="tulip" TEIform="interp" />
+					<interp id="ip010921" valuedut="tulip, drooping" value="tulip, drooping" TEIform="interp" />
+					<interp id="ip010922" valuedut="turtle" value="turtle" TEIform="interp" />
+					<interp id="ip010923" valuedut="turtledove" value="turtledove" TEIform="interp" />
+					<interp id="ip010924" valuedut="unicorn" value="unicorn" TEIform="interp" />
+					<interp id="ip010925" valuedut="vase" value="vase" TEIform="interp" />
+					<interp id="ip010926" valuedut="Vestal" value="Vestal" TEIform="interp" />
+					<interp id="ip010927" valuedut="victory" value="victory" TEIform="interp" />
+					<interp id="ip010928" valuedut="violet" value="violet" TEIform="interp" />
+					<interp id="ip010929" valuedut="violin" value="violin" TEIform="interp" />
+					<interp id="ip010930" valuedut="viper" value="viper" TEIform="interp" />
+					<interp id="ip010931" valuedut="vulcano" value="vulcano" TEIform="interp" />
+					<interp id="ip010932" valuedut="walking stick" value="walking stick" TEIform="interp" />
+					<interp id="ip010933" valuedut="wall" value="wall" TEIform="interp" />
+					<interp id="ip010934" valuedut="watch" value="watch" TEIform="interp" />
+					<interp id="ip010935" valuedut="watering can" value="watering can" TEIform="interp" />
+					<interp id="ip010936" valuedut="weapon" value="weapon" TEIform="interp" />
+					<interp id="ip010937" valuedut="weasel" value="weasel" TEIform="interp" />
+					<interp id="ip010938" valuedut="weather vane" value="weather vane" TEIform="interp" />
+					<interp id="ip010939" valuedut="wheel" value="wheel" TEIform="interp" />
+					<interp id="ip010940" valuedut="wicker basket" value="wicker basket" TEIform="interp" />
+					<interp id="ip010941" valuedut="widow" value="widow" TEIform="interp" />
+					<interp id="ip010942" valuedut="wild boar" value="wild boar" TEIform="interp" />
+					<interp id="ip010943" valuedut="willow tree" value="willow tree" TEIform="interp" />
+					<interp id="ip010944" valuedut="wind instrument" value="wind instrument" TEIform="interp" />
+					<interp id="ip010945" valuedut="wine" value="wine" TEIform="interp" />
+					<interp id="ip010946" valuedut="wings" value="wings" TEIform="interp" />
+					<interp id="ip010947" valuedut="winter" value="winter" TEIform="interp" />
+					<interp id="ip010948" valuedut="wolf" value="wolf" TEIform="interp" />
+					<interp id="ip010949" valuedut="wolf, sucking" value="wolf, sucking" TEIform="interp" />
+					<interp id="ip010950" valuedut="wreath" value="wreath" TEIform="interp" />
+					<interp id="ip010951" valuedut="zodiac" value="zodiac" TEIform="interp" />
+				</interpGrp>
+				<interpGrp id="ip04" type="petrarchan elements" TEIform="interpGrp">
+					<interpGrp id="ip041" type="External motives" TEIform="interpGrp">
+						<interpGrp id="ip0411" type="Praise of the lady" TEIform="interpGrp">
+							<interp id="ip04111" value="Physical and spiritual perfection, described in  hyperbolical terms" TEIform="interp" />
+							<interp id="ip04112" value="Iconographical description of her individual  beauties" TEIform="interp" />
+							<interp id="ip04113" value="Beauties described using metaphorical or  mythological associations" TEIform="interp" />
+							<interp id="ip04114" value="Beauties described in terms of the effect on the  lover" TEIform="interp" />
+							<interp id="ip04115" value="Entire poems, or cycles of poems, devoted to one  feature or object of the beloved" TEIform="interp" />
+							<interp id="ip04116" value="Limitless accomplishments, the most admired her  musical abilities" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0412" type="Places associated with the beloved" TEIform="interpGrp">
+							<interp id="ip04121" value="Scenery in which the lover wanders, to meditate  upon his love, or to forget it" TEIform="interp" />
+							<interp id="ip04122" value="Location of the first meeting" TEIform="interp" />
+							<interp id="ip04123" value="Place where the beloved lives or which she  recently has visited" TEIform="interp" />
+							<interp id="ip04124" value="Location of the first embrace, mostly a garden,  grove or grotto" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0413" type="Fictional representations (dreams (mostly),  visions, imagination" TEIform="interpGrp">
+							<interpGrp id="ip04131" type="Physical reunion with the beloved in dreams" TEIform="interpGrp">
+								<interp id="ip041311" value="Reunion with the dead beloved" TEIform="interp" />
+								<interp id="ip041312" value="Reunion with the beloved who is still alive,  but unattainable" TEIform="interp" />
+							</interpGrp>
+							<interp id="ip04132" value="Metaphysical elaboration of the contrast between  illusion and reality" TEIform="interp" />
+						</interpGrp>
+					</interpGrp>
+					<interpGrp id="ip042" type="Internal motives" TEIform="interpGrp">
+						<interpGrp id="ip0421" type="The bitter-sweet nature of love" TEIform="interpGrp">
+							<interp id="ip04211" value="Interpenetration of pleasure and pain,  satisfaction in an uneasy balance between them" TEIform="interp" />
+							<interp id="ip04212" value="Lady as a sweet enemy" TEIform="interp" />
+							<interp id="ip04213" value="Love compared to war, described in military  imagery" TEIform="interp" />
+							<interp id="ip04214" value="Freedom-servitude paradox, service of the lady  is highest freedom; prison, bondage imagery." TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0422" type="Theft of the heart or soul" TEIform="interpGrp">
+							<interp id="ip04221" value="Lover&apost;s soul is imprissoned in the  beloved&apost;s body" TEIform="interp" />
+							<interp id="ip04222" value="Lover without a soul is a walking corpse" TEIform="interp" />
+							<interp id="ip04223" value="Exchanging of the soul through a glance or a  kiss" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0423" type="Total loss of self-possession" TEIform="interpGrp">
+							<interp id="ip04231" value="Confused senses" TEIform="interp" />
+							<interp id="ip04232" value="Sense of individuality is lost" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0424" type="Renounciation (temporarily) of his love by the  lover" TEIform="interpGrp">
+							<interp id="ip04241" value="Scorn of women who keep their lovers dangling  for ever" TEIform="interp" />
+							<interp id="ip04242" value="Inner justification for rejecting love" TEIform="interp" />
+							<interp id="ip04243" value="Praise of the freedom which is regained by  rejecting love" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0425" type="Relations between the lovers" TEIform="interpGrp">
+							<interp id="ip04251" value="A gracious lady corresponds with a delightfull  lover" TEIform="interp" />
+							<interpGrp id="ip04252" type="An unkind lady corresponds with a lover in  pain (most common)" TEIform="interpGrp">
+								<interp id="ip042521" value="The lady is unkind, the lover in pain" TEIform="interp" />
+								<interp id="ip042522" value="Lover begs for the beloved to be struck with  love" TEIform="interp" />
+								<interp id="ip042523" value="The cruel lady, hard as stone, enjoys the  lovers pain" TEIform="interp" />
+							</interpGrp>
+							<interp id="ip04253" value="Relations and states of minds described in  hyperbolical terms" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0426" type="Physical effects of love" TEIform="interpGrp">
+							<interp id="ip04261" value="Physical effects of love" TEIform="interp" />
+							<interp id="ip04262" value="Physical effects of the first meeting with the  beloved" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0427" type="Love as a fire" TEIform="interpGrp">
+							<interp id="ip04271" value="Flames as a symbol for love" TEIform="interp" />
+							<interp id="ip04272" value="Antithesis between the fire of love and the icy  heart of a lady" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0428" type="Imagery concerned with death" TEIform="interpGrp">
+							<interp id="ip04281" value="If the lover&apost;s longing is not fulfilled,  he dies" TEIform="interp" />
+							<interp id="ip04282" value="The overwhelming presence of the beloved may  cause death" TEIform="interp" />
+							<interp id="ip04283" value="It is death to be parted and death to be  joined" TEIform="interp" />
+							<interp id="ip04284" value="The lover longs for death, as bringing an end to  the lover&apost; sorrows" TEIform="interp" />
+							<interp id="ip04285" value="Lovers are dead alive (death as a state of  mind)" TEIform="interp" />
+							<interp id="ip04286" value="Death signifying the (male) orgasm" TEIform="interp" />
+							<interp id="ip04287" value="Christian rephrasing of the death-live paradox  (life = eternal life, death = living death on earth" TEIform="interp" />
+						</interpGrp>
+					</interpGrp>
+					<interpGrp id="ip043" type="Cosmic Motives" TEIform="interpGrp">
+						<interpGrp id="ip0431" type="Love as a cosmic phenomenon" TEIform="interpGrp">
+							<interp id="ip04311" value="Nature can reflect the passions of the lover" TEIform="interp" />
+							<interp id="ip04312" value="Love transcends Nature and can therefore cause  (contrary) effects in nature" TEIform="interp" />
+							<interp id="ip04313" value="Love as an independent cosmic force creates a  world of his own" TEIform="interp" />
+						</interpGrp>
+						<interpGrp id="ip0432" type="Systems of cosmic correspondences" TEIform="interpGrp">
+							<interp id="ip04321" value="(System of) correspondences between the beloved  and cosmic phenomena" TEIform="interp" />
+						</interpGrp>
+					</interpGrp>
+				</interpGrp>
+			</div>
+		</back>
+	</text>
+</TEI.2>
