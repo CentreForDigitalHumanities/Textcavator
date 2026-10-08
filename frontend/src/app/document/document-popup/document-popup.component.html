@@ -1,17 +1,38 @@
 <ng-template #modalTemplate>
-    <div class="modal-header">
+    <div class="modal-header justify-content-between align-items-center">
         <h1 class="modal-title h4" id="dialog-title">
             Document {{ documentPosition(document, page) }} of {{ page.total }}
         </h1>
         @if (showNEROption) {
             <ia-entity-toggle (toggleNER)="toggleNER($event)" />
         }
-        <button
-            type="button"
-            class="btn-close"
-            aria-label="Close"
-            (click)="close()"
-        ></button>
+        <div class="d-flex gap-2 align-items-center">
+            <button
+                type="button"
+                class="btn btn-ghost"
+                [ngbTooltip]="
+                    maximized ? 'Minimize document' : 'Maximize document'
+                "
+                [aria-label]="
+                    maximized ? 'Minimize document' : 'Maximize document'
+                "
+                (click)="toggleMaximization()"
+            >
+                <fa-icon
+                    [icon]="
+                        maximized ? actionIcons.minimize : actionIcons.maximize
+                    "
+                    aria-hidden="true"
+                />
+            </button>
+            <button
+                type="button"
+                class="btn-close"
+                aria-label="Close"
+                ngbAutofocus
+                (click)="close()"
+            ></button>
+        </div>
     </div>
     <div class="modal-body">
         <ia-document-view
@@ -61,7 +82,7 @@
                     >
                         <fa-icon [icon]="documentIcons.context"></fa-icon>
                         View {{ contextDisplayName }}
-                    </a> 
+                    </a>
                 }
             </div>
         </div>

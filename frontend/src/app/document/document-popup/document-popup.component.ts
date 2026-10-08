@@ -39,6 +39,7 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
 
     showNamedEntities = false;
     showNEROption = false;
+    maximized = false;
 
     private refresh$ = new Subject<void>();
     private modal: NgbModalRef;
@@ -86,6 +87,11 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
 
     toggleNER(active: boolean): void {
         this.showNamedEntities = active;
+    }
+
+    toggleMaximization(): void {
+        this.maximized = !this.maximized;
+        this.modal?.update({ fullscreen: this.maximized });
     }
 
     documentPosition(document: FoundDocument, page: DocumentPage): number {
