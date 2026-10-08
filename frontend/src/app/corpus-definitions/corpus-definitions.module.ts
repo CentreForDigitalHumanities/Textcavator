@@ -4,7 +4,6 @@ import { SharedModule } from '@shared/shared.module';
 import { QuillModule } from 'ngx-quill';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { StepsModule } from 'primeng/steps';
 import { CreateDefinitionComponent } from './create-definition/create-definition.component';
 import { DefinitionInOutComponent } from './definition-in-out/definition-in-out.component';
 import { DefinitionJsonUploadComponent } from './definition-json-upload/definition-json-upload.component';
@@ -47,7 +46,6 @@ import { SelectModule } from 'primeng/select';
         MarkdownEditorComponent,
         SharedModule,
         ReactiveFormsModule,
-        StepsModule,
         AutoCompleteModule,
         MultiSelectModule,
         SelectModule,
