@@ -1,4 +1,4 @@
-<div class="content" [attr.lang]="document.language(field)">
+<div [attr.lang]="document.language(field)">
     @if (showEntities) {
         @let value = document.namedEntityAnnotatedValue(field) || document.fieldValue(field);
         @for (p of value | paragraph:true; track $index) {

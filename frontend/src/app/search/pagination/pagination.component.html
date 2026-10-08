@@ -1,34 +1,8 @@
-<nav class="pagination" role="navigation" aria-label="pagination">
-  <button class="pagination-previous" aria-label="Previous page" (click)="currentPage===1 ? false : loadResults(currentPage-1)" [attr.disabled]="currentPage===1? '' : null"><</button>
-  <button class="pagination-next" aria-label="Next page" (click)="currentPage===totalPages ? false :loadResults(currentPage+1)" [attr.disabled]="currentPage===totalPages? '' : null">></button>
-  <ul class="pagination-list">
-    @if (currentPages[0]>1) {
-      <li>
-        <button class="pagination-link" (click)="loadResults(1)" aria-label="Goto page 1">1</button>
-      </li>
-    }
-    @if (currentPages[0]>2) {
-      <li>
-        <span class="pagination-ellipsis">&hellip;</span>
-      </li>
-    }
-    @for (page of currentPages; track page) {
-      <li>
-        <button iaToggleButton [active]="currentPage===page"
-          activeClass="is-current" class="pagination-link"
-          (click)="loadResults(page)">{{page}}
-        </button>
-      </li>
-    }
-    @if (currentPages[2]<totalPages-1) {
-      <li>
-        <span class="pagination-ellipsis">&hellip;</span>
-      </li>
-    }
-    @if (currentPages[2]<totalPages) {
-      <li>
-        <button class="pagination-link" aria-label="Goto last page" (click)="loadResults(totalPages)">{{totalPages}}</button>
-      </li>
-    }
-  </ul>
-</nav>
+<ngb-pagination aria-label="pagination"
+    [collectionSize]="totalResults"
+    [pageSize]="resultsPerPage"
+    [page]="currentPage"
+    [maxSize]="3"
+    [rotate]="true"
+    (pageChange)="loadResults($event)"
+/>

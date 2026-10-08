@@ -66,13 +66,8 @@ export class JoyplotComponent implements OnChanges {
 
         const datasets = this.multipleTimeIntervals ? this.timeDataSets(result) : [];
 
-        const totals = result.words.map(item => _.sum(item.data));
-        const totalsData = totals.map((value, index) => ({
-            x: value,
-            y: index,
-            ngram: this.terms[index],
-        }));
-        const colors = totals.map((value, index) => selectColor(this.palette, index));
+        const totalsData = result.totals;
+        const colors = totalsData.map((value, index) => selectColor(this.palette, index));
 
         const totalsDataset = {
             type: 'bar',

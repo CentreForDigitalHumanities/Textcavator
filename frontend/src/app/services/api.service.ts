@@ -403,7 +403,6 @@ export class ApiService {
 
     public userTags(): Observable<Tag[]> {
         const url = this.apiRoute(this.tagApiUrl, 'tags/');
-        console.log(url);
         return this.http.get<Tag[]>(url);
     }
 

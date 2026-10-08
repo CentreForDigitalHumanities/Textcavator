@@ -1,30 +1,31 @@
-<h2 class="title is-5">Documentation</h2>
+<h2 class="mb-4 is-5">Documentation</h2>
 
 
-<p class="block">
-  Add documentation to help users understand what your corpus is, and how they can use
-  it in their research.
+<p class="my-3">
+    Add documentation to help users understand what your corpus is, and how they can use
+    it in their research.
 </p>
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <div class="block">
-    <ia-tabs>
-      @for (category of categories; track category) {
-        <ng-template iaTabPanel
-          [id]="category.id" [title]="category.title">
-          <p class="block">{{category.description}}</p>
-          <ia-markdown-editor [formControl]="form.controls[category.id]" />
-        </ng-template>
-      }
-    </ia-tabs>
-  </div>
+<form [formGroup]="form" (ngSubmit)="submit()" class="my-4">
+    <ul ngbNav #nav="ngbNav" class="nav-tabs my-3">
+        @for (category of categories; track category.id) {
+            <li [ngbNavItem]="category.id">
+                <button ngbNavLink>{{category.title}}</button>
+                <ng-template ngbNavContent>
+                    <p class="my-3">{{category.description}}</p>
+                    <ia-markdown-editor [formControl]="form.controls[category.id]" />
+                </ng-template>
+            </li>
+        }
+    </ul>
 
-  <div class="block">
-    <button class="button is-primary" type="submit" [class.is-loading]="loading$ | async">
-      <span class="icon"><fa-icon [icon]="formIcons.confirm" /></span>
-      <span>Save changes</span>
-    </button>
-  </div>
+    <div [ngbNavOutlet]="nav"></div>
 
-  <ia-form-feedback [showSuccess]="showSuccessMessage$ | async"
-    [showError]="showErrorMessage$ | async" />
+    <div class="my-3">
+        <button class="btn btn-primary" type="submit" [iaButtonLoading]="loading$ | async">
+            <span><fa-icon [icon]="formIcons.confirm" /></span>
+            <span>Save changes</span>
+        </button>
+    </div>
+
+    <ia-form-feedback [showSuccess]="showSuccessMessage$ | async" [showError]="showErrorMessage$ | async" />
 </form>

@@ -70,6 +70,11 @@ export interface NgramResults {
         label: string;
         data: number[];
     }[];
+    totals: {
+        x: number,
+        y: number,
+        ngram: string,
+    }[]
     time_points: string[];
 }
 
@@ -141,6 +146,9 @@ export interface Download {
     filename?: string;
     status: DownloadStatus;
 }
+
+export type DownloadEncoding = 'utf-8' | 'utf-16';
+export type DownloadTableFormat = 'long' | 'wide';
 
 export interface DownloadOptions {
     table_format?: 'long'|'wide';

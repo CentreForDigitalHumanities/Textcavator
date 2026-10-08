@@ -1,4 +1,4 @@
-<div class="block table-container">
+<div class="my-3">
   <p-table [value]="formattedData" [paginator]="true" [rows]="15" sortField={{defaultSort}} sortOrder={{defaultSortOrder}}>
     <ng-template pTemplate="header">
       <tr class="is-selected">
@@ -16,7 +16,7 @@
           <td>
             {{col.format !== undefined ? col.format(entry[col.key]) : entry[col.key]}}
             @if (entry[col.key] === undefined) {
-              <span class="has-text-grey-light">
+              <span class="text-secondary">
                 none
               </span>
             }
@@ -27,38 +27,29 @@
   </p-table>
 </div>
 
-<div class="level">
-  <div class="level-left">
+<div class="row g-2">
     @if (wideFormatColumn !== undefined) {
-      <div class="level-item" iaBalloon="change the format for the table">
-        <div class="field has-addons">
-          <div class="control">
-            <button class="button" iaToggleButton [active]="format === 'long'"
-            (click)="setFormat('long')">long format</button>
-          </div>
-          <div class="control">
-            <button class="button" iaToggleButton [active]="format === 'wide'"
-            (click)="setFormat('wide')">wide format</button>
-          </div>
+      <div class="col-md-auto">
+            <div class="input-group" ngbTooltip="change the format for the table">
+                <button class="btn btn-body" iaToggleButton [active]="format === 'long'"
+                    (click)="setFormat('long')">long format</button>
+                <button class="btn btn-body" iaToggleButton [active]="format === 'wide'"
+                    (click)="setFormat('wide')">wide format</button>
+            </div>
         </div>
-      </div>
     }
     @if (!disableFullTable) {
-      <div class="level-item">
-        <button class="button" iaToggleButton [active]="fullTableToggle" (click)="toggleFullTable()">Show extra
-        columns</button>
+      <div class="col-md-auto">
+            <button class="btn btn-body" iaToggleButton [active]="fullTableToggle" (click)="toggleFullTable()">
+                Show extra columns
+            </button>
       </div>
     }
-  </div>
+    <div class="col-md-auto ms-auto">
+        <button class="btn btn-body" (click)="downloadTable()">
+            <fa-icon [icon]="actionIcons.download" aria-hidden="true" />
+            Download table data
+        </button>
 
-  <div class="level-right">
-    <div class="level-item">
-      <button class="button" (click)="downloadTable()">
-        <span class="icon">
-          <fa-icon [icon]="actionIcons.download" aria-hidden="true"></fa-icon>
-        </span>
-        <span>Download table data</span>
-      </button>
     </div>
-  </div>
 </div>

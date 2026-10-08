@@ -2,7 +2,9 @@
 
 These are instructions to set up an Textcavator development server. If you are going to develop Textcavator, start by following these instructions.
 
-## Prerequisites
+## First-time setup (without Docker)
+
+### Prerequisites
 
 * Python == 3.12
 * PostgreSQL >= 14, client, server and C libraries
@@ -13,7 +15,7 @@ These are instructions to set up an Textcavator development server. If you are g
 
 The documentation includes a [recipe for installing the prerequisites in a distrobox container](./Distrobox%20development%20setup.md).
 
-## First-time setup
+### Installation
 
 To get an instance running, do all of the following inside an activated `virtualenv`:
 
@@ -30,17 +32,12 @@ yarn django migrate
 ```
 
 > [!NOTE]
-> With Postgresql 15 later, you may need to grant privileges on the schema too. Use the `psql` command in the terminal, and run the following:
->
-> ```
-> \c ianalyzer
-> grant all privileges on all tables in schema public to ianalyzer;
-> ```
->
+> For historical reasons, the development database is called "ianalyzer". You chan change this if you want.
 
 5. Make a superuser account with `yarn django createsuperuser`
 
 ## Setup with Docker
+
 Alternatively, you can run the application via Docker:
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and start it.
 2. Make an .env file next to this README, which defines the configuration for the SQL database and Redis. An example setup could look as follows:
@@ -68,6 +65,12 @@ These instructions will add a tiny example corpus to your environment. Use this 
 CORPORA = {
     'example': 'corpora_test.basic.corpus.ExampleCorpus',
 }
+
+CORPUS_SETTINGS = {
+    'example': {
+        'es_index': 'example-corpus'
+    }
+}
 ```
 
 Save the file and close. For the next step, PostgreSQL and Elasticsearch must be running. Run in the terminal:
@@ -86,6 +89,21 @@ This will save the corpus configuration in the database and index the corpus dat
 3. (optional) If you want to use celery, start your local redis server by running `redis-server` in a separate terminal.
 4. (optional) If you want to use celery, activate your python environment. Run `yarn celery worker`. Celery is used for long downloads and the word cloud and ngrams visualisations.
 5. Start the frontend by running `yarn start-front`.
+
+## Quick check
+
+Below are some steps to go through the application and check that it's working as expected.
+
+- Go to `http://localhost:4200` in your browser. The home page should appear. It will tell you there are no corpora to display; this is because your test corpus is still private.
+- Click "Sign in" in the top right and sign in with the superuser account you created earlier.
+- You will return to the home page and the example corpus will appear. Click on "Explore" to go to the search page. You should see search results appear.
+- Type in "to" in the search bar and press "Search".
+- Go to the "Visualizations" tab. A bar chart will appear.
+- If you are running Celery, use the field "What do you want to visualize?" to select "Frequency of the search term". An updated bar chart appears.
+- Go to the "Download" tab and press the "Download" button. Save the CSV file.
+- In the top menu, click on your username and select "Administration" in the dropdown menu to go to the Django admin site. You will stay signed in here.
+
+That's it!
 
 ## Next steps
 

@@ -1,17 +1,14 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
     Component,
-    ElementRef,
     EventEmitter,
-    HostListener,
     Input,
     Output,
     OnDestroy,
-    HostBinding,
     OnChanges,
     SimpleChanges,
-    ViewChild,
-    AfterViewInit,
     forwardRef,
+    inject,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -19,9 +16,45 @@ import * as _ from 'lodash';
 import { actionIcons } from '../icons';
 import { DropdownService } from './dropdown.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
-let nextID = 0;
-
+/**
+ * Wrapper around NgbDropdown for single-select fuctionality.
+ *
+ * Bootstrap dropdowns are general-purpose. The iaDropdown adds logic and roles
+ * for a single-select combobox.
+ *
+ * For single-select form controls, you can also use `<select>`. The advantage
+ * for the dropdown is that values can be of any data type (not just strings).
+ * It also looks more consistent when mixed with other types of dropdowns (e.g.
+ * multi-select).
+ *
+ * Example usage:
+ *
+ * ```html
+ * <label id="label-lucky-number">Lucky number</label>
+ * <ia-dropdown (onChange)="setLuckyNumber($event)">
+ *     <button iaDropdownToggle aria-labelledby="label-lucky-number">
+ *         {{luckyNumber}}
+ *     </button>
+ *     <div iaDropdownMenu>
+ *         <button iaDropdownItem [value]="1">1</button>
+ *         <button iaDropdownItem [value]="2">2</button>
+ *     </div>
+ * </iaDropdown>
+ * ```
+ *
+ * Can be controlled with a [formControl], or with the [value] / (onChange) inputs.
+ * Individual dropdown items also support a (onSelect) output event.
+ *
+ * The dropdown toggle is a form control that must be labelled, usually through
+ * aria-labelledby.
+ *
+ * See also:
+ * - https://ng-bootstrap.github.io/#/components/dropdown/examples
+ * - https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/combobox_role
+ * - https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role
+ */
 @Component({
     selector: 'ia-dropdown',
     templateUrl: './dropdown.component.html',
@@ -33,34 +66,33 @@ let nextID = 0;
             multi: true,
         },
     ],
+    hostDirectives: [
+        NgbDropdown,
+    ],
+    host: {
+        '(focusout)': 'blur$.next()',
+        'class': 'd-block',
+    },
     standalone: false
 })
-export class DropdownComponent<T> implements OnChanges, AfterViewInit, OnDestroy, ControlValueAccessor  {
-    @HostBinding('class') classes = 'dropdown';
-
+export class DropdownComponent<T> implements OnChanges, OnDestroy, ControlValueAccessor  {
     @Input() value: any;
     @Input() disabled: boolean;
-
-    /** ID of the element labelling the dropdown */
-    @Input() labelledBy: string;
 
     @Output()
     public onChange = new EventEmitter<T>();
 
-    @ViewChild('dropdownTrigger') trigger: ElementRef<HTMLButtonElement>;
-
     actionIcons = actionIcons;
 
+    blur$ = new Subject<void>();
 
-    id = nextID++;
-    open$ = this.dropdownService.open$;
-
-    private blur$ = new Subject<void>();
     private destroy$ = new Subject<void>();
     private onChangeSubscription?: Subscription;
     private onTouchedSubscription?: Subscription;
 
-    constructor(private elementRef: ElementRef, private dropdownService: DropdownService) {
+    private dropdownService = inject(DropdownService);
+
+    constructor() {
         // don't trigger a lot of events when a user is quickly looping through the options
         // for example using the keyboard arrows
         this.dropdownService.selection$.pipe(
@@ -68,36 +100,6 @@ export class DropdownComponent<T> implements OnChanges, AfterViewInit, OnDestroy
             debounceTime(100),
             distinctUntilChanged(_.isEqual),
         ).subscribe((value) => this.onChange.next(value));
-    }
-
-    @HostBinding('class.is-active')
-    get isActive(): boolean {
-        return this.dropdownService.open$.value;
-    }
-
-    get triggerID(): string {
-        return `dropdown-trigger-${this.id}`;
-    }
-
-    get menuID(): string {
-        return `dropdown-menu-${this.id}`;
-    }
-
-    @HostListener('document:click', ['$event'])
-    onClickOut(event) {
-        if (!this.elementRef.nativeElement.contains(event.target)) {
-            this.dropdownService.open$.next(false);
-        }
-    }
-
-    @HostListener('focusout', ['$event'])
-    onFocusOut(event: FocusEvent) {
-        if (_.isNull(event.relatedTarget) ||
-            !this.elementRef.nativeElement.contains(event.relatedTarget)
-        ) {
-            this.dropdownService.open$.next(false);
-            this.blur$.next();
-        }
     }
 
     writeValue(value: any) {
@@ -122,31 +124,15 @@ export class DropdownComponent<T> implements OnChanges, AfterViewInit, OnDestroy
         if (changes.value) {
             this.dropdownService.selection$.next(this.value);
         }
-    }
-
-    ngAfterViewInit(): void {
-        this.dropdownService.menuEscaped$.pipe(
-            takeUntil(this.destroy$)
-        ).subscribe(() => {
-            this.trigger.nativeElement.focus();
-        });
+        if (changes.disabled) {
+            this.dropdownService.disabled$.next(this.disabled);
+        }
     }
 
     ngOnDestroy(): void {
         this.blur$.complete();
         this.destroy$.next(undefined);
         this.destroy$.complete();
-    }
-
-    public toggleDropdown() {
-        this.dropdownService.open$.next(!this.dropdownService.open$.value);
-    }
-
-    focusOnFirstItem(event: Event) {
-        event.preventDefault();
-        this.dropdownService.open$.next(true);
-        // focus on the first item - use setTimeout to wait until the menu is opened
-        setTimeout(() => this.dropdownService.focusShift$.next(1));
     }
 
 }

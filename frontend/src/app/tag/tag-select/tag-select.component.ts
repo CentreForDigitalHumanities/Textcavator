@@ -28,7 +28,7 @@ export class TagSelectComponent implements AfterViewInit, OnDestroy {
     @Output() cancel = new EventEmitter<void>();
 
     @ViewChild('newTagNameInput') newTagNameInput: ElementRef<HTMLInputElement>;
-    @ViewChild(DropdownComponent) dropdown: DropdownComponent<any>;
+    @ViewChild('selectToggle') selectToggle: ElementRef<HTMLButtonElement>;
 
     tags$: Observable<Tag[]>;
     destroy$ = new Subject<void>();
@@ -46,7 +46,7 @@ export class TagSelectComponent implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-        this.dropdown.trigger.nativeElement.focus();
+        this.selectToggle.nativeElement.focus();
     }
 
     filterTags(tags: Tag[], exclude?: Tag[]): Tag[] {

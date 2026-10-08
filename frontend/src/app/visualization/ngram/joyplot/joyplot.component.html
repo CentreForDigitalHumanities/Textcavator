@@ -1,10 +1,13 @@
-<div class="block">
+<div class="my-3" [iaLoading]="!data">
     <canvas id="chart" width="400"></canvas>
 </div>
 
-<div class="field">
-    <label class="checkbox" iaBalloon="scale the line graph for each ngram to the same size">
-        <input type="checkbox" [checked]="fixLineGraphHeights" (change)="setFixLineHeights($event)">
+<div class="form-check">
+    <input type="checkbox" class="form-check-input"
+        id="input-joyploy-scale"
+        [checked]="fixLineGraphHeights" (change)="setFixLineHeights($event)">
+    <label for="input-joyploy-scale" class="form-check-label"
+        ngbTooltip="scale the line graph for each ngram to the same size">
         Fixed height for line graphs
     </label>
 </div>

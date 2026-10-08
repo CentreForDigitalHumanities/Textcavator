@@ -1,18 +1,16 @@
-<div class="notifications">
-  @for (notification of notifications; track notification) {
-    <div class="notification {{notification.class}}"
-      [ngClass]="{'fade-out': notification.fadeOut}">
-      @if (notification.canDelete) {
-        <button class="delete" (click)="remove(notification)"></button>
-      }
-      <div class="content">
-        <p>{{notification.message}}</p>
-        @if (notification.link) {
-          <p>
-            <a [routerLink]="notification.link.route">{{notification.link.text}}</a>
-          </p>
-        }
-      </div>
-    </div>
-  }
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    @for (notification of notifications; track notification) {
+        <ngb-toast [delay]="defaultTimeout" (hidden)="remove(notification)"
+            [class]="notification.class">
+            <button type="button" class="btn-close float-end"
+                (click)="remove(notification)" aria-label="Close"></button>
+            <p class="mb-0">
+                {{notification.message}}
+                @if (notification.link) {
+                    <br>
+                    <a [routerLink]="notification.link.route">{{notification.link.text}}</a>
+                }
+            </p>
+        </ngb-toast>
+    }
 </div>

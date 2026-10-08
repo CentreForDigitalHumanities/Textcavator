@@ -7,7 +7,7 @@ import { CorpusField, SortState } from '@models';
 import { sortIcons } from '@shared/icons';
 import { PageResults } from '@models/page-results';
 
-const defaultValueType = 'alpha';
+const defaultValueType = 'numeric';
 @Component({
     selector: 'ia-search-sorting',
     templateUrl: './search-sorting.component.html',
@@ -15,7 +15,7 @@ const defaultValueType = 'alpha';
     standalone: false
 })
 export class SearchSortingComponent {
-    @HostBinding('class') classes = 'field has-addons';
+    @HostBinding('class') classes = 'input-group mb-3';
     @Input() pageResults: PageResults;
     @Input() labelledBy: string;
 

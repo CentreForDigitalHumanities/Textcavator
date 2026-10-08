@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject,  } from 'rxjs';
+
+let nextID = 0;
 
 @Injectable()
 export class DropdownService {
+    id = nextID++;
+
     /** selected value */
     selection$ = new BehaviorSubject<any>(undefined);
 
-    /** whether the menu is open */
-    open$ = new BehaviorSubject<boolean>(false);
+    disabled$ = new BehaviorSubject<boolean>(false);
 
-    /** events where the user has closed the menu with the escape key */
-    menuEscaped$ = new Subject<void>();
+    get triggerID(): string {
+        return `dropdown-trigger-${this.id}`;
+    }
 
-    /** events where the user shifts focus through arrow navigation */
-    focusShift$ = new Subject<number>();
+    get menuID(): string {
+        return `dropdown-menu-${this.id}`;
+    }
 };
