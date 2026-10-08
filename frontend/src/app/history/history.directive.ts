@@ -31,6 +31,6 @@ export class HistoryDirective {
 
 
     corpusTitle(corpusName: string): string {
-        return findByName(this.corpora, corpusName).title || corpusName;
+        return findByName(this.corpora, corpusName)?.title || corpusName;
     }
 }

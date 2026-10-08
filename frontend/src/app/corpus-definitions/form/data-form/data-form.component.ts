@@ -142,8 +142,8 @@ export class DataFormComponent implements OnInit, OnDestroy {
                 error: (error) => this.error$.next(error),
             });
 
-    handleReset = (files: CorpusDataFile[]): Observable<any> => {
-        const requests = files.map((file) =>
+    handleReset = ({data} : {data: CorpusDataFile[]}): Observable<any> => {
+        const requests = data.map((file) =>
             this.apiService.deleteDataFile(file),
         );
         return forkJoin(requests);

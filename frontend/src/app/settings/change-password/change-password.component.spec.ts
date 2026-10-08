@@ -32,8 +32,8 @@ describe('ChangePasswordComponent', () => {
 
     it('should show success message', () => {
         // message should be hidden
-        const successMessage = fixture.debugElement.query(By.css('.message.is-success'));
-        expect(successMessage.classes['is-hidden']).toBeTruthy();
+        const successMessage = fixture.debugElement.query(By.css('.alert.alert-success'));
+        expect(successMessage.nativeElement.hidden).toBeTrue();
 
         // fill in form and submit
         component.form.setValue({
@@ -43,6 +43,6 @@ describe('ChangePasswordComponent', () => {
         button.click();
         fixture.detectChanges();
 
-        expect(successMessage.classes['is-hidden']).toBeFalsy();
+        expect(successMessage.nativeElement.hidden).toBeFalse();
     });
 });

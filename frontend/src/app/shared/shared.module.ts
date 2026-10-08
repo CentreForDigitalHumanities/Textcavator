@@ -9,17 +9,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
-import { BalloonDirective } from './balloon/balloon.directive';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ErrorComponent } from './error/error.component';
 import { DropdownModule } from './dropdown/dropdown.module';
-import { TabPanelDirective } from './tabs/tab-panel.directive';
-import { TabsComponent } from './tabs/tabs.component';
-import { ToggleComponent } from './toggle/toggle.component';
 import { SlugifyPipe } from './pipes/slugify.pipe';
 import { ToggleButtonDirective } from './toggle-button/toggle-button.directive';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { BackToTopButton } from './back-to-top-button/back-to-top-button.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonLoadingDirective } from './button-loading/button-loading.directive';
+import { LoadingDirective } from './loading/loading.directive';
 
 /** this should be imported by all other modules; provides basic building blocks
  * for the whole application
@@ -28,19 +27,15 @@ import { BackToTopButton } from './back-to-top-button/back-to-top-button.compone
     declarations: [
         DatePickerComponent,
         ErrorComponent,
-        BalloonDirective,
-        TabsComponent,
-        TabPanelDirective,
-        ToggleComponent,
         SlugifyPipe,
         ConfirmModalComponent,
     ],
     exports: [
         // shared components
+        ButtonLoadingDirective,
+        LoadingDirective,
         DatePickerComponent,
         ErrorComponent,
-        TabsComponent,
-        TabPanelDirective,
         ToggleButtonDirective,
         ConfirmModalComponent,
         // shared modules
@@ -51,14 +46,15 @@ import { BackToTopButton } from './back-to-top-button/back-to-top-button.compone
         DialogModule,
         FormsModule,
         FontAwesomeModule,
-        BalloonDirective,
         RouterModule,
         TableModule,
-        ToggleComponent,
         BackToTopButton,
+        NgbModule,
         // Shared pipes
         SlugifyPipe,
     ], imports: [
+        ButtonLoadingDirective,
+        LoadingDirective,
         ToggleButtonDirective,
         BackToTopButton,
         BrowserAnimationsModule,
@@ -72,6 +68,7 @@ import { BackToTopButton } from './back-to-top-button/back-to-top-button.compone
         FontAwesomeModule,
         RouterModule,
         ReactiveFormsModule,
+        NgbModule,
     ], providers: [
         SlugifyPipe,
         provideHttpClient(withInterceptorsFromDi(), withXsrfConfiguration({

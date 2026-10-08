@@ -1,9 +1,7 @@
 <div class="scroll-top-button-container p-4">
-    <button class="button is-primary"
+    <button class="btn btn-primary"
         (click)="scrollToTop()" aria-label="scroll to top"
-        [class.is-hidden]="!isScrolledDown">
-        <span class="icon" aria-hidden>
-            <fa-icon [icon]="icon"/>
-        </span>
+        [hidden]="!isScrolledDown">
+        <fa-icon aria-hidden="true" [icon]="icon"/>
     </button>
 </div>

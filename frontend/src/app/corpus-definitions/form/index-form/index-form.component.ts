@@ -86,12 +86,12 @@ export class IndexFormComponent implements OnChanges, OnDestroy {
     state$ = new Subject<DisplayState>;
     destroy$ = new Subject<void>();
     loading$ = new BehaviorSubject<boolean>(false);
+    stopping$ = new Subject<boolean>();
 
     actionIcons = actionIcons;
 
 
     private jobID: number;
-    private stopping$ = new Subject<boolean>();
 
     constructor(
         private apiService: ApiService,
@@ -148,13 +148,13 @@ export class IndexFormComponent implements OnChanges, OnDestroy {
         switch (state.status) {
             case 'no connection':
             case 'indexing failed':
-                return 'is-danger';
+                return 'alert-danger';
             case 'index ready':
-                return 'is-success';
+                return 'alert-success';
             case 'corpus invalid':
-                return 'is-warning';
+                return 'alert-warning';
             default:
-                '';
+                return 'alert-secondary';
         }
     }
 
