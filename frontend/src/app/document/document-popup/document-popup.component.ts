@@ -103,6 +103,8 @@ export class DocumentPopupComponent implements OnChanges, OnDestroy {
             keyboard: true,
             scrollable: true,
             size: 'xl',
+            centered: true,
+            fullscreen: 'sm'
         });
         this.modal.result.finally(() => {
             this.modal = undefined;
