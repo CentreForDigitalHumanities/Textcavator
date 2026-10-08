@@ -23,14 +23,18 @@ from corpora.utils.exclude_fields import exclude_fields_without_extractor
 class PeaceportalIIS(PeacePortal, XMLCorpusDefinition):
     es_index = 'peace-iis'
 
+    @property
+    def iis_text_data(self):
+        raise NotImplementedError(
+            'iis_text_data must be configured through corpus settings')
+
     def add_metadata(self, filename):
         return {
-            'associated_file': join(self.external_file_folder, split(filename)[1])
+            'associated_file': join(self.iis_text_data, split(filename)[1])
         }
 
     def __init__(self):
         super().__init__()
-        self.external_file_folder = self.iis_text_data
         self.source_database.extractor = Constant(
             value='Inscriptions of Israel/Palestine (Brown University)'
         )
