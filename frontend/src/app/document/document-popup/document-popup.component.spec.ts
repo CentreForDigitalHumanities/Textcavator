@@ -20,6 +20,7 @@ describe('DocumentPopupComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(DocumentPopupComponent);
         component = fixture.componentInstance;
+
         const corpus = corpusFactory();
         const document = makeDocument(
             { genre: 'Science Fiction', content: 'Bleep bloop', date: '1950-01-01' },
@@ -47,8 +48,19 @@ describe('DocumentPopupComponent', () => {
 
         const queryModel = new QueryModel(corpusWithEntities);
         component.queryModel = queryModel;
-        component.ngOnChanges({queryModel: {previousValue: setModel, currentValue: queryModel, firstChange: false, isFirstChange: null}});
+        component.ngOnChanges({ queryModel: { previousValue: setModel, currentValue: queryModel, firstChange: false, isFirstChange: null } });
+
+        // Needed to create the modal.
+        component.focusUpdate({
+            document: component.document,
+            view: 'content',
+        });
+
         fixture.detectChanges();
-        expect(fixture.debugElement.query(By.css('ia-entity-toggle'))).toBeTruthy();
+
+        expect(document.body.querySelector('ia-entity-toggle')).toBeTruthy();
+
+        // Cleanup
+        component.close();
     });
 });

@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, TemplateRef, inject, input, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
+export interface ErrorDetails {
+    date: string;
+    href: string;
+    message: string;
+};
 
 @Component({
     selector: 'ia-error',
@@ -6,18 +13,29 @@ import { Component, Input, OnInit } from '@angular/core';
     styleUrls: ['./error.component.scss'],
     standalone: false
 })
-export class ErrorComponent implements OnInit {
-    @Input() public showError: ShowError;
+export class ErrorComponent implements OnInit, OnDestroy {
+    public errorDetails = input.required<ErrorDetails>();
+    private modalTemplate = viewChild.required<TemplateRef<unknown>>('modalTemplate');
 
-    constructor() { }
+    private modal: NgbModalRef;
+    private modalService = inject(NgbModal);
 
-    ngOnInit() {
+    public ngOnInit(): void {
+        this.modal = this.modalService.open(this.modalTemplate(), {
+            ariaLabelledBy: 'error-modal-title',
+            role: 'alertdialog',
+            centered: true,
+            size: 'lg',
+        });
     }
 
+    public close(): void {
+        this.modal?.close();
+    }
+
+    public ngOnDestroy(): void {
+        this.close();
+    }
 }
 
-export interface ShowError {
-    date: string;
-    href: string;
-    message: string;
-};
+
