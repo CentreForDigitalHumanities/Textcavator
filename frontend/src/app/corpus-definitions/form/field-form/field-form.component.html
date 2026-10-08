@@ -72,28 +72,28 @@
             </div>
             <fieldset>
                 <legend class="form-label">Options</legend>
-                <ng-container formGroupName="options">
+                <div formGroupName="options" class="d-grid">
                     @if (field.get('type').value === 'text_content' || field.get('type').value === 'text_metadata' ) {
-                        <label class="checkbox" [class.is-disabled]="corpus.active">
+                        <label class="checkbox d-block" [class.is-disabled]="corpus.active">
                             <input type="checkbox" name="search" formControlName="search" /> Search
-                            <p class="form-text">Enable text searching within this field.</p>
+                            <p class="form-text mt-0 mb-2">Enable text searching within this field.</p>
                         </label>
                     }
                     @if (field.get('type').value !== 'text_content' && field.get('type').value !== 'url' ) {
                         <label class="checkbox" [class.is-disabled]="corpus.active">
                             <input type="checkbox" name="filter" formControlName="filter" /> Filter
-                            <p class="form-text">Add a filter widget for this field.</p>
+                            <p class="form-text mt-0 mb-2">Add a filter widget for this field.</p>
                         </label>
                     }
                     <label class="checkbox">
                         <input type="checkbox" name="preview" formControlName="preview" /> Preview
-                        <p class="form-text">Show this field in the results overview.</p>
+                        <p class="form-text mt-0 mb-2">Show this field in the results overview.</p>
                     </label>
                     @if (field.get('type').value !== 'text_content' && field.get('type').value !== 'boolean' &&
                     field.get('type').value !== 'url') {
                         <label class="checkbox">
                             <input type="checkbox" name="sort" formControlName="sort" /> Sort
-                            <p class="form-text">
+                            <p class="form-text mt-0 mb-2">
                                 Enable sorting on values of this field
                                 @switch (field.get('type').value) {
                                 @case ('text_metadata') {
@@ -110,10 +110,10 @@
                     @if (field.get('type').value !== 'url') {
                         <label class="checkbox">
                             <input type="checkbox" name="visualize" formControlName="visualize" /> Visualize
-                            <p class="form-text">Include visualisations for this field.</p>
+                            <p class="form-text mt-0 mb-2">Include visualisations for this field.</p>
                         </label>
                     }
-                </ng-container>
+                </div>
             </fieldset>
             @if (getFieldProperty(field, 'hasLanguage')) {
             <div class="field" [class.is-disabled]="corpus.active">
