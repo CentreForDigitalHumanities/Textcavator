@@ -106,7 +106,7 @@ class ParliamentUK(Parliament, CSVCorpusDefinition):
         with open(os.path.join(self.data_directory, 'merged_metadata_twfy_keys.json'), 'r', encoding='utf-8') as file:
              all_person_metadata = json.load(file)
 
-        for csv_file in glob('{}/*.csv'.format(self.data_directory)):
+        for csv_file in sorted(glob('{}/*.csv'.format(self.data_directory))):
             year = re.search(r'(\d{4})\.csv$', csv_file)[1]
 
             with open(os.path.join(self.data_directory, 'metadata_conversion_per_year/conversion_dict_{}.json'.format(year))) as file:
