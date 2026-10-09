@@ -9,6 +9,11 @@ class CreateIndexAdmin(admin.StackedInline):
     extra = 0
 
 
+class ReindexAdmin(admin.StackedInline):
+    model = models.ReindexTask
+    extra = 0
+
+
 class PopulateIndexAdmin(admin.StackedInline):
     model = models.PopulateIndexTask
     extra = 0
@@ -46,6 +51,7 @@ class IndexJobAdmin(admin.ModelAdmin):
     list_filter = ['corpus']
     inlines = [
         CreateIndexAdmin,
+        ReindexAdmin,
         PopulateIndexAdmin,
         UpdateIndexAdmin,
         UpdateSettingsAdmin,
