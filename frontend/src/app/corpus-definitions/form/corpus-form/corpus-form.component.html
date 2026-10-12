@@ -1,5 +1,5 @@
-<div class="py-5">
-    <div class="container">
+<div class="py-5 container">
+    <div class="pb-4">
         <nav aria-label="secondary navigation" class="mb-3">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a [routerLink]="['/']" >{{appName}}</a></li>
@@ -14,7 +14,7 @@
 
         <div class="row">
             <div class="col-md">
-                <h1 class="mb-4">Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
+                <h1>Edit "{{corpus?.definition?.meta?.title || '...'}}"</h1>
             </div>
             <div class="col-md-auto">
                 @if (corpus.active) {
@@ -37,64 +37,60 @@
             </div>
         }
     </div>
-</div>
 
-<div class="py-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="sticky-lg-top py-3">
-                    <h2 class="mb-3 fs-5">Steps</h2>
-                    <ul ngbNav #nav="ngbNav" class="nav flex-column nav-pills nav-fill"
-                        [activeId]="activeStep$ | async"
-                        (activeIdChange)="onActiveIndexChange($event)">
-                        @for (step of steps$ | async; let index = $index; track $index) {
-                            <li [ngbNavItem]="index" [disabled]="step.disabled">
-                                <button ngbNavLink class="text-start">
-                                    <b class="m-3">{{index + 1}}</b>
-                                    {{step.label}}
-                                </button>
-                                <ng-template ngbNavContent>
-                                    @if (corpus$ | async; as corpus) {
-                                        @switch (index) {
-                                            @case (0) {
-                                                <ia-meta-form [corpus]="corpus" />
-                                            }
-                                            @case (1) {
-                                                <ia-data-form />
-                                            }
-                                            @case (2) {
-                                                <ia-field-form [corpus]="corpus" />
-                                            }
-                                            @case (3) {
-                                                <ia-index-form [corpus]="corpus" />
-                                            }
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="sticky-lg-top py-3">
+                <h2 class="mb-3 fs-5">Steps</h2>
+                <ul ngbNav #nav="ngbNav" class="nav flex-column nav-pills nav-fill"
+                    [activeId]="activeStep$ | async"
+                    (activeIdChange)="onActiveIndexChange($event)">
+                    @for (step of steps$ | async; let index = $index; track $index) {
+                        <li [ngbNavItem]="index" [disabled]="step.disabled">
+                            <button ngbNavLink class="text-start">
+                                <b class="m-3">{{index + 1}}</b>
+                                {{step.label}}
+                            </button>
+                            <ng-template ngbNavContent>
+                                @if (corpus$ | async; as corpus) {
+                                    @switch (index) {
+                                        @case (0) {
+                                            <ia-meta-form [corpus]="corpus" />
+                                        }
+                                        @case (1) {
+                                            <ia-data-form />
+                                        }
+                                        @case (2) {
+                                            <ia-field-form [corpus]="corpus" />
+                                        }
+                                        @case (3) {
+                                            <ia-index-form [corpus]="corpus" />
                                         }
                                     }
-                                </ng-template>
-                            </li>
-                        }
-                    </ul>
-
-                    <div class="py-5 d-grid">
-                        @if (nextStep$ | async; as nextStep) {
-                            @if (nextStep.disabled) {
-                                <p class="alert alert-secondary">
-                                        This step is not yet complete.
-                                </p>
-                            } @else {
-                                <button class="btn btn-body" (click)="toNext()">
-                                    <fa-icon [icon]="actionIcons.next" aria-hidden="true" />
-                                    {{nextStep.label}}
-                                </button>
                                 }
+                            </ng-template>
+                        </li>
+                    }
+                </ul>
+
+                <div class="py-5 d-grid">
+                    @if (nextStep$ | async; as nextStep) {
+                        @if (nextStep.disabled) {
+                            <p class="alert alert-secondary">
+                                    This step is not yet complete.
+                            </p>
+                        } @else {
+                            <button class="btn btn-body" (click)="toNext()">
+                                <fa-icon [icon]="actionIcons.next" aria-hidden="true" />
+                                {{nextStep.label}}
+                            </button>
                             }
-                    </div>
+                        }
                 </div>
             </div>
-            <div class="col">
-                <div class="container-lg" [ngbNavOutlet]="nav"></div>
-            </div>
+        </div>
+        <div class="col py-3">
+            <div class="container-lg" [ngbNavOutlet]="nav"></div>
         </div>
     </div>
 </div>
