@@ -52,6 +52,7 @@
                                 {{step.label}}
                             </button>
                             <ng-template ngbNavContent>
+                                <h2 class="mb-4" #subformHeader tabindex="-1">{{step.label}}</h2>
                                 @if (corpus$ | async; as corpus) {
                                     @switch (index) {
                                         @case (0) {
