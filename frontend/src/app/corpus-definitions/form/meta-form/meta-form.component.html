@@ -1,4 +1,4 @@
-<h1 class="mb-4">Corpus information</h1>
+<h2 class="mb-4">Corpus information</h2>
 <p class="lead">
   Provide some basic information about your corpus. This information will be shown in
   the corpus overview and the information page for your corpus, and will help users find
@@ -9,7 +9,7 @@
 
 <div class="card mb-4">
     <form (ngSubmit)="onSubmit()" [formGroup]="metaForm" class="card-body">
-    <h2 class="card-title mb-4">Metadata</h2>
+    <h3 class="card-title mb-4">Metadata</h3>
 
     <div class="mb-4" [class.is-disabled]="corpus.active">
         @let titleControl = metaForm.controls.title;
