@@ -410,7 +410,8 @@ class FieldDefinition(Field):
         required: Whether this field is required during source extraction. Note that not
             all Reader subclasses currently support this.
         normalize_whitespace: Whether whitespace should be normalized in the interface.
-            Only affects text content fields.
+            Only affects text content fields. Normalization is handled in the frontend. It
+            will convert newlines to paragraph breaks and collapse subsequent newlines.
     '''
 
     def __init__(self,
