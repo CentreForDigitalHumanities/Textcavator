@@ -121,6 +121,7 @@ class FieldAdmin(admin.ModelAdmin):
                     'corpus_configuration',
                     'display_name',
                     'description',
+                    'display_type',
                     'hidden',
                     'downloadable',
                 ]
@@ -147,9 +148,10 @@ class FieldAdmin(admin.ModelAdmin):
             'Search interface',
             {
                 'fields': [
-                    'search_filter',
+                    'normalize_whitespace',
                     'results_overview',
                     'searchable',
+                    'search_filter',
                     'search_field_core',
                     'sortable',
                 ]

@@ -1,16 +1,25 @@
 <div [attr.lang]="document.language(field)">
     @if (showEntities) {
         @let value = document.namedEntityAnnotatedValue(field) || document.fieldValue(field);
-        @for (p of value | paragraph:true; track $index) {
-            <p ia-annotated-content [content]="p"></p>
+        @if (field.normalizeWhitespace) {
+            @for (p of value | paragraph:true; track $index) {
+                <p ia-annotated-content [content]="p"></p>
+            }
+        } @else {
+            <div ia-annotated-content [content]="content"></div>
         }
         <ia-entity-legend [annotatedContent]="value" />
     } @else {
-        @let paragraphs = document.fieldValue(field) | elasticsearchHighlight:field:document | paragraph:true;
-        @for (par of paragraphs; track $index) {
-            <p ia-highlighted-content
-                [content]="par">
-            </p>
+        @let content = document.fieldValue(field) | elasticsearchHighlight:field:document;
+        @if (field.normalizeWhitespace) {
+            @let paragraphs = content | paragraph:true;
+            @for (par of paragraphs; track $index) {
+                <p ia-highlighted-content
+                    [content]="par">
+                </p>
+            }
+        } @else {
+            <div ia-highlighted-content [content]="content"></div>
         }
     }
 </div>
