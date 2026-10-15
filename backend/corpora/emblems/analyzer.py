@@ -15,19 +15,23 @@ class CustomEmblemsAnalyzer(LanguageAnalyzer):
         return {
             'tokenizer': 'standard',
             'filter': ['asciifolding', 'lowercase'],
-            'char_filter': [
-                # replace ligatures
-                {
-                    'type': 'mapping',
-                    'mappings': [
-                        'æ => ae',
-                        'œ => oe',
-                        'Æ => AE',
-                        'Œ => OE',
-                    ],
-                }
-            ]
+            'char_filter': ['latin_ligatures']
         }
+
+    def char_filters(self):
+        filters = super().char_filters()
+        filters['latin_ligatures'] = {
+            # replace ligatures
+            'type': 'mapping',
+            'mappings': [
+                'æ => ae',
+                'œ => oe',
+                'Æ => AE',
+                'Œ => OE',
+            ],
+        }
+        return filters
+
 
 
 def es_settings_with_custom_analyzers(languages: List[str], custom: List[LanguageAnalyzer]):
