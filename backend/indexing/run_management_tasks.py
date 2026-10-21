@@ -2,8 +2,9 @@
 Functionality to run indexing tasks too straightforward to warrant a separate module
 '''
 
+from time import sleep
 from indexing.models import (
-    DeleteIndexTask, RemoveAliasTask, AddAliasTask, UpdateSettingsTask,
+    DeleteIndexTask, RemoveAliasTask, AddAliasTask, UpdateSettingsTask
 )
 
 
@@ -46,7 +47,3 @@ def update_index_settings(task: UpdateSettingsTask):
         index=task.index.name,
         allow_no_indices=False,
     )
-
-
-
-

@@ -55,6 +55,7 @@ class IndexJob(models.Model):
 
         Tasks are ordered by type. The order of types is:
         - `CreateIndexTask`
+        - `CopyDocumentsTask`
         - `PopulateIndexTask`
         - `UpdateIndexTask`
         - `UpdateSettingsTask`
@@ -73,6 +74,7 @@ class IndexJob(models.Model):
         '''
         return [
             self.createindextasks.all(),
+            self.CopyDocumentsTasks.all(),
             self.populateindextasks.all(),
             self.updateindextasks.all(),
             self.updatesettingstasks.all(),
@@ -157,6 +159,21 @@ class CreateIndexTask(IndexTask):
 
     def __str__(self):
         return f'create {self.index} based on {self.corpus}'
+
+
+class CopyDocumentsTask(IndexTask):
+    '''
+    Copy all documents from an existing index
+    '''
+    source_index = models.ForeignKey(
+        to=Index,
+        on_delete=models.CASCADE,
+        help_text='Index with source data',
+    )
+
+    def __str__(self):
+        return f'copy documents from {self.source_index} to {self.index}'
+
 
 class PopulateIndexTask(IndexTask):
     '''
