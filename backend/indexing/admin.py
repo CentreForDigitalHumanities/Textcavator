@@ -9,8 +9,8 @@ class CreateIndexAdmin(admin.StackedInline):
     extra = 0
 
 
-class ReindexAdmin(admin.StackedInline):
-    model = models.ReindexTask
+class CopyDocumentsAdmin(admin.StackedInline):
+    model = models.CopyDocumentsTask
     extra = 0
 
 
@@ -51,7 +51,7 @@ class IndexJobAdmin(admin.ModelAdmin):
     list_filter = ['corpus']
     inlines = [
         CreateIndexAdmin,
-        ReindexAdmin,
+        CopyDocumentsAdmin,
         PopulateIndexAdmin,
         UpdateIndexAdmin,
         UpdateSettingsAdmin,

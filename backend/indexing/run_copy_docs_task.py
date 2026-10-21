@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch
 
 from es.search import hits
 from es.sync import update_availability
-from indexing.models import ReindexTask
+from indexing.models import CopyDocumentsTask
 from indexing.run_populate_task import run_bulk
 
 logger = logging.getLogger('indexing')
@@ -31,9 +31,9 @@ def iterate_documents(client: Elasticsearch, index: str):
         docs = hits(result)
 
 
-def run_reindex_task(task: ReindexTask):
+def run_copy_documents_task(task: CopyDocumentsTask):
     '''
-    Reindex documents from one index to another.
+    Copy documents from one index to another.
 
     This uses a query to fetch documents and then sends bulk index requests to
     Elasticsearch (similar to the the populate action). This adds some overhead

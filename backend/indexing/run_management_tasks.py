@@ -4,9 +4,8 @@ Functionality to run indexing tasks too straightforward to warrant a separate mo
 
 from time import sleep
 from indexing.models import (
-    DeleteIndexTask, RemoveAliasTask, AddAliasTask, UpdateSettingsTask, ReindexTask
+    DeleteIndexTask, RemoveAliasTask, AddAliasTask, UpdateSettingsTask
 )
-from indexing.stop_job import TaskAborted
 
 
 def add_alias(task: AddAliasTask):
