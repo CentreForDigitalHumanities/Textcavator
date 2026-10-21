@@ -17,9 +17,7 @@ class PeaceportalFIJI(PeacePortal, XMLCorpusDefinition):
     updated to align with the PEACE portal index. This mostly implies that there are fewer fields
     than in the earlier version (i.e. the one under corpora/jewishinscriptions).
     '''
-
-    data_directory = settings.PEACEPORTAL_FIJI_DATA
-    es_index = getattr(settings, 'PEACEPORTAL_FIJI_ES_INDEX', 'peaceportal-fiji')
+    es_index = 'peace-fiji'
     filename_pattern = re.compile(r'\d+')
 
     def sources(self, start, end):

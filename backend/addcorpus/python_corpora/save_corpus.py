@@ -130,7 +130,7 @@ def _save_field_in_database(field_definition: FieldDefinition, configuration: Co
         'es_mapping', 'indexed', 'hidden',
         'required', 'sortable',
         'searchable', 'downloadable',
-        'language',
+        'language', 'normalize_whitespace',
     ]
 
     copy_attributes = get_defined_attributes(field_definition, attributes_to_copy)

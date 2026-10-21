@@ -1,5 +1,6 @@
-import pytest
 import os
+
+import pytest
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -13,9 +14,20 @@ def peace_test_settings(settings):
         'peaceportal-tol': 'corpora.peaceportal.tol.PeaceportalTOL',
     }
 
-    settings.PEACEPORTAL_EPIDAT_DATA= os.path.join(here, 'tests', 'data', 'epidat')
-    settings.PEACEPORTAL_FIJI_DATA= os.path.join(here, 'tests', 'data', 'fiji')
-    settings.PEACEPORTAL_IIS_DATA = os.path.join(here, 'tests', 'data', 'iis', 'xml')
-    settings.PEACEPORTAL_IIS_TXT_DATA = os.path.join(here, 'tests', 'data', 'iis', 'transcription_txts')
-    settings.PEACEPORTAL_TOL_DATA = os.path.join(here, 'tests', 'data', 'tol')
-    settings.PEACEPORTAL_ALIAS = 'peaceportal'
+    settings.CORPUS_SETTINGS = {
+        'peaceportal': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'epidat'),
+            'es_alias': 'peaceportal'
+        },
+        'peaceportal-fiji': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'fiji')
+        },
+        'peaceportal-iis': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'iis', 'xml'),
+            'iis_text_data': os.path.join(here, 'tests', 'data', 'iis', 'transcription_txts')
+        },
+        'peaceportal-tol': {
+            'data_directory': os.path.join(here, 'tests', 'data', 'tol')
+        }
+
+    }

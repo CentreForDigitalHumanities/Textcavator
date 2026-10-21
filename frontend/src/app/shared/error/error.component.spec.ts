@@ -15,6 +15,11 @@ describe('ErrorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ErrorComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('errorDetails', {
+      date: '2024-06-05T12:34:56Z',
+      href: '/some/path',
+      message: 'An error occurred'
+    });
     fixture.detectChanges();
   });
 

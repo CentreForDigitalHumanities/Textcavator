@@ -44,6 +44,13 @@ $form-label-font-weight: bold;
 $pagination-active-color: white;
 $nav-pills-link-active-color: white;
 
+$container-max-widths: (
+  sm: 720px,
+  md: 960px,
+  lg: 1140px,
+  xl: 1320px,
+);
+
 
 // 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
 @import "../node_modules/bootstrap/scss/variables";

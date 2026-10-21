@@ -85,14 +85,16 @@ export class NgramComponent implements OnChanges {
         { label: '2', value: 3 },
         { label: '3', value: 4 },
         { label: '5', value: 6 },
+        { label: '10', value: 11 },
     ];
     positionsOptions = ['any', 'first', 'second'].map((n) => ({
         label: `${n}`,
         value: n,
     }));
     freqCompensationOptions = [
-        { label: 'No', value: false },
-        { label: 'Yes', value: true },
+        { label: 'No', value: 'absolute' },
+        { label: 'Yes', value: 'relative' },
+        { label: 'Balanced (experimental)', value: 't' },
     ];
     analysisOptions: { label: string; value: string }[];
     maxDocumentsOptions = makeNumberOptions([50, 100, 500, 1000, 5000]);
@@ -188,7 +190,9 @@ export class NgramComponent implements OnChanges {
                 this.analysisOptions = [
                     { label: 'None', value: 'none' },
                 ].concat(
-                    this.visualizedField.multiFields.map((subfield) => {
+                    this.visualizedField.multiFields.filter(subfield =>
+                        ['clean', 'stemmed'].includes(subfield)
+                    ).map((subfield) => {
                         const displayStrings = {
                             clean: 'Remove stopwords',
                             stemmed: 'Stem and remove stopwords',
