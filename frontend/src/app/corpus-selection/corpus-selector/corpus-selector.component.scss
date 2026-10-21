@@ -1,68 +1,12 @@
-@use "bulma/sass/utilities/mixins";
-
-$radius: .25rem;
-
-.corpus-container {
-    padding: 0;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    margin-bottom: 1.75rem;
-
-    > .column {
-        padding: 1rem; // slightly more generous padding
-    }
-
-    border-radius: $radius;
-}
-
-
-.image-column {
-    position: relative;
-    overflow-y: hidden;
-    min-height: 200px;
-
-    @include mixins.desktop {
-        max-width: 300px;
-    }
-}
-
 .corpus-image {
-    height: 100%;
+    background-position: center;
+    background-size: cover;
     width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    height: 100%;
 
-    img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-        object-position: center;
-
-        border-top-left-radius: $radius;
-        border-bottom-left-radius: $radius;
-
-        @include mixins.mobile {
-            border-bottom-left-radius: 0;
-            border-top-right-radius: $radius;
-        }
+    @media screen and (max-width: 768px) {
+        height: 200px;
+        border-bottom-left-radius: none !important;
+        border-top-right-radius: var(--bs-border-radius) !important;
     }
-}
-
-.title-row {
-    margin-bottom: 0px;
-}
-
-.title-divider {
-    margin-top: 0px;
-    margin-bottom: 1rem;
-    background-color: var(--bulma-primary-soft);
-}
-
-.columns .align-bottom {
-    align-items: end;
-}
-
-strong {
-    color: inherit;
 }

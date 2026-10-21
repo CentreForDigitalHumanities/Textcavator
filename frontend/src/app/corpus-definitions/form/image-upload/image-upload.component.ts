@@ -4,7 +4,7 @@ import { ApiService } from '@services';
 import { actionIcons } from '@shared/icons';
 import { CorpusDefinitionService } from 'app/corpus-definitions/corpus-definition.service';
 import * as _ from 'lodash';
-import { BehaviorSubject, map, Observable, Subject, takeUntil, timestamp } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, Subject, takeUntil, timestamp } from 'rxjs';
 
 @Component({
     selector: 'ia-image-upload',
@@ -34,6 +34,7 @@ export class ImageUploadComponent {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.corpus) {
             this.imageURL$ = this.corpus.definitionUpdated$.pipe(
+                filter(() => !!this.corpus.definition),
                 map(() => this.corpus.definition.name),
                 map(name => `/api/corpus/image/${name}`),
                 timestamp(),

@@ -409,6 +409,9 @@ class FieldDefinition(Field):
         downloadable: Whether this field may be included when downloading results.
         required: Whether this field is required during source extraction. Note that not
             all Reader subclasses currently support this.
+        normalize_whitespace: Whether whitespace should be normalized in the interface.
+            Only affects text content fields. Normalization is handled in the frontend. It
+            will convert newlines to paragraph breaks and collapse subsequent newlines.
     '''
 
     def __init__(self,
@@ -431,6 +434,7 @@ class FieldDefinition(Field):
                  searchable: Optional[bool] = None,
                  downloadable: bool = True,
                  required: bool = False,
+                 normalize_whitespace: bool = True,
                  **kwargs
                  ):
 
@@ -455,6 +459,7 @@ class FieldDefinition(Field):
         self.es_mapping = es_mapping
         self.language = language
         self.hidden = not indexed or hidden
+        self.normalize_whitespace = normalize_whitespace
 
         self.sortable = sortable if sortable is not None else \
             not hidden and indexed and \

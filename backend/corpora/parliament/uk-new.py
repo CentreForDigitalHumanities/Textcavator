@@ -300,12 +300,7 @@ class ParliamentUKNew(Parliament, XMLCorpusDefinition):
         transform=lookup_person_attribute
     )
 
-    speaker_wikidata = FieldDefinition(
-        name = 'speaker_wikidata',
-        display_name = 'Speaker Wikidata URI',
-        description= 'URI for the Wikidata page for this speaker',
-        es_mapping=keyword_mapping(),
-    )
+    speaker_wikidata = field_defaults.speaker_wikidata()
     speaker_wikidata.extractor = Combined(
         Metadata('speaker_metadata'),
         XML(attribute='person_id'),

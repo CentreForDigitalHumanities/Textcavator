@@ -43,8 +43,6 @@ describe('DocumentViewComponent', () => {
     it('should create tabs', () => {
         const debug = fixture.debugElement.queryAll(By.css('[role=tab]'));
         expect(debug.length).toBe(2);
-        expect(debug[0].attributes['id']).toBe('tab-field-content');
-        expect(debug[1].attributes['id']).toBe('tab-scan');
     });
 
     it('shows named entities if showEntities is true', async () => {

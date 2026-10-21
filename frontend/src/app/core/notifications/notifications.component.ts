@@ -6,11 +6,11 @@ import {
     NotificationService,
 } from '@services/notification.service';
 
-const notificationClassMap: {[T in Notification['type']]: NotificationDisplay['class']} = {
-    info: 'is-info',
-    warning: 'is-warning',
-    danger: 'is-danger',
-    success: 'is-success'
+const notificationClassMap: {[T in Notification['type']]: string} = {
+    info: 'bg-secondary text-bg-secondary',
+    warning: 'bg-warning text-bg-warning',
+    danger: 'bg-danger text-bg-danger',
+    success: 'bg-success text-bg-success'
 };
 
 @Component({
@@ -36,43 +36,24 @@ export class NotificationsComponent implements OnDestroy {
     }
 
     public remove(notification: NotificationDisplay) {
-        notification.canDelete = false;
-        notification.fadeOut = true;
-        setTimeout(() => {
-            this.notifications = this.notifications.filter(
-                (candidate) => candidate !== notification
-            );
-            if (notification.timeout) {
-                clearTimeout(notification.timeout);
-            }
-        }, 2000);
+        this.notifications = this.notifications.filter(
+            (candidate) => candidate !== notification
+        );
     }
 
     private showNotification(notification: Notification) {
         const notificationDisplay: NotificationDisplay = {
-            canDelete: true,
-            fadeOut: false,
             message: notification.message,
             class: notificationClassMap[notification.type],
             link: notification.link,
         };
-
         this.notifications.push(notificationDisplay);
-
-        notificationDisplay.timeout = setTimeout(
-            () => this.remove(notificationDisplay),
-            this.defaultTimeout
-        );
     }
 }
 
 interface NotificationDisplay {
-    canDelete: boolean;
-    fadeOut: boolean;
     message: string;
-    // class type of the Bulma notification
-    class: 'is-primary' | 'is-info' | 'is-success' | 'is-warning' | 'is-danger';
-    timeout?;
+    class: string;
     link?: {
         text: string;
         route: string[];

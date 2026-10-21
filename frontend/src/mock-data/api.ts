@@ -2,17 +2,20 @@ import * as _ from 'lodash';
 import { Observable, Subject, from, of } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { mockUserResponse } from './user';
-import { Corpus, CorpusDocumentationPage, TaskResult, TasksOutcome } from '../app/models';
-import { LimitedResultsDownloadParameters } from '../app/models/search-results';
+import { CorpusDocumentationPage, TaskResult, TasksOutcome } from '../app/models';
+import { LimitedResultsDownloadParameters, NgramResults } from '../app/models/search-results';
 import { corpusDefinitionFactory } from './corpus-definition';
 import { APIEditableCorpus, CorpusDataFile } from '../app/models/corpus-definition';
 
-export const fakeNgramResult = {
+export const fakeNgramResult: NgramResults = {
     words: [
         {
             label: 'the test',
             data: [1, 2]
         }
+    ],
+    totals: [
+        { x: 3, y: 0, ngram: 'the test'},
     ],
     time_points: ['1900-1910', '1910-1920']
 };

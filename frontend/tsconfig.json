@@ -14,8 +14,9 @@
             "node_modules/@types"
         ],
         "types": [
-            "jasmine",
-            "node"
+          "jasmine",
+          "node",
+          "@angular/localize"
         ],
       "baseUrl": "src",
         "paths": {

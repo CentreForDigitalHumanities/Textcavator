@@ -5,7 +5,7 @@ import {
     OnDestroy, SimpleChanges
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, Observable, Subject, takeUntil, take } from 'rxjs';
+import { map, Observable, Subject, takeUntil, take, filter } from 'rxjs';
 import { CorpusDefinitionService } from '../../corpus-definition.service';
 import { APICorpusDefinition, APIEditableCorpus, CorpusDefinition } from '../../../models/corpus-definition';
 import { collectLanguages, Language } from '../constants';
@@ -114,8 +114,9 @@ export class MetaFormComponent implements OnChanges, OnDestroy {
         if (changes.corpus) {
             this.corpus.definitionUpdated$
             .pipe(
+                filter(() => !!this.corpus.definition),
                 take(1),
-                takeUntil(this.destroy$)
+                takeUntil(this.destroy$),
             )
             .subscribe(() => {
                 if (this.corpus.active) {

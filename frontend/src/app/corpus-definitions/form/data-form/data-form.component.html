@@ -1,13 +1,13 @@
 @let corpus = corpus$ | async;
 
-<h1 class="title">Upload your data</h1>
-<p class="block is-size-5">
+<h1 class="mb-4">Upload your data</h1>
+<p class="mb-3 lead">
   Upload your data as a CSV file. Based on your data, Textcavator will set up the
   fields for your corpus. You can configure the fields further in the next step.
 </p>
 
-<div class="block">
-  <button class="button" (click)="openDocumentation()">Manual</button>
+<div class="my-3">
+  <button class="btn btn-body" (click)="openDocumentation()">Manual</button>
 </div>
 
 
@@ -53,87 +53,76 @@
 }
 
 @if (corpus.active) {
-  <div class="message mt-5">
-    <div class="message-body">
-      <p class="block">
-        Uploading data files is disabled because this corpus is currently active.
-      </p>
+    <div class="alert alert-secondary">
+        <p class="mb-0">
+            Uploading data files is disabled because this corpus is currently active.
+        </p>
     </div>
-  </div>
 } @else {
-  @if (fileState === "firstUploaded" || fileState === "firstConfirmed") {
-    <div class="field is-grouped">
-      <button class="button" (click)="confirmReset.open(dataFiles)">
-        <span class="icon" aria-hidden="true">
-          <fa-icon [icon]="formIcons.reset"></fa-icon>
-        </span>
-        <span>Reset</span>
-      </button>
-      <div class="file mb-0">
-        <label class="file-label">
-          <input
-            class="file-input"
-            type="file"
-            name="definition-upload"
-            accept=".csv,.tsv,text/csv,text/tab-separated-values "
-            (input)="onUpload($event)"
-            />
-          <span class="file-cta">
-            <span class="file-icon" aria-hidden="true">
-              <fa-icon [icon]="formIcons.replace"></fa-icon>
-            </span>
-            <span class="file-label">Replace file</span>
-          </span>
-        </label>
-      </div>
-      @if (fileState === "firstUploaded") {
-        <button class="button is-primary" (click)="confirmFile()">
-          <span class="icon" aria-hidden="true">
-            <fa-icon [icon]="formIcons.confirm"></fa-icon>
-          </span>
-          <span>Use this file</span>
-        </button>
-      }
-    </div>
-  }
-
-  @if (fileState === "noneUploaded") {
-    <form>
-      <div class="field">
-        <div class="file">
-          <label class="file-label">
-            <input
-              class="file-input"
-              type="file"
-              name="definition-upload"
-              accept=".csv,.tsv,text/csv,text/tab-separated-values "
-              (input)="onUpload($event)"
-              />
-            <span class="file-cta">
-              <span class="file-icon" aria-hidden="true">
-                <fa-icon [icon]="actionIcons.upload"></fa-icon>
-              </span>
-              <span class="file-label">Upload CSV file...</span>
-            </span>
-          </label>
+    @if (fileState === "firstUploaded" || fileState === "firstConfirmed") {
+        <div class="row g-3 align-items-end">
+            <div class="col-md-auto">
+                <button class="btn btn-body" (click)="confirmReset.open(dataFiles)">
+                    <fa-icon [icon]="formIcons.reset" aria-hidden="true" />
+                    Reset
+                </button>
+            </div>
+            <div class="col-md-auto">
+                <label class="form-label" for="input-replace-csv">
+                    <fa-icon [icon]="formIcons.replace"></fa-icon>
+                    Replace file
+                </label>
+                <input
+                    class="form-control"
+                    type="file"
+                    id="input-replace-csv"
+                    name="definition-upload"
+                    accept=".csv,.tsv,text/csv,text/tab-separated-values "
+                    (input)="onUpload($event)"
+                    />
+            </div>
+            @if (fileState === "firstUploaded") {
+                <div class="col-md-auto">
+                    <button class="btn btn-primary" (click)="confirmFile()">
+                        <fa-icon [icon]="formIcons.confirm" aria-hidden="true" />
+                        Use this file
+                    </button>
+                </div>
+            }
         </div>
-      </div>
+    }
 
-      @if (error$ | async; as error) {
-        <div class="message is-danger">
-          <div class="message-header">Invalid file</div>
-          <div class="message-body">
-            An error occurred when reading the file: {{ error.message }}
-          </div>
-        </div>
-      }
-    </form>
-  }
+    @if (fileState === "noneUploaded") {
+        <form>
+            <div class="mb-3">
+                <label class="form-label">
+                    <fa-icon [icon]="actionIcons.upload"></fa-icon>
+                    Upload CSV file
+                </label>
+                <input class="form-control"
+                    type="file"
+                    name="definition-upload"
+                    accept=".csv,.tsv,text/csv,text/tab-separated-values "
+                    (input)="onUpload($event)"
+                    />
+            </div>
+
+            @if (error$ | async; as error) {
+                <div class="alert alert-danger">
+                    <h4 class="alert-heading">Invalid file</h4>
+                    <p class="mb-0">
+                        An error occurred when reading the file: {{ error.message }}
+                    </p>
+                </div>
+            }
+        </form>
+    }
 
   <!-- Reset confirmation -->
   <ia-confirm-modal
     #confirmReset
     actionText="Remove data file"
+    actionButtonClass="btn-danger"
     [handleAsync]="handleReset"
     (accept)="onResetComplete()"
     >

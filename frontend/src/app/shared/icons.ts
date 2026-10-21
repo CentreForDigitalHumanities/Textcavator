@@ -63,6 +63,8 @@ import {
     faMoon,
     faSun,
     faAngleDoubleUp,
+    faMaximize,
+    faMinimize,
 } from '@fortawesome/free-solid-svg-icons';
 
 type IconDefinition = SolidIconDefinition | RegularIconDefinition;
@@ -120,6 +122,8 @@ export const actionIcons: Icons = {
     edit: faPencil,
     view: faEye,
     wait: faClock,
+    maximize: faMaximize,
+    minimize: faMinimize
 };
 
 export const formIcons: Icons = {

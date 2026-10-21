@@ -48,15 +48,15 @@ export class ThemeService {
     /** set theme in the site layout */
     private applyTheme(theme: Theme) {
         const root = (document.getRootNode() as Document).documentElement;
-        root.setAttribute('data-theme', theme);
+        root.setAttribute('data-bs-theme', theme);
         this.applyChartJSTheme();
     }
 
     /** set chartjs defaults based on current style, and update active charts */
     private applyChartJSTheme() {
         const style = window.getComputedStyle(document.body);
-        Chart.defaults.color = () => style.getPropertyValue('--bulma-text-strong');
-        Chart.defaults.borderColor = () => style.getPropertyValue('--bulma-border');
+        Chart.defaults.color = () => style.getPropertyValue('--bs-body-color');
+        Chart.defaults.borderColor = () => style.getPropertyValue('--bs-border-color');
 
         const active = _.values(Chart.instances);
         for (let chart of active) {

@@ -1,22 +1,26 @@
-<div [class.is-hidden]="asTable">
-  <div class="block">
-    <div class="field">
-      <label class="label">Show as:</label>
-      <div class="control radios">
-        @for (style of ['line', 'bar']; track style) {
-          <label class="radio">
-            <input type="radio" [checked]="graphStyle.value===style" (click)="graphStyle.next(style)" (keydown.enter)="graphStyle.next(style)">
-            {{style | titlecase}}
-          </label>
-        }
-      </div>
-    </div>
+<div [class.d-none]="asTable">
+    <div class="my-3">
+        <fieldset class="field">
+            <legend class="form-label fs-6">Show as:</legend>
+            @for (style of graphStyles; track style) {
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"
+                        name="graph-style"
+                        id="input-graph-style-{{style}}"
+                        [value]="style"
+                        [checked]="graphStyle.value === style"
+                        (click)="graphStyle.next(style)">
+                    <label class="form-check-label"
+                        for="input-graph-style-{{style}}">
+                        {{style | titlecase}}
+                    </label>
+                </div>
+            }
+    </fieldset>
     @if (graphStyle.value==='bar') {
-      <div class="field">
-        <div class="control">
-          <label class="label">Time interval:</label>
+      <div class="my-4">
+          <label class="form-label">Time interval:</label>
           <ia-time-interval-slider [labels]="timeIntervals" (currentIndex)="zoomTimeInterval($event)"></ia-time-interval-slider>
-        </div>
       </div>
     }
   </div>
@@ -25,7 +29,7 @@
 </div>
 
 @if (asTable && terms.length) {
-  <div class="block">
+  <div class="my-3">
     <ia-freqtable  [headers]="tableHeaders" [data]="tableData" [defaultSort]="'similarity'" [name]="tableFileName">
     </ia-freqtable>
   </div>

@@ -28,6 +28,7 @@ import {
     PageResultsParameters,
 } from '@models/page-results';
 
+type Encoding = 'utf-8' | 'utf-16';
 
 @Component({
     selector: 'ia-download',
@@ -56,8 +57,8 @@ export class DownloadComponent implements OnChanges {
 
     canDownloadDirectly$: Observable<boolean>;
 
-    encodingOptions = ['utf-8', 'utf-16'];
-    encoding: 'utf-8' | 'utf-16' = 'utf-8';
+    encodingOptions: Encoding[] = ['utf-8', 'utf-16'];
+    encoding: Encoding = 'utf-8';
 
     totalResults: TotalResults;
     downloadDisabled$: Observable<boolean>;

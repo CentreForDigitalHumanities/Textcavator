@@ -1,5 +1,5 @@
 @if (!pdfNotFound) {
-  <div class="pdf" [ngClass]="{'is-loading':!isLoaded}">
+  <div class="pdf" [iaLoading]="!isLoaded">
     @if (page) {
       <pdf-viewer
         [src]="pdfSrc"

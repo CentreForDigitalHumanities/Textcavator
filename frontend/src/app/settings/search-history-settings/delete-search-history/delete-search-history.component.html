@@ -1,14 +1,10 @@
-<div class="field">
-    <div class="control">
-        <button class="button" (click)="confirmDelete.open()">
-            <span class="icon"><fa-icon [icon]="actionIcons.delete"></fa-icon></span>
-            <span>Delete my search history</span>
-        </button>
-    </div>
-</div>
+<button class="btn btn-body" (click)="confirmDelete.open()">
+    <fa-icon [icon]="actionIcons.delete"></fa-icon>
+    Delete my search history
+</button>
 
 <ia-confirm-modal #confirmDelete actionText="Delete search history"
-    actionButtonClass="is-danger" [icon]="actionIcons.delete"
+    actionButtonClass="btn-danger" [icon]="actionIcons.delete"
     (accept)="deleteHistory()"
 >
     <p>This action will delete all of your search history. This cannot be reversed.</p>

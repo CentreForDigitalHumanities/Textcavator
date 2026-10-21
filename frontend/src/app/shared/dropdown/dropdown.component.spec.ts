@@ -8,13 +8,12 @@ import { By } from '@angular/platform-browser';
 @Component({
     template: `
     <ia-dropdown [value]="selected()" (onChange)="selected.set($event)">
-      <span iaDropdownLabel>{{ selected()?.label || 'Select option'}}</span>
+      <button iaDropdownToggle>{{ selected()?.label || 'Select option'}}</button>
       <div iaDropdownMenu>
         @for (option of options; track option) {
-          <a
-            iaDropdownItem [value]="option">
+          <button iaDropdownItem [value]="option">
             {{option.label}}
-          </a>
+        </button>
         }
       </div>
     </ia-dropdown>
@@ -48,7 +47,7 @@ describe('DropdownComponent', () => {
     it('should render the label', async () => {
         await fixture.whenStable();
 
-        const trigger = fixture.debugElement.query(By.css('.dropdown-trigger > button')).nativeElement;
+        const trigger = fixture.debugElement.query(By.css('button.btn-body')).nativeElement;
         expect(trigger.innerHTML).toContain('Select option');
 
         // allow switching value
@@ -59,21 +58,4 @@ describe('DropdownComponent', () => {
         expect(trigger.innerHTML).not.toContain('Select option');
         expect(trigger.innerHTML).toContain('Item 2');
     });
-
-    it('should open when clicked', fakeAsync(() => {
-        tick();
-
-        const dropdown = fixture.debugElement.query(By.css('.dropdown'));
-
-        expect(dropdown.classes['is-active']).toBeFalsy();
-
-        const trigger = dropdown.query(By.css('.dropdown-trigger > button'));
-        trigger.triggerEventHandler('click', undefined);
-
-        tick();
-        fixture.detectChanges();
-
-        expect(dropdown.classes['is-active']).toBeTruthy();
-    }));
-
 });

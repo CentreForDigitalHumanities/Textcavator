@@ -1,23 +1,21 @@
 @if (palettes) {
-  <ia-dropdown [value]="palette" (onChange)="palette = $event"
-    labelledBy="palette-icon">
-    <span iaDropdownLabel class="icon" id="palette-icon">
-      <fa-icon [icon]="visualizationIcons.palette" role="img"
-        aria-label="palette" />
-    </span>
-    <div iaDropdownMenu>
-      @for (palette of palettes; track palette) {
-        <a
-          iaDropdownItem [value]="palette">
-          <span role="img" aria-label="colour swatches">
-            @for (color of palette; track color) {
-              <span class="icon" [style.color]="color">
-                <fa-icon [icon]="visualizationIcons.swatch"></fa-icon>
-              </span>
+    <ia-dropdown [value]="palette" (onChange)="palette = $event">
+        <button iaDropdownToggle aria-labelledby="palette-icon">
+            <fa-icon [icon]="visualizationIcons.palette" role="img"
+            aria-label="palette" id="palette-icon" />
+        </button>
+        <div iaDropdownMenu>
+            @for (palette of palettes; track palette) {
+                <button iaDropdownItem [value]="palette">
+                    <span role="img" aria-label="colour swatches">
+                    @for (color of palette; track color) {
+                        <span  [style.color]="color">
+                        <fa-icon [icon]="visualizationIcons.swatch"></fa-icon>
+                        </span>
+                    }
+                    </span>
+                </button>
             }
-          </span>
-        </a>
-      }
-    </div>
-  </ia-dropdown>
+        </div>
+    </ia-dropdown>
 }

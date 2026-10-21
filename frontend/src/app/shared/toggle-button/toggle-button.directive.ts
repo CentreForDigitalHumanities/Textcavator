@@ -1,17 +1,25 @@
-import { Directive, HostBinding, Input } from '@angular/core';
+import { computed, Directive, input } from '@angular/core';
 
 @Directive({
     selector: 'button[iaToggleButton]',
+    host: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        '[class]': 'classes()',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        '[attr.aria-pressed]': 'active()'
+    }
 })
 export class ToggleButtonDirective {
-    @HostBinding('attr.aria-pressed')
-    @Input() active: boolean;
+    active = input<boolean>(false);
 
     /** name of the CSS class that should be applied when active */
-    @Input() activeClass: string = 'is-primary';
+    activeClass = input<string>('btn-primary');
 
-    @HostBinding('class')
-    get classes(): Record<string, boolean> {
-        return { [this.activeClass]: this.active }
-    }
+    /** name of the CSS class that should be applied when inactive */
+    inactiveClass = input<string>('btn-body');
+
+    classes = computed<Record<string, boolean>>(() => ({
+        [this.activeClass()]: this.active(),
+        [this.inactiveClass()]: !this.active(),
+    }));
 }

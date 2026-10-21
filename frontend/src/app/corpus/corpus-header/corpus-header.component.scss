@@ -1,31 +1,3 @@
-@use 'bulma/sass/utilities/mixins';
-
-.tabs {
-    --bulma-tabs-border-bottom-color: rgba(0, 0, 0, 0);
-    --bulma-tabs-border-bottom-width: 2px;
-}
-
-.title {
-    margin-bottom: 2rem;
-}
-
-.header-section {
-    background-color: var(--corpus-header-background);
-}
-
-.image > img {
-    border-radius: .25rem;
-}
-
-.image-column {
-    @include mixins.mobile {
-        .image {
-            max-height: 12rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
-}
 
 .heading {
     font-size: 14px;
