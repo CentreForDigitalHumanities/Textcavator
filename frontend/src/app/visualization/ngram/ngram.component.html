@@ -207,9 +207,8 @@
     </div>
 </div>
 
-
 <div [ngClass]="{ 'd-none': asTable, 'is-loading':isLoading}">
-  <div class="my-3">
+    <div class="my-3">
     <ia-joyplot [data]="currentResults" [formatValue]="formatValue" [palette]="palette" quantity="frequency"
       [comparedByQuantity]="dateField?.displayName">
     </ia-joyplot>
