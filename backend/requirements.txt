@@ -25,7 +25,7 @@ celery[redis]==5.5.3
     #   -r requirements.in
     #   flower
     #   pytest-celery
-certifi==2025.8.3
+certifi==2026.10.23
     # via
     #   elastic-transport
     #   requests
@@ -73,7 +73,7 @@ django-livereload-server==0.5.1
     # via -r requirements.in
 django-revproxy==0.13.0
     # via -r requirements.in
-djangorestframework==3.17.2
+djangorestframework==3.18.3
     # via
     #   -r requirements.in
     #   dj-rest-auth
@@ -147,7 +147,7 @@ pandas==2.3.3
     #   -r requirements.in
     #   pyreadr
     #   textcavator-readers
-pillow==12.3.0
+pillow==13.0.0
     # via -r requirements.in
 pluggy==1.6.0
     # via pytest
@@ -167,7 +167,7 @@ pyopenssl==24.2.1
     # via pysaml2
 pyparsing==3.2.5
     # via rdflib
-pypdf==6.19.0
+pypdf==6.21.2
     # via
     #   -r requirements.in
     #   textcavator-readers
