@@ -2,7 +2,10 @@
     <input
         class="form-control"
         placeholder="dd-mm-yyyy"
-        name="date"
+        [formControl]="control"
+        [minDate]="minDateStruct"
+        [maxDate]="maxDateStruct"
+        [attr.aria-label]="ariaLabel"
         ngbDatepicker
         #datepicker="ngbDatepicker"
         (click)="datepicker.toggle()"
