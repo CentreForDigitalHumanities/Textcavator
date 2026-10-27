@@ -1,6 +1,18 @@
-<p-datepicker name="minYear" [view]="unit" [dateFormat]="dateFormat"
-    [minDate]="minDate" [maxDate]="maxDate"
-    [formControl]="control"
-    [ariaLabel]="ariaLabel"
-    fluid
-/>
+<div class="input-group">
+    <input
+        class="form-control"
+        placeholder="dd-mm-yyyy"
+        name="date"
+        ngbDatepicker
+        #datepicker="ngbDatepicker"
+        (click)="datepicker.toggle()"
+    />
+    <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="datepicker.toggle()"
+    >
+        <fa-icon [icon]="formIcons.calendar" aria-hidden="true"></fa-icon>
+        <span class="visually-hidden">Open date picker</span>
+    </button>
+</div>
