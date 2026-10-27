@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { LoadingDirective } from './loading.directive';
+import { LoadingComponent } from './loading.component';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 @Component({
-    imports: [CommonModule, LoadingDirective],
+    imports: [CommonModule, LoadingComponent],
     template: `
-<div [iaLoading]="loading()">
+<div [ia-loading]="loading()">
     <p>Hello, world!<p>
 </div>
     `
