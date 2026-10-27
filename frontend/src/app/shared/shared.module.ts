@@ -19,6 +19,7 @@ import { BackToTopButton } from './back-to-top-button/back-to-top-button.compone
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonLoadingDirective } from './button-loading/button-loading.directive';
 import { LoadingDirective } from './loading/loading.directive';
+import { ChipsComponent } from './chips/chips.component';
 
 /** this should be imported by all other modules; provides basic building blocks
  * for the whole application
@@ -33,6 +34,7 @@ import { LoadingDirective } from './loading/loading.directive';
     exports: [
         // shared components
         ButtonLoadingDirective,
+        ChipsComponent,
         LoadingDirective,
         DatePickerComponent,
         ErrorComponent,
@@ -54,6 +56,7 @@ import { LoadingDirective } from './loading/loading.directive';
         SlugifyPipe,
     ], imports: [
         ButtonLoadingDirective,
+        ChipsComponent,
         LoadingDirective,
         ToggleButtonDirective,
         BackToTopButton,

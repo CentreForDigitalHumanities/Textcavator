@@ -1,6 +1,5 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ChartModule } from 'primeng/chart';
 import {
     ApiService,
@@ -49,7 +48,6 @@ import { SelectModule } from 'primeng/select';
         VisualizationComponent,
         ThemeIndicatorDirective
     ], imports: [
-        AutoCompleteModule,
         ChartModule,
         SharedModule,
         SelectModule

@@ -1,9 +1,4 @@
-<div class="field">
-    <label class="form-label">Enter one or more terms to compare to "{{queryText}}":</label>
-    <ia-term-comparison-editor
-      [termLimit]="comparisonTermLimit">
-    </ia-term-comparison-editor>
-</div>
+<ia-term-comparison-editor [termLimit]="comparisonTermLimit" />
 
 @if (timeIntervals) {
   <div class="my-3">
