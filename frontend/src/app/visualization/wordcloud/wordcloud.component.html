@@ -1,5 +1,5 @@
 @if (results) {
-  <div [iaLoading]="results.loading$ | async">
+  <div [ia-loading]="results.loading$ | async">
     <div #chart id="chart" [class.d-none]="asTable" [attr.aria-hidden]="asTable"></div>
     <input iaThemeIndicator >
     @if (asTable) {

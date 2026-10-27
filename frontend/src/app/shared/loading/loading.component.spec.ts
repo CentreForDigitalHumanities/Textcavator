@@ -6,7 +6,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 @Component({
     imports: [CommonModule, LoadingComponent],
     template: `
-<div [iaLoading]="loading()">
+<div [ia-loading]="loading()">
     <p>Hello, world!<p>
 </div>
     `

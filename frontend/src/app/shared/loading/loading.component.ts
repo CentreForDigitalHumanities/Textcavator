@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 @Component({
-    selector: '[iaLoading]',
+    selector: '[ia-loading]',
     host: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         '[class.has-spinner-overlay]': 'iaLoading()',
@@ -16,5 +16,5 @@ import { Component, input } from '@angular/core';
     `
 })
 export class LoadingComponent {
-    iaLoading = input<boolean>(false);
+    iaLoading = input<boolean>(false, { alias: 'ia-loading'});
 }
