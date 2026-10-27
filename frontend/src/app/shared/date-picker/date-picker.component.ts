@@ -1,7 +1,7 @@
-import { Component, DestroyRef, EventEmitter, Input, Output, SimpleChanges, Injectable, OnChanges, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+import { Component, EventEmitter, Injectable, input, computed, effect } from '@angular/core';
+import _ from 'lodash';
 import { FormControl } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { formIcons } from '../icons';
 import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { padWithZero } from '@app/utils/utils';
@@ -43,54 +43,48 @@ class IADateParserFormatter extends NgbDateParserFormatter {
     ],
     standalone: false
 })
-export class DatePickerComponent implements OnInit, OnChanges {
-    @Input() value: Date | undefined;
-    @Input() minDate: Date | undefined;
-    @Input() maxDate: Date | undefined;
-    @Input({ required: true }) default!: Date;
-    @Input() ariaLabel = 'date selector';
-    @Output() onChange = new EventEmitter<Date>();
+export class DatePickerComponent {
+    value = input<Date | undefined>(undefined);
+    minDate = input<Date | undefined>(undefined);
+    maxDate = input<Date | undefined>(undefined);
+    default = input.required<Date>();
+    ariaLabel = input<string>('date selector');
+    onChange = new EventEmitter<Date>();
 
-    control = new FormControl<NgbDateStruct | null>(null);
-
+    control = new FormControl<NgbDateStruct | null>(null, {
+        nonNullable: true,
+    });
     formIcons = formIcons;
 
-    constructor(private destroyRef: DestroyRef) { }
+    minDateStruct = computed(() => this.toNgbDateStruct(this.minDate()));
+    maxDateStruct = computed(() => this.toNgbDateStruct(this.maxDate()));
 
-    get dateFormat(): string {
-        return this.unit === 'year' ? 'yy' : 'dd-mm-yy';
-    }
+    controlValue = toSignal(this.control.valueChanges, {
+        initialValue: this.control.value,
+    });
 
-    get minDateStruct(): NgbDateStruct | null {
-        return this.toNgbDateStruct(this.minDate);
-    }
-
-    get maxDateStruct(): NgbDateStruct | null {
-        return this.toNgbDateStruct(this.maxDate);
-    }
-
-    ngOnInit() {
-        const initialDate = this.value || this.default;
-        this.control.setValue(this.toNgbDateStruct(initialDate));
-
-        this.control.valueChanges.pipe(
-            takeUntilDestroyed(this.destroyRef)
-        ).subscribe(() => this.onValueChange());
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.value || changes.default) {
-            const newDate = this.value || this.default;
+    constructor() {
+        effect(() => {
+            const newDate = this.value() || this.default();
             this.control.setValue(this.toNgbDateStruct(newDate));
-        }
+        });
+
+        effect(() => {
+            const value = this.controlValue();
+            if (value) {
+                this.onValueChange();
+            }
+        });
     }
 
-    onValueChange() {
-        if (this.control.value) { // value is null when text input is invalid, e.g while typing
-            const selectedDate = this.fromNgbDateStruct(this.control.value);
-            const checkedValue = _.min([_.max([selectedDate, this.minDate]), this.maxDate]);
-            this.onChange.emit(checkedValue);
+    private onValueChange(): void {
+        // The value is null when text input is invalid, e.g. while typing.
+        if (!this.control.value) {
+            return;
         }
+        const selectedDate = this.fromNgbDateStruct(this.control.value);
+        const checkedValue = _.min([_.max([selectedDate, this.minDate()]), this.maxDate()]);
+        this.onChange.emit(checkedValue);
     }
 
     private fromNgbDateStruct(date: NgbDateStruct): Date {
@@ -107,6 +101,4 @@ export class DatePickerComponent implements OnInit, OnChanges {
             day: date.getDate(),
         };
     }
-
-
 }

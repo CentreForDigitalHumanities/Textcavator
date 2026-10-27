@@ -3,9 +3,9 @@
         class="form-control"
         placeholder="dd-mm-yyyy"
         [formControl]="control"
-        [minDate]="minDateStruct"
-        [maxDate]="maxDateStruct"
-        [attr.aria-label]="ariaLabel"
+        [minDate]="minDateStruct()"
+        [maxDate]="maxDateStruct()"
+        [attr.aria-label]="ariaLabel()"
         ngbDatepicker
         #datepicker="ngbDatepicker"
         (click)="datepicker.toggle()"
