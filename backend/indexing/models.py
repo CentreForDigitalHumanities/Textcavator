@@ -74,7 +74,7 @@ class IndexJob(models.Model):
         '''
         return [
             self.createindextasks.all(),
-            self.CopyDocumentsTasks.all(),
+            self.copydocumentstasks.all(),
             self.populateindextasks.all(),
             self.updateindextasks.all(),
             self.updatesettingstasks.all(),
