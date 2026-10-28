@@ -1,6 +1,11 @@
-<p-datepicker name="minYear" [view]="unit" [dateFormat]="dateFormat"
-    [minDate]="minDate" [maxDate]="maxDate"
+<input
+    ngbDatepicker
+    #datepicker="ngbDatepicker"
+    class="form-control"
+    placeholder="dd-mm-yyyy"
     [formControl]="control"
-    [ariaLabel]="ariaLabel"
-    fluid
+    [minDate]="minDateStruct()"
+    [maxDate]="maxDateStruct()"
+    [attr.aria-label]="ariaLabel()"
+    (click)="datepicker.toggle()"
 />
