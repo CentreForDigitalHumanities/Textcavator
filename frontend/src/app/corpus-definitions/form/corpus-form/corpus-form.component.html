@@ -1,5 +1,5 @@
 <div class="py-5">
-    <div class="container-lg">
+    <div class="container">
         <nav aria-label="secondary navigation" class="mb-3">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a [routerLink]="['/']" >{{appName}}</a></li>
@@ -78,7 +78,7 @@
 </div>
 
 <div class="py-5" *ngIf="nextStep$ | async as nextStep">
-    <div class="container-lg">
+    <div class="container">
         @if (nextStep.disabled) {
             <div class="message">
                 <p class="message-body">

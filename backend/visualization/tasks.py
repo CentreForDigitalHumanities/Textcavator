@@ -72,7 +72,7 @@ def integrate_ngram_results(results, **kwargs):
 def ngram_data_tasks(request_json: Dict):
     corpus_name = request_json['corpus_name']
     es_query = api_query_to_es_query(request_json, corpus_name)
-    freq_compensation = request_json['freq_compensation']
+    method = request_json.get('freq_compensation', 'absolute')
     bins = ngram.get_time_bins(es_query, corpus_name)
     mode = request_json.get('mode', 'ngrams')
 
@@ -84,7 +84,7 @@ def ngram_data_tasks(request_json: Dict):
             bin=b,
             ngram_size=request_json['ngram_size'],
             term_position=request_json['term_position'],
-            freq_compensation=freq_compensation,
+            collect_ttf=method != 'absolute',
             subfield=request_json['subfield'],
             max_size_per_interval=request_json['max_size_per_interval'],
             date_field=request_json['date_field'],
@@ -92,7 +92,8 @@ def ngram_data_tasks(request_json: Dict):
         )
         for b in bins
     ]), integrate_ngram_results.s(
-            number_of_ngrams=request_json['number_of_ngrams']
+            number_of_ngrams=request_json['number_of_ngrams'],
+            method=method
         )
     )
 

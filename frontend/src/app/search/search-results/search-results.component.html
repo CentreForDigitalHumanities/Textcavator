@@ -68,12 +68,13 @@
     </div>
   </div>
 } @else {
-  @if (error$ | async; as error) {
-    <ia-error [showError]="error"></ia-error>
-  } @else {
-    <div class="is-loading" aria-label="loading results"></div>
-  }
+    @if (error$ | async; as error) {
+        <ia-error [errorDetails]="error"></ia-error>
+    } @else {
+        <div
+            class="is-loading"
+            role="status"
+            aria-label="loading results"
+        ></div>
+    }
 }
-
-
-

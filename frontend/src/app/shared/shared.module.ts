@@ -18,8 +18,8 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { BackToTopButton } from './back-to-top-button/back-to-top-button.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonLoadingDirective } from './button-loading/button-loading.directive';
-import { LoadingDirective } from './loading/loading.directive';
 import { ChipsComponent } from './chips/chips.component';
+import { LoadingComponent } from './loading/loading.component';
 
 /** this should be imported by all other modules; provides basic building blocks
  * for the whole application
@@ -35,7 +35,7 @@ import { ChipsComponent } from './chips/chips.component';
         // shared components
         ButtonLoadingDirective,
         ChipsComponent,
-        LoadingDirective,
+        LoadingComponent,
         DatePickerComponent,
         ErrorComponent,
         ToggleButtonDirective,
@@ -57,7 +57,7 @@ import { ChipsComponent } from './chips/chips.component';
     ], imports: [
         ButtonLoadingDirective,
         ChipsComponent,
-        LoadingDirective,
+        LoadingComponent,
         ToggleButtonDirective,
         BackToTopButton,
         BrowserAnimationsModule,
