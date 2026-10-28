@@ -103,25 +103,36 @@ analyzer_test_cases = [
 def tokens(analyzed_response):
     return [token['token'] for token in analyzed_response['tokens']]
 
+
+
+def create_analyzer_test_corpus(es_client: Elasticsearch, analyzer: LanguageAnalyzer) -> str:
+    index_name = f'test-analyzers-{analyzer.code}'
+    settings = es_settings([analyzer.code])
+    es_client.indices.create(index=index_name, settings=settings)
+    return index_name
+
+
+def analyzer_test_output(es_client: Elasticsearch, index_name: str, analyzer_name: str, text: str):
+    response = es_client.indices.analyze(
+        index=index_name,
+        analyzer=analyzer_name,
+        text=text,
+    )
+    return tokens(response.body)
+
+
 @pytest.mark.parametrize('data', analyzer_test_cases,
     ids=[case['analyzer'].__name__ for case in analyzer_test_cases]
 )
 def test_language_analyzer_output(es_client: Elasticsearch, test_index_cleanup, data):
     analyzer: LanguageAnalyzer = data['analyzer']()
 
-    index_name = f'test-analyzers-{analyzer.code}'
-    settings = es_settings([analyzer.code])
-    es_client.indices.create(index=index_name, settings=settings)
+    index_name = create_analyzer_test_corpus(es_client, analyzer)
 
     text = data['input']
 
     def analyzer_output(analyzer_name):
-        response = es_client.indices.analyze(
-            index=index_name,
-            analyzer=analyzer_name,
-            text=text,
-        )
-        return tokens(response.body)
+        return analyzer_test_output(es_client, index_name, analyzer_name, text)
 
     assert analyzer_output(analyzer.standard_analyzer_name) == data['standard']
 
