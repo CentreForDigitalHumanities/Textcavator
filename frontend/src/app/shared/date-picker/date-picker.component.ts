@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injectable, input, computed, effect } from '@angular/core';
+import { Component, Injectable, input, computed, effect, output } from '@angular/core';
 import _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -49,7 +49,7 @@ export class DatePickerComponent {
     maxDate = input<Date | undefined>(undefined);
     default = input.required<Date>();
     ariaLabel = input<string>('date selector');
-    onChange = new EventEmitter<Date>();
+    onChange = output<Date>();
 
     control = new FormControl<NgbDateStruct | null>(null, {
         nonNullable: true,
