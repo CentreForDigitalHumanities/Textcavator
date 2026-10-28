@@ -2,10 +2,12 @@ import { Component, Injectable, input, computed, effect, output } from '@angular
 import _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { formIcons } from '../icons';
 import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { padWithZero } from '@app/utils/utils';
 
+/**
+ * A custom date parser and formatter to format dates in "dd-MM-yyyy".
+ */
 @Injectable()
 class IADateParserFormatter extends NgbDateParserFormatter {
     readonly DELIMITER = '-';
@@ -55,7 +57,6 @@ export class DatePickerComponent {
     control = new FormControl<NgbDateStruct | string | null>(null, {
         nonNullable: true,
     });
-    formIcons = formIcons;
 
     minDateStruct = computed(() => this.toNgbDateStruct(this.minDate()));
     maxDateStruct = computed(() => this.toNgbDateStruct(this.maxDate()));
@@ -67,7 +68,7 @@ export class DatePickerComponent {
     constructor() {
         effect(() => {
             const newDate = this.value() || this.default();
-            this.control.setValue(this.toNgbDateStruct(newDate));
+            this.control.setValue(this.toNgbDateStruct(newDate), { emitEvent: false });
         });
 
         effect(() => {

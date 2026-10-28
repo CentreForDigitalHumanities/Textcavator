@@ -64,8 +64,7 @@ import {
     faSun,
     faAngleDoubleUp,
     faMaximize,
-    faMinimize,
-    faCalendar,
+    faMinimize
 } from '@fortawesome/free-solid-svg-icons';
 
 type IconDefinition = SolidIconDefinition | RegularIconDefinition;
@@ -130,8 +129,7 @@ export const actionIcons: Icons = {
 export const formIcons: Icons = {
     confirm: faCheck,
     reset: faTimes,
-    replace: faRedo,
-    calendar: faCalendar,
+    replace: faRedo
 };
 
 export const corpusIcons: Icons = {

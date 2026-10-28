@@ -1,20 +1,11 @@
-<div class="input-group">
-    <input
-        class="form-control"
-        placeholder="dd-mm-yyyy"
-        [formControl]="control"
-        [minDate]="minDateStruct()"
-        [maxDate]="maxDateStruct()"
-        [attr.aria-label]="ariaLabel()"
-        ngbDatepicker
-        #datepicker="ngbDatepicker"
-    />
-    <button
-        type="button"
-        class="btn btn-outline-secondary"
-        (click)="datepicker.toggle()"
-    >
-        <fa-icon [icon]="formIcons.calendar" aria-hidden="true"></fa-icon>
-        <span class="visually-hidden">Open date picker</span>
-    </button>
-</div>
+<input
+    ngbDatepicker
+    #datepicker="ngbDatepicker"
+    class="form-control"
+    placeholder="dd-mm-yyyy"
+    [formControl]="control"
+    [minDate]="minDateStruct()"
+    [maxDate]="maxDateStruct()"
+    [attr.aria-label]="ariaLabel()"
+    (click)="datepicker.toggle()"
+/>
