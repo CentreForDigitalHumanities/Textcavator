@@ -51,7 +51,8 @@ export class DatePickerComponent {
     ariaLabel = input<string>('date selector');
     onChange = output<Date>();
 
-    control = new FormControl<NgbDateStruct | null>(null, {
+    // The type is string when the user manually types an invalid date string.
+    control = new FormControl<NgbDateStruct | string | null>(null, {
         nonNullable: true,
     });
     formIcons = formIcons;
@@ -78,8 +79,7 @@ export class DatePickerComponent {
     }
 
     private onValueChange(): void {
-        // The value is null when text input is invalid, e.g. while typing.
-        if (!this.control.value) {
+        if (typeof this.control.value === 'string') {
             return;
         }
         const selectedDate = this.fromNgbDateStruct(this.control.value);
