@@ -9,6 +9,11 @@ class CreateIndexAdmin(admin.StackedInline):
     extra = 0
 
 
+class CopyDocumentsAdmin(admin.StackedInline):
+    model = models.CopyDocumentsTask
+    extra = 0
+
+
 class PopulateIndexAdmin(admin.StackedInline):
     model = models.PopulateIndexTask
     extra = 0
@@ -46,6 +51,7 @@ class IndexJobAdmin(admin.ModelAdmin):
     list_filter = ['corpus']
     inlines = [
         CreateIndexAdmin,
+        CopyDocumentsAdmin,
         PopulateIndexAdmin,
         UpdateIndexAdmin,
         UpdateSettingsAdmin,
