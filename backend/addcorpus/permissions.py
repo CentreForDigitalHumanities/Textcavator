@@ -1,5 +1,6 @@
+from typing import Optional
 from rest_framework import permissions
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.request import Request
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Q, QuerySet
@@ -8,7 +9,7 @@ from users.models import PUBLIC_GROUP_NAME
 from addcorpus.models import Corpus
 
 
-def corpus_name_from_request(request: Request):
+def corpus_name_from_request(request: Request) -> Optional[str]:
     '''
     Extract the corpus name from a request
     '''
@@ -22,11 +23,17 @@ def corpus_name_from_request(request: Request):
         for data in [kwargs, query_params, data_json]
     )
     # take the first value that is not None
-    corpus = next(
-        (corpus_name for corpus_name in possible_corpus_specifications if corpus_name),
-        None
+    names =set(
+        corpus_name for corpus_name in possible_corpus_specifications if corpus_name
     )
-    return corpus
+
+    if len(names) == 0:
+        return
+    elif len(names) == 1:
+        return names.pop()
+    else:
+        message = f'conflicting corpus names: {', '.join(names)}'
+        raise ValidationError(message)
 
 
 def searchable_condition(user: AbstractUser) -> Q:
