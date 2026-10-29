@@ -5,6 +5,7 @@ from es.search import hits
 from visualization.query import MATCH_ALL
 
 FORWARD_CASES = {
+    # search corpus to which the user has no access (rejected)
     'search_restricted_corpus': (
         False,
         '/api/es/small-mock-corpus/_search?size=20&scroll=3m',
@@ -19,6 +20,7 @@ FORWARD_CASES = {
         None,
         401,
     ),
+    # valid search with no matching results (passes but empty results)
     'search_bogus': (
         True,
         '/api/es/small-mock-corpus/_search?size=20&scroll=3m',
@@ -33,6 +35,7 @@ FORWARD_CASES = {
         0,
         200,
     ),
+    # corpus does not exist (rejected)
     'search_nonexistent': (
         True,
         '/api/es/nonexistent-corpus/_search?size=20&scroll=3m',
@@ -47,6 +50,43 @@ FORWARD_CASES = {
         None,
         404,
     ),
+    # same corpus name specified in both path and request body (passes normally)
+    'search_double_corpus_name': (
+        True,
+        '/api/es/small-mock-corpus/_search?size=20&scroll=3m',
+        {
+            'es_query': {'query': {'bool': {
+                'must': {'simple_query_string': {
+                    'query': 'universally',
+                    'lenient': True,
+                    'default_operator': 'or',
+                }},
+                'filter': [],
+            }}},
+            'corpus': 'small-mock-corpus'
+        },
+        1,
+        200,
+    ),
+    # conflicting corpus names in path vs. body (rejected)
+    'search_conflicting_corpus_name': (
+        True,
+        '/api/es/small-mock-corpus/_search?size=20&scroll=3m',
+        {
+            'es_query': {'query': {'bool': {
+                'must': {'simple_query_string': {
+                    'query': 'universally',
+                    'lenient': True,
+                    'default_operator': 'or',
+                }},
+                'filter': [],
+            }}},
+            'corpus': 'basic-mock-corpus'
+        },
+        None,
+        400,
+    ),
+    # request missing body (rejected)
     'search_empty': (
         True,
         '/api/es/small-mock-corpus/_search?size=20&scroll=3m',
@@ -54,6 +94,7 @@ FORWARD_CASES = {
         3,
         200,
     ),
+    # normal search
     'search_success': (
         True,
         '/api/es/small-mock-corpus/_search?size=20&scroll=3m',
