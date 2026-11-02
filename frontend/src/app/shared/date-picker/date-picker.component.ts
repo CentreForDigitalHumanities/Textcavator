@@ -80,12 +80,15 @@ export class DatePickerComponent {
     }
 
     private onValueChange(): void {
-        if (typeof this.control.value === 'string') {
+        const value = this.control.value;
+        if (!value || typeof value === 'string') {
             return;
         }
-        const selectedDate = this.fromNgbDateStruct(this.control.value);
+        const selectedDate = this.fromNgbDateStruct(value);
         const checkedValue = _.min([_.max([selectedDate, this.minDate()]), this.maxDate()]);
-        this.onChange.emit(checkedValue);
+        if (checkedValue) {
+            this.onChange.emit(checkedValue);
+        }
     }
 
     private fromNgbDateStruct(date: NgbDateStruct): Date {

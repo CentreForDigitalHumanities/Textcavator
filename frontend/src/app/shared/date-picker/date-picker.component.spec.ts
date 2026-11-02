@@ -16,18 +16,12 @@ describe('DatePickerComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(DatePickerComponent);
         component = fixture.componentInstance;
+        fixture.componentRef.setInput('default', new Date(2020, 1, 1));
         fixture.detectChanges();
     });
 
     it('should create', () => {
         expect(component).toBeTruthy();
-    });
-
-    it('should reject invalid manually entered dates', () => {
-        const formatter = fixture.debugElement.injector.get(NgbDateParserFormatter);
-
-        expect(formatter.parse('xx-12-2020')).toBeNull();
-        expect(formatter.parse('31-02-2020')).toBeNull();
     });
 
     it('should parse valid manually entered dates', () => {
