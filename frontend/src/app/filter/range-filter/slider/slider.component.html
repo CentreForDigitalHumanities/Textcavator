@@ -25,6 +25,7 @@
         [attr.aria-valuenow]="upper()"
         (keydown.arrowleft)="decrease(upper, lower(), max())"
         (keydown.arrowright)="increase(upper, lower(), max())"
+        (mousedown)="upperClick$.next()"
     ></button>
 </div>
 

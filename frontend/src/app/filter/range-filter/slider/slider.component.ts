@@ -1,7 +1,15 @@
 import { Component, computed, effect, ElementRef, input, signal, viewChild, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import _ from 'lodash';
-import { fromEvent, Subject, switchMap, takeUntil, throttleTime } from 'rxjs';
+import { asyncScheduler, fromEvent, OperatorFunction, Subject, switchMap, takeUntil, throttleTime } from 'rxjs';
+
+const listenToMouseMove: OperatorFunction<any, MouseEvent> = switchMap(() =>
+    fromEvent<MouseEvent>(document, 'mousemove').pipe(
+        takeUntil(fromEvent(document, 'mouseup')),
+        throttleTime(100, asyncScheduler, { leading: true, trailing: true}),
+    )
+);
+
 
 @Component({
     selector: 'ia-slider',
@@ -21,12 +29,7 @@ export class SliderComponent {
     upperPosition = computed(() => this.valueToPosition(this.upper(), this.min(), this.max()));
 
     lowerClick$ = new Subject<void>();
-    lowerDrag$ = this.lowerClick$.pipe(
-        switchMap(() => fromEvent<MouseEvent>(document, 'mousemove').pipe(
-            takeUntil(fromEvent(document, 'mouseup')),
-            throttleTime(100),
-        )),
-    );
+    upperClick$ = new Subject<void>();
 
     slider = viewChild.required<ElementRef<HTMLElement>>('slider');
 
@@ -38,10 +41,17 @@ export class SliderComponent {
             _.clamp(value, this.min(), this.max())
         ));
 
-        this.lowerDrag$.pipe(
+        this.lowerClick$.pipe(
+            listenToMouseMove,
             takeUntilDestroyed(),
         ).subscribe((event) =>
             this.onThumbDrag(event, this.lower, this.min(), this.upper()),
+        );
+        this.upperClick$.pipe(
+            listenToMouseMove,
+            takeUntilDestroyed(),
+        ).subscribe((event) =>
+            this.onThumbDrag(event, this.upper, this.lower(), this.max()),
         )
     }
 
