@@ -21,6 +21,7 @@ export class SliderComponent {
     min = input.required<number>();
     max = input.required<number>();
     value = input<[number, number]>();
+    ariaLabel = input.required<string>();
     onChange = output<[number, number]>();
 
     step = input<number>(1);
