@@ -12,15 +12,19 @@ export class SliderComponent {
     max = input.required<number>();
     step = input<number>(1);
 
-    lower = signal<number>(NaN);
-    upper = signal<number>(NaN);
+    lower = signal<number>(-Infinity);
+    upper = signal<number>(Infinity);
 
     lowerPosition = computed(() => this.valueToPosition(this.lower(), this.min(), this.max()));
     upperPosition = computed(() => this.valueToPosition(this.upper(), this.min(), this.max()));
 
     constructor() {
-        effect(() => this.lower.set(this.min()));
-        effect(() => this.upper.set(this.max()));
+        effect(() => this.lower.update((value) =>
+            _.clamp(value, this.min(), this.max())
+        ));
+        effect(() => this.upper.update((value) =>
+            _.clamp(value, this.min(), this.max())
+        ));
     }
 
     increase(signal: WritableSignal<number>, min: number, max: number) {
