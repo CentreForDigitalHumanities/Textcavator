@@ -1,5 +1,7 @@
 import { Component, computed, effect, input, signal, WritableSignal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import _ from 'lodash';
+import { fromEvent, Subject, switchMap, takeUntil, throttleTime } from 'rxjs';
 
 @Component({
     selector: 'ia-slider',
@@ -18,6 +20,15 @@ export class SliderComponent {
     lowerPosition = computed(() => this.valueToPosition(this.lower(), this.min(), this.max()));
     upperPosition = computed(() => this.valueToPosition(this.upper(), this.min(), this.max()));
 
+    lowerClick = new Subject<void>();
+
+    lowerDrag$ = this.lowerClick.pipe(
+        switchMap(() => fromEvent<MouseEvent>(document, 'mousemove').pipe(
+            takeUntil(fromEvent(document, 'mouseup')),
+            throttleTime(100),
+        )),
+    );
+
     constructor() {
         effect(() => this.lower.update((value) =>
             _.clamp(value, this.min(), this.max())
@@ -25,6 +36,16 @@ export class SliderComponent {
         effect(() => this.upper.update((value) =>
             _.clamp(value, this.min(), this.max())
         ));
+
+        this.lowerDrag$.pipe(
+            takeUntilDestroyed(),
+        ).subscribe((event) =>
+            this.onThumbDrag(event),
+        )
+    }
+
+    onThumbDrag(event: MouseEvent) {
+        console.log(event);
     }
 
     increase(signal: WritableSignal<number>, min: number, max: number) {

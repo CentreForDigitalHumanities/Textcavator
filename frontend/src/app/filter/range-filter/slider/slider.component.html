@@ -10,6 +10,7 @@
         [attr.aria-valuenow]="lower()"
         (keydown.arrowleft)="decrease(lower, min(), upper())"
         (keydown.arrowright)="increase(lower, min(), upper())"
+        (mousedown)="lowerClick.next()"
     ></button>
     <!-- <div class="slider-range bg-primary" aria-hidden="true"></div>  -->
     <button class="slider-thumb bg-primary position-absolute border-0"
