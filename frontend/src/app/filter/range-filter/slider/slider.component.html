@@ -1,5 +1,8 @@
-<div class="slider bg-secondary-subtle rounded py-1 w-100 position-relative"
+<div class="slider bg-secondary-subtle w-100 position-relative my-2"
     #slider>
+    <div class="slider-range bg-primary position-absolute top-0 h-100" aria-hidden="true"
+        [style.left]="rangePosition()"
+        [style.width]="rangeWidth()"></div>
     <button class="slider-thumb bg-primary position-absolute border-0"
         [style.left]="lowerPosition()"
         type="button"
@@ -13,7 +16,6 @@
         (keydown.arrowright)="increase(lower, min(), upper())"
         (mousedown)="lowerClick$.next()"
     ></button>
-    <!-- <div class="slider-range bg-primary" aria-hidden="true"></div>  -->
     <button class="slider-thumb bg-primary position-absolute border-0"
         [style.left]="upperPosition()"
         type="button"
@@ -30,6 +32,7 @@
 </div>
 
 
-<div>
-    {{lower()}} - {{upper()}}
+<div class="d-flex justify-content-between">
+    <span>{{lower()}}</span>
+    <span>{{upper()}}</span>
 </div>
