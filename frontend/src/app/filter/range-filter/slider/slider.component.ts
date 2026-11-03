@@ -23,33 +23,20 @@ export class SliderComponent {
         effect(() => this.upper.set(this.max()));
     }
 
-    onThumbKeydown(event: KeyboardEvent, signal: WritableSignal<number>) {
-        if (event.key == 'ArrowRight') {
-            this.increase(signal);
-        }
-        if (event.key == 'ArrowLeft') {
-            this.decrease(signal);
-        }
-    }
-
-    increase(signal: WritableSignal<number>) {
+    increase(signal: WritableSignal<number>, min: number, max: number) {
         signal.update((value) =>
-            this.clampValue(value + this.step())
+            _.clamp(value + this.step(), min, max)
         );
     }
 
-    decrease(signal: WritableSignal<number>) {
+    decrease(signal: WritableSignal<number>, min: number, max: number) {
         signal.update((value) =>
-            this.clampValue(value - this.step())
+            _.clamp(value - this.step(), min, max)
         );
     }
 
     valueToPosition(value: number, min: number, max: number): string {
         const ratio = (value - min) / (max - min);
         return `${100 * ratio}%`;
-    }
-
-    private clampValue(value: number): number {
-        return _.clamp(value, this.min(), this.max())
     }
 }

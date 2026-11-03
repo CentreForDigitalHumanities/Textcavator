@@ -8,7 +8,8 @@
         [attr.aria-valuemin]="min()"
         [attr.aria-valuemax]="max()"
         [attr.aria-valuenow]="lower()"
-        (keydown)="onThumbKeydown($event, lower)"
+        (keydown.arrowleft)="decrease(lower, min(), upper())"
+        (keydown.arrowright)="increase(lower, min(), upper())"
     ></button>
     <!-- <div class="slider-range bg-primary" aria-hidden="true"></div>  -->
     <button class="slider-thumb bg-primary position-absolute border-0"
@@ -20,7 +21,8 @@
         [attr.aria-valuemin]="min()"
         [attr.aria-valuemax]="max()"
         [attr.aria-valuenow]="upper()"
-        (keydown)="onThumbKeydown($event, upper)"
+        (keydown.arrowleft)="decrease(upper, lower(), max())"
+        (keydown.arrowright)="increase(upper, lower(), max())"
     ></button>
 </div>
 
