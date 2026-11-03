@@ -1,4 +1,4 @@
-import { Component, effect, input, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, input, signal, WritableSignal } from '@angular/core';
 import _ from 'lodash';
 
 @Component({
@@ -14,6 +14,8 @@ export class SliderComponent {
 
     lower = signal<number>(NaN);
     upper = signal<number>(NaN);
+
+    lowerPosition = computed(() => this.valueToPosition(this.lower(), this.min(), this.max()));
 
     constructor() {
         effect(() => this.lower.set(this.min()));
@@ -39,6 +41,11 @@ export class SliderComponent {
         signal.update((value) =>
             this.clampValue(value - this.step())
         );
+    }
+
+    valueToPosition(value: number, min: number, max: number): string {
+        const ratio = (value - min) / (max - min);
+        return `${100 * ratio}%`;
     }
 
     private clampValue(value: number): number {
