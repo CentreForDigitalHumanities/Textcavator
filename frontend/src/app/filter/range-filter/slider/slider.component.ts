@@ -61,8 +61,8 @@ export class SliderComponent {
         const right = slider.offsetLeft + slider.offsetWidth;
         const ratio = (event.pageX - left) / (right - left);
         const value = this.min() + (this.max() - this.min()) * ratio;
-        const clamped = _.clamp(value, min, max);
-        signal.set(clamped);
+        const validated = _.clamp(this.round(value), min, max);
+        signal.set(validated);
     }
 
     increase(signal: WritableSignal<number>, min: number, max: number) {
@@ -75,6 +75,11 @@ export class SliderComponent {
         signal.update((value) =>
             _.clamp(value - this.step(), min, max)
         );
+    }
+
+    private round(value: number): number {
+        const step = this.step();
+        return Math.round(value / step) * step;
     }
 
     valueToPosition(value: number, min: number, max: number): string {
