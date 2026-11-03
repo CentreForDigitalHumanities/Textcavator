@@ -41,6 +41,6 @@ export class SliderComponent {
 
     valueToPosition(value: number, min: number, max: number): string {
         const ratio = (value - min) / (max - min);
-        return `${100 * ratio}%`;
+        return `calc(${100 * ratio}% - 0.5em)`;
     }
 }
