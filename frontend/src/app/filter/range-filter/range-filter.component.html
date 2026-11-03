@@ -5,10 +5,6 @@
         [value]="[data.min, data.max]"
         (onChange)="sliderValue$.next($event)"
         [ariaLabel]="filter.displayName" />
-      <!-- <p-slider [animate]="true" [ngModel]="[data.min, data.max]"
-        [range]="true" [min]="min" [max]="max"
-        (onChange)="sliderValue$.next($event.values)"
-        ariaLabelledBy="legend-filter-{{filter.displayName | slugify}}" /> -->
     </div>
   }
 }
