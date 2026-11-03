@@ -16,6 +16,7 @@ export class SliderComponent {
     upper = signal<number>(NaN);
 
     lowerPosition = computed(() => this.valueToPosition(this.lower(), this.min(), this.max()));
+    upperPosition = computed(() => this.valueToPosition(this.upper(), this.min(), this.max()));
 
     constructor() {
         effect(() => this.lower.set(this.min()));

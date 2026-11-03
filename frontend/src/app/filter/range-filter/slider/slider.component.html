@@ -1,6 +1,7 @@
 <div class="slider bg-secondary-subtle rounded py-1 w-100 position-relative">
     <button class="slider-thumb bg-primary position-absolute border-0"
         [style.left]="lowerPosition()"
+        type="button"
         role="slider"
         aria-label="minimum value"
         tabindex="0"
@@ -9,9 +10,18 @@
         [attr.aria-valuenow]="lower()"
         (keydown)="onThumbKeydown($event, lower)"
     ></button>
-    <!-- <div class="slider-range bg-primary" aria-hidden="true"></div>
+    <!-- <div class="slider-range bg-primary" aria-hidden="true"></div>  -->
     <button class="slider-thumb bg-primary position-absolute border-0"
-        tabindex="0"></button> -->
+        [style.left]="upperPosition()"
+        type="button"
+        role="slider"
+        aria-label="maximum value"
+        tabindex="0"
+        [attr.aria-valuemin]="min()"
+        [attr.aria-valuemax]="max()"
+        [attr.aria-valuenow]="upper()"
+        (keydown)="onThumbKeydown($event, upper)"
+    ></button>
 </div>
 
 
