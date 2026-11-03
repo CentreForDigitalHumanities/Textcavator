@@ -1,7 +1,11 @@
 import { Component, computed, effect, ElementRef, input, output, signal, viewChild, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import _ from 'lodash';
-import { asyncScheduler, fromEvent, OperatorFunction, Subject, switchMap, takeUntil, throttleTime } from 'rxjs';
+import { asyncScheduler, filter, fromEvent, OperatorFunction, Subject, switchMap, takeUntil, throttleTime } from 'rxjs';
+
+const filterLeftClick: OperatorFunction<MouseEvent, MouseEvent> = filter((event) =>
+    event.button === 0
+);
 
 const listenToMouseMove: OperatorFunction<any, MouseEvent> = switchMap(() =>
     fromEvent<MouseEvent>(document, 'mousemove').pipe(
@@ -34,8 +38,8 @@ export class SliderComponent {
     rangePosition = computed(() => this.getRangePosition(this.lower(), this.min(), this.max()));
     rangeWidth = computed(() => this.getRangeWidth(this.lower(), this.upper(), this.min(), this.max()));
 
-    lowerClick$ = new Subject<void>();
-    upperClick$ = new Subject<void>();
+    lowerClick$ = new Subject<MouseEvent>();
+    upperClick$ = new Subject<MouseEvent>();
 
     slider = viewChild.required<ElementRef<HTMLElement>>('slider');
 
@@ -57,12 +61,14 @@ export class SliderComponent {
         });
 
         this.lowerClick$.pipe(
+            filterLeftClick,
             listenToMouseMove,
             takeUntilDestroyed(),
         ).subscribe((event) =>
             this.onThumbDrag(event, this.lower, this.min(), this.upper()),
         );
         this.upperClick$.pipe(
+            filterLeftClick,
             listenToMouseMove,
             takeUntilDestroyed(),
         ).subscribe((event) =>

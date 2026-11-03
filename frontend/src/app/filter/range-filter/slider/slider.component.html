@@ -14,7 +14,7 @@
         [attr.aria-valuenow]="lower()"
         (keydown.arrowleft)="decrease(lower, min(), upper())"
         (keydown.arrowright)="increase(lower, min(), upper())"
-        (mousedown)="lowerClick$.next()"
+        (mousedown)="lowerClick$.next($event)"
     ></button>
     <button class="slider-thumb bg-primary position-absolute border-0"
         [style.left]="upperPosition()"
@@ -27,7 +27,7 @@
         [attr.aria-valuenow]="upper()"
         (keydown.arrowleft)="decrease(upper, lower(), max())"
         (keydown.arrowright)="increase(upper, lower(), max())"
-        (mousedown)="upperClick$.next()"
+        (mousedown)="upperClick$.next($event)"
     ></button>
 </div>
 
