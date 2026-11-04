@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SliderComponent } from './slider.component';
+import { RangeSliderComponent } from './range-slider.component';
 
-describe('SliderComponent', () => {
-    let component: SliderComponent;
-    let fixture: ComponentFixture<SliderComponent>;
+describe('RangeSliderComponent', () => {
+    let component: RangeSliderComponent;
+    let fixture: ComponentFixture<RangeSliderComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [SliderComponent]
+            imports: [RangeSliderComponent]
         })
             .compileComponents();
 
-        fixture = TestBed.createComponent(SliderComponent);
+        fixture = TestBed.createComponent(RangeSliderComponent);
         fixture.componentRef.setInput('min', 0);
         fixture.componentRef.setInput('max', 1000);
         fixture.componentRef.setInput('ariaLabel', 'Test');

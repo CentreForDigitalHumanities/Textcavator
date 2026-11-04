@@ -16,12 +16,12 @@ const listenToMouseMove: OperatorFunction<any, MouseEvent> = switchMap(() =>
 
 
 @Component({
-    selector: 'ia-slider',
+    selector: 'ia-range-slider',
     imports: [],
-    templateUrl: './slider.component.html',
-    styleUrl: './slider.component.scss',
+    templateUrl: './range-slider.component.html',
+    styleUrl: './range-slider.component.scss',
 })
-export class SliderComponent {
+export class RangeSliderComponent {
     min = input.required<number>();
     max = input.required<number>();
     value = input<[number, number]>();

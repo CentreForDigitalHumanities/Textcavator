@@ -13,7 +13,7 @@ import {
 import { SearchService } from '@services';
 import { SharedModule } from '@shared/shared.module';
 import { FilterManagerComponent } from './filter-manager/filter-manager.component';
-import { SliderComponent } from './range-filter/slider/slider.component';
+import { RangeSliderComponent } from './range-filter/range-slider/range-slider.component';
 
 
 
@@ -36,7 +36,7 @@ import { SliderComponent } from './range-filter/slider/slider.component';
         CheckboxModule,
         MultiSelectModule,
         SharedModule,
-        SliderComponent
+        RangeSliderComponent
     ],
     exports: [
         FilterManagerComponent,
