@@ -71,7 +71,7 @@ describe('RangeFilterComponent', () => {
         expect(component.max).toEqual(max);
     }));
 
-    fit('should calculate the step size', () => {
+    it('should calculate the step size', () => {
         const cases = [
             [0, 100, 1],
             [0, 250, 1],
