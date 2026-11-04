@@ -22,44 +22,52 @@ const listenToMouseMove: OperatorFunction<any, MouseEvent> = switchMap(() =>
     styleUrl: './range-slider.component.scss',
 })
 export class RangeSliderComponent {
+    /** Minimum possible value */
     min = input.required<number>();
+    /** Maximum possible value */
     max = input.required<number>();
+    /** Step size */
+    step = input<number>(1);
+    /** Input to override the component's internal value */
     value = input<[number, number]>();
     ariaLabel = input.required<string>();
     onChange = output<[number, number]>();
 
-    step = input<number>(1);
-
+    // Lower/upper range values. Initial value is set based on min/max/value inputs.
     lower = signal<number>(-Infinity);
     upper = signal<number>(Infinity);
 
+    // Helper signals to calculate element positions
     lowerPosition = computed(() => this.thumbPosition(this.lower(), this.min(), this.max()));
     upperPosition = computed(() => this.thumbPosition(this.upper(), this.min(), this.max()));
     rangePosition = computed(() => this.getRangePosition(this.lower(), this.min(), this.max()));
     rangeWidth = computed(() => this.getRangeWidth(this.lower(), this.upper(), this.min(), this.max()));
 
+    // Click events for the lower/upper handles.
     lowerClick$ = new Subject<MouseEvent>();
     upperClick$ = new Subject<MouseEvent>();
 
     slider = viewChild.required<ElementRef<HTMLElement>>('slider');
 
     constructor() {
+        // Input/output handling
         effect(() => this.lower.update((value) =>
             _.clamp(value, this.min(), this.max())
         ));
         effect(() => this.upper.update((value) =>
             _.clamp(value, this.min(), this.max())
         ));
-        effect(() =>
-            this.onChange.emit([this.lower(), this.upper()])
-        );
         effect(() => {
             if (this.value()) {
                 this.lower.set(this.value()[0]);
                 this.upper.set(this.value()[1]);
             }
         });
+        effect(() =>
+            this.onChange.emit([this.lower(), this.upper()])
+        );
 
+        // Mouse drag handling
         this.lowerClick$.pipe(
             filterLeftClick,
             listenToMouseMove,
@@ -76,16 +84,6 @@ export class RangeSliderComponent {
         );
     }
 
-    onThumbDrag(event: MouseEvent, signal: WritableSignal<number>, min: number, max: number) {
-        const slider = this.slider().nativeElement;
-        const left = slider.offsetLeft;
-        const right = slider.offsetLeft + slider.offsetWidth;
-        const ratio = (event.pageX - left) / (right - left);
-        const value = this.min() + (this.max() - this.min()) * ratio;
-        const validated = _.clamp(this.round(value), min, max);
-        signal.set(validated);
-    }
-
     increase(signal: WritableSignal<number>, min: number, max: number) {
         signal.update((value) =>
             _.clamp(value + this.step(), min, max)
@@ -98,6 +96,17 @@ export class RangeSliderComponent {
         );
     }
 
+    private onThumbDrag(event: MouseEvent, signal: WritableSignal<number>, min: number, max: number) {
+        const slider = this.slider().nativeElement;
+        const left = slider.offsetLeft;
+        const right = slider.offsetLeft + slider.offsetWidth;
+        const ratio = (event.pageX - left) / (right - left);
+        const value = this.min() + (this.max() - this.min()) * ratio;
+        const validated = _.clamp(this.round(value), min, max);
+        signal.set(validated);
+    }
+
+    /** Round value to nearest multiple of step size */
     private round(value: number): number {
         const step = this.step();
         return Math.round(value / step) * step;

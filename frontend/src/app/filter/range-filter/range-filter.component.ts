@@ -56,6 +56,9 @@ export class RangeFilterComponent extends BaseFilterComponent<RangeFilter> imple
         };
     }
 
+    /** Calculate step size based on min/max.
+     * Returns the power of 10 for which there are 100-1000 steps in the range.
+     */
     step(min: number, max: number): number {
         return 10 ** (Math.floor(Math.log10(max - min)) - 2);
     }
