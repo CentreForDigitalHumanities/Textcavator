@@ -56,6 +56,10 @@ export class RangeFilterComponent extends BaseFilterComponent<RangeFilter> imple
         };
     }
 
+    step(min: number, max: number): number {
+        return 10 ** (Math.floor(Math.log10(max - min)) - 2);
+    }
+
     private fetchDefaultData(filter: RangeFilter): Promise<RangeFilterData> {
         return Promise.all(
             [this.fetchMin(filter), this.fetchMax(filter)]

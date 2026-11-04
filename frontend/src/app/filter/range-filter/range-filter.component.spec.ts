@@ -70,4 +70,17 @@ describe('RangeFilterComponent', () => {
         expect(component.min).toEqual(min);
         expect(component.max).toEqual(max);
     }));
+
+    fit('should calculate the step size', () => {
+        const cases = [
+            [0, 100, 1],
+            [0, 250, 1],
+            [0, 1, 0.01],
+            [0, 1500, 10],
+        ];
+
+        for (let [min, max, step] of cases) {
+            expect(component.step(min, max)).toBeCloseTo(step);
+        }
+    });
 });

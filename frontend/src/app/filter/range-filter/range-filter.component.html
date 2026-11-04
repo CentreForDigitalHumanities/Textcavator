@@ -1,7 +1,8 @@
-@if (min !== undefined && max !== undefined) {
+@if (min !== undefined && max !== undefined && max > min) {
   @if ((filter?.state$ | async).data; as data) {
     <div class="range">
       <ia-slider [min]="min" [max]="max"
+        [step]="step(min, max)"
         [value]="[data.min, data.max]"
         (onChange)="sliderValue$.next($event)"
         [ariaLabel]="filter.displayName" />
