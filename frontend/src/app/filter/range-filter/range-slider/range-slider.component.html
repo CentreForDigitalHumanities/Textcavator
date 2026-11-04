@@ -1,0 +1,38 @@
+<div class="slider bg-secondary-subtle w-100 position-relative my-2"
+    #slider>
+    <div class="slider-range bg-primary position-absolute top-0 h-100" aria-hidden="true"
+        [style.left]="rangePosition()"
+        [style.width]="rangeWidth()"></div>
+    <button class="slider-thumb bg-primary position-absolute border-0"
+        [style.left]="lowerPosition()"
+        type="button"
+        role="slider"
+        aria-label="{{ariaLabel()}}: minimum"
+        tabindex="0"
+        [attr.aria-valuemin]="min()"
+        [attr.aria-valuemax]="max()"
+        [attr.aria-valuenow]="lower()"
+        (keydown.arrowleft)="decrease(lower, min(), upper())"
+        (keydown.arrowright)="increase(lower, min(), upper())"
+        (mousedown)="lowerClick$.next($event)"
+    ></button>
+    <button class="slider-thumb bg-primary position-absolute border-0"
+        [style.left]="upperPosition()"
+        type="button"
+        role="slider"
+        aria-label="{{ariaLabel()}}: maximum"
+        tabindex="0"
+        [attr.aria-valuemin]="min()"
+        [attr.aria-valuemax]="max()"
+        [attr.aria-valuenow]="upper()"
+        (keydown.arrowleft)="decrease(upper, lower(), max())"
+        (keydown.arrowright)="increase(upper, lower(), max())"
+        (mousedown)="upperClick$.next($event)"
+    ></button>
+</div>
+
+
+<div class="d-flex justify-content-between">
+    <span>{{lower()}}</span>
+    <span>{{upper()}}</span>
+</div>
