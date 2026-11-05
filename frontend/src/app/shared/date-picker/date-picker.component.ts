@@ -1,48 +1,13 @@
-import { Component, Injectable, input, computed, effect, output } from '@angular/core';
+import { Component, input, computed, effect, output } from '@angular/core';
 import _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { padWithZero } from '@app/utils/utils';
-
-/**
- * A custom date parser and formatter to format dates in "dd-MM-yyyy".
- */
-@Injectable()
-class IADateParserFormatter extends NgbDateParserFormatter {
-    readonly DELIMITER = '-';
-
-    parse(value: string): NgbDateStruct | null {
-        if (!value) {
-            return null;
-        }
-        const date = value.split(this.DELIMITER);
-        return {
-            day: parseInt(date[0], 10),
-            month: parseInt(date[1], 10),
-            year: parseInt(date[2], 10),
-        };
-    }
-
-    format(date: NgbDateStruct | null): string {
-        if (!date) {
-            return '';
-        }
-        return [
-            padWithZero(date.day, 2),
-            padWithZero(date.month, 2),
-            padWithZero(date.year, 4),
-        ].join(this.DELIMITER);
-    }
-}
 
 @Component({
     selector: 'ia-date-picker',
     templateUrl: './date-picker.component.html',
     styleUrls: ['./date-picker.component.scss'],
-    providers: [
-        { provide: NgbDateParserFormatter, useClass: IADateParserFormatter }
-    ],
     standalone: false
 })
 export class DatePickerComponent {
@@ -53,13 +18,12 @@ export class DatePickerComponent {
     ariaLabel = input<string>('date selector');
     onChange = output<Date>();
 
-    // The type is string when the user manually types an invalid date string.
-    control = new FormControl<NgbDateStruct | string | null>(null, {
+    control = new FormControl<string>('', {
         nonNullable: true,
     });
 
-    minDateStruct = computed(() => this.toNgbDateStruct(this.minDate()));
-    maxDateStruct = computed(() => this.toNgbDateStruct(this.maxDate()));
+    minDateString = computed(() => this.date2String(this.minDate() ?? null));
+    maxDateString = computed(() => this.date2String(this.maxDate() ?? null));
 
     controlValue = toSignal(this.control.valueChanges, {
         initialValue: this.control.value,
@@ -68,7 +32,7 @@ export class DatePickerComponent {
     constructor() {
         effect(() => {
             const newDate = this.value() || this.default();
-            this.control.setValue(this.toNgbDateStruct(newDate), { emitEvent: false });
+            this.control.setValue(this.date2String(newDate), { emitEvent: false });
         });
 
         effect(() => {
@@ -81,28 +45,27 @@ export class DatePickerComponent {
 
     private onValueChange(): void {
         const value = this.control.value;
-        if (!value || typeof value === 'string') {
+        if (!value) {
             return;
         }
-        const selectedDate = this.fromNgbDateStruct(value);
+        const selectedDate = this.string2Date(value);
         const checkedValue = _.min([_.max([selectedDate, this.minDate()]), this.maxDate()]);
         if (checkedValue) {
             this.onChange.emit(checkedValue);
         }
     }
 
-    private fromNgbDateStruct(date: NgbDateStruct): Date {
-        return new Date(date.year, date.month - 1, date.day);
+    private string2Date(value: string): Date | null {
+        return new Date(value);
     }
 
-    private toNgbDateStruct(date: Date | undefined): NgbDateStruct | null {
+    private date2String(date: Date | null): string {
         if (!date) {
-            return null;
+            return '';
         }
-        return {
-            year: date.getFullYear(),
-            month: date.getMonth() + 1,
-            day: date.getDate(),
-        };
+        const day = padWithZero(date.getDate(), 2);
+        const month = padWithZero(date.getMonth() + 1, 2);
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
     }
 }

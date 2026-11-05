@@ -1,11 +1,8 @@
 <input
-    ngbDatepicker
-    #datepicker="ngbDatepicker"
     class="form-control"
-    placeholder="dd-mm-yyyy"
+    type="date"
     [formControl]="control"
-    [minDate]="minDateStruct()"
-    [maxDate]="maxDateStruct()"
+    [min]="minDateString()"
+    [max]="maxDateString()"
     [attr.aria-label]="ariaLabel()"
-    (click)="datepicker.toggle()"
 />
