@@ -1,8 +1,9 @@
 import logging
-import elasticsearch.helpers as es_helpers
+from elasticsearch.helpers import streaming_bulk
+from typing import Iterable, Dict
 
 from addcorpus.reader import make_reader
-from indexing.models import PopulateIndexTask
+from indexing.models import PopulateIndexTask, IndexTask
 from indexing.stop_job import raise_if_aborted
 
 logger = logging.getLogger('indexing')
@@ -33,14 +34,17 @@ def populate(task: PopulateIndexTask):
         }
         for doc in docs
     )
+    run_bulk(task, actions)
 
+
+def run_bulk(task: IndexTask, actions: Iterable[Dict]):
     server_config = task.index.server.configuration
 
     raise_if_aborted(task)
 
     # Do bulk operation
     client = task.client()
-    for success, info in es_helpers.streaming_bulk(
+    for success, info in streaming_bulk(
         client,
         actions,
         chunk_size=server_config["chunk_size"],
