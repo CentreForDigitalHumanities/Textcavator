@@ -11,7 +11,7 @@ interface HasName {
  * @param name the name of the item you want to find
  * @returns Tthe first item that matches the given name. Returns the first match or `undefined` if nothing matches.
  */
-export const findByName =<T extends HasName> (items: T[], name: string): T =>
+export const findByName = <T extends HasName>(items: T[], name: string): T =>
     items.find(item => item.name === name);
 
 /**
@@ -21,7 +21,7 @@ export const findByName =<T extends HasName> (items: T[], name: string): T =>
  * @param promise a promise
  * @returns a promise for the result of `promise`, but `isLoading` will be updated appropriately.
  */
-export const showLoading =<T>(isLoading: BehaviorSubject<boolean>, promise: Promise<T>): Promise<T> => {
+export const showLoading = <T>(isLoading: BehaviorSubject<boolean>, promise: Promise<T>): Promise<T> => {
     isLoading.next(true);
     return promise.then(result => {
         isLoading.next(false);
@@ -30,3 +30,10 @@ export const showLoading =<T>(isLoading: BehaviorSubject<boolean>, promise: Prom
 };
 
 export const modulo = (n: number, d: number): number => ((n % d) + d) % d;
+
+/**
+ * Pad a number with leading zeros to a given length and return it as a string.
+ */
+export function padWithZero(value: number, length: number): string {
+    return value.toString().padStart(length, '0');
+}
