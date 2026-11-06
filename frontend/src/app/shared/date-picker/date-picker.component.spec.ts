@@ -24,18 +24,21 @@ describe('DatePickerComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should parse valid manually entered dates', () => {
-        const formatter = fixture.debugElement.injector.get(NgbDateParserFormatter);
+    it('converts dates to strings correctly', () => {
+        const inputs = [
+            new Date(2020, 1, 1),
+            new Date(2020, 11, 31),
+            new Date(2020, 0, 1),
+        ];
+        const expectedOutputs = [
+            '2020-02-01',
+            '2020-12-31',
+            '2020-01-01',
+        ];
 
-        expect(formatter.parse('29-02-2020')).toEqual({
-            day: 29,
-            month: 2,
-            year: 2020,
+        inputs.forEach((input, index) => {
+            const output = component['date2String'](input);
+            expect(output).toEqual(expectedOutputs[index]);
         });
-        expect(formatter.parse('1-2-2020')).toEqual({
-            day: 1,
-            month: 2,
-            year: 2020,
-        });
-    });
+    })
 });
