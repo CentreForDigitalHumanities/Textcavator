@@ -1,6 +1,8 @@
-<p-datepicker name="minYear" [view]="unit" [dateFormat]="dateFormat"
-    [minDate]="minDate" [maxDate]="maxDate"
+<input
+    class="form-control"
+    type="date"
     [formControl]="control"
-    [ariaLabel]="ariaLabel"
-    fluid
+    [min]="minDateString()"
+    [max]="maxDateString()"
+    [attr.aria-label]="ariaLabel()"
 />

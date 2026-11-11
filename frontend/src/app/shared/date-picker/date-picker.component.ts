@@ -1,7 +1,8 @@
-import { Component, DestroyRef, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import * as _ from 'lodash';
+import { Component, input, computed, effect, output } from '@angular/core';
+import _ from 'lodash';
 import { FormControl } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
+import moment from 'moment';
 
 @Component({
     selector: 'ia-date-picker',
@@ -10,38 +11,67 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     standalone: false
 })
 export class DatePickerComponent {
-    @Input() value: Date | undefined;
-    @Input() minDate: Date | undefined;
-    @Input() maxDate: Date | undefined;
-    @Input({ required: true }) default!: Date;
-    @Input() unit: 'year'|'date' = 'year';
-    @Input() ariaLabel: string = '';
-    @Output() onChange = new EventEmitter<Date>();
+    value = input<Date | undefined>(undefined);
+    minDate = input<Date | undefined>(undefined);
+    maxDate = input<Date | undefined>(undefined);
+    default = input.required<Date>();
+    ariaLabel = input<string>('date selector');
+    onChange = output<Date>();
 
-    control = new FormControl<Date | null>(null);
+    control = new FormControl<string>('', {
+        nonNullable: true,
+    });
 
-    constructor(private destroyRef: DestroyRef) { }
+    minDateString = computed(() => this.date2String(this.minDate() ?? null));
+    maxDateString = computed(() => this.date2String(this.maxDate() ?? null));
 
-    get dateFormat(): string {
-        return this.unit === 'year' ? 'yy' : 'dd-mm-yy';
+    controlValue = toSignal(this.control.valueChanges, {
+        initialValue: this.control.value,
+    });
+
+    constructor() {
+        effect(() => {
+            const newDate = this.value() || this.default();
+            this.control.setValue(this.date2String(newDate), { emitEvent: false });
+        });
+
+        effect(() => {
+            const value = this.controlValue();
+            if (value) {
+                this.onValueChange();
+            }
+        });
     }
 
-    ngOnInit() {
-        this.control.valueChanges.pipe(
-            takeUntilDestroyed(this.destroyRef)
-        ).subscribe(() => this.onValueChange());
-    }
+    private onValueChange(): void {
+        const value = this.control.value;
+        if (!value) {
+            return;
+        }
+        const selectedDate = this.string2Date(value);
+        const minDate = this.minDate();
+        const maxDate = this.maxDate();
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.value || changes.default) {
-            this.control.setValue(this.value || this.default);
+        let checkedValue = moment(selectedDate);
+
+        if (minDate) {
+            checkedValue = moment.max(checkedValue, moment(minDate));
+        }
+        if (maxDate) {
+            checkedValue = moment.min(checkedValue, moment(maxDate));
+        }
+
+        if (checkedValue) {
+            this.control.setValue(this.date2String(checkedValue.toDate()), { emitEvent: false });
+            this.onChange.emit(checkedValue.toDate());
         }
     }
 
-    onValueChange() {
-        if (this.control.value) { // value is null when text input is invalid, e.g while typing
-            const checkedValue = _.min([_.max([this.control.value, this.minDate]), this.maxDate]);
-            this.onChange.emit(checkedValue);
-        }
+    private string2Date(value: string): Date | null {
+        return new Date(value);
+    }
+
+    private date2String(date: Date | null): string {
+        return date ? moment(date).format('YYYY-MM-DD') : '';
     }
 }
