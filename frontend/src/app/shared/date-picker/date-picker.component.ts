@@ -2,7 +2,7 @@ import { Component, input, computed, effect, output } from '@angular/core';
 import _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { padWithZero } from '@app/utils/utils';
+import moment from 'moment';
 
 @Component({
     selector: 'ia-date-picker',
@@ -49,9 +49,21 @@ export class DatePickerComponent {
             return;
         }
         const selectedDate = this.string2Date(value);
-        const checkedValue = _.min([_.max([selectedDate, this.minDate()]), this.maxDate()]);
+        const minDate = this.minDate();
+        const maxDate = this.maxDate();
+
+        let checkedValue = moment(selectedDate);
+
+        if (minDate) {
+            checkedValue = moment.max(checkedValue, moment(minDate));
+        }
+        if (maxDate) {
+            checkedValue = moment.min(checkedValue, moment(maxDate));
+        }
+
         if (checkedValue) {
-            this.onChange.emit(checkedValue);
+            this.control.setValue(this.date2String(checkedValue.toDate()), { emitEvent: false });
+            this.onChange.emit(checkedValue.toDate());
         }
     }
 
@@ -60,12 +72,6 @@ export class DatePickerComponent {
     }
 
     private date2String(date: Date | null): string {
-        if (!date) {
-            return '';
-        }
-        const day = padWithZero(date.getDate(), 2);
-        const month = padWithZero(date.getMonth() + 1, 2);
-        const year = date.getFullYear();
-        return `${year}-${month}-${day}`;
+        return date ? moment(date).format('YYYY-MM-DD') : '';
     }
 }

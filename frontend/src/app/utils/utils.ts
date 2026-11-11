@@ -30,10 +30,3 @@ export const showLoading = <T>(isLoading: BehaviorSubject<boolean>, promise: Pro
 };
 
 export const modulo = (n: number, d: number): number => ((n % d) + d) % d;
-
-/**
- * Pad a number with leading zeros to a given length and return it as a string.
- */
-export function padWithZero(value: number, length: number): string {
-    return value.toString().padStart(length, '0');
-}
