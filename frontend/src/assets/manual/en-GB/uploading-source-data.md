@@ -1,8 +1,8 @@
 When you create a corpus, you will need to upload your source data as a CSV file.
 
-CSV files are a lightweight format for data tables, supported by many data data applications. Below, we provide brief instructions on how to create a suitable CSV file using a spreadsheet editor (like Microsoft Excel), and using Python.
+CSV files are a lightweight format for data tables, supported by many data applications. However, data applications can have slightly different CSV conventions, so this page provides detailed instructions.
 
-Finally, we also include a full specification of the requirements for the file, including an example file.
+Below, we provide instructions on how to create a suitable CSV file using a spreadsheet editor (like Microsoft Excel), and using Python. Finally, we also include a full specification of the requirements for the file, including an example file.
 
 ## Using a spreadsheet editor
 
@@ -42,7 +42,7 @@ Your sheet should consist of a single table with all your data. Use the first ro
     </tbody>
 </table>
 
-Do not include empty rows between documents, or write in cells outside of the named columns. Visual flair like the font, text colour, cell background, etc. will not show up in the exported file.
+Do not include empty rows between documents, and do not write in cells outside of the named columns. Visual flair like the font, text colour, cell background, etc. will not show up in the exported file.
 
 To export your file, use the "export" or "save as" option in your spreadsheet editor. In Microsoft Excel, use the "save as CSV UTF-8" option, rather than "save as CSV". The precise steps and options for exporting will depend on your editor.
 
@@ -50,18 +50,19 @@ After exporting, you can use a plain-text editor like Notepad to inspect your fi
 
 If your data contains **formula cells**, make sure that the program exports the values, not the formulas themselves.
 
-If your data contains **date fields**, make sure that they are formatted correctly. Dates must be stored as `year-month-day` in the exported file. If you entered them in a different way (e.g. `day/month/year`), you can adjust the formatting of the cells in the spreadsheet.
+If your data contains **date fields**, make sure that they are formatted correctly. Dates must be stored as `year-month-day` (e.g. `1999-12-31`) in the exported file. If you entered them in a different way (e.g. `day/month/year`), you can adjust the formatting of the cells in the spreadsheet. In that case, make sure you export the formatted values, not the original value.
 
 ## Using Python
 
-If your are processing your data in Python, you can use the [Python csv module](https://docs.python.org/3/library/csv.html#module-csv) to export your data.
+If you are processing your data in Python, you can use the [Python csv module](https://docs.python.org/3/library/csv.html#module-csv) to export your data.
 
-Below is an example script to save a CSV file suitable for Textcavator. The script is using the default options when writing a CSV.
+The default options of the `csv` library are usually fine. Below is an example script to save a CSV file suitable for Textcavator.
 
 ```python
 import csv
 from datetime import date
 
+# example data
 my_data = [
     {
         'title': 'Frankenstein, or, the Modern Prometheus',
@@ -96,7 +97,7 @@ The data file must be a CSV file. You should save the file with a `.csv` extensi
 These are the requirements for the format of the data:
 
 - You can use a comma (`,`), semicolon (`;`) or tab as a separator between columns. (Any is fine, but you cannot mix different separators in your data.)
-- The first row of the file should be the header; it contains the column names.
+- The first row of the file should be the header; it contains the column names. Every column should have a header, and the names should be unique.
 - The file encoding should be `utf-8`.
 
 The table below describes formatting requirements per data type.
