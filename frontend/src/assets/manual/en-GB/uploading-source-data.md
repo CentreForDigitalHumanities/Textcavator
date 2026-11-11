@@ -10,7 +10,7 @@ For small datasets, you can use a spreedsheet editor like Microsoft Excel, Googl
 
 Your sheet should consist of a single table with all your data. Use the first row to write column headers. After that, each row contains a single document. For example, you could use the following spreadsheet to make a corpus with 2 fields and 3 documents:
 
-<table class="spreadsheet">
+<table class="spreadsheet my-4">
     <thead>
         <tr>
             <th></th>

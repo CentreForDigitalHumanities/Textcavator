@@ -64,6 +64,10 @@
 table.spreadsheet {
     border: 2px solid var(--bs-border-color);
 
+    th, td {
+        padding: 0.25rem;
+    }
+
     thead th,
     tbody td,
     tbody th {
@@ -71,7 +75,7 @@ table.spreadsheet {
     }
 
     th {
-        background-color: var(--bs-body-bg);
+        background-color: var(--bs-tertiary-bg);
     }
 
     tr:hover {
