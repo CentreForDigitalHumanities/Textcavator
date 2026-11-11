@@ -156,20 +156,6 @@ a, button, .form-control, .form-select {
     }
 }
 
-.p-steps-item.p-disabled {
-    --p-text-muted-color: var(--bs-secondary-color);
-
-    .p-steps-item-number, .p-steps-item-label {
-        color: var(--bs-secondary-color) !important;
-    }
-}
-
-:root {
-    --p-steps-item-number-active-background: var(--bs-primary-text-emphasis) !important;
-    --p-steps-item-number-active-border-color: var(--bs-primary-text-emphasis) !important;
-    --p-steps-item-label-active-color: var(--bs-primary-text-emphasis) !important;
-}
-
 
 // vega
 
