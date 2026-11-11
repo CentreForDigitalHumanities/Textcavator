@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { SliderModule } from 'primeng/slider';
 import {
     AdHocFilterComponent,
     BooleanFilterComponent,
@@ -14,6 +13,7 @@ import {
 import { SearchService } from '@services';
 import { SharedModule } from '@shared/shared.module';
 import { FilterManagerComponent } from './filter-manager/filter-manager.component';
+import { RangeSliderComponent } from './range-filter/range-slider/range-slider.component';
 
 
 
@@ -36,7 +36,7 @@ import { FilterManagerComponent } from './filter-manager/filter-manager.componen
         CheckboxModule,
         MultiSelectModule,
         SharedModule,
-        SliderModule,
+        RangeSliderComponent
     ],
     exports: [
         FilterManagerComponent,

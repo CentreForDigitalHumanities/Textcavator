@@ -410,6 +410,12 @@ class Field(models.Model):
         default=False,
         help_text='whether this field is hidden in the interface',
     )
+    normalize_whitespace = models.BooleanField(
+        default=True,
+        help_text='Whether whitespace should be normalised in the interface. Only ' \
+            'affects text content fields. Turn off to preserve whitespace; e.g. for ' \
+            'poems/songs.',
+    )
     required = models.BooleanField(
         default=False,
         help_text='whether this field is required',

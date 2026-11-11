@@ -43,6 +43,7 @@ class FieldSerializer(serializers.ModelSerializer):
             'es_mapping',
             'indexed',
             'hidden',
+            'normalize_whitespace',
             'required',
             'sortable',
             'searchable',

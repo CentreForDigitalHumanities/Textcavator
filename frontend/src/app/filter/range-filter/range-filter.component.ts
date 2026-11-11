@@ -56,6 +56,20 @@ export class RangeFilterComponent extends BaseFilterComponent<RangeFilter> imple
         };
     }
 
+    /** Calculate step size based on min/max.
+     * Returns the power of 10 for which there are [100, 1000) steps.
+     * If the field is an integer field, the step is always at least 1.
+     */
+    step(min: number, max: number): number {
+        const minStep = this.filter.corpusField.mappingType == 'integer' ? 1 : 0;
+        const range = max - min;
+        // Express the range as a power of 10, round down to the nearest integer,
+        // subtract 2, then raise 10 by that amount.
+        // E.g. 1547 -> 3.19... -> 3 -> 1 -> 10.
+        const idealStepSize = 10 ** (Math.floor(Math.log10(range)) - 2);
+        return Math.max(idealStepSize, minStep);
+    }
+
     private fetchDefaultData(filter: RangeFilter): Promise<RangeFilterData> {
         return Promise.all(
             [this.fetchMin(filter), this.fetchMax(filter)]

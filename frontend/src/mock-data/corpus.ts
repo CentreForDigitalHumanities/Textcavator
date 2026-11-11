@@ -29,6 +29,7 @@ export const keywordFieldFactory = (searchable = false): CorpusField =>
         sortable: false,
         indexed: true,
         required: false,
+        normalize_whitespace: true,
     });
 
 
@@ -60,6 +61,7 @@ export const contentFieldFactory = (): CorpusField =>
         indexed: true,
         required: false,
         language: 'eng',
+        normalize_whitespace: true,
     });
 
 
@@ -88,6 +90,7 @@ export const dateFieldFactory = () =>
         indexed: true,
         required: false,
         language: '',
+        normalize_whitespace: true,
     });
 
 
@@ -116,6 +119,36 @@ export const intFieldFactory = () =>
         indexed: true,
         required: false,
         language: '',
+        normalize_whitespace: true,
+    });
+
+
+export const floatFieldFactory = () =>
+    new CorpusField({
+        name: 'ocr',
+        display_name: 'OCR quality',
+        description: '',
+        display_type: 'float',
+        hidden: false,
+        sortable: true,
+        downloadable: true,
+        search_filter: {
+            name: 'RangeFilter',
+            lower: 0,
+            upper: 1,
+            description: ''
+        },
+        es_mapping: { type: 'float' },
+        results_overview: false,
+        searchable: false,
+        search_field_core: false,
+        csv_core: false,
+        visualizations: [],
+        visualization_sort: '',
+        indexed: true,
+        required: false,
+        language: '',
+        normalize_whitespace: false,
     });
 
 export const booleanFieldFactory = () =>
@@ -141,6 +174,7 @@ export const booleanFieldFactory = () =>
         indexed: true,
         required: false,
         language: '',
+        normalize_whitespace: true,
     });
 
 

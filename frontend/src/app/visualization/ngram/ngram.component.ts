@@ -85,6 +85,7 @@ export class NgramComponent implements OnChanges {
         { label: '2', value: 3 },
         { label: '3', value: 4 },
         { label: '5', value: 6 },
+        { label: '10', value: 11 },
     ];
     positionsOptions = ['any', 'first', 'second'].map((n) => ({
         label: `${n}`,
