@@ -17,11 +17,12 @@ def corpus_definition(mock_corpus):
 
 
 @pytest.fixture()
-def small_mock_corpus_user(auth_user, small_mock_corpus):
+def small_mock_corpus_user(auth_user, small_mock_corpus, basic_mock_corpus):
     group = Group.objects.create(name='corpus access')
     corpus = Corpus.objects.get(name=small_mock_corpus)
     corpus.groups.add(group)
-    corpus.save()
+    corpus2 = Corpus.objects.get(name=basic_mock_corpus)
+    corpus2.groups.add(group)
     auth_user.groups.add(group)
     auth_user.save()
     return auth_user

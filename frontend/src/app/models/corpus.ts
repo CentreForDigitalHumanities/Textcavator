@@ -52,7 +52,7 @@ export interface DocumentContext {
 
 export type FieldDisplayType =
     'text_content' | 'keyword' | 'integer' | 'text' | 'date' | 'date_range' | 'boolean'
-    | 'url' | 'geo_point';
+    | 'url' | 'geo_point' |  'float';
 
 
 export interface APICorpus {
