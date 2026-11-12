@@ -1,6 +1,4 @@
-When you create a corpus, you will need to upload your source data as a CSV file.
-
-CSV files are a lightweight format for data tables, supported by many data applications. However, data applications can have slightly different CSV conventions, so this page provides detailed instructions.
+When you create a corpus, you will need to upload your source data as a CSV file. CSV files are a lightweight format for data tables, supported by many data applications. However, data applications can have slightly different CSV conventions, so this page provides detailed instructions.
 
 Below, we provide instructions on how to create a suitable CSV file using a spreadsheet editor (like Microsoft Excel), and using Python. Finally, we also include a full specification of the requirements for the file, including an example file.
 
