@@ -156,10 +156,13 @@ export const appRoutes: Routes = [
             },
         ],
     },
-    {
-        path: 'news',
-        component: NewsComponent,
-    },
+    ...(environment.showNews ? [
+            {
+                path: 'news',
+                component: NewsComponent,
+            },
+        ] : []
+    ),
     {
         path: '',
         redirectTo: 'home',

@@ -46,4 +46,5 @@ export const environment: Environment = {
     logos: undefined,
     showCorpusFilters: true,
     showNamechangeAlert: true,
+    showNews: true,
 };

@@ -65,6 +65,7 @@ import {
     faAngleDoubleUp,
     faMaximize,
     faMinimize,
+    faFeed,
 } from '@fortawesome/free-solid-svg-icons';
 
 type IconDefinition = SolidIconDefinition | RegularIconDefinition;
@@ -89,6 +90,7 @@ export const navIcons: Icons = {
     admin: faCogs,
     downloads: faDownload,
     tags: faTags,
+    news: faFeed,
 };
 
 export const directionIcons: Icons = {
@@ -123,7 +125,7 @@ export const actionIcons: Icons = {
     view: faEye,
     wait: faClock,
     maximize: faMaximize,
-    minimize: faMinimize
+    minimize: faMinimize,
 };
 
 export const formIcons: Icons = {
