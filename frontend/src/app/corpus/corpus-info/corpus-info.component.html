@@ -8,7 +8,7 @@
                     <li [ngbNavItem]="page.type">
                         <button ngbNavLink>{{page.type}}</button>
                         <ng-template ngbNavContent >
-                            <div [innerHTML]="renderMarkdown(page.content)"></div>
+                            <div [innerHTML]="renderMarkdown(page.content)" class="markdown-content"></div>
                         </ng-template>
                     </li>
                 }
