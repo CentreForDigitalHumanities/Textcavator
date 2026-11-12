@@ -4,9 +4,7 @@
     @let data = data$ | async;
     <div [ia-loading]="!data">
         @for (item of data; track item.id) {
-            <article>
-                <h2>{{item.title}}</h2>
-            </article>
+            <ia-news-item [item]="item" />
         } @empty {
             <p><i>No news items to display.</i></p>
         }
