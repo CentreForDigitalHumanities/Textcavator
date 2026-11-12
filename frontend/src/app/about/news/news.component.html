@@ -1,1 +1,14 @@
-<p>news works!</p>
+<div class="container py-5">
+    <h1>News</h1>
+
+    @let data = data$ | async;
+    <div [ia-loading]="!data">
+        @for (item of data; track item.id) {
+            <article>
+                <h2>{{item.title}}</h2>
+            </article>
+        } @empty {
+            <p><i>No news items to display.</i></p>
+        }
+    </div>
+</div>
