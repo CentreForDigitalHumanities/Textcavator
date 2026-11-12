@@ -9,7 +9,7 @@ psycopg2
 pytest
 pytest-django
 pytest-xdist
-pytest-celery
+pytest-celery<1.0
 elasticsearch>=8,<9
 nltk
 beautifulsoup4
