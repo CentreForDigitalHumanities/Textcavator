@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CorpusDefinition } from '@models/corpus-definition';
 import { ApiService } from '@services/api.service';
@@ -29,6 +29,8 @@ export class CorpusFormComponent {
 
     corpus$ = this.corpusDefService.corpus$.asObservable();
 
+    subformHeader = viewChild<ElementRef<HTMLElement>>('subformHeader');
+
     actionIcons = actionIcons;
     corpusIcons = corpusIcons;
     appName = environment.appName;
@@ -53,9 +55,16 @@ export class CorpusFormComponent {
 
     onActiveIndexChange(event: number) {
         this.corpusDefService.activateStep(event);
+        setTimeout(() => this.focusOnHeader());
     }
 
     toNext() {
         this.corpusDefService.activateStep(this.corpusDefService.activeStep$.value + 1);
+        setTimeout(() => this.focusOnHeader());
+    }
+
+    focusOnHeader() {
+        const header = this.subformHeader();
+        header?.nativeElement.focus();
     }
 }

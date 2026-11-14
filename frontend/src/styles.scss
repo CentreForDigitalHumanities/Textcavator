@@ -87,6 +87,10 @@ table.spreadsheet {
     }
 }
 
+.dropdown .dropdown-item.active .form-text {
+    color: var(--dropdown-link-active-color);
+}
+
 .corpus-image-container {
     aspect-ratio: 4/3;
 
