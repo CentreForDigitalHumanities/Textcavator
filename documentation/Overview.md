@@ -22,6 +22,7 @@ The backend consists of the following packages:
 - `visualization`: compute visualisation data
 - `download`: generate and manage CSV downloads
 - `media`: return media attachments for documents
+- `about`: descriptive content (currently just news items)
 - `corpora`: corpus definitions
 - `corpora_test`: corpus definitions for unit tests
 - `ianalyzer`: central project app
@@ -41,6 +42,7 @@ graph TD;
     addcorpus-->indexing;
     media-->corpora;
     media-->corpora_test;
+    about;
 ```
 
 To avoid circular imports, it's preferred that you follow the directions laid out in the graph. For example, if you want to write a function that will have something to do with tags and visualisations, add a module in `visualizations` that imports modules from `tag`, rather than vice versa.
