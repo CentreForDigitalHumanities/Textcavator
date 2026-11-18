@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { ApiService } from '@app/services';
 import { LoadingComponent } from '@app/shared/loading/loading.component';
 import { NewsItemComponent } from './news-item/news-item.component';
+import { environment } from '@environments/environment';
 
 @Component({
     selector: 'ia-news',
@@ -13,4 +14,5 @@ import { NewsItemComponent } from './news-item/news-item.component';
 export class NewsComponent {
     private apiService = inject(ApiService);
     data$ = this.apiService.news();
+    appName = environment.appName;
 }
