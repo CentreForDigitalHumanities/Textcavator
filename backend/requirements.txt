@@ -6,6 +6,8 @@
 #
 amqp==5.4.2
     # via kombu
+anyio==4.16.0
+    # via elasticsearch
 asgiref==3.13.0
     # via
     #   django
@@ -82,9 +84,9 @@ djangorestframework==3.18.3
     #   dj-rest-auth
 djangosaml2==1.13.0
     # via -r requirements.in
-elastic-transport==8.19.0
+elastic-transport==9.4.3
     # via elasticsearch
-elasticsearch==8.19.3
+elasticsearch==9.5.1
     # via -r requirements.in
 elementpath==4.8.0
     # via xmlschema
@@ -99,7 +101,9 @@ gensim==4.4.0
 humanize==4.17.0
     # via flower
 idna==3.20
-    # via requests
+    # via
+    #   anyio
+    #   requests
 iniconfig==2.3.1
     # via pytest
 joblib==1.6.0
@@ -234,6 +238,10 @@ six==1.17.0
     #   python-dateutil
 smart-open==9.0.3
     # via gensim
+sniffio==1.3.1
+    # via
+    #   elastic-transport
+    #   elasticsearch
 soupsieve==4.1
     # via beautifulsoup4
 sqlparse==0.6.1
@@ -254,6 +262,7 @@ tqdm==4.70.1
     #   nltk
 typing-extensions==4.16.0
     # via
+    #   anyio
     #   beautifulsoup4
     #   click-repl
     #   elasticsearch

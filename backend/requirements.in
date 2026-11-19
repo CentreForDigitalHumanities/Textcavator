@@ -10,7 +10,7 @@ pytest
 pytest-django
 pytest-xdist
 pytest-celery<1.0
-elasticsearch>=8,<9
+elasticsearch>=9.5.1,<10
 nltk
 beautifulsoup4
 lxml
