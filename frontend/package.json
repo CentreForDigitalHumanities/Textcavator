@@ -64,7 +64,7 @@
     "vega": "^6.4.0",
     "vega-embed": "^7.3.0",
     "vega-lite": "^6.5.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.16.3"
   },
   "devDependencies": {
     "@angular-eslint/eslint-plugin": "^21.4.0",
