@@ -6,6 +6,7 @@ import { CorpusDocumentationPage, TaskResult, TasksOutcome } from '../app/models
 import { LimitedResultsDownloadParameters, NgramResults } from '../app/models/search-results';
 import { corpusDefinitionFactory } from './corpus-definition';
 import { APIEditableCorpus, CorpusDataFile } from '../app/models/corpus-definition';
+import { NewsItem } from '@app/models/news';
 
 export const fakeNgramResult: NgramResults = {
     words: [
@@ -132,5 +133,11 @@ export class ApiServiceMock {
 
     corpusSchema(): Observable<any> {
         return of({});
+    }
+
+    news(): Observable<NewsItem[]> {
+        return of([
+            { id: 1, date: '2026-01-01', title: 'Test', content: 'This is a test.'}
+        ])
     }
 }
