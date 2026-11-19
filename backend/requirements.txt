@@ -70,7 +70,7 @@ django==5.2.19
     #   django-revproxy
     #   djangorestframework
     #   djangosaml2
-django-allauth[socialaccount]==65.22.0
+django-allauth[socialaccount]==65.22.1
     # via dj-rest-auth
 django-livereload-server==0.5.1
     # via -r requirements.in
