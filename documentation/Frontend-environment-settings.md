@@ -117,3 +117,9 @@ Type: [`MatomoConfig`](../frontend/src/app/routing/matomo.ts)
 Optional. To track usage data using matomo, use this setting to provide the URL of the matomo server, and the ID of this Textcavator site on your matomo server.
 
 Note: the [`matomo.ts` module](../frontend/src/app/routing/matomo.ts) handles the client-side configuration for matomo.
+
+### `showNews`
+
+Type: boolean
+
+Optional. If `true`, this enabled the "News" page on the site. This can be used to communicate updates. News items can be edited through the Django admin.

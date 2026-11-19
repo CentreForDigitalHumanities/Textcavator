@@ -18,6 +18,7 @@ import { Theme, ThemeService } from '@app/services/theme.service';
 export class MenuComponent implements OnDestroy, OnInit {
     brand = environment.navbarBrand;
     adminUrl = environment.adminUrl;
+    showNews = !!environment.showNews;
 
     menuOpen$ = new BehaviorSubject<boolean>(false);
 

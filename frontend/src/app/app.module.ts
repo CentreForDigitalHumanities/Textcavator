@@ -50,7 +50,7 @@ import { WordModelsModule } from './word-models/word-models.module';
 import { MatomoConfig, matomoImports } from './routing/matomo';
 import { stylePreset } from './primeng-theme';
 import { CoreModule } from './core/core.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NewsComponent } from './about/news/news.component';
 
 
 export const appRoutes: Routes = [
@@ -156,6 +156,13 @@ export const appRoutes: Routes = [
             },
         ],
     },
+    ...(environment.showNews ? [
+            {
+                path: 'news',
+                component: NewsComponent,
+            },
+        ] : []
+    ),
     {
         path: '',
         redirectTo: 'home',

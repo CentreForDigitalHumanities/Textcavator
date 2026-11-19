@@ -55,6 +55,16 @@
                         Manual
                     </a>
                 </li>
+                @if (showNews) {
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" [routerLink]="['/news']">
+                            <span aria-hidden="true">
+                                <fa-icon [icon]="navIcons.news"></fa-icon>
+                            </span>
+                            News
+                        </a>
+                    </li>
+                }
                 <li class="nav-item">
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/about']">
                         <span aria-hidden="true">

@@ -38,6 +38,7 @@ import {
 } from '@models/corpus-definition';
 import { APIIndexHealth, APIIndexJob, isComplete } from '@models/indexing';
 import { ImageInfo } from '@models/image';
+import { NewsItem } from '@app/models/news';
 
 interface SolisLoginResponse {
     success: boolean;
@@ -84,6 +85,7 @@ export class ApiService {
     private corpusApiUrl = 'corpus';
     private tagApiUrl = 'tag';
     private indexApiUrl = 'indexing';
+    private aboutApiUrl = 'about';
 
     private authApiRoute = (route: string): string =>
         joinURLPath(this.authApiUrl, route);
@@ -108,6 +110,12 @@ export class ApiService {
         return this.http.get<Download[]>(
             joinURLPath(this.apiUrl, 'download/')
         ).toPromise();
+    }
+
+    public news(): Observable<NewsItem[]> {
+        return this.http.get<NewsItem[]>(
+            joinURLPath(this.apiUrl, this.aboutApiUrl, 'news/')
+        );
     }
 
     // Media

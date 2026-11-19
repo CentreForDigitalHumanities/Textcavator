@@ -21,4 +21,5 @@ export interface Environment {
     logos?: string[];
     showCorpusFilters?: boolean;
     showNamechangeAlert?: boolean;
+    showNews?: boolean;
 }

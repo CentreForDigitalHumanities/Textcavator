@@ -23,4 +23,5 @@ COPY tag/ tag/
 COPY users/ users/
 COPY visualization/ visualization/
 COPY wordmodels/ wordmodels/
+COPY about/ about/
 RUN mkdir .log
