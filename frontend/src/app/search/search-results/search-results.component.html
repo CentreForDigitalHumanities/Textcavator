@@ -8,23 +8,21 @@
         </div>
       </div>
       <div class="col-md"></div> <!-- empty column for spacing/alignment -->
-      @if (page.total > resultsPerPage) {
-        <div class="col-md-auto text-center" >
-          <div>
-            <p class="heading">Pages</p>
-            <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
-            <p aria-live="polite" [attr.aria-busy]="pageResults.loading$ | async"
-              aria-atomic="true" class="heading">
-              @if (page.total > resultsPerPage) {
-                <span>
-                  Showing results
-                  {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
-                </span>
-              }
-            </p>
-          </div>
-        </div>
-      }
+        @if (page.total > resultsPerPage) {
+            <div class="col-md-auto text-center" >
+                <div>
+                    <p class="heading">Pages</p>
+                    <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
+                    <p aria-live="polite" [attr.aria-busy]="pageResults.loading$ | async"
+                    aria-atomic="true" class="heading">
+                        <span>
+                        Showing results
+                        {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        }
     </div>
   </section>
   <div class="row">
@@ -50,23 +48,23 @@
     </section>
   }
   <ia-document-popup [page]="page" [queryModel]="queryModel"></ia-document-popup>
-  <div class="row mt-5">
-    <div class="col-md"></div>
-    <div class="col-md-auto text-center">
-      <div>
-        <p class="heading">Pages</p>
-        <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
-        <p class="heading">
-          @if (page.total > resultsPerPage) {
-            <span>
-              Showing results
-              {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
-            </span>
-          }
-        </p>
-      </div>
+  @if (page.total > resultsPerPage) {
+    <div class="row mt-5">
+        <div class="col-md"></div>
+        <div class="col-md-auto text-center">
+            <div>
+                <p class="heading">Pages</p>
+                <ia-pagination [totalResults]="totalDisplayed(page.total)" [fromIndex]="pageResults.from$ | async" (parameters)="setParameters($event)"></ia-pagination>
+                <p class="heading">
+                    <span>
+                    Showing results
+                    {{pageResults.from$ | async | number}}-{{pageResults.to$ | async | number}}
+                    </span>
+                </p>
+            </div>
+        </div>
     </div>
-  </div>
+  }
 } @else {
     @if (error$ | async; as error) {
         <ia-error [errorDetails]="error"></ia-error>
