@@ -3,9 +3,13 @@ updates:
   - package-ecosystem: "npm"
     directory: "/frontend/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    allow:
+      - update-types: ["version-update:semver-patch", "version-update:semver-minor"]
 
   - package-ecosystem: "pip"
     directory: "/backend/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    allow:
+      - update-types: ["version-update:semver-patch", "version-update:semver-minor"]
