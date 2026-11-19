@@ -174,7 +174,7 @@ pyopenssl==26.4.0
     #   pysaml2
 pyparsing==3.3.3
     # via rdflib
-pypdf==7.0.1
+pypdf==7.1.0
     # via
     #   -r requirements.in
     #   textcavator-readers
