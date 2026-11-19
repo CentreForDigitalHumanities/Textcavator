@@ -64,6 +64,10 @@
 table.spreadsheet {
     border: 2px solid var(--bs-border-color);
 
+    th, td {
+        padding: 0.25rem;
+    }
+
     thead th,
     tbody td,
     tbody th {
@@ -71,7 +75,7 @@ table.spreadsheet {
     }
 
     th {
-        background-color: var(--bs-body-bg);
+        background-color: var(--bs-tertiary-bg);
     }
 
     tr:hover {
@@ -95,6 +99,41 @@ table.spreadsheet {
         height: 100%;
         object-fit: cover;
         object-position: center;
+    }
+}
+
+.markdown-content {
+    h1, h2, h3, h4, h5, h6 {
+        &:not(:first-child) {
+            margin-top: 1.5rem;
+        }
+    }
+
+    pre {
+        background-color: var(--bs-tertiary-bg);
+        border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+        padding: 0.5rem;
+        border-radius: var(--bs-border-radius);
+        @extend .my-4;
+    }
+
+    blockquote {
+        @extend .my-4;
+        padding-left: 2rem;
+        border-left: calc(var(--bs-border-width) * 2) var(--bs-border-style) var(--bs-border-color);
+    }
+
+    math {
+        @extend .my-4;
+    }
+
+    table {
+        @extend .my-4;
+        @extend .table;
+    }
+
+    code {
+        text-wrap: nowrap;
     }
 }
 
