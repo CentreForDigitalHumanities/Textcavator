@@ -7,7 +7,6 @@ import { SlugifyPipe } from '@shared/pipes/slugify.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { ApiServiceMock } from 'mock-data/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { StepsModule } from 'primeng/steps';
 import { DataFormComponent } from '../data-form/data-form.component';
 import { DocumentationFormComponent } from '../documentation-form/documentation-form.component';
 import { MarkdownEditorComponent } from '../documentation-form/markdown-editor/markdown-editor.component';
@@ -37,7 +36,6 @@ describe('CorpusFormComponent', () => {
             ],
             imports: [
                 SharedModule,
-                StepsModule,
                 ReactiveFormsModule,
                 AutoCompleteModule,
                 MarkdownEditorComponent,
