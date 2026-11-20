@@ -63,6 +63,8 @@ import {
     faMoon,
     faSun,
     faAngleDoubleUp,
+    faArrowDownShortWide,
+    faArrowDownWideShort,
     faMaximize,
     faMinimize,
 } from '@fortawesome/free-solid-svg-icons';
@@ -157,6 +159,9 @@ export const sortIcons: Icons = {
     alphaAsc: faSortAlphaAsc,
     numericDesc: faSortNumericDesc,
     numericAsc: faSortNumericAsc,
+    genericAsc: faArrowDownShortWide,
+    genericDesc: faArrowDownWideShort,
+    toggle: faArrowDown,
 };
 
 export const visualizationIcons: Icons = {
