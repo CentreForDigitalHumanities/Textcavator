@@ -82,7 +82,7 @@ djangorestframework==3.18.3
     #   dj-rest-auth
 djangosaml2==1.13.0
     # via -r requirements.in
-elastic-transport==8.19.0
+elastic-transport==8.19.1
     # via elasticsearch
 elasticsearch==8.19.3
     # via -r requirements.in
