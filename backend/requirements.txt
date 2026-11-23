@@ -232,7 +232,7 @@ six==1.17.0
     # via
     #   langdetect
     #   python-dateutil
-smart-open==9.0.3
+smart-open==9.0.6
     # via gensim
 soupsieve==4.1.1
     # via beautifulsoup4
