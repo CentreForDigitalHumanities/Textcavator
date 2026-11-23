@@ -124,7 +124,7 @@ lxml==6.1.3
     #   textcavator-readers
 marisa-trie==1.4.1
     # via language-data
-narwhals==2.28.0
+narwhals==2.29.0
     # via
     #   pyreadr
     #   scikit-learn
