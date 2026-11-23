@@ -1,0 +1,22 @@
+<div class="container py-5">
+    <h1>News</h1>
+
+    <p class="my-4">
+        On this page, you can find updates about new corpora and new features in
+        {{appName}}.
+        For a more complete log of technical changes, you can also view
+        <a href="https://github.com/CentreForDigitalHumanities/Textcavator/releases">
+            Releases on Github</a>.
+    </p>
+
+    @let data = data$ | async;
+    <div [ia-loading]="!data">
+        @for (item of data; track item.id) {
+            <div class="my-4">
+                <ia-news-item  [item]="item" />
+            </div>
+        } @empty {
+            <p><i>No news items to display.</i></p>
+        }
+    </div>
+</div>

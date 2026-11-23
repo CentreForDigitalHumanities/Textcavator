@@ -1,0 +1,10 @@
+<article class="card">
+    <div class="card-body">
+        <h2>{{item().title}}</h2>
+
+        <p class="lead">{{date() | date}}</p>
+
+        <div [innerHTML]="content$ | async"
+            class="markdown-content my-3"></div>
+    </div>
+</article>

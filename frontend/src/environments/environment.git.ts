@@ -20,4 +20,5 @@ export const environment: Environment = {
     version,
     sourceUrl: 'https://github.com/CentreForDigitalHumanities/Textcavator/',
     logos: undefined,
+    showNews: true,
 };
