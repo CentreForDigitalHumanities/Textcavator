@@ -144,10 +144,30 @@
     "@angular-devkit/core" "21.2.30"
     rxjs "7.8.2"
 
+"@angular-devkit/architect@0.2102.31":
+  version "0.2102.31"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.2102.31.tgz#b1984cbc20ea1761a287627f7a51632e2b74159e"
+  integrity sha512-BBge+XU4CGHBCf1BhWWhSS9MjLCRiCmVgWlVR8insbPqtyfHpsPzlsN8VqHFTydJeucIaE3wpfh6xQkLxq5fOA==
+  dependencies:
+    "@angular-devkit/core" "21.2.31"
+    rxjs "7.8.2"
+
 "@angular-devkit/core@21.2.30", "@angular-devkit/core@>= 21.0.0 < 22.0.0":
   version "21.2.30"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-21.2.30.tgz#5435f21df9246da943e91207c5cae4d3350a300f"
   integrity sha512-vr74ouL0RPIhQmT4ATLq0OmPpYHPezKb+ZZJ7kpw03hBOI/k1+yxvLr7GaKwSFZPqRsi51zk/4yN7E3m3QukCA==
+  dependencies:
+    ajv "8.18.0"
+    ajv-formats "3.0.1"
+    jsonc-parser "3.3.1"
+    picomatch "4.0.4"
+    rxjs "7.8.2"
+    source-map "0.7.6"
+
+"@angular-devkit/core@21.2.31":
+  version "21.2.31"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-21.2.31.tgz#604fda5dcc05143f6d40957443d68d3b041fb975"
+  integrity sha512-EDv/jLcvMZKI8ds7dZ2DKJck7oShIlK9pYndUtBVf5cYS+fOyGcv0X5VBLx1l9JW4732P1RCAP/7Lv0ZOyrvLQ==
   dependencies:
     ajv "8.18.0"
     ajv-formats "3.0.1"
@@ -226,13 +246,13 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/build@^21.2.30":
-  version "21.2.30"
-  resolved "https://registry.yarnpkg.com/@angular/build/-/build-21.2.30.tgz#cab88a845a028360c6e8cf5390286219e662547f"
-  integrity sha512-+ppzIjALWXP0X0gKWia+wl4rM0Q2pzdFuaLTabJ+xknvUHy9bkrGB7Hyi05cUJF6MxJgI85fxD9zjG1kNqN+lw==
+"@angular/build@^21.2.31":
+  version "21.2.31"
+  resolved "https://registry.yarnpkg.com/@angular/build/-/build-21.2.31.tgz#b0056f1f4d66f5f00bf682003d0fb7745bb50c15"
+  integrity sha512-x8qkNc6MMyOsypVmcBKrtqtwYnuf+cQ6VtzWPu6k+dkyQ2txjcqEgC9TV8YzXTfeVNOiIVPQa1RossSjfv1nmw==
   dependencies:
     "@ampproject/remapping" "2.3.0"
-    "@angular-devkit/architect" "0.2102.30"
+    "@angular-devkit/architect" "0.2102.31"
     "@babel/core" "7.29.7"
     "@babel/helper-annotate-as-pure" "7.27.3"
     "@babel/helper-split-export-declaration" "7.24.7"
@@ -256,7 +276,7 @@
     source-map-support "0.5.21"
     tinyglobby "0.2.15"
     undici "7.30.1"
-    vite "7.3.7"
+    vite "7.3.8"
     watchpack "2.5.1"
   optionalDependencies:
     lmdb "3.5.1"
@@ -6275,10 +6295,10 @@ vega@^6.4.0:
     vega-voronoi "~5.1.3"
     vega-wordcloud "~5.1.3"
 
-vite@7.3.7:
-  version "7.3.7"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-7.3.7.tgz#017a80fdce051003a4aa290dddd0b159aa769282"
-  integrity sha512-AHEzTORMbi7/7aXp7w7KZ5+DCUdSeLsJz0grY8xHpc9DHdYb0vQu6DqJfm2tOw3gDExNgPgnJTXxM6syYFHaCA==
+vite@7.3.8:
+  version "7.3.8"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-7.3.8.tgz#3ca056297e2bf004fe5a7e40b03c18a7aa133ada"
+  integrity sha512-3tTi78MAKhVk9h+YZVXMQ8POmneJuE97QUPAWtJghHzhH7BAyiqQOC2KZh1DWOsu/USB2cRXhznPByaabvYXfw==
   dependencies:
     esbuild "^0.27.0 || ^0.28.0"
     fdir "^6.5.0"

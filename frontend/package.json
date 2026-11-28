@@ -71,7 +71,7 @@
     "@angular-eslint/eslint-plugin-template": "^21.4.0",
     "@angular-eslint/schematics": "^21.4.0",
     "@angular-eslint/template-parser": "^21.4.0",
-    "@angular/build": "^21.2.30",
+    "@angular/build": "^21.2.31",
     "@angular/cli": "^21.2.30",
     "@angular/compiler-cli": "^21.2.26",
     "@types/chart.js": "^4.0.1",
