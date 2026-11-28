@@ -424,12 +424,12 @@
     semver "^6.3.1"
 
 "@babel/generator@^7.29.13", "@babel/generator@^7.29.14", "@babel/generator@^7.29.7":
-  version "7.29.14"
-  resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.29.14.tgz#59a04e5ad227cec73a04291303e3906512a9999a"
-  integrity sha512-qSY56jgW5JnSXzuekLVil6zaOQxOCtOHidr65KkaMBw772IuAY28Qx4ZykAcDn8+FRF15qk80XzKwgSc/RYW6g==
+  version "7.29.16"
+  resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.29.16.tgz#10dccbde534cc9a9bdb70d93e7156049e3d1974f"
+  integrity sha512-yRtddtrcYdLJt0l70aP7usb2YpMHNXAdAvJW2hXdka5boR4vKMS/F5BTR5sULkbht9xPk/EKzbY2mCczMutZqQ==
   dependencies:
-    "@babel/parser" "^7.29.14"
-    "@babel/types" "^7.29.14"
+    "@babel/parser" "^7.29.15"
+    "@babel/types" "^7.29.15"
     "@jridgewell/gen-mapping" "^0.3.12"
     "@jridgewell/trace-mapping" "^0.3.28"
     jsesc "^3.0.2"
@@ -486,6 +486,11 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-string-parser/-/helper-string-parser-7.29.14.tgz#580738bad73cc713688e6bbc0b59ac8760066fe1"
   integrity sha512-CXvKMFvM80ihI7Vox9jb+kQjnyjESQNPM+vB7U0Zz6TWuZA+Z/FL0QPMH300h33qJtIx+REeBhXqWOPW48TcAQ==
 
+"@babel/helper-string-parser@^7.29.15":
+  version "7.29.15"
+  resolved "https://registry.yarnpkg.com/@babel/helper-string-parser/-/helper-string-parser-7.29.15.tgz#97d33964c3622accda81fc81ed7a34c7bb5f863b"
+  integrity sha512-C2FuapQ2Kh1OnVHAoLi5rD3GBJ8COb9Q609T6HEpLqaBAo560PDP5OxBE5dCI/h951MBO/+bCUYU5SZ+8ZlV+w==
+
 "@babel/helper-validator-identifier@^7.29.7":
   version "7.29.7"
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.29.7.tgz#bd87084ced0c796ec46bda492de6e83d29e89fc2"
@@ -510,6 +515,13 @@
   integrity sha512-VL220vXuyO2z3rNIQwY7ftj9UwpqOt+33sH+sBWkOekbsSR2g7EEMnOx24ZlCH0xOA3DM/33SifVFGbnJD8r/w==
   dependencies:
     "@babel/types" "^7.29.14"
+
+"@babel/parser@^7.29.15":
+  version "7.29.15"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.29.15.tgz#2e2bcf6e51bfc99e1a00417f0a122ba27a441dba"
+  integrity sha512-RpKWyisHoP81twtSCgmE02iU0RnPcq1DN5bBEbpUePrjA9Q3wXhufnCJrrayPpoZieqFh3zyZQqwtSK0gGccRA==
+  dependencies:
+    "@babel/types" "^7.29.15"
 
 "@babel/template@^7.29.7":
   version "7.29.7"
@@ -539,6 +551,14 @@
   integrity sha512-UjI/dKmwJwT9pOszJitq2G6EObZPnsZUfdCr92z2TlF3EZK9J3EdfOKUrCzHl6wFthbzwhzl1Soc/UIwxRiq6w==
   dependencies:
     "@babel/helper-string-parser" "^7.29.14"
+    "@babel/helper-validator-identifier" "^7.29.7"
+
+"@babel/types@^7.29.15":
+  version "7.29.15"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.29.15.tgz#92f0fa3501405b132ac7a5acd064052e8a455f09"
+  integrity sha512-/XKpKDakL//LZ66bq1XsZOswuqeI5MZqPLDu18o3XdkU1fNJ7bdPtzgnc4ZNS+bBGHV0FJG8jjb8SwcC3nNVQQ==
+  dependencies:
+    "@babel/helper-string-parser" "^7.29.15"
     "@babel/helper-validator-identifier" "^7.29.7"
 
 "@cacheable/memory@^2.2.0":
