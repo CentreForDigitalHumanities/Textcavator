@@ -3782,9 +3782,9 @@ hasown@^2.0.2:
     function-bind "^1.1.2"
 
 hono@^4.11.4:
-  version "4.13.19"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.13.19.tgz#262deddee9ca079195f23ee0c6419eca8027ea2d"
-  integrity sha512-KmXvQAXwcAHV+muzbIwoJ23niEB5nMoDVr9WcRkU8mvjUECm/1+7v4Jgp7P7a+H6MLFrh+vXrGonGrGS+RQfkA==
+  version "4.13.23"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.13.23.tgz#de26c7b53684a338cf688046f5db346cf8da3432"
+  integrity sha512-OS90dj7dcsftEEWCOef8jRbnHE5lbrOq0hNRqjSyPsOnaGZvvfof1KS05hQNb4kUOCfDq1mG3PmHoX37DMnHQg==
 
 hookified@^1.15.0, hookified@^1.15.1:
   version "1.15.1"
